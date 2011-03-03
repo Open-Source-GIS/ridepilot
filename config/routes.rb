@@ -1,4 +1,9 @@
 Ridepilot::Application.routes.draw do
+
+  devise_for :users, :controllers=>{:sessions=>"users"} do
+    get "init" => "users#show_init"
+    post "init" => "users#init"
+  end
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -55,4 +60,7 @@ Ridepilot::Application.routes.draw do
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id(.:format)))'
+
+  resources :trips
+  root :to => "home#index"
 end
