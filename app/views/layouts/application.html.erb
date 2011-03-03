@@ -7,6 +7,36 @@
   <%= csrf_meta_tag %>
 </head>
 <body>
+  <div id="header">
+    <div class="wrap selfclear">
+      <a id="logo" href="/">Ride Pilot</a>
+      <div id="login-area">
+        <% if current_user %>
+          <p style="float:right"><img src="/logos/<%=current_user.current_provider_id%>.jpg"/></p>
+
+          <a href="#"><%= current_user.email %></a> | <a href="#">Log out</a>
+  
+          Logged in to 
+          <% if @providers.size > 1 %>
+          <form action="/users/change_provider" method="POST">
+            <select name="provider_id">
+              <%= options_for_select(@providers, selected = current_user.current_provider_id) %>
+            </select>
+            <%= hidden_field "come_from", request.request_uri %>
+          </form>
+          <% else %>
+            <%= current_user.current_provider.name %>
+          <% end %>
+
+        <% end %>
+      </div>
+    </div><!-- /.wrap -->
+  </div><!-- /#header -->
+  <div id="crossbar">
+    <div class="wrap selfclear">             
+      <%= content_for?(:menu_bar) ? yield(:menu_bar) : '' %>
+    </div><!-- /.wrap -->
+  </div><!-- /#crossbar -->
 
   <p class="notice"><%= notice %></p>
   <p class="alert"><%= alert %></p>
