@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110302235658) do
+ActiveRecord::Schema.define(:version => 20110303175051) do
 
   create_table "addresses", :force => true do |t|
     t.string  "name"
@@ -20,9 +20,13 @@ ActiveRecord::Schema.define(:version => 20110302235658) do
     t.string  "state"
     t.string  "zip"
     t.boolean "in_district"
+    t.point   "the_geom",      :limit => nil, :srid => 4326
+    t.integer "provider_id"
   end
 
-  create_table "client", :force => true do |t|
+  add_index "addresses", ["the_geom"], :name => "index_addresses_on_the_geom", :spatial => true
+
+  create_table "clients", :force => true do |t|
     t.string  "first_name"
     t.string  "middle_initial"
     t.string  "last_name"
@@ -40,13 +44,15 @@ ActiveRecord::Schema.define(:version => 20110302235658) do
     t.string  "emergency_contact_notes"
     t.string  "private_notes"
     t.string  "public_notes"
+    t.integer "provider_id"
   end
 
-  create_table "driver", :force => true do |t|
+  create_table "drivers", :force => true do |t|
     t.string  "first_name"
     t.string  "last_name"
     t.boolean "active"
     t.boolean "paid"
+    t.integer "provider_id"
   end
 
   create_table "funding_sources", :force => true do |t|
@@ -55,6 +61,13 @@ ActiveRecord::Schema.define(:version => 20110302235658) do
 
   create_table "mobilities", :force => true do |t|
     t.string "name"
+  end
+
+  create_table "monthlies", :force => true do |t|
+    t.date    "start_date"
+    t.date    "end_date"
+    t.integer "volunteer_escort_hours"
+    t.integer "volunteer_admin_hours"
   end
 
   create_table "providers", :force => true do |t|
@@ -86,6 +99,7 @@ ActiveRecord::Schema.define(:version => 20110302235658) do
     t.integer  "driver_id"
     t.boolean  "paid"
     t.boolean  "complete"
+    t.integer  "provider_id"
   end
 
   create_table "trips", :force => true do |t|
@@ -105,6 +119,7 @@ ActiveRecord::Schema.define(:version => 20110302235658) do
     t.string   "notes"
     t.decimal  "donation",           :precision => 10, :scale => 2
     t.datetime "trip_confirmed"
+    t.integer  "provider_id"
   end
 
   create_table "users", :force => true do |t|
@@ -134,6 +149,7 @@ ActiveRecord::Schema.define(:version => 20110302235658) do
     t.string  "license_plate"
     t.string  "vin"
     t.string  "garaged_location"
+    t.integer "provider_id"
   end
 
 end

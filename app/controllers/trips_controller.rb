@@ -9,8 +9,8 @@ class TripsController < ApplicationController
     trip_params = params[:trip]
     trip_params[:status] = "pending"
     
-    customer = Customer.find(trip_params[:customer_id])
-    authorize! :read, customer
+    client = Client.find(trip_params[:client_id])
+    authorize! :read, client
 
     @trip = Trip.new(trip_params)
 
