@@ -11,6 +11,12 @@ gem "cancan"
 
 gem "devise"
 
+gem "pg"
+
+gem "GeoRuby"
+
+gem "spatial_adapter"
+
 # Use unicorn as the web server
 # gem 'unicorn'
 

@@ -10,11 +10,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110302210024) do
+ActiveRecord::Schema.define(:version => 20110302235658) do
 
   create_table "providers", :force => true do |t|
     t.string "name"
   end
+
+  create_table "regions", :force => true do |t|
+    t.string  "name"
+    t.polygon "the_geom", :limit => nil, :srid => 4326
+  end
+
+  add_index "regions", ["the_geom"], :name => "index_regions_on_the_geom", :spatial => true
 
   create_table "roles", :force => true do |t|
     t.integer "user_id"
