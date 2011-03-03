@@ -2,7 +2,7 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    ride_connection = Provider.find(1)
+    ride_connection = Provider.find_by_name("Ride Connection")
 
     for role in user.roles
       if role.provider == ride_connection 
