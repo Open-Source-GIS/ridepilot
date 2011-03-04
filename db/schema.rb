@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110303201615) do
+ActiveRecord::Schema.define(:version => 20110304000356) do
 
   create_table "addresses", :force => true do |t|
     t.string  "name"
@@ -107,9 +107,9 @@ ActiveRecord::Schema.define(:version => 20110303201615) do
     t.integer  "client_id"
     t.datetime "pickup_time"
     t.datetime "appointment_time"
-    t.integer  "guest_count"
-    t.integer  "attendant_count"
-    t.integer  "group_size"
+    t.integer  "guest_count",                                       :default => 0
+    t.integer  "attendant_count",                                   :default => 0
+    t.integer  "group_size",                                        :default => 0
     t.integer  "pickup_address_id"
     t.integer  "dropoff_address_id"
     t.integer  "mobility_id"
@@ -117,7 +117,7 @@ ActiveRecord::Schema.define(:version => 20110303201615) do
     t.string   "trip_purpose"
     t.string   "trip_result"
     t.string   "notes"
-    t.decimal  "donation",           :precision => 10, :scale => 2
+    t.decimal  "donation",           :precision => 10, :scale => 2, :default => 0.0
     t.datetime "trip_confirmed"
     t.integer  "provider_id"
   end

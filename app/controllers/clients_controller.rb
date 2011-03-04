@@ -1,6 +1,6 @@
 class ClientsController < ApplicationController
-  # GET /clients
-  # GET /clients.xml
+  load_and_authorize_resource
+
   def index
     @clients = Client.all
 
@@ -10,8 +10,6 @@ class ClientsController < ApplicationController
     end
   end
 
-  # GET /clients/1
-  # GET /clients/1.xml
   def show
     @client = Client.find(params[:id])
 
@@ -21,10 +19,10 @@ class ClientsController < ApplicationController
     end
   end
 
-  # GET /clients/new
-  # GET /clients/new.xml
   def new
     @client = Client.new
+    @client.address ||= Address.new
+    @mobilities = Mobility.all
 
     respond_to do |format|
       format.html # new.html.erb
@@ -32,15 +30,14 @@ class ClientsController < ApplicationController
     end
   end
 
-  # GET /clients/1/edit
   def edit
     @client = Client.find(params[:id])
   end
 
-  # POST /clients
-  # POST /clients.xml
   def create
+
     @client = Client.new(params[:client])
+    @client.provider = current_user.current_provider
 
     respond_to do |format|
       if @client.save
@@ -53,8 +50,6 @@ class ClientsController < ApplicationController
     end
   end
 
-  # PUT /clients/1
-  # PUT /clients/1.xml
   def update
     @client = Client.find(params[:id])
 

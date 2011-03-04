@@ -12,7 +12,7 @@
   <% end %>
 
   <!-- the client id needs to be passed in this action -->
-  <%= f.hidden_field :client_id %><br/>
+  <%= f.hidden_field :client_id, :value=>@client.id %><br/>
 
   Trip for <strong><%= @client.name %></strong><br/>
 

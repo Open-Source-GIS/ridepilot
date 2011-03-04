@@ -17,3 +17,6 @@ poly.srid = 4326
 region = Region.create(:name=>"TriMet", :the_geom => poly)
 
 
+for name in ["Scooter", "Wheelchair", "Wheelchair - Oversized", "Wheelchair - Can Transfer", "Unknown", "Ambulatory"]
+  Mobility.create(:name=>name)
+end

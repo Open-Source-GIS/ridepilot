@@ -21,4 +21,17 @@ class Address < ActiveRecord::Base
   def longitude=(y)
     the_geom.y = y
   end
+
+  def text
+    if building_name and name
+      first_line = "%s - %s\n" % [name, building_name]
+    elsif building_name
+      first_line = building_name + "\n"
+    elsif name
+      first_line = name + "\n"
+    end
+
+    return first_line + "%s\n%s, %s  %s" % [address, city, state, zip]
+
+  end
 end
