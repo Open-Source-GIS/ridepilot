@@ -29,6 +29,10 @@ class TripsController < ApplicationController
   end
 
   def edit
+    @client = @trip.client
+    @mobilities = Mobility.all
+    @funding_sources = FundingSource.all
+
   end
 
   def create
@@ -55,8 +59,6 @@ class TripsController < ApplicationController
   end
 
   def update
-    @trip = Trip.find(params[:id])
-
     trip_params = params[:trip]
     provider = client.provider
     authorize! :manage, provider
