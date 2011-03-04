@@ -60,6 +60,7 @@ class TripsController < ApplicationController
 
   def update
     trip_params = params[:trip]
+    client = Client.find(trip_params[:client_id])
     provider = client.provider
     authorize! :manage, provider
     trip_params[:provider_id] = client.provider.id
