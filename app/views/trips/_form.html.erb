@@ -1,0 +1,64 @@
+<%= form_for(@trip) do |f| %>
+  <% if @trip.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@trip.errors.count, "error") %> prohibited this trip from being saved:</h2>
+
+      <ul>
+      <% @trip.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <!-- the client id needs to be passed in this action -->
+  <%= f.hidden_field :client_id %><br/>
+
+  Trip for <strong><%= @client.name %></strong><br/>
+
+  Pickup time: <br/>
+  <%= f.text_field :pickup_time %><br/>
+
+  Appointment time: <br/>
+  <%= f.text_field :appointment_time %><br/>
+
+  Guest count: <br/>
+  <%= f.text_field :guest_count %><br/>
+
+  Attendant count: <br/>
+  <%= f.text_field :attendant_count %><br/>
+
+  Group size: <br/>
+  <%= f.text_field :attendant_count %><br/>
+
+  <!-- todo: autocomplete / geocode here -->
+  Pickup address: <br/>
+  <%= f.text_field :pickup_address_id %><br/>
+
+  Dropoff address: <br/>
+  <%= f.text_field :dropoff_address_id %><br/>
+
+
+  Mobility:<br/>
+  <%= f.collection_select :mobility_id, @mobilities, :id, :name %><br/>
+
+  Funding source:<br/>
+  <%= f.collection_select :funding_source_id, @funding_sources, :id, :name %><br/>
+
+  Trip purpose: <br/>
+  <%= f.text_field :trip_purpose %><br/>
+
+  Notes: <br/>
+  <%= f.text_field :notes %><br/>
+
+  Donation: <br/>
+  <%= f.text_field :donation %><br/>
+
+  Trip confirmed: <br/>
+  <%= f.date_select :trip_confirmed %><br/>
+
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

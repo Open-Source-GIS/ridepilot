@@ -1,0 +1,91 @@
+<%= form_for(@client) do |f| %>
+  <% if @client.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@client.errors.count, "error") %> prohibited this client from being saved:</h2>
+
+      <ul>
+      <% @client.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :first_name %><br />
+    <%= f.text_field :first_name %>
+  </div>
+  <div class="field">
+    <%= f.label :middle_initial %><br />
+    <%= f.text_field :middle_initial %>
+  </div>
+  <div class="field">
+    <%= f.label :last_name %><br />
+    <%= f.text_field :last_name %>
+  </div>
+  <div class="field">
+    <%= f.label :phone_number_1 %><br />
+    <%= f.text_field :phone_number_1 %>
+  </div>
+  <div class="field">
+    <%= f.label :phone_number_2 %><br />
+    <%= f.text_field :phone_number_2 %>
+  </div>
+  <div class="field">
+    Address<br />
+  <%= f.fields_for :address do |address_form| %>
+    <%= render 'addresses/form', :form=>address_form %>
+  <% end %>
+
+
+  </div>
+
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.text_field :email %>
+  </div>
+  <div class="field">
+    <%= f.label :activated_date %><br />
+    <%= f.date_select :activated_date %>
+  </div>
+  <div class="field">
+    <%= f.label :inactivated_date %><br />
+    <%= f.date_select :inactivated_date %>
+  </div>
+  <div class="field">
+    <%= f.label :inactivated_reason %><br />
+    <%= f.text_field :inactivated_reason %>
+  </div>
+  <div class="field">
+    <%= f.label :birth_date %><br />
+    <%= f.date_select :birth_date %>
+  </div>
+  <div class="field">
+    <%= f.label :mobility_id %><br />
+    <%= f.collection_select :mobility_id, @mobilities, :id, :name %>
+  </div>
+  <div class="field">
+    <%= f.label :mobility_notes %><br />
+    <%= f.text_field :mobility_notes %>
+  </div>
+  <div class="field">
+    <%= f.label :ethnicity %><br />
+    <%= f.text_field :ethnicity %>
+  </div>
+  <div class="field">
+    <%= f.label :emergency_contact_notes %><br />
+    <%= f.text_area :emergency_contact_notes %>
+  </div>
+  <div class="field">
+    <%= f.label :private_notes %><br />
+    <%= f.text_area :private_notes %>
+  </div>
+  <div class="field">
+    <%= f.label :public_notes %><br />
+    <%= f.text_area :public_notes %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
