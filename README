@@ -25,4 +25,11 @@ VACUUM FREEZE;
 
 -----------------------
 
+make sure your database.yml contains the line:
+
+  template: template_postgis
+
+in the section named common: &common
+
+
 Then do rake db:create
