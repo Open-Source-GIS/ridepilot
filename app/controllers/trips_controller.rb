@@ -17,8 +17,8 @@ class TripsController < ApplicationController
 
   def new
     @trip = Trip.new
-    @client = Client.find(params[:client_id])
-    authorize! :read, @client
+    @customer = Customer.find(params[:customer_id])
+    authorize! :read, @customer
     @mobilities = Mobility.all
     @funding_sources = FundingSource.all
 
@@ -29,7 +29,7 @@ class TripsController < ApplicationController
   end
 
   def edit
-    @client = @trip.client
+    @customer = @trip.customer
     @mobilities = Mobility.all
     @funding_sources = FundingSource.all
 
@@ -38,12 +38,12 @@ class TripsController < ApplicationController
   def create
     trip_params = params[:trip]
 
-    client = Client.find(trip_params[:client_id])
-    authorize! :read, client
+    customer = Customer.find(trip_params[:customer_id])
+    authorize! :read, customer
 
-    provider = client.provider
+    provider = customer.provider
     authorize! :manage, provider
-    trip_params[:provider_id] = client.provider.id
+    trip_params[:provider_id] = customer.provider.id
 
     @trip = Trip.new(trip_params)
 
@@ -60,10 +60,10 @@ class TripsController < ApplicationController
 
   def update
     trip_params = params[:trip]
-    client = Client.find(trip_params[:client_id])
-    provider = client.provider
+    customer = Customer.find(trip_params[:customer_id])
+    provider = customer.provider
     authorize! :manage, provider
-    trip_params[:provider_id] = client.provider.id
+    trip_params[:provider_id] = customer.provider.id
 
     respond_to do |format|
       if @trip.update_attributes(trip_params)

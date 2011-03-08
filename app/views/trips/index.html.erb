@@ -2,21 +2,21 @@
 
 <table>
   <tr>
-    <th>Client</th>
+    <th>Customer</th>
     <th>Pickup Time</th>
-    <th>Status</th>
-    <th></th>
+    <th>Result</th>
+<% if can? :edit, Trip %><th></th><% end %>
     <th></th>
     <th></th>
   </tr>
 
 <% @trips.each do |trip| %>
   <tr>
-    <td><%= trip.client.name %></td>
+    <td><%= trip.customer.name %></td>
     <td><%= trip.pickup_time.to_s %></td>
     <td><%= trip.trip_result %></td>
     <td><%= link_to 'Show', trip %></td>
-    <td><%= link_to 'Edit', edit_trip_path(trip) %></td>
+    <td><% if can? :edit, trip %><%= link_to 'Edit', edit_trip_path(trip) %><% end %></td>
     <td><%= link_to 'Destroy', trip, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>

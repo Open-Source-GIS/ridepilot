@@ -1,6 +1,6 @@
 Ridepilot::Application.routes.draw do
 
-  resources :clients
+  resources :customers
 
   devise_for :users, :controllers=>{:sessions=>"users"} do
     get "init" => "users#show_init"

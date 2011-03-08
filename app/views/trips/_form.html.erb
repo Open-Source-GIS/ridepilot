@@ -11,10 +11,10 @@
     </div>
   <% end %>
 
-  <!-- the client id needs to be passed in this action -->
-  <%= f.hidden_field :client_id, :value=>@client.id %><br/>
+  <!-- the customer id needs to be passed in this action -->
+  <%= f.hidden_field :customer_id, :value=>@customer.id %><br/>
 
-  Trip for <strong><%= @client.name %></strong><br/>
+  Trip for <strong><%= @customer.name %></strong><br/>
 
   Pickup time: <br/>
   <%= f.text_field :pickup_time %><br/>

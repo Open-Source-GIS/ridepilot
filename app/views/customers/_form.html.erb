@@ -1,10 +1,10 @@
-<%= form_for(@client) do |f| %>
-  <% if @client.errors.any? %>
+<%= form_for(@customer) do |f| %>
+  <% if @customer.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@client.errors.count, "error") %> prohibited this client from being saved:</h2>
+      <h2><%= pluralize(@customer.errors.count, "error") %> prohibited this customer from being saved:</h2>
 
       <ul>
-      <% @client.errors.full_messages.each do |msg| %>
+      <% @customer.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
       <% end %>
       </ul>

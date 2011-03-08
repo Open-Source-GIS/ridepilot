@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110304000356) do
+ActiveRecord::Schema.define(:version => 20110308163347) do
 
   create_table "addresses", :force => true do |t|
     t.string  "name"
@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(:version => 20110304000356) do
 
   add_index "addresses", ["the_geom"], :name => "index_addresses_on_the_geom", :spatial => true
 
-  create_table "clients", :force => true do |t|
+  create_table "customers", :force => true do |t|
     t.string  "first_name"
     t.string  "middle_initial"
     t.string  "last_name"
@@ -104,7 +104,7 @@ ActiveRecord::Schema.define(:version => 20110304000356) do
 
   create_table "trips", :force => true do |t|
     t.integer  "run_id"
-    t.integer  "client_id"
+    t.integer  "customer_id"
     t.datetime "pickup_time"
     t.datetime "appointment_time"
     t.integer  "guest_count",                                       :default => 0
@@ -120,6 +120,8 @@ ActiveRecord::Schema.define(:version => 20110304000356) do
     t.decimal  "donation",           :precision => 10, :scale => 2, :default => 0.0
     t.datetime "trip_confirmed"
     t.integer  "provider_id"
+    t.date     "called_back_at"
+    t.boolean  "customer_informed"
   end
 
   create_table "users", :force => true do |t|
