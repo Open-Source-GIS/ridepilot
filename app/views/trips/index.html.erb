@@ -2,6 +2,9 @@
 
 <table>
   <tr>
+    <th>Client</th>
+    <th>Pickup Time</th>
+    <th>Status</th>
     <th></th>
     <th></th>
     <th></th>
@@ -9,6 +12,9 @@
 
 <% @trips.each do |trip| %>
   <tr>
+    <td><%= trip.client.name %></td>
+    <td><%= trip.pickup_time.to_s %></td>
+    <td><%= trip.trip_result %></td>
     <td><%= link_to 'Show', trip %></td>
     <td><%= link_to 'Edit', edit_trip_path(trip) %></td>
     <td><%= link_to 'Destroy', trip, :confirm => 'Are you sure?', :method => :delete %></td>
