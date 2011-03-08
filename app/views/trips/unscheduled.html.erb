@@ -1,0 +1,27 @@
+<h1>Unscheduled trips</h1>
+
+<table>
+  <tr>
+    <th>Customer</th>
+    <th>Pickup Time</th>
+    <th>Trip Purpose</th>
+    <th>From</th>
+    <th>To</th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @trips.each do |trip| %>
+  <tr>
+    <td><%= trip.customer.name %></td>
+    <td><%= trip.pickup_time.to_s %></td>
+    <td><%= trip.trip_purpose %></td>
+    <td><%= trip.pickup_address.text %></td>
+    <td><%= trip.dropoff_address.text %></td>
+    <td><%= button_to 'Confirm', trip_confirm_path(trip) %></td>
+    <td><%= button_to 'Turn down', trip_turndown_path(trip) %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />

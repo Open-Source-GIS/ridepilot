@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110308163347) do
+ActiveRecord::Schema.define(:version => 20110308185345) do
 
   create_table "addresses", :force => true do |t|
     t.string  "name"
@@ -121,7 +121,7 @@ ActiveRecord::Schema.define(:version => 20110308163347) do
     t.datetime "trip_confirmed"
     t.integer  "provider_id"
     t.date     "called_back_at"
-    t.boolean  "customer_informed"
+    t.boolean  "customer_informed",                                 :default => false
   end
 
   create_table "users", :force => true do |t|

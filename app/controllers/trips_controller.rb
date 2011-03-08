@@ -8,6 +8,69 @@ class TripsController < ApplicationController
     end
   end
 
+  def trips_requiring_callback
+    #The trip coordinatior has made decisions on whether to confirm or
+    #turn down trips.  Now they want to call back the customer to tell
+    #them what's happened.  This is a list of all customers who have
+    #not been marked as informed, ordered by when they were last
+    #called.
+
+    @trips = Trip.where(["trip_result = 'turndown' or trip_result = 'confirmed' and customer_informed = false and pickup_time >= ? ", Date.today]).order("called_back_at")
+
+    respond_to do |format|
+      format.html
+      format.xml  { render :xml => @trips }
+    end
+  end
+
+  def unscheduled
+
+    @trips = Trip.where(["trip_result = 'unscheduled' and pickup_time >= ? ", Date.today]).order("pickup_time")
+
+
+  end
+
+
+  def reached
+    @trip = Trip.find(params[:trip_id])
+    if can? :edit, @trip
+      @trip.called_back_at = Time.now
+      @trip.customer_informed = true
+      @trip.save
+    end
+    redirect_to :action=>:trips_requiring_callback
+  end
+
+  def unreached
+    @trip = Trip.find(params[:trip_id])
+    if can? :edit, @trip
+      @trip.called_back_at = Time.now
+      @trip.customer_informed = false
+      @trip.save
+    end
+    redirect_to :action=>:trips_requiring_callback
+  end
+
+  def confirm
+    @trip = Trip.find(params[:trip_id])
+    if can? :edit, @trip
+      @trip.trip_result = "confirmed"
+      @trip.save
+    end
+    redirect_to :action=>:unscheduled
+  end
+
+  def turndown
+    @trip = Trip.find(params[:trip_id])
+    if can? :edit, @trip
+      @trip.trip_result = "turndown"
+      @trip.save
+    end
+    redirect_to :action=>:unscheduled
+  end
+
+
+
   def show
     respond_to do |format|
       format.html # show.html.erb

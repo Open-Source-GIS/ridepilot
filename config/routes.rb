@@ -63,6 +63,13 @@ Ridepilot::Application.routes.draw do
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id(.:format)))'
 
-  resources :trips
+  resources :trips do 
+    post :reached, :as => :reached
+    post :unreached, :as => :unreached
+    post :confirm, :as => :confirm
+    post :turndown, :as => :turndown
+    get :trips_requiring_callback, :on=>:collection
+    get :unscheduled, :on=>:collection
+  end
   root :to => "home#index"
 end
