@@ -30,6 +30,13 @@ LOWER(last_name || ', ' || first_name) LIKE ? ", query, query, query, query]) \
     render :json => customers.map { |customer| {:label=>customer.name, :id=>customer.id}}
   end
 
+  def found
+    if params[:commit].starts_with? "New trip"
+      redirect_to new_trip_path :customer_id=>params[:customer_id]
+    else
+      redirect_to customer_path params[:customer_id]
+    end
+  end
 
   def index
     @customers = Customer.all

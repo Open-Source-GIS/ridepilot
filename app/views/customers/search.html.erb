@@ -1,5 +1,6 @@
-<%= form_tag new_trip_path, :method=>:get do %> 
+<%= form_tag found_customers_path, :method=>:get do %> 
   <%= autocomplete_field_tag 'customer_name', '', autocomplete_customers_path, :size => 30, :id_element => "#customer_id" %>
   <%= hidden_field_tag 'customer_id' %>
-  <%= submit_tag "Show" %>
+  <%= submit_tag "Show details" %>
+  <%= submit_tag "New trip for this customer" %>
 <% end %>

@@ -8,6 +8,7 @@ Ridepilot::Application.routes.draw do
 
   resources :customers do
     get "search", :on=>:collection
+    get :found, :on=>:collection
     get :autocomplete, :on=>:collection
   end
 
