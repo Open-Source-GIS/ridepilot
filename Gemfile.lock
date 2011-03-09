@@ -1,4 +1,12 @@
 GIT
+  remote: git://github.com/javan/whenever.git
+  revision: 96fc6eb4dcb7e04f72afb1ae5d9f4cabc75081ba
+  specs:
+    whenever (0.6.6)
+      aaronh-chronic (>= 0.3.9)
+      activesupport (>= 2.3.4)
+
+GIT
   remote: git://github.com/zpearce/Schedule-Attributes.git
   revision: babf55d9b5cd8f56456e1e2a33916e809f7c4e28
   specs:
@@ -48,10 +56,10 @@ GEM
     erubis (2.6.6)
       abstract (>= 1.0.0)
     i18n (0.5.0)
+    ice_cube (0.6.6)
     jquery-rails (0.2.7)
       rails (~> 3.0)
       thor (~> 0.14.4)
-    ice_cube (0.6.6)
     mail (2.2.14)
       activesupport (>= 2.3.6)
       i18n (>= 0.4.0)
@@ -93,9 +101,6 @@ GEM
     tzinfo (0.3.24)
     warden (1.0.3)
       rack (>= 1.0.0)
-    whenever (0.6.5)
-      aaronh-chronic (>= 0.3.9)
-      activesupport (>= 2.3.4)
 
 PLATFORMS
   ruby
@@ -111,4 +116,4 @@ DEPENDENCIES
   schedule_atts!
   spatial_adapter
   sqlite3-ruby
-  whenever
+  whenever!
