@@ -1,3 +1,5 @@
-<%= form_tag new_trip_path do %> 
-  <%= autocomplete_field_tag 'customer_id', '', autocomplete_customer_first_name_customers_path, :size => 75 %>
+<%= form_tag new_trip_path, :method=>:get do %> 
+  <%= autocomplete_field_tag 'customer_name', '', autocomplete_customers_path, :size => 30, :id_element => "#customer_id" %>
+  <%= hidden_field_tag 'customer_id' %>
+  <%= submit_tag "Show" %>
 <% end %>

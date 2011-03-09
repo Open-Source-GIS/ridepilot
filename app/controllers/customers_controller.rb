@@ -1,9 +1,35 @@
 class CustomersController < ApplicationController
   load_and_authorize_resource
-  autocomplete :customer, :first_name
 
   def search
   end
+
+  def autocomplete
+    term = params['term'].downcase
+    limit = 10
+    if term[0].match /\d/ 
+      #by phone number
+      query = term.gsub("-", "")
+      if query.start_with? "1"
+        query = query[1..-1]
+      end
+      customers = Customer.accessible_by(current_ability).where([
+"regexp_replace(phone_number_1, '[^0-9]', '') = ? or 
+regexp_replace(phone_number_2, '[^0-9]', '') = ? 
+", query, query])
+    else
+      query = "%#{term.downcase}%"
+      customers = Customer.accessible_by(current_ability).where([
+"LOWER(first_name || ' ' || middle_initial || ' ' || last_name) LIKE ? or 
+LOWER(last_name) LIKE ? or 
+LOWER(first_name) LIKE ? or
+LOWER(last_name || ', ' || first_name) LIKE ? ", query, query, query, query]) \
+    .limit(limit)
+    end
+    
+    render :json => customers.map { |customer| {:label=>customer.name, :id=>customer.id}}
+  end
+
 
   def index
     @customers = Customer.all

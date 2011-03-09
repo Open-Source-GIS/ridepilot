@@ -8,7 +8,7 @@ Ridepilot::Application.routes.draw do
 
   resources :customers do
     get "search", :on=>:collection
-    get :autocomplete_customer_first_name, :on=>:collection
+    get :autocomplete, :on=>:collection
   end
 
   resources :trips do 
