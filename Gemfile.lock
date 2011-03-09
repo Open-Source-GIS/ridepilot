@@ -6,6 +6,14 @@ GIT
       activesupport
       ice_cube (>= 0.6.4)
 
+GIT
+  remote: https://github.com/javan/whenever.git
+  revision: 96fc6eb4dcb7e04f72afb1ae5d9f4cabc75081ba
+  specs:
+    whenever (0.6.6)
+      aaronh-chronic (>= 0.3.9)
+      activesupport (>= 2.3.4)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -88,9 +96,6 @@ GEM
     tzinfo (0.3.24)
     warden (1.0.3)
       rack (>= 1.0.0)
-    whenever (0.6.5)
-      aaronh-chronic (>= 0.3.9)
-      activesupport (>= 2.3.4)
 
 PLATFORMS
   ruby
@@ -104,4 +109,4 @@ DEPENDENCIES
   schedule_atts!
   spatial_adapter
   sqlite3-ruby
-  whenever
+  whenever!

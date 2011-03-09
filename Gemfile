@@ -19,7 +19,7 @@ gem "spatial_adapter"
 
 gem "schedule_atts", :git => "git://github.com/zpearce/Schedule-Attributes.git"
 
-gem "whenever"
+gem "whenever", :git => "https://github.com/javan/whenever.git"
 
 # Use unicorn as the web server
 # gem 'unicorn'
