@@ -38,7 +38,12 @@ module Ridepilot
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
+
+
     config.autoload_paths += %W(#{Rails.root}/lib)
     config.autoload_paths += Dir["#{config.root}/lib/**/"]
+
+    config.action_view.javascript_expansions[:defaults] = %w(jquery jquery-ui rails)
+
   end
 end

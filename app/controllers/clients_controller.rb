@@ -1,5 +1,6 @@
 class ClientsController < ApplicationController
   load_and_authorize_resource
+  autocomplete :client, :first_name
 
   def index
     @clients = Client.all
@@ -64,8 +65,6 @@ class ClientsController < ApplicationController
     end
   end
 
-  # DELETE /clients/1
-  # DELETE /clients/1.xml
   def destroy
     @client = Client.find(params[:id])
     @client.destroy
@@ -74,5 +73,8 @@ class ClientsController < ApplicationController
       format.html { redirect_to(clients_url) }
       format.xml  { head :ok }
     end
+  end
+
+  def search
   end
 end

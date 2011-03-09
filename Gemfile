@@ -17,6 +17,10 @@ gem "GeoRuby"
 
 gem "spatial_adapter"
 
+gem 'jquery-rails', '>= 0.2.6'
+
+gem "rails3-jquery-autocomplete"
+
 # Use unicorn as the web server
 # gem 'unicorn'
 
