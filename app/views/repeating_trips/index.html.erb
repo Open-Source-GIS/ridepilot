@@ -4,19 +4,19 @@
   <tr>
     <th>Customer</th>
     <th>Pickup Time</th>
-    <th>Result</th>
-<% if can? :edit, Trip %><th></th><% end %>
+    <th>Repeating</th>
+<% if can? :edit, RepeatingTrip %><th></th><% end %>
     <th></th>
     <th></th>
   </tr>
 
-<% @trips.each do |trip| %>
+<% @repeating_trips.each do |trip| %>
   <tr>
     <td><%= trip.customer.name %></td>
     <td><%= trip.pickup_time.to_s %></td>
     <td><%= trip.trip_result %></td>
     <td><%= link_to 'Show', trip %></td>
-    <td><% if can? :edit, trip %><%= link_to 'Edit', edit_trip_path(trip) %><% end %></td>
+    <td><% if can? :edit, trip %><%= link_to 'Edit', edit_repeating_trip_path(trip) %><% end %></td>
     <td><%= link_to 'Destroy', trip, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
@@ -24,4 +24,4 @@
 
 <br />
 
-<%= link_to 'New Trip', new_trip_path %>
+<%= link_to 'New Trip', new_repeating_trip_path %>

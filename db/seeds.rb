@@ -6,7 +6,7 @@
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Daley', :city => cities.first)
 
-if !Provider.find(1)
+if !Provider.exists?(1)
   Provider.create(:id=>1, :name=>'Ride Connection')
 end
 f = File.new(File.join(RAILS_ROOT, 'db', 'trimet.wkt')) 

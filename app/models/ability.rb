@@ -24,9 +24,11 @@ class Ability
         can action, Monthly, :provider_id => provider.id
         can action, Address, :provider_id => provider.id
         can action, Customer, :provider_id => provider.id
+        can action, RepeatingTrip, :provider_id => provider.id
       end
     end
 
     can :read, Mobility
+    can :read, Region
   end
 end

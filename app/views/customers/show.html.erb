@@ -1,0 +1,91 @@
+<p id="notice"><%= notice %></p>
+
+<%= link_to 'Create trip', new_trip_path(:customer_id=>@customer.id) %>
+
+<p>
+  <b>First name:</b>
+  <%= @customer.first_name %>
+</p>
+
+<p>
+  <b>Middle initial:</b>
+  <%= @customer.middle_initial %>
+</p>
+
+<p>
+  <b>Last name:</b>
+  <%= @customer.last_name %>
+</p>
+
+<p>
+  <b>Phone number 1:</b>
+  <%= @customer.phone_number_1 %>
+</p>
+
+<p>
+  <b>Phone number 2:</b>
+  <%= @customer.phone_number_2 %>
+</p>
+
+<p>
+  <b>Address:</b>
+  <%= raw format_newlines @customer.address.text %>
+</p>
+
+<p>
+  <b>Email:</b>
+  <%= @customer.email %>
+</p>
+
+<p>
+  <b>Activated date:</b>
+  <%= @customer.activated_date %>
+</p>
+
+<p>
+  <b>Inactivated date:</b>
+  <%= @customer.inactivated_date %>
+</p>
+
+<p>
+  <b>Inactivated reason:</b>
+  <%= @customer.inactivated_reason %>
+</p>
+
+<p>
+  <b>Birth date:</b>
+  <%= @customer.birth_date %>
+</p>
+
+<p>
+  <b>Mobility:</b>
+  <%= @customer.mobility_id %>
+</p>
+
+<p>
+  <b>Mobility notes:</b>
+  <%= @customer.mobility_notes %>
+</p>
+
+<p>
+  <b>Ethnicity:</b>
+  <%= @customer.ethnicity %>
+</p>
+
+<p>
+  <b>Emergency contact notes:</b>
+  <%= @customer.emergency_contact_notes %>
+</p>
+
+<p>
+  <b>Private notes:</b>
+  <%= @customer.private_notes %>
+</p>
+
+<p>
+  <b>Public notes:</b>
+  <%= @customer.public_notes %>
+</p>
+
+<%= link_to 'Edit', edit_customer_path(@customer) %> |
+<%= link_to 'Back', customers_path %>

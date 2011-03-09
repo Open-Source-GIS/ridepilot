@@ -8,6 +8,70 @@ class TripsController < ApplicationController
     end
   end
 
+  def trips_requiring_callback
+    #The trip coordinatior has made decisions on whether to confirm or
+    #turn down trips.  Now they want to call back the customer to tell
+    #them what's happened.  This is a list of all customers who have
+    #not been marked as informed, ordered by when they were last
+    #called.
+
+    @trips = Trip.accessible_by(current_ability).where(["trip_result = 'turndown' or trip_result = 'confirmed' and customer_informed = false and pickup_time >= ? ", Date.today]).order("called_back_at")
+
+    respond_to do |format|
+      format.html
+      format.xml  { render :xml => @trips }
+    end
+  end
+
+  def unscheduled
+    #The trip coordinatior wants to confirm or turn down individual
+    #trips.  T his is a list of all trips that haven't been decided
+    #on yet.
+
+    @trips = Trip.accessible_by(current_ability).where(["trip_result = 'unscheduled' and pickup_time >= ? ", Date.today]).order("pickup_time")
+  end
+
+
+  def reached
+    @trip = Trip.find(params[:trip_id])
+    if can? :edit, @trip
+      @trip.called_back_at = Time.now
+      @trip.customer_informed = true
+      @trip.save
+    end
+    redirect_to :action=>:trips_requiring_callback
+  end
+
+  def unreached
+    @trip = Trip.find(params[:trip_id])
+    if can? :edit, @trip
+      @trip.called_back_at = Time.now
+      @trip.customer_informed = false
+      @trip.save
+    end
+    redirect_to :action=>:trips_requiring_callback
+  end
+
+  def confirm
+    @trip = Trip.find(params[:trip_id])
+    if can? :edit, @trip
+      @trip.trip_result = "confirmed"
+      @trip.save
+    end
+    redirect_to :action=>:unscheduled
+  end
+
+  def turndown
+    @trip = Trip.find(params[:trip_id])
+    if can? :edit, @trip
+      @trip.trip_result = "turndown"
+      @trip.save
+    end
+    redirect_to :action=>:unscheduled
+  end
+
+
+
   def show
     respond_to do |format|
       format.html # show.html.erb
@@ -17,8 +81,8 @@ class TripsController < ApplicationController
 
   def new
     @trip = Trip.new
-    @client = Client.find(params[:client_id])
-    authorize! :read, @client
+    @customer = Customer.find(params[:customer_id])
+    authorize! :read, @customer
     @mobilities = Mobility.all
     @funding_sources = FundingSource.all
 
@@ -29,7 +93,7 @@ class TripsController < ApplicationController
   end
 
   def edit
-    @client = @trip.client
+    @customer = @trip.customer
     @mobilities = Mobility.all
     @funding_sources = FundingSource.all
 
@@ -38,12 +102,12 @@ class TripsController < ApplicationController
   def create
     trip_params = params[:trip]
 
-    client = Client.find(trip_params[:client_id])
-    authorize! :read, client
+    customer = Customer.find(trip_params[:customer_id])
+    authorize! :read, customer
 
-    provider = client.provider
+    provider = customer.provider
     authorize! :manage, provider
-    trip_params[:provider_id] = client.provider.id
+    trip_params[:provider_id] = customer.provider.id
 
     @trip = Trip.new(trip_params)
 
@@ -60,10 +124,10 @@ class TripsController < ApplicationController
 
   def update
     trip_params = params[:trip]
-    client = Client.find(trip_params[:client_id])
-    provider = client.provider
+    customer = Customer.find(trip_params[:customer_id])
+    provider = customer.provider
     authorize! :manage, provider
-    trip_params[:provider_id] = client.provider.id
+    trip_params[:provider_id] = customer.provider.id
 
     respond_to do |format|
       if @trip.update_attributes(trip_params)

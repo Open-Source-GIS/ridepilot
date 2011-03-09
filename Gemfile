@@ -21,6 +21,10 @@ gem 'jquery-rails', '>= 0.2.6'
 
 gem "rails3-jquery-autocomplete"
 
+gem "schedule_atts", :git => "git://github.com/zpearce/Schedule-Attributes.git"
+
+gem "whenever"
+
 # Use unicorn as the web server
 # gem 'unicorn'
 

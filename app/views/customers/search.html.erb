@@ -1,0 +1,3 @@
+<%= form_tag new_trip_path do %> 
+  <%= autocomplete_field_tag 'customer_id', '', autocomplete_customer_first_name_customers_path, :size => 75 %>
+<% end %>
