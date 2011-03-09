@@ -71,5 +71,8 @@ Ridepilot::Application.routes.draw do
     get :trips_requiring_callback, :on=>:collection
     get :unscheduled, :on=>:collection
   end
+
+  resources :repeating_trips
+
   root :to => "home#index"
 end

@@ -1,0 +1,27 @@
+<h1>Listing trips</h1>
+
+<table>
+  <tr>
+    <th>Customer</th>
+    <th>Pickup Time</th>
+    <th>Repeating</th>
+<% if can? :edit, RepeatingTrip %><th></th><% end %>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @repeating_trips.each do |trip| %>
+  <tr>
+    <td><%= trip.customer.name %></td>
+    <td><%= trip.pickup_time.to_s %></td>
+    <td><%= trip.trip_result %></td>
+    <td><%= link_to 'Show', trip %></td>
+    <td><% if can? :edit, trip %><%= link_to 'Edit', edit_repeating_trip_path(trip) %><% end %></td>
+    <td><%= link_to 'Destroy', trip, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Trip', new_repeating_trip_path %>

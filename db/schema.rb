@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110308185345) do
+ActiveRecord::Schema.define(:version => 20110308213212) do
 
   create_table "addresses", :force => true do |t|
     t.string  "name"
@@ -81,6 +81,23 @@ ActiveRecord::Schema.define(:version => 20110308185345) do
 
   add_index "regions", ["the_geom"], :name => "index_regions_on_the_geom", :spatial => true
 
+  create_table "repeating_trips", :force => true do |t|
+    t.string   "schedule_yaml"
+    t.integer  "provider_id"
+    t.integer  "customer_id"
+    t.datetime "pickup_time"
+    t.datetime "appointment_time"
+    t.integer  "guest_count",        :default => 0
+    t.integer  "attendant_count",    :default => 0
+    t.integer  "group_size",         :default => 0
+    t.integer  "pickup_address_id"
+    t.integer  "dropoff_address_id"
+    t.integer  "mobility_id"
+    t.integer  "funding_source_id"
+    t.string   "trip_purpose"
+    t.string   "notes"
+  end
+
   create_table "roles", :force => true do |t|
     t.integer "user_id"
     t.integer "provider_id"
@@ -115,13 +132,14 @@ ActiveRecord::Schema.define(:version => 20110308185345) do
     t.integer  "mobility_id"
     t.integer  "funding_source_id"
     t.string   "trip_purpose"
-    t.string   "trip_result"
+    t.string   "trip_result",                                       :default => "unscheduled"
     t.string   "notes"
     t.decimal  "donation",           :precision => 10, :scale => 2, :default => 0.0
     t.datetime "trip_confirmed"
     t.integer  "provider_id"
     t.date     "called_back_at"
     t.boolean  "customer_informed",                                 :default => false
+    t.integer  "repeating_trip_id"
   end
 
   create_table "users", :force => true do |t|
