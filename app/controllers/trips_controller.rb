@@ -15,7 +15,7 @@ class TripsController < ApplicationController
     #not been marked as informed, ordered by when they were last
     #called.
 
-    @trips = Trip.where(["trip_result = 'turndown' or trip_result = 'confirmed' and customer_informed = false and pickup_time >= ? ", Date.today]).order("called_back_at")
+    @trips = Trip.accessible_by(current_ability).where(["trip_result = 'turndown' or trip_result = 'confirmed' and customer_informed = false and pickup_time >= ? ", Date.today]).order("called_back_at")
 
     respond_to do |format|
       format.html
@@ -24,10 +24,11 @@ class TripsController < ApplicationController
   end
 
   def unscheduled
+    #The trip coordinatior wants to confirm or turn down individual
+    #trips.  T his is a list of all trips that haven't been decided
+    #on yet.
 
-    @trips = Trip.where(["trip_result = 'unscheduled' and pickup_time >= ? ", Date.today]).order("pickup_time")
-
-
+    @trips = Trip.accessible_by(current_ability).where(["trip_result = 'unscheduled' and pickup_time >= ? ", Date.today]).order("pickup_time")
   end
 
 
