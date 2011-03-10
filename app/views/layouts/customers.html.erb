@@ -1,5 +1,6 @@
 <% content_for :menu_bar do %>
         <ul id="sitenav" class="selfclear">
+          <li><%= link_to "New Customer", :action=>:new %></li>
           <li><%= link_to "Search Customers", :action=>:search %></li>
           <li><%= link_to "List Customers", :action=>:index %></li>
         </ul>
