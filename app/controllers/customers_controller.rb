@@ -23,7 +23,16 @@ regexp_replace(phone_number_2, '[^0-9]', '') = ?
 "LOWER(first_name || ' ' || middle_initial || ' ' || last_name) LIKE ? or 
 LOWER(last_name) LIKE ? or 
 LOWER(first_name) LIKE ? or
-LOWER(last_name || ', ' || first_name) LIKE ? ", query, query, query, query]) \
+LOWER(last_name || ', ' || first_name) LIKE ? or
+dmetaphone(last_name) LIKE dmetaphone(?) || '%'  or 
+dmetaphone(first_name) LIKE dmetaphone(?) || '%'  or
+dmetaphone(last_name) LIKE dmetaphone_alt(?) || '%'  or 
+dmetaphone(first_name) LIKE dmetaphone_alt(?) || '%'  or
+dmetaphone_alt(last_name) LIKE dmetaphone(?) || '%'  or 
+dmetaphone_alt(first_name) LIKE dmetaphone(?) || '%'  or
+dmetaphone_alt(last_name) LIKE dmetaphone_alt(?) || '%'  or 
+dmetaphone_alt(first_name) LIKE dmetaphone_alt(?) || '%' 
+", query, query, query, query, term, term, term, term, term, term, term, term]) \
     .limit(limit)
     end
     

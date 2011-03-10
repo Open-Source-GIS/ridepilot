@@ -1,4 +1,4 @@
-To set up postgis, do this:
+To set up postgres for use with RidePilot, you will need the fuzzystrmatch library (included in postgresql-contrib-8.4 in Ubuntu), and postgis.  Run psql and then the following commants:
 
 -- Create a new database
 CREATE DATABASE template_postgis;
@@ -23,6 +23,11 @@ GRANT ALL ON spatial_ref_sys TO PUBLIC;
 -- problems.
 VACUUM FREEZE;
 
+
+-- You'll also want to set up the fuzzy string matching functions
+
+\i /opt/local/share/postgresql84/contrib/fuzzystrmatch.sql 
+
 -----------------------
 
 make sure your database.yml contains the line:
@@ -30,6 +35,5 @@ make sure your database.yml contains the line:
   template: template_postgis
 
 in the section named common: &common
-
 
 Then do rake db:create
