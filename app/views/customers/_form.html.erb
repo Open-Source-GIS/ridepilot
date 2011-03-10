@@ -11,6 +11,11 @@
     </div>
   <% end %>
 
+  <% if @dup %>
+    <label for="ignore_dups">Ignore duplicates</label>
+    <%= check_box_tag :ignore_dups %>
+  <% end %>
+
   <div class="field">
     <%= f.label :first_name %><br />
     <%= f.text_field :first_name %>

@@ -85,6 +85,41 @@ dmetaphone_alt(first_name) LIKE dmetaphone_alt(?) || '%'
     @customer = Customer.new(params[:customer])
     @customer.provider = current_user.current_provider
 
+    if params[:ignore_dups] != "1"
+      #check for duplicates
+      #similar-sounding first/last names and (no or matching) middle initial
+
+      first_name = @customer.first_name
+      middle_initial = @customer.middle_initial
+      last_name = @customer.last_name
+      dup_customers = Customer.accessible_by(current_ability).where([
+"(middle_initial = ? or middle_initial = '' or ? = '') and 
+
+(dmetaphone(last_name) = dmetaphone(?) or
+ dmetaphone(last_name) = dmetaphone_alt(?) or 
+ dmetaphone_alt(last_name) = dmetaphone(?) or 
+ dmetaphone_alt(last_name) = dmetaphone_alt(?)) and
+
+(dmetaphone_alt(first_name) = dmetaphone_alt(?) or
+ dmetaphone_alt(first_name) = dmetaphone(?) or
+ dmetaphone(first_name) = dmetaphone(?)  or
+ dmetaphone(first_name) = dmetaphone_alt(?)) or
+email = ?
+", 
+middle_initial, middle_initial, 
+last_name, last_name, last_name, last_name, 
+first_name, first_name, first_name, first_name,
+@customer.email]).limit(1)
+
+      if dup_customers.size > 0
+        dup = dup_customers[0]
+        flash[:notice] = "There is already a customer with a similar name: <a href=\"#{url_for :action=>:show, :id=>dup.id}\">#{dup.name}</a> (dob #{dup.birth_date}).  If this is truly a different customer, check the 'ignore duplicates' box to continue creating this customer.".html_safe
+        @dup = true
+        @mobilities = Mobility.all
+        return render :action=>"new"
+      end
+    end
+
     respond_to do |format|
       if @customer.save
         format.html { redirect_to(@customer, :notice => 'Customer was successfully created.') }
