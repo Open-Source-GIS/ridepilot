@@ -17,15 +17,14 @@
   Repeating Trip for <strong><%= @customer.name %></strong><br/>
 
   <%= f.fields_for :schedule_attributes do |s| %>
-    <%= s.hidden_field :repeat %><br/>
-
+    <%= hidden_field_tag "repeating_trip[schedule_attributes][repeat]", 1 %><br/>
     First pickup time: <br/>
     <%= s.text_field :start_date %><br/>
 
     Repeat every: <br/>
     <%= s.select :interval_unit, ["day", "week", "month"] %><br/>
 
-    <%= s.hidden_field :interval %><br/>
+    <%= hidden_field_tag "repeating_trip[schedule_attributes][interval]", 1 %><br/>
   <% end %> 
 
   Appointment time: <br/>

@@ -56,6 +56,7 @@ class TripsController < ApplicationController
     @trip = Trip.find(params[:trip_id])
     if can? :edit, @trip
       @trip.trip_result = "confirmed"
+      @trip.trip_confirmed = Time.now
       @trip.save
     end
     redirect_to :action=>:unscheduled

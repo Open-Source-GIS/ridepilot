@@ -14,7 +14,7 @@
   <tr>
     <td><%= trip.customer.name %></td>
     <td><%= trip.pickup_time.to_s %></td>
-    <td><%= trip.trip_result %></td>
+    <td><%= trip.schedule_attributes.interval_unit %></td>
     <td><%= link_to 'Show', trip %></td>
     <td><% if can? :edit, trip %><%= link_to 'Edit', edit_repeating_trip_path(trip) %><% end %></td>
     <td><%= link_to 'Destroy', trip, :confirm => 'Are you sure?', :method => :delete %></td>

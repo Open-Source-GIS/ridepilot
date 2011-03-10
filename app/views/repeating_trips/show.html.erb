@@ -9,5 +9,5 @@ Repeats every: <%= @repeating_trip.schedule_attributes.interval_unit %><br/>
 Next scheduled for: <%= @repeating_trip.schedule_attributes.next_occurance %><br/>
 
 <%= link_to 'Edit', edit_repeating_trip_path(@repeating_trip) %> |
-<%= button_to 'Delete', delete_repeating_trip_path(@repeating_trip) %> |
+<%= button_to 'Delete', repeating_trip_path(@repeating_trip), :method => :delete %> |
 <%= link_to 'Back', repeating_trips_path %>

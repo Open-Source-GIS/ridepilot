@@ -34,9 +34,14 @@ class RepeatingTripsController < ApplicationController
     @repeating_trip = RepeatingTrip.new(repeating_trip_params)
     @repeating_trip.schedule_attributes = params[:repeating_trip][:schedule_attributes]
 
+    @repeating_trip.pickup_time = @repeating_trip.schedule.start_date
     if @repeating_trip.save
       redirect_to(@repeating_trip, :notice => 'Repeating trip was successfully created.') 
     else
+      @customer = customer
+      @mobilities = Mobility.all
+      @funding_sources = FundingSource.all
+
       render :action => "new" 
     end
   end
