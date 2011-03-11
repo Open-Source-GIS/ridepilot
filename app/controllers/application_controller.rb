@@ -10,13 +10,13 @@ class ApplicationController < ActionController::Base
     end
 
     ride_connection = Provider.find_by_name("Ride Connection")
-    @providers = {}
+    @provider_map = {}
     for role in current_user.roles
       if role.provider == ride_connection 
-        @providers = Role.all.collect {|role| [ role.provider.name, role.provider_id ] }
+        @provider_map = Role.all.collect {|role| [ role.provider.name, role.provider_id ] }
         break
       end
-      @providers[role.provider_id] = role.provider.name
+      @provider_map[role.provider_id] = role.provider.name
     end
 
   end

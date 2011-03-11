@@ -7,10 +7,13 @@ class Ability
     for role in user.roles
       if role.provider == ride_connection 
         if role.admin
-          can :read, :all 
           can :manage, :all 
+        else
+          can :read, :all 
         end
       else
+        can :view, Provider, :provider_id => provider.id
+
         if role.admin
           action = :manage
         else

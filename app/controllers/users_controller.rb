@@ -1,11 +1,33 @@
 class UsersController < Devise::SessionsController
-
-  def new
+  require 'new_user_mailer'
+  
+  def new_user
     if User.count == 0
       return redirect_to :init
     end
+    @user = User.new
   end
 
+  def create_user
+    authorize! :edit, current_user.current_provider
+
+    #this user might already be a member of the site, but not of this
+    #provider, in which case we ought to just set up the role
+    user = User.where(:email=>params[:user][:email]).first
+    if not user
+      user = User.new(params[:user])
+      user.password = user.password_confirmation = Devise.friendly_token
+      user.save!
+      NewUserMailer.new_user_email(user, user.password).deliver
+    end
+
+    Role.new(:user_id=>user.id, 
+             :provider_id=>current_user.current_provider_id, 
+             :admin=>params[:user][:admin]).save!
+
+    flash[:notice] = "%s has been added and a password has been emailed" % user.email
+    redirect_to provider_path(current_user.current_provider)
+  end
 
   def show_init
     #create initial user

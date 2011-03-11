@@ -2,6 +2,8 @@ Ridepilot::Application.routes.draw do
   root :to => "home#index"
 
   devise_for :users, :controllers=>{:sessions=>"users"} do
+    get "new_user" => "users#new_user"
+    post "create_user" => "users#create_user"
     get "init" => "users#show_init"
     post "init" => "users#init"
   end
@@ -22,6 +24,11 @@ Ridepilot::Application.routes.draw do
   end
 
   resources :repeating_trips
+
+  resources :providers do
+    post :delete_role
+    post :change_role
+  end
 
   root :to => "home#index"
 

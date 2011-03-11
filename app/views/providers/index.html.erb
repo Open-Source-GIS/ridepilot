@@ -1,0 +1,15 @@
+<table>
+<tr>
+  <th>Name</th>
+  <th>Users</th>
+  <th></th>
+</tr>
+
+<% @providers.each do |provider| %>
+<tr>
+<td><%= provider.name %></td>
+<td><%= provider.users.size %></td>
+<td><%= link_to "Details", provider_path(provider) %></td>
+</tr>
+<% end %>
+</table>

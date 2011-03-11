@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   validates_confirmation_of :password
+  validates_uniqueness_of :email
   has_many :roles
   belongs_to :current_provider, :class_name=>"Provider", :foreign_key => :current_provider_id
 

@@ -1,4 +1,8 @@
 <ul>
+<% if can? :edit, "Providers" %>
+<li><%= link_to "Providers", providers_path %></li>
+<% end %>
+
 <li><%= link_to "Customers", customers_path %></li>
 <li><%= link_to "Trips", trips_path %></li>
 <li><%= link_to "Repeating trips", repeating_trips_path %></li>
