@@ -24,7 +24,7 @@
             <select name="provider_id">
               <%= options_for_select(@provider_map, selected = current_user.current_provider_id) %>
             </select>
-            <%= hidden_field "come_from", request.request_uri %>
+            <%= hidden_field "come_from", request.fullpath %>
           </form>
           <% else %>
             <%= current_user.current_provider.name %>
