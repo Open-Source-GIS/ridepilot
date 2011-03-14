@@ -17,7 +17,7 @@ Roles:
 <td>
   <%= form_for(role, :url=>provider_change_role_path(@provider.id), :html => { :method => :post }) do |f| %>
     <%= f.hidden_field :id %>
-    <%= f.select :admin, {"Admin" => 1, "User" => 0} %>
+    <%= f.select :admin, [["Admin", "true"], ["User", "false"]], {:selected => role.admin.to_s} %>
     <%= f.submit "Change role" %>
   <% end %>
 </td>
