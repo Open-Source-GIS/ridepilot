@@ -4,6 +4,9 @@ class ProvidersController < ApplicationController
   def index
   end
   
+  def show
+  end
+
   def delete_role
     role = Role.find(params[:role_id])
     authorize! :edit, role
@@ -16,7 +19,8 @@ class ProvidersController < ApplicationController
     role = Role.find(params[:role][:id])
     authorize! :edit, role
     role.admin = params[:role][:admin]
-    redirect_to provider_path(params[:id])
+    role.save!
+    redirect_to provider_path(params[:provider_id])
   end
 
 end
