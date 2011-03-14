@@ -11,7 +11,7 @@ class ProvidersController < ApplicationController
     role = Role.find(params[:role_id])
     authorize! :edit, role
     role.destroy
-    redirect_to provider_path(params[:id])
+    redirect_to provider_path(params[:provider_id])
   end
 
 
