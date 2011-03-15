@@ -130,3 +130,44 @@ You are currently logged in to
 <%= @provider.name %>, please switch providers by using the dropdown
 menu at the top of this page.
 <% end %>
+
+
+<h2>Monthly reports:</h2>
+<% if @provider.monthlies.size == 0 %>
+No monthly reports yet.<br/>
+<% else %>
+
+<table>
+<tr>
+<th>Start</th>
+<th>End</th>
+<th>Volunteer escort hours</th>
+<th>Volunteer admin hours</th>
+<% if can? :edit, Monthly %>
+<th></th>
+<% end %>
+</tr>
+</table>
+
+<% for monthly in @provider.monthlies %>
+<tr>
+<td><%= monthly.start_date %></td>
+<td><%= monthly.end_date %></td>
+<td><%= monthly.volunteer_escort_hours %></td>
+<td><%= monthly.volunteer_admin_hours %></td>
+<% if can? :edit, Monthly %>
+<td><%= link_to "Edit", edit_monthly_path(monthly) %></td>
+<% end %>
+</tr>
+<% end %>
+</table>
+<br/>
+<% end %>
+<% if @provider == current_user.current_provider %>
+<%= link_to "Create monthly report", new_monthly_path %>
+<% else %>
+You are currently logged in to
+<%= current_user.current_provider.name %>.  To create a monthly report for
+<%= @provider.name %>, please switch providers by using the dropdown
+menu at the top of this page.
+<% end %>
