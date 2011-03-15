@@ -6,7 +6,7 @@ class NewUserMailer < ActionMailer::Base
     @user = user
     @password = password
     @url = root_url
-    mail(:to => user.email,  :subject => "Welcome to Lowdown")
+    mail(:to => user.email,  :subject => "Welcome to RidePilot")
  end
 
 
