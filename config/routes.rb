@@ -31,6 +31,8 @@ Ridepilot::Application.routes.draw do
     post :change_role
   end
 
+  resources :drivers
+
   root :to => "home#index"
 
 end
