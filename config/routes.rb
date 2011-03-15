@@ -32,6 +32,7 @@ Ridepilot::Application.routes.draw do
   end
 
   resources :drivers
+  resources :vehicles
 
   root :to => "home#index"
 

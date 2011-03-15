@@ -1,0 +1,40 @@
+<%= form_for @vehicle do |f| %>
+  <% if @vehicle.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@vehicle.errors.count, "error") %> prohibited this vehicle from being saved:</h2>
+
+      <ul>
+      <% @vehicle.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+
+<%= f.label :name %><br/>
+<%= f.text_field :name %><br/>
+<br/>
+<%= f.label :year %><br/>
+<%= f.text_field :year %><br/>
+<br/>
+<%= f.label :make %><br/>
+<%= f.text_field :make %><br/>
+<br/>
+<%= f.label :model %><br/>
+<%= f.text_field :model %><br/>
+<br/>
+<%= f.label :license_plate %><br/>
+<%= f.text_field :license_plate %><br/>
+<br/>
+<%= f.label :vin %><br/>
+<%= f.text_field :vin %><br/>
+<br/>
+<%= f.label :garaged_location %><br/>
+<%= f.text_field :garaged_location %><br/>
+<br/>
+
+
+<%= f.submit %>
+<% end %> 
