@@ -52,12 +52,13 @@ class UsersController < Devise::SessionsController
     redirect_to :action=>:new
   end
 
-  def switch_provider
+  def change_provider
     provider = Provider.find(params[:provider_id])
-    if Role.where(["provider_id=? and user_id=?", provider.id, current_user.id]).first
+    if can? :view, provider
       current_user.current_provider_id = provider.id
+      current_user.save!
     end
-    redirect_to :action=>params[:come_from]
+    redirect_to params[:come_from]
   end
 
 end
