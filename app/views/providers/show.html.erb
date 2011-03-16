@@ -60,7 +60,6 @@ No drivers yet.<br/>
 <th></th>
 <% end %>
 </tr>
-</table>
 
 <% for driver in @provider.drivers %>
 <tr>
@@ -104,7 +103,6 @@ No vehicles yet.<br/>
 <th></th>
 <% end %>
 </tr>
-</table>
 
 <% for vehicle in @provider.vehicles %>
 <tr>
@@ -122,6 +120,7 @@ No vehicles yet.<br/>
 </table>
 <br/>
 <% end %>
+
 <% if @provider == current_user.current_provider %>
 <%= link_to "Create vehicle", new_vehicle_path %>
 <% else %>
