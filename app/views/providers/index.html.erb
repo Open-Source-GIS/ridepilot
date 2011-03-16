@@ -13,3 +13,7 @@
 </tr>
 <% end %>
 </table>
+
+<% if can? :edit, Provider %>
+<%= link_to "New Provider", new_provider_path %>
+<% end %>

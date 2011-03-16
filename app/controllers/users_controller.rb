@@ -16,7 +16,7 @@ class UsersController < Devise::SessionsController
     user = User.where(:email=>params[:user][:email]).first
     if not user
       user = User.new(params[:user])
-      user.password = user.password_confirmation = Devise.friendly_token
+      user.password = user.password_confirmation = Devise.friendly_token[0..8]
       user.save!
       NewUserMailer.new_user_email(user, user.password).deliver
     end
@@ -52,12 +52,13 @@ class UsersController < Devise::SessionsController
     redirect_to :action=>:new
   end
 
-  def switch_provider
+  def change_provider
     provider = Provider.find(params[:provider_id])
-    if Role.where(["provider_id=? and user_id=?", provider.id, current_user.id]).first
+    if can? :view, provider
       current_user.current_provider_id = provider.id
+      current_user.save!
     end
-    redirect_to :action=>params[:come_from]
+    redirect_to params[:come_from]
   end
 
 end

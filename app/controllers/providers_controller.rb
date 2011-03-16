@@ -1,6 +1,14 @@
 class ProvidersController < ApplicationController
   load_and_authorize_resource
 
+  def new
+  end
+
+  def create
+    @provider.save!
+    redirect_to provider_path(@provider)
+  end
+
   def index
   end
   

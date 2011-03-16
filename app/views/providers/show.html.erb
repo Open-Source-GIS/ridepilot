@@ -1,6 +1,12 @@
-Provider: <%= @provider.name %>
+<h1>Provider: <%= @provider.name %></h1>
 
-Roles:
+<h2>Roles:</h2>
+
+
+<% if @provider.roles.size == 0 %>
+No users yet.<br/>
+<% else %>
+
 <table>
 <tr>
 <th>Email</th>
@@ -27,11 +33,141 @@ Roles:
 </table>
 <br/>
 
+<% end %>
+
 <% if @provider == current_user.current_provider %>
 <%= link_to "Create user", new_user_path %>
 <% else %>
 You are currently logged in to
 <%= current_user.current_provider.name %>.  To create a user for
+<%= @provider.name %>, please switch providers by using the dropdown
+menu at the top of this page.
+<% end %>
+
+
+<h2>Drivers:</h2>
+<% if @provider.drivers.size == 0 %>
+No drivers yet.<br/>
+<% else %>
+
+<table>
+<tr>
+<th>First name</th>
+<th>Last name</th>
+<th>Active</th>
+<th>Paid</th>
+<% if can? :edit, Driver %>
+<th></th>
+<% end %>
+</tr>
+</table>
+
+<% for driver in @provider.drivers %>
+<tr>
+<td><%= driver.first_name %></td>
+<td><%= driver.last_name %></td>
+<td><%= driver.active ? "Active" : "Inactive" %></td>
+<td><%= driver.paid ? "Paid" : "Volunteer" %></td>
+<% if can? :edit, Driver %>
+<td><%= link_to "Edit", edit_driver_path(driver) %></td>
+<% end %>
+</tr>
+<% end %>
+</table>
+<br/>
+<% end %>
+<% if @provider == current_user.current_provider %>
+<%= link_to "Create driver", new_driver_path %>
+<% else %>
+You are currently logged in to
+<%= current_user.current_provider.name %>.  To create a driver for
+<%= @provider.name %>, please switch providers by using the dropdown
+menu at the top of this page.
+<% end %>
+
+
+<h2>Vehicles:</h2>
+<% if @provider.vehicles.size == 0 %>
+No vehicles yet.<br/>
+<% else %>
+
+<table>
+<tr>
+<th>Name</th>
+<th>Year</th>
+<th>Make</th>
+<th>Model</th>
+<th>License Plate</th>
+<th>VIN</th>
+<th>Garaged location</th>
+<% if can? :edit, Vehicle %>
+<th></th>
+<% end %>
+</tr>
+</table>
+
+<% for vehicle in @provider.vehicles %>
+<tr>
+<td><%= vehicle.name %></td>
+<td><%= vehicle.make %></td>
+<td><%= vehicle.model %></td>
+<td><%= vehicle.license_plate %></td>
+<td><%= vehicle.vin %></td>
+<td><%= vehicle.garaged_location %></td>
+<% if can? :edit, Vehicle %>
+<td><%= link_to "Edit", edit_vehicle_path(vehicle) %></td>
+<% end %>
+</tr>
+<% end %>
+</table>
+<br/>
+<% end %>
+<% if @provider == current_user.current_provider %>
+<%= link_to "Create vehicle", new_vehicle_path %>
+<% else %>
+You are currently logged in to
+<%= current_user.current_provider.name %>.  To create a vehicle for
+<%= @provider.name %>, please switch providers by using the dropdown
+menu at the top of this page.
+<% end %>
+
+
+<h2>Monthly reports:</h2>
+<% if @provider.monthlies.size == 0 %>
+No monthly reports yet.<br/>
+<% else %>
+
+<table>
+<tr>
+<th>Start</th>
+<th>End</th>
+<th>Volunteer escort hours</th>
+<th>Volunteer admin hours</th>
+<% if can? :edit, Monthly %>
+<th></th>
+<% end %>
+</tr>
+</table>
+
+<% for monthly in @provider.monthlies %>
+<tr>
+<td><%= monthly.start_date %></td>
+<td><%= monthly.end_date %></td>
+<td><%= monthly.volunteer_escort_hours %></td>
+<td><%= monthly.volunteer_admin_hours %></td>
+<% if can? :edit, Monthly %>
+<td><%= link_to "Edit", edit_monthly_path(monthly) %></td>
+<% end %>
+</tr>
+<% end %>
+</table>
+<br/>
+<% end %>
+<% if @provider == current_user.current_provider %>
+<%= link_to "Create monthly report", new_monthly_path %>
+<% else %>
+You are currently logged in to
+<%= current_user.current_provider.name %>.  To create a monthly report for
 <%= @provider.name %>, please switch providers by using the dropdown
 menu at the top of this page.
 <% end %>

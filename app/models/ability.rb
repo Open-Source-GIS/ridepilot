@@ -12,13 +12,12 @@ class Ability
           can :read, :all 
         end
       else
-        can :view, Provider, :provider_id => provider.id
-
         if role.admin
           action = :manage
         else
           action = :view
         end
+        can action, Provider, :provider_id => provider.id
         can action, Trip, :provider_id => provider.id
         can action, Run, :provider_id => provider.id
         can action, Driver, :provider_id => provider.id

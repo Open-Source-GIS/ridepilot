@@ -6,6 +6,7 @@ Ridepilot::Application.routes.draw do
     post "create_user" => "users#create_user"
     get "init" => "users#show_init"
     post "init" => "users#init"
+    post "change_provider" => "users#change_provider"
   end
 
   resources :customers do
@@ -33,6 +34,10 @@ Ridepilot::Application.routes.draw do
   resources :addresses do
     get :geocode_address, :on=>:collection
   end
+
+  resources :drivers
+  resources :vehicles
+  resources :monthlies
 
   root :to => "home#index"
 
