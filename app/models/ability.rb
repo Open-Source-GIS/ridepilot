@@ -22,6 +22,7 @@ class Ability
         can action, Run, :provider_id => provider.id
         can action, Driver, :provider_id => provider.id
         can action, Vehicle, :provider_id => provider.id
+        can action, VehicleMaintenanceEvent, :provider_id => provider.id
         can action, User, {:role => {:provider_id => provider.id}}
         can action, Monthly, :provider_id => provider.id
         can action, Address, :provider_id => provider.id
