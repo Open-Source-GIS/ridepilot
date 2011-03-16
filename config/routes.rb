@@ -30,6 +30,10 @@ Ridepilot::Application.routes.draw do
     post :change_role
   end
 
+  resources :addresses do
+    get :geocode_address, :on=>:collection
+  end
+
   root :to => "home#index"
 
 end
