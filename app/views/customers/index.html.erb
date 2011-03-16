@@ -2,6 +2,7 @@
 
 <table>
   <tr>
+    <th></th>
     <th>First name</th>
     <th>Middle initial</th>
     <th>Last name</th>
@@ -27,6 +28,7 @@
 
 <% @customers.each do |customer| %>
   <tr>
+    <td><%= customer.group ? "(Group)" : "" %></td>
     <td><%= customer.first_name %></td>
     <td><%= customer.middle_initial %></td>
     <td><%= customer.last_name %></td>

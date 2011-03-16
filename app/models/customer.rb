@@ -4,6 +4,9 @@ class Customer < ActiveRecord::Base
   accepts_nested_attributes_for :address
 
   def name
+    if group
+      return "(Group) %s" % first_name
+    end
     if middle_initial
       return "%s %s. %s" % [first_name, middle_initial, last_name]
     else

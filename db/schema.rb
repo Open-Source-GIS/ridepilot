@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110316195622) do
+ActiveRecord::Schema.define(:version => 20110316203818) do
 
   create_table "addresses", :force => true do |t|
     t.string  "name"
@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(:version => 20110316195622) do
     t.string  "private_notes"
     t.string  "public_notes"
     t.integer "provider_id"
+    t.boolean "group",                   :default => false
   end
 
   create_table "drivers", :force => true do |t|

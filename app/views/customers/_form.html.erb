@@ -16,6 +16,9 @@
     <%= check_box_tag :ignore_dups %>
   <% end %>
 
+  <label for="group">For a group trip, check the box and use only the first name field to hold the group nanme</label>
+  <%= f.check_box :group %><br />
+
   <div class="field">
     <%= f.label :first_name %><br />
     <%= f.text_field :first_name %>
