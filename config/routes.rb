@@ -37,6 +37,7 @@ Ridepilot::Application.routes.draw do
 
   resources :drivers
   resources :vehicles
+  resources :vehicle_maintenance_events
   resources :monthlies
 
   root :to => "home#index"

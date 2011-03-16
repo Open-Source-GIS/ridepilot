@@ -4,6 +4,10 @@ class VehiclesController < ApplicationController
   def new
   end
 
+  def show
+
+  end
+
   def index
     redirect_to provider_path(current_user.current_provider)
   end
@@ -12,7 +16,7 @@ class VehiclesController < ApplicationController
   end
 
   def update
-    params[:vehicle][:provider_id] = nil
+    params[:vehicle][:provider_id] = current_user.current_provider
     if @vehicle.update_attributes(params[:vehicle])
       flash[:notice] = "Vehicle updated"
       redirect_to provider_path(current_user.current_provider)

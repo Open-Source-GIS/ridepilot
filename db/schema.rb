@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110315223805) do
+ActiveRecord::Schema.define(:version => 20110316195622) do
 
   create_table "addresses", :force => true do |t|
     t.string  "name"
@@ -163,6 +163,19 @@ ActiveRecord::Schema.define(:version => 20110315223805) do
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
+  create_table "vehicle_maintenance_events", :force => true do |t|
+    t.integer "provider_id",                                       :null => false
+    t.boolean "reimbursable"
+    t.date    "service_date"
+    t.date    "invoice_date"
+    t.text    "services_performed"
+    t.decimal "odometer",           :precision => 10, :scale => 2
+    t.string  "vendor_name"
+    t.string  "invoice_number"
+    t.decimal "invoice_amount",     :precision => 10, :scale => 2
+    t.integer "vehicle_id",                                        :null => false
+  end
+
   create_table "vehicles", :force => true do |t|
     t.string  "name"
     t.integer "year"
@@ -172,6 +185,7 @@ ActiveRecord::Schema.define(:version => 20110315223805) do
     t.string  "vin"
     t.string  "garaged_location"
     t.integer "provider_id"
+    t.boolean "active",           :default => true
   end
 
 end

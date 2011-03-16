@@ -1,0 +1,29 @@
+<%= form_for @vehicle_maintenance_event do |f| %>
+<%= f.hidden_field :vehicle_id %>
+
+<%= f.label :service_date %><br/>
+<%= f.text_field :service_date %><br/>
+
+<%= f.label :invoice_date %><br/>
+<%= f.text_field :invoice_date %><br/>
+
+<%= f.label :odometer %><br/>
+<%= f.text_field :odometer %><br/>
+
+<%= f.label :vendor_name %><br/>
+<%= f.text_field :vendor_name %><br/>
+
+<%= f.label :invoice_number %><br/>
+<%= f.text_field :invoice_number %><br/>
+
+<%= f.label :invoice_amount %><br/>
+<%= f.text_field :invoice_amount %><br/>
+
+<%= f.label :reimbursable %><br/>
+<%= f.select :reimbursable, [["Yes", "true"], ["No", "false"]], {:selected => @vehicle_maintenance_event.reimbursable } %><br/>
+
+<%= f.label :services_performed %><br/>
+<%= f.text_area :services_performed %><br/>
+
+<%= f.submit %>
+<% end %>

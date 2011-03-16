@@ -34,7 +34,9 @@
 <%= f.label :garaged_location %><br/>
 <%= f.text_field :garaged_location %><br/>
 <br/>
-
+<%= f.label :active %><br/>
+<%= f.select :active, [["Yes", "true"], ["No", "false"]], {:selected => @vehicle.active } %><br/>
+<br/>
 
 <%= f.submit %>
 <% end %> 

@@ -99,26 +99,30 @@ No vehicles yet.<br/>
 <th>License Plate</th>
 <th>VIN</th>
 <th>Garaged location</th>
+<th>Active</th>
+<th></th>
 <% if can? :edit, Vehicle %>
 <th></th>
 <% end %>
 </tr>
 
 <% for vehicle in @provider.vehicles %>
-<tr>
-<td><%= vehicle.name %></td>
-<td><%= vehicle.make %></td>
-<td><%= vehicle.model %></td>
-<td><%= vehicle.license_plate %></td>
-<td><%= vehicle.vin %></td>
-<td><%= vehicle.garaged_location %></td>
-<% if can? :edit, Vehicle %>
-<td><%= link_to "Edit", edit_vehicle_path(vehicle) %></td>
+  <tr class="<%= vehicle.active ? 'active' : 'inactive' %>">
+  <td><%= vehicle.name %></td>
+  <td><%= vehicle.make %></td>
+  <td><%= vehicle.model %></td>
+  <td><%= vehicle.license_plate %></td>
+  <td><%= vehicle.vin %></td>
+  <td><%= vehicle.garaged_location %></td>
+  <td><%= vehicle.active ? "Active" : "Inactive" %></td>
+  <td><%= link_to "Details", vehicle_path(vehicle) %></td>
+  <% if can? :edit, Vehicle %>
+    <td><%= link_to "Edit", edit_vehicle_path(vehicle) %></td>
+  <% end %>
+  </tr>
 <% end %>
-</tr>
-<% end %>
-</table>
 <br/>
+</table>
 <% end %>
 
 <% if @provider == current_user.current_provider %>
