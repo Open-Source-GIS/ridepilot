@@ -78,6 +78,7 @@ dmetaphone_alt(first_name) LIKE dmetaphone_alt(?) || '%'
 
   def edit
     @customer = Customer.find(params[:id])
+    @mobilities = Mobility.all
   end
 
   def create
