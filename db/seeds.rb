@@ -7,7 +7,9 @@
 #   Mayor.create(:name => 'Daley', :city => cities.first)
 
 if !Provider.exists?(1)
-  Provider.create(:id=>1, :name=>'Ride Connection')
+  provider = Provider.new(:id=>1, :name=>'Ride Connection')
+  provider.logo = File.open(File.join(RAILS_ROOT, "public", "ride_connection_logo.png"))
+  provider.save!
 end
 f = File.new(File.join(RAILS_ROOT, 'db', 'trimet.wkt')) 
 wkt = f.read

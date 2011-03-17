@@ -14,7 +14,7 @@
       <a id="logo" href="/">Ride Pilot</a>
       <div id="login-area">
         <% if current_user %>
-          <p style="float:right"><img src="/logos/<%=current_user.current_provider_id%>.jpg"/></p>
+          <p style="float:right"><%= image_tag current_user.current_provider.logo.url %></p>
 
           <a href="#"><%= current_user.email %></a> | <a href="#">Log out</a>
   

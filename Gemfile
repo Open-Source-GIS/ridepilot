@@ -27,6 +27,8 @@ gem "whenever", :git => "https://github.com/javan/whenever.git"
 
 gem "validates_timeliness"
 
+gem "paperclip"
+
 # Use unicorn as the web server
 # gem 'unicorn'
 
