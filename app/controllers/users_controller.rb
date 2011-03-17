@@ -1,6 +1,13 @@
 class UsersController < Devise::SessionsController
   require 'new_user_mailer'
   
+  def new
+    #hooked up to sign_in
+    if User.count == 0
+      return redirect_to :action=>:show_init
+    end
+  end
+
   def new_user
     if User.count == 0
       return redirect_to :init
