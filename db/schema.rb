@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110316215133) do
+ActiveRecord::Schema.define(:version => 20110322214656) do
 
   create_table "addresses", :force => true do |t|
     t.string  "name"
@@ -146,6 +146,8 @@ ActiveRecord::Schema.define(:version => 20110316215133) do
     t.date     "called_back_at"
     t.boolean  "customer_informed",                                 :default => false
     t.integer  "repeating_trip_id"
+    t.boolean  "cab",                                               :default => false
+    t.boolean  "cab_notified",                                      :default => false
   end
 
   create_table "users", :force => true do |t|
