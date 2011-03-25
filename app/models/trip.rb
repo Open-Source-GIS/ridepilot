@@ -7,4 +7,5 @@ class Trip < ActiveRecord::Base
   belongs_to :repeating_trip
   default_scope :order => 'pickup_time'
 
+  serialize :guests
 end

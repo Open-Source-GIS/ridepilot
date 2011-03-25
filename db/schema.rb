@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110322214656) do
+ActiveRecord::Schema.define(:version => 20110325155517) do
 
   create_table "addresses", :force => true do |t|
     t.string  "name"
@@ -125,6 +125,12 @@ ActiveRecord::Schema.define(:version => 20110322214656) do
     t.integer  "provider_id"
   end
 
+  create_table "travel_time_estimates", :id => false, :force => true do |t|
+    t.integer "from_address_id"
+    t.integer "to_address_id"
+    t.integer "seconds"
+  end
+
   create_table "trips", :force => true do |t|
     t.integer  "run_id"
     t.integer  "customer_id"
@@ -148,6 +154,7 @@ ActiveRecord::Schema.define(:version => 20110322214656) do
     t.integer  "repeating_trip_id"
     t.boolean  "cab",                                               :default => false
     t.boolean  "cab_notified",                                      :default => false
+    t.text     "guests"
   end
 
   create_table "users", :force => true do |t|
