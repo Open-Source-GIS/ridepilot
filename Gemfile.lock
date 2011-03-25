@@ -107,6 +107,7 @@ GEM
       timeliness (~> 0.3.2)
     warden (1.0.3)
       rack (>= 1.0.0)
+    will_paginate (2.3.15)
 
 PLATFORMS
   ruby
@@ -125,3 +126,4 @@ DEPENDENCIES
   sqlite3-ruby
   validates_timeliness
   whenever!
+  will_paginate

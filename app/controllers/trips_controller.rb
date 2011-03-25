@@ -31,8 +31,25 @@ class TripsController < ApplicationController
     @trips = Trip.accessible_by(current_ability).where(["trip_result = 'unscheduled' and pickup_time >= ? ", Date.today]).order("pickup_time")
   end
 
+  def reconcile_cab
+    #the cab company has sent a log of all trips in the past [time period]
+    #we want to mark some trips as no-shows.  This will be a paginated
+    #list of trips
+    @trips = Trip.accessible_by(current_ability).where("cab = true and (trip_result = 'COMP' or trip_result = 'NS')").reorder("pickup_time desc").paginate :page=>params[:page], :per_page=>50
+  end
+
+  def no_show
+    @trip = Trip.find(params[:trip_id])
+    if can? :edit, @trip
+      @trip.trip_result = 'NS'
+      @trip.save
+    end
+    redirect_to :action=>:reconcile_cab, :page=>params[:page]
+  end
 
   def reached
+    #mark the user as having been informed that their trip has been
+    #approved or turned down
     @trip = Trip.find(params[:trip_id])
     if can? :edit, @trip
       @trip.called_back_at = Time.now
@@ -43,6 +60,8 @@ class TripsController < ApplicationController
   end
 
   def unreached
+    #note that we have called the user to approve or turn down their trip
+    #but did not reach them
     @trip = Trip.find(params[:trip_id])
     if can? :edit, @trip
       @trip.called_back_at = Time.now
@@ -70,8 +89,6 @@ class TripsController < ApplicationController
     end
     redirect_to :action=>:unscheduled
   end
-
-
 
   def show
     respond_to do |format|

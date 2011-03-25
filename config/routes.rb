@@ -20,7 +20,9 @@ Ridepilot::Application.routes.draw do
     post :unreached, :as => :unreached
     post :confirm, :as => :confirm
     post :turndown, :as => :turndown
+    post :no_show, :as => :no_show
     get :trips_requiring_callback, :on=>:collection
+    get :reconcile_cab, :on=>:collection
     get :unscheduled, :on=>:collection
   end
 
