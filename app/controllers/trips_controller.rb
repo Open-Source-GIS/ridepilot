@@ -47,6 +47,17 @@ class TripsController < ApplicationController
     redirect_to :action=>:reconcile_cab, :page=>params[:page]
   end
 
+  def send_to_cab
+    @trip = Trip.find(params[:trip_id])
+    if can? :edit, @trip
+      @trip.cab = true
+      @trip.cab_informed = false
+      @trip.trip_result = 'COMP'
+      @trip.save
+    end
+    redirect_to :action=>:reconcile_cab, :page=>params[:page]
+  end
+
   def reached
     #mark the user as having been informed that their trip has been
     #approved or turned down

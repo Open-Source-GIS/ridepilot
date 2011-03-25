@@ -1,0 +1,29 @@
+<h1>Reconcile cab log</h1>
+
+<table>
+  <tr>
+    <th>Pickup Time</th>
+    <th>Customer</th>
+    <th>Pickup Address</th>
+    <th>Dropoff Address</th>
+    <th>Result</th>
+    <th></th>
+  </tr>
+
+<% @trips.each do |trip| %>
+  <tr>
+    <td><%= trip.pickup_time.to_s %></td>
+    <td><%= trip.customer.name %></td>
+    <td><%= trip.pickup_address.text %></td>
+    <td><%= trip.dropoff_address.text %></td>
+    <td><%= trip.trip_result %></td>
+
+    <td><%= button_to 'Mark as no-show', trip_no_show_path(trip) %></td>
+
+  </tr>
+<% end %>
+</table>
+
+<%= will_paginate @trips %>
+
+<br />
