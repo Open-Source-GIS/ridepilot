@@ -42,6 +42,9 @@ Ridepilot::Application.routes.draw do
   resources :vehicles
   resources :vehicle_maintenance_events
   resources :monthlies
+  resources :runs do
+    get :uncompleted_runs, :on=>:collection
+  end
 
   root :to => "home#index"
 

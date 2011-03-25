@@ -1,0 +1,18 @@
+
+Date: <%= @run.date %><br/>
+Start time: <%= @run.start_time %>
+End time: <%= @run.end_time %>
+<br/>
+Start odometer: <%= @run.start_odometer %>
+End odometer: <%= @run.end_odometer %>
+<br/>
+Unpaid driver break time: <%= @run.unpaid_driver_break_time %><br/>
+Vehicle: <%= @run.vehicle.name %><br/>
+Driver:  <%= @run.driver.name %><br/>
+<%= @run.paid ? "Paid" : "Unpaid" %><br/>
+<%= @run.complete ? "Complete" : "Incomplete" %><br/>
+
+<% if can? :edit, @run %>
+<td><%= link_to "Edit", edit_run_path(@run) %></td>
+<% end %>
+</tr>

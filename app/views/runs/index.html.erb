@@ -1,0 +1,32 @@
+<h1>Listing runs</h1>
+
+<table>
+  <tr>
+    <th>Date</th>
+    <th>Start time</th>
+    <th>End time</th>
+    <th>Vehicle</th>
+    <th>Driver</th>
+    <th>Complete</th>
+<% if can? :edit, Run %><th></th><% end %>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @runs.each do |run| %>
+  <tr>
+    <td><%= run.date %></td>
+    <td><%= run.start_time.to_s %></td>
+    <td><%= run.end_time.to_s %></td>
+    <td><%= run.vehicle.name %></td>
+    <td><%= run.driver.name %></td>
+    <td><%= run.complete ? 'Complete' : 'Incomplete' %></td>
+    <td><%= link_to 'Show', run %></td>
+    <td><% if can? :edit, run %><%= link_to 'Edit', edit_run_path(run) %><% end %></td>
+    <td><%= link_to 'Destroy', run, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
