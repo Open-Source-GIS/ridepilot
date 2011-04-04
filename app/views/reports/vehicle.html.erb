@@ -1,0 +1,22 @@
+Month: <%= @start_date.month %><br/>
+Year: <%= @start_date.year %><br/>
+<br/>
+Vehicle: <%= @vehicle.name %><br/>
+Year / Make / Model: <%= @vehicle.year %> <%= @vehicle.make %> <%= @vehicle.model %><br/>
+License Plate: <%= @vehicle.license_plate %><br/>
+Parked or Garaged Location: <%= @vehicle.garaged_location %><br/>
+
+
+Total Hours in Operation: <%= @total_hours %><br/>
+Total Rides this month: <%= @total_rides %><br/>
+Average rides per hour: 
+<% if @total_hours == 0 %>
+ 0
+<% else %>
+ <%= @total_rides / @total_hours  %>
+<% end %>
+<br/>
+Beginning odometer: <%= @beginning_odometer  %><br/>
+Ending odometer: <%= @ending_odometer  %><br/>
+
+

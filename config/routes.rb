@@ -46,6 +46,10 @@ Ridepilot::Application.routes.draw do
     get :uncompleted_runs, :on=>:collection
   end
 
+  match 'reports', :controller=>:reports, :action=>:index
+  match 'reports/:action/:id', :controller=>:reports
+  match 'reports/:action', :controller=>:reports
+
   root :to => "home#index"
 
 end
