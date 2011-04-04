@@ -32,7 +32,7 @@ dmetaphone_alt(last_name) LIKE dmetaphone(?) || '%'  or
 dmetaphone_alt(first_name) LIKE dmetaphone(?) || '%'  or
 dmetaphone_alt(last_name) LIKE dmetaphone_alt(?) || '%'  or 
 dmetaphone_alt(first_name) LIKE dmetaphone_alt(?) || '%' 
-", query, query, query, query, term, term, term, term, term, term, term, term]) \
+", query, query, query, query, term, term, term, term, term, term, term, term])
     .limit(limit)
     end
     
