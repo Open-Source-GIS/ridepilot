@@ -31,6 +31,9 @@ gem "paperclip"
 
 gem "will_paginate"
 
+gem "attribute_normalizer"
+
+
 # Use unicorn as the web server
 # gem 'unicorn'
 

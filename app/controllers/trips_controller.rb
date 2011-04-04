@@ -25,7 +25,7 @@ class TripsController < ApplicationController
 
   def unscheduled
     #The trip coordinatior wants to confirm or turn down individual
-    #trips.  T his is a list of all trips that haven't been decided
+    #trips.  This is a list of all trips that haven't been decided
     #on yet.
 
     @trips = Trip.accessible_by(current_ability).where(["trip_result = 'unscheduled' and pickup_time >= ? ", Date.today]).order("pickup_time")

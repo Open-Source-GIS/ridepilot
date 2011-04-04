@@ -1,6 +1,11 @@
 class Address < ActiveRecord::Base
   belongs_to :provider
 
+  normalize_attribute :name, :with=> [:squish, :titleize]
+  normalize_attribute :building_name, :with=> [:squish, :titleize]
+  normalize_attribute :address, :with=> [:squish, :titleize]
+  normalize_attribute :city, :with=> [:squish, :titleize]
+
   def compute_in_trimet_district
     return Region.count(:conditions => ["name='TriMet' and st_contains(the_geom, ?)", the_geom]) > 0
 
