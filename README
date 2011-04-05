@@ -45,3 +45,8 @@ make sure your database.yml contains the line:
 in the section named common: &common
 
 Then do rake db:create
+
+-----------------------
+
+You will also need ImageMagick (for no good reason, but Paperclip,
+which we use for attachments, requires it)
