@@ -18,5 +18,11 @@ Average rides per hour:
 <br/>
 Beginning odometer: <%= @beginning_odometer  %><br/>
 Ending odometer: <%= @ending_odometer  %><br/>
+Total Mileage: <%= @beginning_odometer - @ending_odometer %><br/>
 
-
+<br/>
+Repairs not covered by Preventive Maintenance Reimbursement Program:<br/>
+<%= render :partial=>"event_table", @noncoverered_events %>
+<br/>
+Scheduled maintenance covered under the Preventive Maintenance Reimbursement Program<br/>
+<%= render :partial=>"event_table", @coverered_events %>

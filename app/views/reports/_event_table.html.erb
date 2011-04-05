@@ -1,0 +1,22 @@
+<table>
+<tr>
+<th>Service Date</th>
+<th>Service Performed</th>
+<th>Odometer Reading</th>
+<th>Vendor</th>
+<th>Invoice Date</th>
+<th>Invoice Number</th>
+<th>Invoice Amount</th>
+</tr>
+<% for event in @noncovered_events %> 
+<tr>
+<td><%= event.service_date %></td>
+<td><%= event.services_performed %></td>
+<td><%= event.odometer %></td>
+<td><%= event.vendor_name %></td>
+<td><%= event.invoice_date %></td>
+<td><%= event.invoice_number %></td>
+<td><%= event.invoice_amount %></td>
+</tr>
+<% end %>
+</table>
