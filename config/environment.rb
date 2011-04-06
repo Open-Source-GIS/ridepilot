@@ -9,5 +9,8 @@ TRIP_RESULT_CODES = {
   "UNMET" => "Unmet Need" #a trip that was outside of the service parameters (too early, too late, too far, etc).
 }
 
+TRIP_PURPOSES = ["Life-Sustaining Medical", "Medical", "Nutrition", "Personal/Support Services", "Recreation", "Shopping", "School/Work", "Volunteer Work"]
+
+
 # Initialize the rails application
 Ridepilot::Application.initialize!

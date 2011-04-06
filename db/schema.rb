@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110325155517) do
+ActiveRecord::Schema.define(:version => 20110406182049) do
 
   create_table "addresses", :force => true do |t|
     t.string  "name"
@@ -70,6 +70,8 @@ ActiveRecord::Schema.define(:version => 20110325155517) do
     t.integer "volunteer_escort_hours"
     t.integer "volunteer_admin_hours"
     t.integer "provider_id"
+    t.integer "complaints"
+    t.integer "compliments"
   end
 
   create_table "providers", :force => true do |t|
@@ -155,6 +157,7 @@ ActiveRecord::Schema.define(:version => 20110325155517) do
     t.boolean  "cab",                                               :default => false
     t.boolean  "cab_notified",                                      :default => false
     t.text     "guests"
+    t.boolean  "in_district"
   end
 
   create_table "users", :force => true do |t|
