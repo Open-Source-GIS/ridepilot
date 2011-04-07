@@ -15,7 +15,7 @@ class TripsController < ApplicationController
     #not been marked as informed, ordered by when they were last
     #called.
 
-    @trips = Trip.accessible_by(current_ability).where(["trip_result = 'turndown' or trip_result = 'confirmed' and customer_informed = false and pickup_time >= ? ", Date.today]).order("called_back_at")
+    @trips = Trip.accessible_by(current_ability).where(["trip_result = 'TD' or trip_result = 'COMP' and customer_informed = false and pickup_time >= ? ", Date.today]).order("called_back_at")
 
     respond_to do |format|
       format.html
@@ -85,7 +85,7 @@ class TripsController < ApplicationController
   def confirm
     @trip = Trip.find(params[:trip_id])
     if can? :edit, @trip
-      @trip.trip_result = "confirmed"
+      @trip.trip_result = "COMP"
       @trip.trip_confirmed = Time.now
       @trip.save
     end
@@ -95,7 +95,7 @@ class TripsController < ApplicationController
   def turndown
     @trip = Trip.find(params[:trip_id])
     if can? :edit, @trip
-      @trip.trip_result = "turndown"
+      @trip.trip_result = "TD"
       @trip.save
     end
     redirect_to :action=>:unscheduled
