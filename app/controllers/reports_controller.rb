@@ -143,13 +143,22 @@ purpose
       @total_miles_driven = end_odometer - start_odometer 
     end
 
-    @turndowns = Trip.where(["provider_id =? and trip_result = 'TURNDOWN' and pickup_time BETWEEN ? and ? ", provider_id, @start_date, @end_date]).count
+    @turndowns = Trip.where(["provider_id =? and trip_result = 'TD' and pickup_time BETWEEN ? and ? ", provider_id, @start_date, @end_date]).count
 
     #FIXME: this is not actually goint to work, because you can't 
     #just subtract times in sql and expect to get something useful
     
     @volunteer_driver_hours = month_runs.where("paid = true").sum("end_time - start_time") || 0
     @paid_driver_hours = month_runs.where("paid = false").sum("end_time - start_time")  || 0
+
+    undup_riders_sql = "select count(*) as undup_riders from (select customer_id, fiscal_year(pickup_time) as year, min(fiscal_month(pickup_time)) as month from trips where provider_id=? and trip_result = 'COMP' group by customer_id, year) as  morx where date (year || '-' || month || '-' || 1)  between ? and ? "
+
+    year_start_date = Date.new(@start_date.year, 1, 1)
+    year_end_date = year_start_date.next_year
+
+    row = ActiveRecord::Base.connection.select_one(bind([undup_riders_sql, provider_id, year_start_date, year_end_date]))
+
+    @undup_riders = row['undup_riders'].to_i
 
   end
 
