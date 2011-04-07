@@ -1,0 +1,4 @@
+admin_admin:
+  user_id: 1
+  provider_id: 1
+  admin: true

@@ -1,0 +1,8 @@
+admin:
+  email: admin@example.com
+  encrypted_password: $2a$10$zW3zGpQv9lpj7.lgRi7rD..oBgd178ZKWxDTNE4Ow0PTRD7FJ43p6
+  password_salt: $2a$10$zW3zGpQv9lpj7.lgRi7rD.
+  sign_in_count: 3
+  current_sign_in_at: 2011-04-06 18:15:44
+  current_provider_id: 1
+  id: 1

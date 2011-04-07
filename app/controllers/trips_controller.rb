@@ -131,12 +131,12 @@ class TripsController < ApplicationController
   def create
     trip_params = params[:trip]
 
-    customer = Customer.find(trip_params[:customer_id])
-    authorize! :read, customer
+    @customer = Customer.find(trip_params[:customer_id])
+    authorize! :read, @customer
 
-    provider = customer.provider
+    provider = @customer.provider
     authorize! :manage, provider
-    trip_params[:provider_id] = customer.provider.id
+    trip_params[:provider_id] = @customer.provider.id
 
     @trip = Trip.new(trip_params)
 
@@ -145,6 +145,9 @@ class TripsController < ApplicationController
         format.html { redirect_to(@trip, :notice => 'Trip was successfully created.') }
         format.xml  { render :xml => @trip, :status => :created, :location => @trip }
       else
+        @mobilities = Mobility.all
+        @funding_sources = FundingSource.all
+
         format.html { render :action => "new" }
         format.xml  { render :xml => @trip.errors, :status => :unprocessable_entity }
       end
@@ -153,16 +156,19 @@ class TripsController < ApplicationController
 
   def update
     trip_params = params[:trip]
-    customer = Customer.find(trip_params[:customer_id])
-    provider = customer.provider
+    @customer = Customer.find(trip_params[:customer_id])
+    provider = @customer.provider
     authorize! :manage, provider
-    trip_params[:provider_id] = customer.provider.id
+    trip_params[:provider_id] = @customer.provider.id
 
     respond_to do |format|
       if @trip.update_attributes(trip_params)
         format.html { redirect_to(@trip, :notice => 'Trip was successfully updated.') }
         format.xml  { head :ok }
       else
+        @mobilities = Mobility.all
+        @funding_sources = FundingSource.all
+
         format.html { render :action => "edit" }
         format.xml  { render :xml => @trip.errors, :status => :unprocessable_entity }
       end

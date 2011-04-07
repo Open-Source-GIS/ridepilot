@@ -1,0 +1,12 @@
+one:
+  customer_id: 1
+  pickup_time: 2011-02-02 09:30:00
+  appointment_time: 2011-02-02 10:30:00
+  guest_count: 0
+  attendant_count: 0
+  pickup_address_id: 1
+  dropoff_address_id: 2
+  mobility_id: 1
+  trip_purpose: Shopping
+  trip_result: confirmed
+  provider_id: 1

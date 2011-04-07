@@ -3,6 +3,7 @@ require 'test_helper'
 class TripsControllerTest < ActionController::TestCase
   setup do
     @trip = trips(:one)
+    sign_in users(:admin)
   end
 
   test "should get index" do
@@ -12,7 +13,7 @@ class TripsControllerTest < ActionController::TestCase
   end
 
   test "should get new" do
-    get :new
+    get :new, :customer_id=>1
     assert_response :success
   end
 

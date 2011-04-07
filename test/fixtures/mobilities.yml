@@ -1,0 +1,17 @@
+scooter:
+   name: Scooter
+
+wheelchair:
+  name: Wheelchair
+
+wheelchair_oversized:
+  name: Wheelchair - Oversized
+
+wheelchair_can_transfer:
+  name: Wheelchair - Can Transfer
+
+unknown:
+  name: Unknown
+
+ambulatory:
+  name: Ambulatory

@@ -1,0 +1,13 @@
+mary:
+   first_name: Mary
+   middle_initial: P
+   last_name: Jones
+   phone_number_1: 503-555-1734
+   address_id: 1
+   activated_date: 2010-11-09
+   birth_date: 1990-11-09
+   mobility_id: 1
+   email: mary@example.com
+   ethnicity: White
+   provider_id: 1
+   id: 1

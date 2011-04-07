@@ -1,0 +1,19 @@
+mary_home:
+  name: mary home
+  address: 123 Main st
+  city: Portland
+  state: OR
+  zip: 97212
+  in_district: true
+  provider_id: 1
+  id: 1
+
+powells:
+  name: powell's city of books
+  address: 1005 W Burnside
+  city: Portland
+  state: OR
+  zip: 97209
+  in_district: true
+  provider_id: 1
+  id: 2
