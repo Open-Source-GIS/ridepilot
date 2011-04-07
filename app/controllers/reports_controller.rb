@@ -1,3 +1,35 @@
+class Query
+  extend ActiveModel::Naming
+  include ActiveModel::Conversion
+
+  attr_accessor :start_date
+  attr_accessor :end_date
+  attr_accessor :vehicle_id
+
+  def convert_date(obj, base)
+    return Date.new(obj["#{base}(1i)"].to_i,obj["#{base}(2i)"].to_i,(obj["#{base}(3i)"] || 1).to_i)
+  end
+
+  def initialize(params = nil)
+    if params
+      if params["start_date(1i)"]
+        @start_date = convert_date(params, :start_date)
+      end
+      if params["end_date(1i)"]
+        @end_date = convert_date(params, :end_date)
+      end
+      if params["vehicle_id"]
+        @vehicle_id = params["vehicle_id"]
+      end
+    end
+  end
+
+  def persisted?
+    false
+  end
+
+end
+
 def bind(args)
   return ActiveRecord::Base.__send__(:sanitize_sql_for_conditions, args, '')
 end
@@ -9,16 +41,21 @@ class ReportsController < ApplicationController
 
   def vehicles
     @vehicles = Vehicle.accessible_by(current_ability)
+    @query = Query.new
   end
 
   def vehicle
-    report_params = params[:report]
-    @vehicle = Vehicle.accessible_by(current_ability).find report_params[:vehicle_id]
-    @start_date = Date.new(report_params['for_month(1i)'].to_i, 
-                           report_params['for_month(2i)'].to_i)
+    query_params = params[:query]
+    @query = Query.new(query_params)
+    @vehicles = Vehicle.accessible_by(current_ability)
+
+    @vehicle = Vehicle.accessible_by(current_ability).find @query.vehicle_id
+    @start_date = @query.start_date
     @end_date = @start_date.next_month
 
-    @events = @vehicle.vehicle_maintenance_events.where(["service_date BETWEEN ? and ?", @start_date, @end_date])
+    @covered_events = @vehicle.vehicle_maintenance_events.where(["service_date BETWEEN ? and ? and reimbursable=true", @start_date, @end_date])
+
+    @noncovered_events = @vehicle.vehicle_maintenance_events.where(["service_date BETWEEN ? and ? and reimbursable=false", @start_date, @end_date])
 
     month_runs = Run.where(["vehicle_id = ? and date BETWEEN ? and ? ", @vehicle.id, @start_date, @end_date])
 
@@ -40,21 +77,25 @@ class ReportsController < ApplicationController
 
   def service_summary
     provider_id = current_user.current_provider_id
-    if params[:id]
+    if params[:query]
+      query_params = params[:query]
+      @query = Query.new(query_params)
+      @start_date = @query.start_date
+      @monthly = Monthly.where(["start_date = ? and end_date = ?", @start_date, @start_date.next_month]).first
+    elsif params[:id]
       @monthly = Monthly.find(params[:id])      
       @start_date = @monthly.start_date
       @end_date = @monthly.end_date
     else
-      if params[:report]
-        report_params = params[:report]
-        @start_date = Date.new(report_params['for_month(1i)'].to_i, 
-                               report_params['for_month(2i)'].to_i)
-      else
-        now = Date.today
-        @start_date = Date.new(now.year, now.month, 1).prev_month
-      end
-      @end_date = @start_date.next_month
-      @monthly = Monthly.where(["start_date = ? and end_date = ?", @start_date, @end_date]).first
+      now = Date.today
+      @start_date = Date.new(now.year, now.month, 1).prev_month
+    end
+
+    @query = Query.new
+    @query.start_date = @start_date
+    @end_date = @start_date.next_month
+    if @monthly.nil?
+      @monthly = Monthly.create(:start_date=>@start_date, :end_date=>@end_date)
     end
 
     if !can? :read, @monthly
@@ -110,9 +151,6 @@ purpose
     @volunteer_driver_hours = month_runs.where("paid = true").sum("end_time - start_time") || 0
     @paid_driver_hours = month_runs.where("paid = false").sum("end_time - start_time")  || 0
 
-    if @monthly.nil?
-      @monthly = Monthly.create(:start_date=>@start_date, :end_date=>@end_date)
-    end
   end
 
   def update_monthly

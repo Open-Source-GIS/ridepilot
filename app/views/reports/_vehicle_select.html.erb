@@ -1,0 +1,8 @@
+<%= form_for @query, :url=>url_for(:action=>:vehicle), :html=>{:method=>:get} do |f| %>
+
+<%= f.date_select  :start_date, :discard_day=>true %><br/>
+
+<%= f.collection_select :vehicle_id, @vehicles, :id, :name %><br/>
+
+<%= f.submit "Report" %>
+<% end %>

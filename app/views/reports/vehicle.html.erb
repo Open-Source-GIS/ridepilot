@@ -1,5 +1,4 @@
-Month: <%= @start_date.month %><br/>
-Year: <%= @start_date.year %><br/>
+<%= render :partial=>"vehicle_select" %>
 <br/>
 Vehicle: <%= @vehicle.name %><br/>
 Year / Make / Model: <%= @vehicle.year %> <%= @vehicle.make %> <%= @vehicle.model %><br/>
@@ -22,7 +21,7 @@ Total Mileage: <%= @beginning_odometer - @ending_odometer %><br/>
 
 <br/>
 Repairs not covered by Preventive Maintenance Reimbursement Program:<br/>
-<%= render :partial=>"event_table", @noncoverered_events %>
+<%= render :partial=>"event_table", :locals=>{:events => @noncoverered_events} %>
 <br/>
 Scheduled maintenance covered under the Preventive Maintenance Reimbursement Program<br/>
-<%= render :partial=>"event_table", @coverered_events %>
+<%= render :partial=>"event_table", :locals=>{:events => @coverered_events} %>

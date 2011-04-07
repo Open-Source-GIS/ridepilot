@@ -1,8 +1,8 @@
-<%= form_tag url_for(:action=>:service_summary) do %>
+<%= form_for @query, :url=>url_for(:action=>:service_summary), :html=>{:method=>:get} do |f| %>
 
-<%= date_select :report, :for_month, :discard_day=>true %><br/>
+<%= f.date_select :start_date, :discard_day=>true %><br/>
 
-<%= submit_tag "Report" %>
+<%= f.submit "Report" %>
 <% end %>
 <br/>
 
