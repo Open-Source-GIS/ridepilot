@@ -18,4 +18,16 @@ class Customer < ActiveRecord::Base
     end
   end
 
+  def age_in_years
+    if birth_year.nil?
+      return nil
+    end
+    today = Date.today
+    years = today.year - birth_date.year #2011 - 1980 = 31
+    if today.month < birth_year.month  || today.month == birth_year.month and today.day < birth_year.day #but 4/8 is before 7/3, so age is 30
+      years -= 1
+    end
+    return years
+  end
+
 end

@@ -201,6 +201,99 @@ purpose
     @trips = Trip.where(["provider_id = ? and pickup_time between ? and ? and cab = true", provider_id, @query.start_date, @query.end_date])
   end
 
+  def age_and_ethnicity
+    query_params = params[:query]
+    @query = Query.new(query_params)
+
+    #we need new riders this month, where new means "first time this fy"
+
+    #so, for each trip this month, find the customer, then find out whether 
+    # there was a previous trip for this customer this fy
+
+
+    sql = "select distinct customer_id from trips where provider_id = ? and pickup_time between ? and ?"
+
+    customer_rows = ActiveRecord::Base.connection.select_all(bind(
+        [sql, provider_id, @query.start_date, @query.end_date]))
+
+    customer_ids = customer_rows.map {|x| x[0]}
+    customers = Customer.where(:id => customer_ids)
+
+    fy = @query.start_date.year
+    if @query.start_date.month <= 6
+      fy -= 1
+    end
+    fy_start_date = Date.new(fy, 7, 1)
+
+    sql = "select distinct customer_id from trips where provider_id = ? and pickup_time between ? and ?"
+    earlier_customer_rows = ActiveRecord::Base.connection.select_all(bind(
+        [sql, provider_id, fy_start_date, @query.start_date]))
+
+    earlier_customer_ids = earlier_customer_rows.map {|x| x[0]}
+    earlier_customers = Customer.where(:id => earlier_customer_ids)
+    earlier_customer_ids = Set.new(earlier_customer_ids)
+
+    @this_month_unknown_age = 0
+    @this_month_sixty_plus = 0
+    @this_month_less_than_sixty = 0
+
+    @this_month_unknown_age_dd = 0
+    @this_month_sixty_plus_dd = 0
+    @this_month_less_than_sixty_dd = 0
+
+    @this_year_unknown_age = 0
+    @this_year_sixty_plus = 0
+    @this_year_less_than_sixty = 0
+
+    @this_year_unknown_age_dd = 0
+    @this_year_sixty_plus_dd = 0
+    @this_year_less_than_sixty_dd = 0
+
+    @counts_by_ethnicity = {}
+
+    #first, handle the customers from this month
+    for customer in customers
+      if earlier_customer_ids.member? customer.id
+        #not this customer's first visit
+        next
+      end
+      age = customer.age_in_years
+      if age.nil?
+        @this_month_unknown_age += 1
+        @this_year_unknown_age += 1
+      elsif age > 60
+          @this_month_sixty_plus += 1
+        @this_year_sixty_plus += 1
+      else
+        @this_month_less_than_sixty += 1
+        @this_year_less_than_sixty += 1
+      end
+
+      if counts_by_ethnicity.member? customer.ethnicity.nil?
+        @counts_by_ethnicity[customer.ethnicity] = {'month' => 0, 'year' => 0}
+      end
+      @counts_by_ethnicity[customer.ethnicity]['month'] += 1
+    end
+
+    #now the customers who appear earlier in the year 
+    for customer in earlier_customers
+      age = customer.age_in_years
+      if age.nil?
+        @this_year_unknown_age += 1
+      elsif age > 60
+        @this_year_sixty_plus += 1
+      else
+        @this_year_less_than_sixty += 1
+      end
+
+      if counts_by_ethnicity.member? customer.ethnicity.nil?
+        @counts_by_ethnicity[customer.ethnicity] = {'month' => 0, 'year' => 0}
+      end
+      @counts_by_ethnicity[customer.ethnicity]['year'] += 1
+    end
+
+  end
+
   private
   def provider_id
     return current_user.current_provider_id
