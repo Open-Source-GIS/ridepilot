@@ -11,6 +11,9 @@ class Query
   end
 
   def initialize(params = nil)
+    now = Date.today
+    @start_date = Date.new(now.year, now.month, 1).prev_month
+    @end_date = start_date.next_month
     if params
       if params["start_date(1i)"]
         @start_date = convert_date(params, :start_date)
@@ -76,7 +79,6 @@ class ReportsController < ApplicationController
   end
 
   def service_summary
-    provider_id = current_user.current_provider_id
     if params[:query]
       query_params = params[:query]
       @query = Query.new(query_params)
@@ -172,4 +174,28 @@ purpose
 
   end
 
+  def donations
+    query_params = params[:query]
+    @query = Query.new(query_params)
+
+    @donations_by_customer = {}
+    @total = 0
+    for trip in Trip.where(["provider_id = ? and pickup_time between ? and ? and donation > 0", provider_id, @query.start_date, @query.end_date])
+      customer = trip.customer
+      if ! @donations_by_customer.member? customer
+        @donations_by_customer[customer] = trip.donation
+      else
+        @donations_by_customer[customer] += trip.donation
+      end
+      @total += trip.donation
+    end
+
+    @customers = @donations_by_customer.keys.sort_by {|customer| [customer.last_name, customer.first_name] }
+
+  end
+
+  private
+  def provider_id
+    return current_user.current_provider_id
+  end
 end

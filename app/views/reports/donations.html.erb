@@ -1,0 +1,26 @@
+<%= form_for @query, :url=>url_for(:action=>:donations), :html=>{:method=>:get} do |f| %>
+
+<%= f.date_select  :start_date, :discard_day=>true %><br/>
+
+<%= f.submit "Report" %>
+<% end %>
+
+<table>
+<tr>
+<th>Customer</th>
+<th>Total Donations</th>
+</tr>
+
+<% for customer in @customers %>
+<tr>
+<td><%= customer.name %></td>
+<td><%= @donations_by_customer[customer] %></td>
+</tr>
+
+<% end %>
+
+<tr>
+<td>Total</td>
+<td><%= @total %></td>
+</tr>
+</table>
