@@ -1,0 +1,28 @@
+<%= form_for @query, :url=>url_for(:action=>:donations), :html=>{:method=>:get} do |f| %>
+
+<%= f.date_select  :start_date, :discard_day=>true %><br/>
+
+<%= f.submit "Report" %>
+<% end %>
+
+<table>
+<tr>
+<th>Date</th>
+<th>Name</th>
+<th>Trip purpose</th>
+<th>Pick-Up Point</th>
+<th>Destination</th>
+<th>Time</th>
+</tr>
+<% for trip in @trips %>
+<tr>
+<td><%= trip.pickup_time.to_date %></td>
+<td><%= trip.customer.name %></td>
+<td><%= trip.trip_purpose %></td>
+<td><%= trip.pickup_address.text %></td>
+<td><%= trip.dropoff_address.text %></td>
+<td><%= trip.pickup_time.time %></td>
+</tr>
+
+<% end %>
+</table>

@@ -194,6 +194,13 @@ purpose
 
   end
 
+  def cab
+    query_params = params[:query]
+    @query = Query.new(query_params)
+
+    @trips = Trip.where(["provider_id = ? and pickup_time between ? and ? and cab = true", provider_id, @query.start_date, @query.end_date])
+  end
+
   private
   def provider_id
     return current_user.current_provider_id
