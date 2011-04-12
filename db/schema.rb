@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110412231244) do
+ActiveRecord::Schema.define(:version => 20110412233038) do
 
   create_table "addresses", :force => true do |t|
     t.string  "name"
@@ -152,7 +152,6 @@ ActiveRecord::Schema.define(:version => 20110412231244) do
     t.string   "trip_result",                                       :default => "unscheduled"
     t.string   "notes"
     t.decimal  "donation",           :precision => 10, :scale => 2, :default => 0.0
-    t.datetime "trip_confirmed"
     t.integer  "provider_id"
     t.datetime "called_back_at"
     t.boolean  "customer_informed",                                 :default => false
