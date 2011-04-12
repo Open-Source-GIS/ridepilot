@@ -237,17 +237,9 @@ purpose
     @this_month_sixty_plus = 0
     @this_month_less_than_sixty = 0
 
-    @this_month_unknown_age_dd = 0
-    @this_month_sixty_plus_dd = 0
-    @this_month_less_than_sixty_dd = 0
-
     @this_year_unknown_age = 0
     @this_year_sixty_plus = 0
     @this_year_less_than_sixty = 0
-
-    @this_year_unknown_age_dd = 0
-    @this_year_sixty_plus_dd = 0
-    @this_year_less_than_sixty_dd = 0
 
     @counts_by_ethnicity = {}
 
