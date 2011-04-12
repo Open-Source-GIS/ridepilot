@@ -9,7 +9,7 @@ class TripsController < ApplicationController
   end
 
   def trips_requiring_callback
-    #The trip coordinatior has made decisions on whether to confirm or
+    #The trip coordinator has made decisions on whether to confirm or
     #turn down trips.  Now they want to call back the customer to tell
     #them what's happened.  This is a list of all customers who have
     #not been marked as informed, ordered by when they were last
