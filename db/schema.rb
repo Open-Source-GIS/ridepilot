@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110407160000) do
+ActiveRecord::Schema.define(:version => 20110412194414) do
 
   create_table "addresses", :force => true do |t|
     t.string  "name"
@@ -127,6 +127,9 @@ ActiveRecord::Schema.define(:version => 20110407160000) do
     t.integer  "provider_id"
   end
 
+  add_index "runs", ["provider_id", "date"], :name => "index_runs_on_provider_id_and_date"
+  add_index "runs", ["provider_id", "start_time"], :name => "index_runs_on_provider_id_and_start_time"
+
   create_table "travel_time_estimates", :id => false, :force => true do |t|
     t.integer "from_address_id"
     t.integer "to_address_id"
@@ -159,6 +162,9 @@ ActiveRecord::Schema.define(:version => 20110407160000) do
     t.text     "guests"
     t.boolean  "in_district"
   end
+
+  add_index "trips", ["provider_id", "appointment_time"], :name => "index_trips_on_provider_id_and_appointment_time"
+  add_index "trips", ["provider_id", "pickup_time"], :name => "index_trips_on_provider_id_and_pickup_time"
 
   create_table "users", :force => true do |t|
     t.string   "email",                               :default => "", :null => false
