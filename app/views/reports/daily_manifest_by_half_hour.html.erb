@@ -1,0 +1,32 @@
+<h1>Transportation Schedule</h1>
+<h2><%= @date %></h2>
+
+<% i = 0 %>
+<% for driver, trips in @trips %>
+  <% i += 1 %>
+
+  Driver: <%= driver.name %><br/><br/>
+
+  <% start_time = @query.start_date.to_datetime.advance :hours=>@start_hour %>
+  <% while start_time.hour < @end_hour %>
+    <% end_time = start_time.advance :minutes=>30 %>
+    <strong><%= start_time.strftime '%H:%M' %></strong><br/>
+    <% for trip in trips %>
+
+      <% if trip.pickup_time >= start_time && trip.pickup_time < end_time %>
+        <%= trip.customer.name %> <br/>
+         <%= trip.customer.phone_number_1 %> <br/>
+        <%= trip.customer.phone_number_2 %> <br/>
+        <%= trip.pickup_address.text %> <br/>
+        <%= trip.dropoff_address.text %> <br/>
+      <% end %>
+    <% end %>
+    <hr>
+    <%
+  start_time = start_time.advance :minutes=>30 
+    
+  end %>
+  <% if i != @trips.size %>
+    <p style="page-break-after:always" />
+  <% end %>
+<% end %>

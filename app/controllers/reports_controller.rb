@@ -306,6 +306,12 @@ purpose
     end
   end
 
+  def daily_manifest_by_half_hour
+    daily_manifest #same data, operated on differently in the view
+    @start_hour = 7
+    @end_hour = 17
+  end
+
   private
   def provider_id
     return current_user.current_provider_id
