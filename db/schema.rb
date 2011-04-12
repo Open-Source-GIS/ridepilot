@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110412194414) do
+ActiveRecord::Schema.define(:version => 20110412231244) do
 
   create_table "addresses", :force => true do |t|
     t.string  "name"
@@ -154,13 +154,14 @@ ActiveRecord::Schema.define(:version => 20110412194414) do
     t.decimal  "donation",           :precision => 10, :scale => 2, :default => 0.0
     t.datetime "trip_confirmed"
     t.integer  "provider_id"
-    t.date     "called_back_at"
+    t.datetime "called_back_at"
     t.boolean  "customer_informed",                                 :default => false
     t.integer  "repeating_trip_id"
     t.boolean  "cab",                                               :default => false
     t.boolean  "cab_notified",                                      :default => false
     t.text     "guests"
     t.boolean  "in_district"
+    t.integer  "called_back_by"
   end
 
   add_index "trips", ["provider_id", "appointment_time"], :name => "index_trips_on_provider_id_and_appointment_time"

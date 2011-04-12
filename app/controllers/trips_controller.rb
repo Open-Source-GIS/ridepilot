@@ -64,6 +64,7 @@ class TripsController < ApplicationController
     @trip = Trip.find(params[:trip_id])
     if can? :edit, @trip
       @trip.called_back_at = Time.now
+      @trip.called_back_by = current_user.id
       @trip.customer_informed = true
       @trip.save
     end
@@ -76,6 +77,7 @@ class TripsController < ApplicationController
     @trip = Trip.find(params[:trip_id])
     if can? :edit, @trip
       @trip.called_back_at = Time.now
+      @trip.called_back_by = current_user.id
       @trip.customer_informed = false
       @trip.save
     end
