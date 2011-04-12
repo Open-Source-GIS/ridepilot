@@ -297,12 +297,12 @@ purpose
     @query = Query.new(query_params)
     @date = @query.start_date
     if @query.driver_id
-      @trips = Trip.where(["provider_id=? and cast(pickup_time as date) = ?", provider_id, @date]).group_by {|trip| trip.run.driver}
+      @trips = Trip.where(["cab = false and provider_id=? and cast(pickup_time as date) = ?", provider_id, @date]).group_by {|trip| trip.run.driver}
     else
       driver = Driver.find(@query.driver_id)
       authorize! :read, driver
       @trips = {@driver =>
-        Trip.where(["driver_id = ? and provider_id=? and cast(pickup_time as date) = ?", @query.driver_id, provider_id, @date])}
+        Trip.where(["cab = false and driver_id = ? and provider_id=? and cast(pickup_time as date) = ?", @query.driver_id, provider_id, @date])}
     end
   end
 
