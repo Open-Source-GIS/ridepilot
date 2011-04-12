@@ -3,4 +3,14 @@
 <%= link_to "Donations", :action=>:donations %><br/>
 <%= link_to "Cab Log", :action=>:cab %><br/>
 <%= link_to "Age and Ethnicity", :action=>:age_and_ethnicity %><br/>
+<%= form_for @driver_query, :url=>url_for(:action=>:daily_manifest), :html=>{:method=>:get} do |f| %>
+
+<%= f.date_select  :start_date, :discard_day=>true %><br/>
+
+<%= f.collection_select :driver_id, @drivers, :id, :name %><br/>
+
+<%= f.submit "Daily Manifest" %>
+<% end %>
+
+
 

@@ -1,0 +1,23 @@
+<h1>Transportation Schedule</h1>
+<h2><%= @date %></h2>
+
+<% i = 0 %>
+<% for driver, trips in @trips %>
+  <% i += 1 %>
+
+  Driver: <%= driver.name %>
+
+  <% for trip in trips %>
+    <strong><%= trip.pickup_time %></strong><br/>
+    <%= trip.customer.name %> <br/>
+    <%= trip.customer.phone_number_1 %> <br/>
+    <%= trip.customer.phone_number_2 %> <br/>
+    <%= trip.pickup_address.text %> <br/>
+    <%= trip.dropoff_address.text %> <br/>
+    <hr>
+  <% end %>
+
+  <% if i != @trips.size %>
+    <p style="page-break-after:always" />
+  <% end %>
+<% end %>

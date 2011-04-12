@@ -5,6 +5,7 @@ class Query
   attr_accessor :start_date
   attr_accessor :end_date
   attr_accessor :vehicle_id
+  attr_accessor :driver_id
 
   def convert_date(obj, base)
     return Date.new(obj["#{base}(1i)"].to_i,obj["#{base}(2i)"].to_i,(obj["#{base}(3i)"] || 1).to_i)
@@ -24,6 +25,9 @@ class Query
       if params["vehicle_id"]
         @vehicle_id = params["vehicle_id"]
       end
+      if params["driver_id"]
+        @driver_id = params["driver_id"]
+      end
     end
   end
 
@@ -40,6 +44,8 @@ end
 class ReportsController < ApplicationController
 
   def index
+    @driver_query = Query.new
+    @drivers = Driver.accessible_by(current_ability)
   end
 
   def vehicles
@@ -286,8 +292,23 @@ purpose
 
   end
 
+  def daily_manifest
+    query_params = params[:query]
+    @query = Query.new(query_params)
+    @date = @query.start_date
+    if @query.driver_id
+      @trips = Trip.where(["provider_id=? and cast(pickup_time as date) = ?", provider_id, @date]).group_by {|trip| trip.run.driver}
+    else
+      driver = Driver.find(@query.driver_id)
+      authorize! :read, driver
+      @trips = {@driver =>
+        Trip.where(["driver_id = ? and provider_id=? and cast(pickup_time as date) = ?", @query.driver_id, provider_id, @date])}
+    end
+  end
+
   private
   def provider_id
     return current_user.current_provider_id
   end
+
 end
