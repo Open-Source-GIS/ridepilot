@@ -97,7 +97,7 @@ class ReportsController < ApplicationController
     @query.start_date = @start_date
     @end_date = @start_date.next_month
     if @monthly.nil?
-      @monthly = Monthly.create(:start_date=>@start_date, :end_date=>@end_date)
+      @monthly = Monthly.create(:start_date=>@start_date, :end_date=>@end_date, :provider_id=>provider_id)
     end
 
     if !can? :read, @monthly
@@ -166,7 +166,7 @@ purpose
 
   def update_monthly
     @monthly = Monthly.find(params[:monthly][:id])
-
+    params[:monthly][:provider_id] = provider_id
     if can? :edit, @monthly
       @monthly.update_attributes(params[:monthly])
     end
