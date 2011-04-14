@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110412194414) do
+ActiveRecord::Schema.define(:version => 20110414173938) do
 
   create_table "addresses", :force => true do |t|
     t.string  "name"
@@ -53,6 +53,11 @@ ActiveRecord::Schema.define(:version => 20110412194414) do
     t.string  "last_name"
     t.boolean "active"
     t.boolean "paid"
+    t.integer "provider_id"
+  end
+
+  create_table "funding_source_visibilities", :force => true do |t|
+    t.integer "funding_source_id"
     t.integer "provider_id"
   end
 

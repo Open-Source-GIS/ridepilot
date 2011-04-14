@@ -8,5 +8,7 @@
 <li><%= link_to "Repeating trips", repeating_trips_path %></li>
 <li><%= link_to "Reports", reports_path %></li>
 <li><%= link_to "Vehicles and drivers", provider_path(current_user.current_provider) %></li>
-
+<% if can? :edit, FundingSource %>
+<li><%= link_to "Funding sources", funding_sources_path %></li>
+<% end %>
 </ul>
