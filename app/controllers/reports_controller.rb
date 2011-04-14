@@ -45,7 +45,9 @@ class ReportsController < ApplicationController
 
   def index
     @driver_query = Query.new
-    @drivers = Driver.accessible_by(current_ability)
+    cab = Driver.new(:id=>"cab", :first_name=>"Cab")
+    all = Driver.new(:id=>"all", :first_name=>"All")
+    @drivers =  [all, cab] + Driver.accessible_by(current_ability)
   end
 
   def vehicles
@@ -293,16 +295,29 @@ purpose
   end
 
   def daily_manifest
+    authorize! :read, Trip
+
     query_params = params[:query]
     @query = Query.new(query_params)
     @date = @query.start_date
-    if @query.driver_id
-      @trips = Trip.where(["cab = false and provider_id=? and cast(pickup_time as date) = ?", provider_id, @date]).group_by {|trip| trip.run.driver}
+
+    cab = Driver.new(name='cab') #dummy driver for cab trips
+
+    if @query.driver_id == 'cab'
+
+      @trips = {cab =>
+        Trip.where(["(trip_result = '' or trip_result = 'COMP') and cab = true and provider_id=? and cast(pickup_time as date) = ? ", @query.driver_id, provider_id, @date])}
+
+    elsif @query.driver_id == ''
+
+      @trips = Trip.where(["(trip_result = '' or trip_result = 'COMP') and provider_id=? and cast(pickup_time as date) = ? ", provider_id, @date]).group_by {|trip| trip.run ? trip.run.driver : cab }
+
     else
+
       driver = Driver.find(@query.driver_id)
       authorize! :read, driver
-      @trips = {@driver =>
-        Trip.where(["cab = false and driver_id = ? and provider_id=? and cast(pickup_time as date) = ?", @query.driver_id, provider_id, @date])}
+      @trips = {driver =>
+        Trip.find(:all, :joins=>:run, :conditions=> ["(trip_result = '' or trip_result = 'COMP') and cab = false and driver_id = ? and trips.provider_id=? and cast(pickup_time as date) = ? ", @query.driver_id, provider_id, @date])}
     end
   end
 
