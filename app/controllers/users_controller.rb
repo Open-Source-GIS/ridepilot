@@ -25,6 +25,7 @@ class UsersController < Devise::SessionsController
     if not user
       user = User.new(params[:user])
       user.password = user.password_confirmation = Devise.friendly_token[0..8]
+      user.current_provider_id = current_user.current_provider_id
       user.save!
       NewUserMailer.new_user_email(user, user.password).deliver
     end
