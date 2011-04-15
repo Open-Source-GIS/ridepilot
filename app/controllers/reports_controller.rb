@@ -144,7 +144,7 @@ class ReportsController < ApplicationController
     end
 purpose
     #compute monthly totals
-    month_runs = Run.where(["provider_id = ? and date BETWEEN ? and ? ", provider_id, @start_date, @end_date])
+    month_runs = Run.where(["provider_id = ? and date BETWEEN ? and ? and start_odometer is not null and end_odometer is not null", provider_id, @start_date, @end_date])
 
     first_run = month_runs.order("date").first
     if first_run
@@ -154,12 +154,10 @@ purpose
     end
 
     @turndowns = Trip.where(["provider_id =? and trip_result = 'TD' and pickup_time BETWEEN ? and ? ", provider_id, @start_date, @end_date]).count
-
-    #FIXME: this is not actually goint to work, because you can't 
-    #just subtract times in sql and expect to get something useful
     
-    @volunteer_driver_hours = month_runs.where("paid = true").sum("end_time - start_time") || 0
-    @paid_driver_hours = month_runs.where("paid = false").sum("end_time - start_time")  || 0
+    @volunteer_driver_hours = hms_to_hours(month_runs.where("paid = true").sum("end_time - start_time") || "0:00:00")
+    @paid_driver_hours = hms_to_hours(month_runs.where("paid = false").sum("end_time - start_time")  || "0:00:00")
+
 
     undup_riders_sql = "select count(*) as undup_riders from (select customer_id, fiscal_year(pickup_time) as year, min(fiscal_month(pickup_time)) as month from trips where provider_id=? and trip_result = 'COMP' group by customer_id, year) as  morx where date (year || '-' || month || '-' || 1)  between ? and ? "
 
@@ -330,6 +328,14 @@ purpose
   private
   def provider_id
     return current_user.current_provider_id
+  end
+
+  def hms_to_hours(hms)
+    #argumen is  a string of the form hours:minutes:seconds.  We would like
+    #a float of hours
+
+    hours, minutes, seconds = hms.split(":").map &:to_i
+    return hours + minutes / 60.0 + seconds / 3600.0
   end
 
 end
