@@ -10,6 +10,7 @@ Ridepilot::Application.routes.draw do
   end
 
   resources :customers do
+    post :inactivate, :as=>:inactivate
     get "search", :on=>:collection
     get :found, :on=>:collection
     get :autocomplete, :on=>:collection

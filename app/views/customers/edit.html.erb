@@ -2,5 +2,12 @@
 
 <%= render 'form' %>
 
+<%= form_for @customer, :url=>customer_inactivate_path(@customer), :html=>{:method=>:post} do |f| %>
+
+  <%= f.text_field :inactivated_reason %>
+  <%= f.submit "Inactivate" %>
+
+<% end %>
+
 <%= link_to 'Show', @customer %> |
 <%= link_to 'Back', customers_path %>

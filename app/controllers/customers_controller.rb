@@ -133,6 +133,16 @@ first_name, first_name, first_name, first_name,
     end
   end
 
+  def inactivate
+    @customer = Customer.find(params[:customer_id])
+    authorize! :edit, @customer
+
+    @customer.inactivated_date = Date.today
+    @customer.inactivated_reason = params[:customer][:inactivated_reason]
+    @customer.save
+    redirect_to :action=>:index
+  end
+
   def update
     @customer = Customer.find(params[:id])
 
