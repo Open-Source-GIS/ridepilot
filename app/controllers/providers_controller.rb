@@ -26,7 +26,7 @@ class ProvidersController < ApplicationController
   def change_role
     role = Role.find(params[:role][:id])
     authorize! :edit, role
-    role.admin = params[:role][:admin]
+    role.level = params[:role][:level]
     role.save!
     redirect_to provider_path(params[:provider_id])
   end

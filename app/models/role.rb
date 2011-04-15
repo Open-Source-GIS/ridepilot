@@ -9,4 +9,15 @@ class Role < ActiveRecord::Base
   def editor
     return level >= 50
   end
+
+  def name
+    if level == 100
+      return 'Admin'
+    elsif level == 50
+      return 'Editor'
+    else
+      return 'User'
+    end
+  end
+
 end

@@ -12,6 +12,7 @@ class UsersController < Devise::SessionsController
     if User.count == 0
       return redirect_to :init
     end
+    authorize! :edit, current_user.current_provider
     @user = User.new
   end
 
@@ -30,7 +31,7 @@ class UsersController < Devise::SessionsController
 
     Role.new(:user_id=>user.id, 
              :provider_id=>current_user.current_provider_id, 
-             :admin=>params[:user][:admin]).save!
+             :level=>params[:role][:level]).save!
 
     flash[:notice] = "%s has been added and a password has been emailed" % user.email
     redirect_to provider_path(current_user.current_provider)

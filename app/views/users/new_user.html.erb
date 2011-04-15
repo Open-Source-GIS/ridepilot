@@ -2,7 +2,7 @@
 <%= f.label :email %>:<br/>
 <%= f.text_field :email %><br/>
 
-<%= f.label :admin %>: <%= check_box_tag :admin %>
+<%= f.label :permissions %>: <%= select :role, :level, [["Admin", 100], ["Editor", 50], ["User", 0]] %>
 
 <br/>
 <%= f.submit "Create" %>

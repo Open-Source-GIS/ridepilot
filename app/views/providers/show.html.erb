@@ -12,22 +12,27 @@ No users yet.<br/>
 <th>Email</th>
 <th>Role</th>
 <th>Last login</th>
+<% if can? :edit, Role %>
+<th></th>
+<th></th>
+<% end %>
 </tr>
 
 <% for role in @provider.roles %>
 <tr>
 <td><%= role.user.email %></td>
-<td><%= role.admin ? "Admin" : "User" %></td>
+<td><%= role.name %></td>
 <td><%= role.user.last_sign_in_at %></td>
+<% if can? :edit, role %>
 <td><%= button_to "Delete", provider_delete_role_path(@provider.id, :role_id=>role.id) %></td>
 <td>
   <%= form_for(role, :url=>provider_change_role_path(@provider.id), :html => { :method => :post }) do |f| %>
     <%= f.hidden_field :id %>
-    <%= f.select :admin, [["Admin", "true"], ["User", "false"]], {:selected => role.admin.to_s} %>
+    <%= f.select :level, [["Admin", 100], ["Editor", 50], ["User", 0]] %>
     <%= f.submit "Change role" %>
   <% end %>
 </td>
-
+<% end %>
 </tr>
 <% end %>
 </table>
