@@ -2,5 +2,7 @@
   <%= autocomplete_field_tag 'customer_name', '', autocomplete_customers_path, :size => 30, :id_element => "#customer_id" %>
   <%= hidden_field_tag 'customer_id' %>
   <%= submit_tag "Show details" %>
+  <% if can? :create, Trip %>
   <%= submit_tag "New trip for this customer" %>
+  <% end %>
 <% end %>
