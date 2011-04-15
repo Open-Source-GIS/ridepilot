@@ -4,6 +4,9 @@ class Ability
   def initialize(user)
     ride_connection = Provider.find_by_name("Ride Connection")
 
+    can :read, Mobility
+    can :read, Region
+
     for role in user.roles
       if role.provider == ride_connection 
         if role.admin
@@ -15,12 +18,21 @@ class Ability
         if role.editor
           action = :manage
         else
-          action = :view
+          action = :read
         end
         can action, Provider, :provider_id => provider.id
       end
     end
     provider = user.current_provider
+    role = Role.find(:first, :conditions=>["provider_id=? and user_id=?", provider.id, user.id])
+    if not role
+      return
+    end
+    if role.editor
+      action = :manage
+    else
+      action = [:read, :search]
+    end
 
     can action, Trip, :provider_id => provider.id
     can action, Run, :provider_id => provider.id
@@ -31,7 +43,7 @@ class Ability
     can action, Address, :provider_id => provider.id
     can action, Customer, :provider_id => provider.id
     can action, RepeatingTrip, :provider_id => provider.id
-    can :view, FundingSource, {:provider => {:id => provider.id}}
+    can :read, FundingSource, {:providers => {:id => provider.id}}
 
     if role.admin
       can :manage, User, {:roles => {:provider_id => provider.id}}
@@ -39,7 +51,5 @@ class Ability
       can :read, User, {:roles => {:provider_id => provider.id}}
     end
 
-    can :read, Mobility
-    can :read, Region
   end
 end
