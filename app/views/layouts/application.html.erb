@@ -16,7 +16,7 @@
         <% if current_user %>
           <p style="float:right"><%= image_tag current_user.current_provider.logo.url %></p>
 
-          <a href="#"><%= current_user.email %></a> | <a href="#">Log out</a>
+          <a href="#"><%= current_user.email %></a> | <%= link_to "Log out", destroy_user_session_path %>
   
           Logged in to 
           <% if @provider_map.size > 1 %>
