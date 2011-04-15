@@ -1,5 +1,5 @@
 class CustomersController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource :except=>[:autocomplete, :found]
 
   def search
   end
