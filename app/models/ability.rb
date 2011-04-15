@@ -34,9 +34,9 @@ class Ability
     can :view, FundingSource, {:provider => {:id => provider.id}}
 
     if role.admin
-      can :manage, User, {:role => {:provider_id => provider.id}}
+      can :manage, User, {:roles => {:provider_id => provider.id}}
     else
-      can :read, User, {:role => {:provider_id => provider.id}}
+      can :read, User, {:roles => {:provider_id => provider.id}}
     end
 
     can :read, Mobility
