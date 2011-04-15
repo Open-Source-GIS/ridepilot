@@ -19,6 +19,10 @@ class FundingSourcesController < ApplicationController
     @funding_source = FundingSource.create(funding_source_params)
 
     if @funding_source.save
+      new_provider_ids = params["provider"]
+      for id in new_provider_ids
+        FundingSourceVisibility.create(:provider_id=>id, :funding_source_id=>@funding_source.id)
+      end
       redirect_to(@funding_source, :notice => 'Funding source was successfully created.')
     else
       @providers = Provider.all
