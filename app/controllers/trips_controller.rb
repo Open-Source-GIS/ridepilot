@@ -125,7 +125,7 @@ class TripsController < ApplicationController
   def edit
     @customer = @trip.customer
     @mobilities = Mobility.all
-    @funding_sources = FundingSource.by_provider(current_current_provider)
+    @funding_sources = FundingSource.by_provider(current_user.current_provider)
 
   end
 
