@@ -3,13 +3,24 @@
 <%= link_to "Donations", :action=>:donations %><br/>
 <%= link_to "Cab Log", :action=>:cab %><br/>
 <%= link_to "Age and Ethnicity", :action=>:age_and_ethnicity %><br/>
+
 <%= form_for @driver_query, :url=>url_for(:action=>:daily_manifest), :html=>{:method=>:get} do |f| %>
 
-<%= f.date_select  :start_date, :discard_day=>true %><br/>
+<%= f.date_select  :start_date %>
 
-<%= f.collection_select :driver_id, @drivers, :id, :name %><br/>
+<%= f.collection_select :driver_id, @drivers, :id, :name %>
 
 <%= f.submit "Daily Manifest" %>
+<% end %>
+
+
+<%= form_for @driver_query, :url=>url_for(:action=>:daily_manifest_by_half_hour), :html=>{:method=>:get} do |f| %>
+
+<%= f.date_select  :start_date %>
+
+<%= f.collection_select :driver_id, @drivers, :id, :name %>
+
+<%= f.submit "Daily Manifest By Half Hour" %>
 <% end %>
 
 

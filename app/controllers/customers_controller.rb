@@ -85,6 +85,7 @@ dmetaphone_alt(first_name) LIKE dmetaphone_alt(?) || '%'
 
     @customer = Customer.new(params[:customer])
     @customer.provider = current_user.current_provider
+    @customer.activated_date = Date.today
 
     if params[:ignore_dups] != "1"
       #check for duplicates
@@ -130,6 +131,16 @@ first_name, first_name, first_name, first_name,
         format.xml  { render :xml => @customer.errors, :status => :unprocessable_entity }
       end
     end
+  end
+
+  def inactivate
+    @customer = Customer.find(params[:customer_id])
+    authorize! :edit, @customer
+
+    @customer.inactivated_date = Date.today
+    @customer.inactivated_reason = params[:customer][:inactivated_reason]
+    @customer.save
+    redirect_to :action=>:index
   end
 
   def update

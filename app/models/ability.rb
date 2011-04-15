@@ -12,23 +12,31 @@ class Ability
           can :read, :all 
         end
       else
-        if role.admin
+        if role.editor
           action = :manage
         else
           action = :view
         end
         can action, Provider, :provider_id => provider.id
-        can action, Trip, :provider_id => provider.id
-        can action, Run, :provider_id => provider.id
-        can action, Driver, :provider_id => provider.id
-        can action, Vehicle, :provider_id => provider.id
-        can action, VehicleMaintenanceEvent, :provider_id => provider.id
-        can action, User, {:role => {:provider_id => provider.id}}
-        can action, Monthly, :provider_id => provider.id
-        can action, Address, :provider_id => provider.id
-        can action, Customer, :provider_id => provider.id
-        can action, RepeatingTrip, :provider_id => provider.id
       end
+    end
+    provider = user.current_provider
+
+    can action, Trip, :provider_id => provider.id
+    can action, Run, :provider_id => provider.id
+    can action, Driver, :provider_id => provider.id
+    can action, Vehicle, :provider_id => provider.id
+    can action, VehicleMaintenanceEvent, :provider_id => provider.id
+    can action, Monthly, :provider_id => provider.id
+    can action, Address, :provider_id => provider.id
+    can action, Customer, :provider_id => provider.id
+    can action, RepeatingTrip, :provider_id => provider.id
+    can :view, FundingSource, {:provider => {:id => provider.id}}
+
+    if role.admin
+      can :manage, User, {:role => {:provider_id => provider.id}}
+    else
+      can :read, User, {:role => {:provider_id => provider.id}}
     end
 
     can :read, Mobility
