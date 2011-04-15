@@ -11,6 +11,8 @@ TRIP_RESULT_CODES = {
 
 TRIP_PURPOSES = ["Life-Sustaining Medical", "Medical", "Nutrition", "Personal/Support Services", "Recreation", "Shopping", "School/Work", "Volunteer Work"]
 
+DEFAULT_RUN_START_HOUR = 7
+DEFAULT_RUN_END_HOUR = 18
 
 # Initialize the rails application
 Ridepilot::Application.initialize!
