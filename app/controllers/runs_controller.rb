@@ -27,7 +27,7 @@ class RunsController < ApplicationController
     @run = Run.new
     @run.provider_id = current_provider_id
     @drivers = Driver.where(:provider_id=>@run.provider_id)
-    @vehicles = Vehicle.where(:provider_id=>@run.provider_id)
+    @vehicles = Vehicle.active.where(:provider_id=>@run.provider_id)
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @trip }
@@ -41,7 +41,7 @@ class RunsController < ApplicationController
 
   def edit
     @drivers = Driver.where(:provider_id=>@run.provider_id)
-    @vehicles = Vehicle.where(:provider_id=>@run.provider_id)
+    @vehicles = Vehicle.active.where(:provider_id=>@run.provider_id)
   end
 
   def create
@@ -57,7 +57,7 @@ class RunsController < ApplicationController
         format.xml  { render :xml => @run, :status => :created, :location => @run }
       else
         @drivers = Driver.where(:provider_id=>@run.provider_id)
-        @vehicles = Vehicle.where(:provider_id=>@run.provider_id)
+        @vehicles = Vehicle.active.where(:provider_id=>@run.provider_id)
 
         format.html { render :action => "new" }
         format.xml  { render :xml => @run.errors, :status => :unprocessable_entity }
@@ -76,7 +76,7 @@ class RunsController < ApplicationController
         format.xml  { head :ok }
       else
         @drivers = Driver.where(:provider_id=>@run.provider_id)
-        @vehicles = Vehicle.where(:provider_id=>@run.provider_id)
+        @vehicles = Vehicle.active.where(:provider_id=>@run.provider_id)
         format.html { render :action => "edit" }
         format.xml  { render :xml => @run.errors, :status => :unprocessable_entity }
       end
