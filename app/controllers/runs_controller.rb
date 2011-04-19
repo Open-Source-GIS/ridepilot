@@ -16,7 +16,7 @@ class RunsController < ApplicationController
       params[:date] = Date.today
     end
     @runs = @runs.where(["cast(scheduled_start_time as date) = ?", params[:date]])
-
+    @date = params[:date]
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @trips }

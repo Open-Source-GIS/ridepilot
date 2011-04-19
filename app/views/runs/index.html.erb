@@ -1,12 +1,16 @@
 <h1>Listing runs</h1>
 
 <form action="<%= runs_path %>" method="get">
-Date: <input type="text" name="date">
+Date: <input type="text" name="date" value="<%= @date %>">
+<input type="submit" name="submit" value="submit">
 </form>
 <br/>
+
+
+Runs for <%= @date %>:
+<% if @runs.size > 0 %>
 <table>
   <tr>
-    <th>Date</th>
     <th>Scheduled Start time</th>
     <th>Scheduled End time</th>
     <th>Vehicle</th>
@@ -19,7 +23,6 @@ Date: <input type="text" name="date">
 
 <% @runs.each do |run| %>
   <tr>
-    <td><%= run.date %></td>
     <td><%= run.scheduled_start_time.to_s %></td>
     <td><%= run.scheduled_end_time.to_s %></td>
     <td><%= run.vehicle ? run.vehicle.name : 'no vehicle' %></td>
@@ -31,6 +34,8 @@ Date: <input type="text" name="date">
   </tr>
 <% end %>
 </table>
-
+<% else %>
+no runs
+<% end %>
 <br />
 
