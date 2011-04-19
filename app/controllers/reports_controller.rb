@@ -326,9 +326,6 @@ purpose
   end
 
   private
-  def provider_id
-    return current_user.current_provider_id
-  end
 
   def hms_to_hours(hms)
     #argumen is  a string of the form hours:minutes:seconds.  We would like

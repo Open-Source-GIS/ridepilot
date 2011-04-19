@@ -21,4 +21,8 @@ class ApplicationController < ActionController::Base
 
   end
 
+  private
+  def provider_id
+    return current_user.current_provider_id
+  end
 end
