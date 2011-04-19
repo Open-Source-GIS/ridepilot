@@ -25,17 +25,17 @@ class UsersController < Devise::SessionsController
     if not user
       user = User.new(params[:user])
       user.password = user.password_confirmation = Devise.friendly_token[0..8]
-      user.current_provider_id = current_user.current_provider_id
+      user.current_provider_id = current_provider_id
       user.save!
       NewUserMailer.new_user_email(user, user.password).deliver
     end
 
     Role.new(:user_id=>user.id, 
-             :provider_id=>current_user.current_provider_id, 
+             :provider_id=>current_provider_id, 
              :level=>params[:role][:level]).save!
 
     flash[:notice] = "%s has been added and a password has been emailed" % user.email
-    redirect_to provider_path(current_user.current_provider)
+    redirect_to provider_path(current_provider)
   end
 
   def show_init

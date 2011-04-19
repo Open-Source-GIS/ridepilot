@@ -22,7 +22,11 @@ class ApplicationController < ActionController::Base
   end
 
   private
-  def provider_id
+  def current_provider_id
     return current_user.current_provider_id
+  end
+
+  def current_provider
+    return current_user.current_provider
   end
 end

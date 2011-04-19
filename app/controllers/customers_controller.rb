@@ -84,7 +84,7 @@ dmetaphone_alt(first_name) LIKE dmetaphone_alt(?) || '%'
   def create
 
     @customer = Customer.new(params[:customer])
-    @customer.provider = current_user.current_provider
+    @customer.provider = current_provider
     @customer.activated_date = Date.today
 
     if params[:ignore_dups] != "1"
