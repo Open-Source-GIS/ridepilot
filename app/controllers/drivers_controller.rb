@@ -5,7 +5,7 @@ class DriversController < ApplicationController
   end
 
   def index
-    redirect_to provider_path(current_user.current_provider)
+    redirect_to provider_path(current_provider)
   end
 
   def edit
@@ -15,14 +15,14 @@ class DriversController < ApplicationController
     @driver.update_attributes(params[:driver])
     @driver.save!
     flash[:notice] = "Driver updated"
-    redirect_to provider_path(current_user.current_provider)
+    redirect_to provider_path(user.current_provider)
   end
 
   def create
-    @driver.provider = current_user.current_provider
+    @driver.provider = current_provider
     @driver.save!
     flash[:notice] = "Driver created"
-    redirect_to provider_path(current_user.current_provider)
+    redirect_to provider_path(current_provider)
   end
 
 end

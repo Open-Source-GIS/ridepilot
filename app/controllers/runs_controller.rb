@@ -25,7 +25,7 @@ class RunsController < ApplicationController
 
   def new
     @run = Run.new
-    @run.provider_id = current_user.current_provider_id
+    @run.provider_id = current_provider_id
     @drivers = Driver.where(:provider_id=>@run.provider_id)
     @vehicles = Vehicle.where(:provider_id=>@run.provider_id)
     respond_to do |format|
@@ -46,9 +46,8 @@ class RunsController < ApplicationController
 
   def create
     run_params = params[:run]
-    provider = current_user.current_provider
-    authorize! :manage, provider
-    run_params[:provider_id] = provider_id
+    authorize! :manage, current_provider
+    run_params[:provider_id] = current_provider_id
 
     @run = Run.new(run_params)
 
@@ -68,9 +67,8 @@ class RunsController < ApplicationController
 
   def update
     run_params = params[:run]
-    provider = current_user.current_provider
-    authorize! :manage, provider
-    run_params[:provider_id] = provider.id
+    authorize! :manage, current_provider
+    run_params[:provider_id] = current_provider_id
 
     respond_to do |format|
       if @run.update_attributes(run_params)

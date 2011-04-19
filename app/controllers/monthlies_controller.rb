@@ -5,7 +5,7 @@ class MonthliesController < ApplicationController
   end
 
   def index
-    redirect_to provider_path(current_user.current_provider)
+    redirect_to provider_path(current_provider)
   end
 
   def edit
@@ -15,14 +15,14 @@ class MonthliesController < ApplicationController
     @monthly.update_attributes(params[:monthly])
     @monthly.save!
     flash[:notice] = "Monthly report updated"
-    redirect_to provider_path(current_user.current_provider)
+    redirect_to provider_path(current_provider)
   end
 
   def create
-    @monthly.provider = current_user.current_provider
+    @monthly.provider = current_provider
     @monthly.save!
     flash[:notice] = "Monthly report created"
-    redirect_to provider_path(current_user.current_provider)
+    redirect_to provider_path(current_provider)
   end
 
 end
