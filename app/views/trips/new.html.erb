@@ -1,5 +1,48 @@
-<h1>New trip</h1>
+<div id="page-header">
+  <h1>New trip</h1>
+</div>
+
+<div id="calendar"></div>
 
 <%= render 'form' %>
 
-<%= link_to 'Back', trips_path %>
+<%= link_to 'Back', trips_path, :class=>'back' %>
+
+<script type='text/javascript'>
+
+	var year = new Date().getFullYear();
+	var month = new Date().getMonth();
+	var day = new Date().getDate();
+
+	var eventData = {
+		events : [
+		   {"id":1, "class":"confirmed", "start": new Date(year, month, day, 12), "end": new Date(year, month, day, 13, 35),"title":"Confirmed"},
+		   {"id":2, "class":"unconfirmed", "start": new Date(year, month, day, 14), "end": new Date(year, month, day, 14, 45),"title":"Unconfirmed"},
+		   {"id":3, "class":"cab", "start": new Date(year, month, day + 1, 18), "end": new Date(year, month, day + 1, 18, 45),"title":"Cab Trip"},
+		   {"id":4, "class":"unscheduled", "start": new Date(year, month, day - 1, 8), "end": new Date(year, month, day - 1, 9, 30),"title":"Unscheduled"},
+		   {"id":5, "start": new Date(year, month, day + 1, 14), "end": new Date(year, month, day + 1, 15),"title":"No class"}
+		]
+	};
+
+	$(document).ready(function() {
+
+		$('#calendar').weekCalendar({
+			timeslotsPerHour: 4,
+			daysToShow: 5,
+			firstDayOfWeek: 1,
+			businessHours: {start: 0, end: 24, limitDisplay: true},
+			headerSeparator: ", ",
+			height: function($calendar){
+				return 250;
+			},
+			eventRender : function(calEvent, $event) {
+				if(calEvent.end.getTime() < new Date().getTime()) {
+					$event.css({ opacity: 0.33 });
+				}
+			},
+			data:eventData
+		});
+
+	});
+
+</script>

@@ -12,54 +12,138 @@
   <% end %>
 
   <!-- the customer id needs to be passed in this action -->
-  <%= f.hidden_field :customer_id, :value=>@customer.id %><br/>
+  <%= f.hidden_field :customer_id, :value=>@customer.id %>
 
-  Trip for <strong><%= @customer.name %></strong><br/>
+  <fieldset>
 
-  Pickup time: <br/>
-  <%= f.text_field :pickup_time %><br/>
+    <ol class="section first">
 
-  Appointment time: <br/>
-  <%= f.text_field :appointment_time %><br/>
+      <li class="selfclear">
+        <label for="customer">Customer:</label>
+        <strong><%= @customer.name %></strong><!---------- TODO: Why is there a trailing ' .'? -->
+      </li>
 
-  TODO: Guest count should be computed by
-  considering actual guest information, which will
-  be in @trip.guest; we need a widget which allows
-  users to add guests with their mobilities
+      <li class="selfclear time">
+        <label for="pickup_time">Pickup time:</label>
+        <%= f.text_field :pickup_time %>
+      </li>
 
-  Guest count: <br/>
-  <%= f.text_field :guest_count %><br/>
+      <li class="selfclear time">
+        <label for="appointment_time">Appointment time:</label>
+        <%= f.text_field :appointment_time %>
+      </li>
 
-  Attendant count: <br/>
-  <%= f.text_field :attendant_count %><br/>
+      <li class="selfclear">
+        <label for="repeats_id">Repeats:</label>
+        <div>
+          <p>
+            <input type="checkbox" name="monday" value="Monday" /> M&nbsp;
+            <input type="checkbox" name="tuesday" value="Tuesday" /> T&nbsp;
+            <input type="checkbox" name="wednesday" value="Wednesday" /> W&nbsp;
+            <input type="checkbox" name="thursday" value="Thrusday" /> R&nbsp;
+            <input type="checkbox" name="friday" value="Friday" /> F&nbsp;
+          </p>
+          every <input type="text" size="2" name="trip[repeat_weeks]" id="trip_repeat_weeks" /> week(s)
+        </div>
+<!-- TODO: make repeats checkboxes work in Rails -->
+      </li>
 
-  Group size: <br/>
-  <%= f.text_field :attendant_count %><br/>
+<!-- TODO: autocomplete / geocode here -->
+      <li class="selfclear">
+        <label for="pickup_address_id">Pickup address:</label>
+        <%= f.text_field(:pickup_address_id, :class => "full") %>
+      </li>
 
-  <!-- todo: autocomplete / geocode here -->
-  Pickup address: <br/>
-  <%= f.text_field :pickup_address_id %><br/>
+      <li class="selfclear">
+        <label for="pickup_address_id">Dropoff address:</label>
+        <%= f.text_field(:dropoff_address_id, :class => "full") %>
+      </li>
 
-  Dropoff address: <br/>
-  <%= f.text_field :dropoff_address_id %><br/>
+      <li class="selfclear">
+        <label for="phone_id">Phone:</label>
+        <input type="text" size="14" name="phone_id" id="phone_id" />
+<!-- TODO: make phone input work in Rails -->
+      </li>
 
+      <li class="selfclear">
+        <label for="alt_phone_id">Alt. Phone:</label>
+        <input type="text" size="14" name="alt_phone_id" id="alt_phone_id" />
+<!-- TODO: make alt_phone input work in Rails -->
+      </li>
+    </ol>
+    
+    <ol class="section second">
+      <li class="selfclear">
+        <label for="trip_purpose">Trip purpose:</label>
+        <%= f.text_field(:trip_purpose, :class => "full") %>
+      </li>
 
-  Mobility:<br/>
-  <%= f.collection_select :mobility_id, @mobilities, :id, :name %><br/>
+      <li class="selfclear passengers">
+        <label for="guest_count">Passengers:</label>
+        <div>
+<!-- TODO: Guest count should be computed by
+considering actual guest information, which will
+be in @trip.guest; we need a widget which allows
+users to add guests with their mobilities -->
+          <p>
+            <span class="nobreak"><%= f.text_field :guest_count %>&nbsp;Guests&nbsp;</span>
+            <span class="nobreak"><%= f.text_field :attendant_count %>&nbsp;Attendants</span>
+          </p>
+          <input type="checkbox" name="monday" value="Monday" /> Group
+        </div>
+      </li>
 
-  Funding source:<br/>
-  <%= f.collection_select :funding_source_id, @funding_sources, :id, :name %><br/>
+      <li class="selfclear">
+        <label for="vehicle_id">Vehicle:</label>
+        <select></select>
+<!-- TODO: make vehicle input work in Rails -->
+      </li>
 
-  Trip purpose: <br/>
-  <%= f.text_field :trip_purpose %><br/>
+      <li class="selfclear">
+        <label for="driver_notes">Driver Notes:</label>
+        <textarea rows="20" name="driver_notes" id="driver_notes" cols="40"></textarea>
+      </li>
+    </ol>
 
-  Notes: <br/>
-  <%= f.text_field :notes %><br/>
+    <ol class="section third">
+      <li class="selfclear">
+        <label for="result_id">Result:</label>
+        <select></select>
+<!-- TODO: make result input work in Rails -->
+      </li>
 
-  Donation: <br/>
-  <%= f.text_field :donation %><br/>
+      <li class="selfclear donation">
+        <label for="donation">Donation:</label>
+        <%= f.text_field :donation %>
+      </li>
 
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+      <li class="selfclear">
+        <label for="funding_source_id">Funding source:</label>
+        <%= f.collection_select :funding_source_id, @funding_sources, :id, :name %>
+      </li>
+
+      <li class="selfclear">
+        <label for="mobility_id">Mobility Req.:</label>
+        <%= f.collection_select :mobility_id, @mobilities, :id, :name %>
+      </li>
+
+      <li class="selfclear">
+        <label for="mobility_notes">Mobility Notes:</label>
+        <textarea rows="20" name="mobility_notes" id="mobility_notes" cols="40"></textarea>
+      </li>
+    </ol>
+
+    <ol class="section fourth double">
+      <li class="selfclear">
+        <label for="notes">Notes:</label>
+        <%= f.text_area :notes %>
+      </li>
+    </ol>
+
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+
+  </fieldset>
+
 <% end %>

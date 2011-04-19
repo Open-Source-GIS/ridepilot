@@ -2,9 +2,12 @@
 <html>
 <head>
   <title>Ridepilot</title>
-  <%= stylesheet_link_tag :all %>
+  <%= stylesheet_link_tag "style.css" %>
+  <%= stylesheet_link_tag "jquery-ui-1.8.9.custom.css" %>
+  <%= stylesheet_link_tag "jquery.weekcalendar.css" %>
   <%= javascript_include_tag :defaults %>
   <%= javascript_include_tag "autocomplete-rails.js" %>
+  <%= javascript_include_tag "jquery.weekcalendar.js" %>
 
   <%= csrf_meta_tag %>
 </head>
@@ -14,8 +17,6 @@
       <a id="logo" href="/">Ride Pilot</a>
       <div id="login-area">
         <% if current_user %>
-          <p style="float:right"><%= image_tag current_user.current_provider.logo.url %></p>
-
           <a href="#"><%= current_user.email %></a> | <%= link_to "Log out", destroy_user_session_path %>
   
           Logged in to 
@@ -35,15 +36,23 @@
     </div><!-- /.wrap -->
   </div><!-- /#header -->
   <div id="crossbar">
-    <div class="wrap selfclear">             
-      <%= content_for?(:menu_bar) ? yield(:menu_bar) : '' %>
+    <div class="wrap selfclear">
+      <%= content_for?(:menu_bar) ? yield(:menu_bar) : '' %> <!---------- TODO: Add current class menu items -->
     </div><!-- /.wrap -->
   </div><!-- /#crossbar -->
 
-  <p class="notice"><%= notice %></p>
-  <p class="alert"><%= alert %></p>
+  <% if notice %>
+    <p class="notice"><%= notice %></p>
+  <% end %>
+  <% if alert %>
+    <p class="alert"><%= alert %></p>
+  <% end %>
+
+  <div id="main">
 
 <%= yield %>
+
+  </div>
 
 </body>
 </html>

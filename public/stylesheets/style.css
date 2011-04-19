@@ -1,0 +1,450 @@
+/* html5doctor.com Reset Stylesheet \\v1.6.1 \\ Last Updated: 2010-09-17 \\ http://richclarkdesign.com \\ @rich_clark */
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+  margin:0;
+  padding:0;
+  border:0;
+  outline:0;
+  font-size:100%;
+  vertical-align:baseline;
+  background:transparent;
+}
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section { display:block; }
+nav ul { list-style:none; }
+blockquote, q { quotes:none; }
+blockquote:before, blockquote:after,
+q:before, q:after { content:''; content:none; }
+a { margin:0; padding:0; font-size:100%; vertical-align:baseline; background:transparent; }
+ins { background-color:#ff9; color:#000; text-decoration:none; }
+mark { background-color:#ff9; color:#000; font-style:italic; font-weight:bold; }
+del { text-decoration: line-through; }
+abbr[title], dfn[title] { border-bottom:1px dotted; cursor:help; }
+/* tables still need cellspacing="0" in the markup */
+table { border-collapse:collapse; border-spacing:0; }
+hr { display:block; height:1px; border:0; border-top:1px solid #ccc; margin:1em 0; padding:0; }
+input, select { vertical-align:middle; }
+
+/*
+ *
+ * Base Typography 
+ *
+ */
+body { 
+    font-size:13px;
+    *font-size:small; 
+    line-height: 1.231; 
+    font-family: "Helvetica Neue",Arial,Helvetica,sans-serif;
+    }
+select, input, textarea, button { font:99% sans-serif; }
+pre, code, kbd, samp { font-family: monospace, sans-serif; }
+
+p {
+    margin-bottom: 10px;
+    line-height: 1.7;
+}
+h1 {
+    font-size: 25px;
+    margin: 0 0 20px;
+    line-height: 1.2;
+}
+
+
+/*
+ *
+ * Base Styles 
+ *
+ */
+body, select, input, textarea { 
+    color: #444;
+    font-family: "Helvetica Neue",Arial,Helvetica,sans-serif;
+}
+/* Headers (h1,h2,etc) have no default font-size or margin,
+   you'll want to define those yourself. */ 
+h1,h2,h3,h4,h5,h6 { font-weight: bold; }
+/* always force a scrollbar in non-IE */ 
+html { overflow-y: scroll; }
+/* Accessible focus treatment: people.opera.com/patrickl/experiments/keyboard/test */
+a:hover, a:active { outline: none; }
+a, a:active, a:visited { color: #0081cc; }
+a:hover { color: #009ffb; }
+ul, ol { margin-left: 1.8em; }
+ol { list-style-type: decimal; }
+/* Remove margins for navigation lists */
+nav ul, nav li { margin: 0; } 
+small { font-size: 85%; }
+strong, th { font-weight: bold; }
+td, td img { vertical-align: top; } 
+sub { vertical-align: sub; font-size: smaller; }
+sup { vertical-align: super; font-size: smaller; }
+pre { 
+  padding: 15px; 
+  /* www.pathf.com/blogs/2008/05/formatting-quoted-code-in-blog-posts-css21-white-space-pre-wrap/ */
+  white-space: pre; /* CSS2 */
+  white-space: pre-wrap; /* CSS 2.1 */
+  white-space: pre-line; /* CSS 3 (and 2.1 as well, actually) */
+  word-wrap: break-word; /* IE */
+}
+textarea { overflow: auto; } /* thnx ivannikolic! www.sitepoint.com/blogs/2010/08/20/ie-remove-textarea-scrollbars/ */
+.ie6 legend, .ie7 legend { margin-left: -7px; } /* thnx ivannikolic! */
+/* align checkboxes, radios, text inputs with their label
+   by: Thierry Koblentz tjkdesign.com/ez-css/css/base.css  */
+input[type="radio"] { vertical-align: text-bottom; }
+input[type="checkbox"] { vertical-align: bottom; }
+.ie7 input[type="checkbox"] { vertical-align: baseline; }
+.ie6 input { vertical-align: text-bottom; }
+/* hand cursor on clickable input elements */
+label, input[type=button], input[type=submit], button { cursor: pointer; }
+/* webkit browsers add a 2px margin outside the chrome of form elements */  
+button, input, select, textarea { margin: 0; }
+/* colors for form validity */
+input:valid, textarea:valid   {  }
+input:invalid, textarea:invalid { 
+      border-radius: 1px;
+    -moz-box-shadow: 0px 0px 5px red; 
+ -webkit-box-shadow: 0px 0px 5px red; 
+         box-shadow: 0px 0px 5px red;
+}
+.no-boxshadow input:invalid, 
+.no-boxshadow textarea:invalid { background-color: #f0dddd; }
+/* These selection declarations have to be separate.
+   No text-shadow: twitter.com/miketaylr/status/12228805301 */
+::-moz-selection{ background: #FF1493; color:#fff; text-shadow: none; }
+::selection { background:#FF1493; color:#fff; text-shadow: none; } 
+/*  j.mp/webkit-tap-highlight-color */
+a:link { -webkit-tap-highlight-color: #FF1493; } 
+/* make buttons play nice in IE:    
+   www.viget.com/inspire/styling-the-button-element-in-internet-explorer/ */
+button {width: auto; overflow: visible;}
+/* bicubic resizing for non-native sized IMG: 
+   code.flickr.com/blog/2008/11/12/on-ui-quality-the-little-things-client-side-image-resizing/ */
+.ie7 img {-ms-interpolation-mode: bicubic;}
+
+/*
+ *
+ * Nonsemantic Base Styles 
+ *
+ */
+/* for image replacement */
+.ir { display: block; text-indent: -999em; overflow: hidden; background-repeat: no-repeat; text-align: left; direction: ltr; }
+/* Hide for both screenreaders and browsers
+   css-discuss.incutio.com/wiki/Screenreader_Visibility */
+.hidden { display: none; visibility: hidden; } 
+/* Hide only visually, but have it available for screenreaders 
+   www.webaim.org/techniques/css/invisiblecontent/  &  j.mp/visuallyhidden  */
+.visuallyhidden { position: absolute !important;    
+  clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+  clip: rect(1px, 1px, 1px, 1px); }
+/* Hide visually and from screenreaders, but maintain layout */
+.invisible { visibility: hidden; }
+/* >> The Magnificent CLEARFIX: Updated to prevent margin-collapsing on child elements << j.mp/bestclearfix */
+.selfclear:before, .selfclear:after, 
+.clearfix:before, .clearfix:after { content: "\0020"; display: block; height: 0; visibility: hidden; } 
+.selfclear:after,
+.clearfix:after { clear: both; }
+/* Fix clearfix: blueprintcss.lighthouseapp.com/projects/15318/tickets/5-extra-margin-padding-bottom-of-page */
+.selfclear,
+.clearfix { zoom: 1; }
+.nobreak { white-space: nowrap; }
+
+/*
+ *
+ * Base Print Styles, inline to save the HTTP request
+ *
+ */
+@media print {
+  * { background: transparent !important; color: #444 !important; text-shadow: none !important; }
+  a, a:visited { color: #444 !important; text-decoration: underline; }
+  a:after { content: " (" attr(href) ")"; } 
+  abbr:after { content: " (" attr(title) ")"; }
+  .ir a:after { content: ""; }  /* Don't show links for images */
+  pre, blockquote { border: 1px solid #999; page-break-inside: avoid; }
+  thead { display: table-header-group; } /* css-discuss.incutio.com/wiki/Printing_Tables */ 
+  tr, img { page-break-inside: avoid; }
+  @page { margin: 0.5cm; }
+  p, h2, h3 { orphans: 3; widows: 3; }
+  h2, h3{ page-break-after: avoid; }
+}
+
+/*
+ *
+ * Structure
+ *
+ */
+body {
+    min-width: 1100px;
+}
+#header {
+    padding: 20px 20px 10px;
+    background: #0d4680;
+    color: #ddd;
+}
+#header a#logo:link,
+#header a#logo:visited {
+    font-family: Georgia,serif;
+    font-size: 28px;
+    text-decoration: none;
+    color: #ffffcc;
+}
+#header a#logo:hover,
+#header a#logo:active {
+    color: #fff;
+}
+
+#login-area {
+    float: right;
+}
+#login-area a:link,
+#login-area a:visited {
+    color: #fff;
+    text-decoration: none;
+}
+#login-area a:hover,
+#login-area a:active {
+    text-decoration: underline;
+}
+#crossbar {
+    padding: 0 20px;
+    background: #0d4680;
+    color: #fff;
+}
+/* sitenav - main menu */
+#sitenav {
+    margin: 0;
+    background: #0a3968;
+    float: left;
+    -moz-box-shadow: 0 0 10px #082a4d;
+    -webkit-box-shadow: 0 0 10px #082a4d;
+    box-shadow: 0 0 10px #082a4d;
+}
+#sitenav li {
+    list-style: none;
+    float: left;
+    margin-right: 2px;
+}
+#sitenav li:last-child { margin-right: 0; }
+#sitenav li a:link,
+#sitenav li a:visited {
+    display: block;
+    padding: 0.5em 0.8em;
+    text-decoration: none;
+    background: #eee;
+    -webkit-border-top-left-radius: 3px;
+    -webkit-border-top-right-radius: 3px;
+    -moz-border-radius-topleft: 3px;
+    -moz-border-radius-topright: 3px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+#sitenav li a:hover,
+#sitenav li a:active {
+    background: #fff;
+}
+#main {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    position: relative;
+    z-index: 900;
+    background: #fff;
+}
+#page-header {
+    background: #e5f2ff;
+    padding: 5px 10px;
+    margin: 0 0 10px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+#page-header h1 {
+    margin: 0;
+}
+
+
+/*
+ *
+ * Content
+ *
+ */
+.alert {
+    color: #fff;
+    background-color: #e5004d;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 20px;
+    padding: 0 10px;
+}
+
+/* forms */
+fieldset {
+    background: #eee;
+    border: 1px solid #bbb;
+    padding: 15px 15px 5px;
+    margin: 0 0 20px;
+    -webkit-border-bottom-left-radius: 5px;
+    -moz-border-bottom-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    -webkit-border-bottom-right-radius: 5px;
+    -moz-border-bottom-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+legend {
+    padding: 10px;
+}
+form ol.section {
+    list-style: none;
+    margin: 0;
+    float: left;
+    width: 30%;
+}
+form ol.first,
+form ol.second {
+    margin-right: 5%;
+}
+form ol.fourth {
+    width: 65%;
+}
+form ol.section li {
+    margin-bottom: 10px;
+    clear: left;
+}
+form ol.section li label {
+    float: left;
+    width: 35%;
+    margin-right: 2%;
+    font-weight: bold;
+}
+form ol.section li input {
+    max-width: 60%;
+}
+form ol.section li textarea {
+    max-width: 60%;
+    height: 3.5em;
+    resize: none;
+}
+form ol.fourth li label {
+    width: 15%;
+}
+form ol.fourth li textarea {
+    width: 81.5%;
+    max-width: 81.5%;
+    height: 5em;
+}
+form ol.section li input,
+form ol.section li textarea {
+    padding: 0.25em;
+    background: #fff;
+    border: 1px solid #bbb;
+    -moz-box-shadow:inset 1px 2px 2px #ccc;
+    -webkit-box-shadow:inset 1px 2px 2px #ccc;
+    box-shadow:inset 1px 2px 2px #ccc;
+}
+form ol.section li input.full {
+    width: 60%;
+}
+form ol.section li.passengers input,
+form ol.section li.time input {
+    max-width: 3em;
+}
+form ol.section li div {
+    float: left;
+    width: 60%;
+}
+form ol.section li div input.full {
+    width: 100%;
+}
+form ol.section li p {
+    line-height: 1.231; 
+}
+
+form .actions {
+    clear: both;
+    margin: 0 0 10px;
+}
+input[type="submit"] {
+    padding: 0.5em 0.8em;
+    background: #0081CC;
+    color: #fff;
+    font-size: 15px;
+    text-decoration: none;
+    border: 0;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+input[type="submit"]:hover {
+    background: #009FFB;
+}
+
+/* back button */
+a.back:link,
+a.back:visited {
+    padding: 0.5em 0.8em;
+    background: #eee;
+    color: #0081CC;
+    font-size: 15px;
+    text-decoration: none;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+a.back:hover,
+a.back:active {
+    color: #009FFB;
+}
+
+/*
+ *
+ * Calendar
+ *
+ */
+#calendar { margin: 0; }
+
+/* buttons */
+.ui-button-text-icon-primary .ui-icon-seek-prev, .ui-button-text-icons .ui-icon-seek-prev, .ui-button-icons-only .ui-icon-seek-prev { left: 50% !important; }
+.ui-button-text-icon-primary .ui-icon-seek-next, .ui-button-text-icons .ui-icon-seek-next, .ui-button-icons-only .ui-icon-seek-next { left: 50% !important; }
+.ui-button-icons-only .ui-icon-home { left: .5em !important; }
+
+/* colors */
+.wc-container{}
+.wc-toolbar{
+    background:#BBCCFF; border:none; padding:5px !important;
+    -webkit-border-top-left-radius: 5px;
+    -moz-border-top-left-radius: 5px;
+    border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-top-right-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.wc-header{background:#E3E9FF;border:none;font-size:11px;}
+.wc-header{border-bottom:2px solid #BBCCFF;}
+.wc-hour-end, .wc-hour-header{color:#666666;border-color:#ccc}
+.wc-hour-header,
+.wc-grid-timeslot-header,
+.wc-business-hours{background:#F6F9FC;}
+.wc-column-odd{background:transparent;}
+.wc-column-even{background:#ddddbe;}
+.wc-time-slots .wc-today {background-color: #ffffcc;}
+.wc-grid-timeslot-header {border-left:1px solid #bbb;}
+.wc-scrollable-grid .wc-day-column-last,
+.wc-scrollable-grid .wc-day-column-middle,
+.wc-scrollable-grid .wc-day-column-first{border-color:#ddd;}
+/*calendar*/
+.wc-day-column-first,
+.wc-day-column-last,
+.wc-day-column-middle,
+.wc-time-slot{border-color: #ccc;}
+.wc-header .wc-day-column-header.wc-today{background-color:#FAD163;border-color:#FAD163;}
+.wc-header .wc-today.wc-user-header{font-weight:normal;}
+.wc-today.wc-day-column-last{border-right:3px double #FAD163;}
+.wc-today.wc-day-column-first{border-left:3px double #FAD163;}
+
