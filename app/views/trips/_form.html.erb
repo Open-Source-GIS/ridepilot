@@ -60,15 +60,14 @@
       </li>
 
       <li class="selfclear">
-        <label for="phone_id">Phone:</label>
-        <input type="text" size="14" name="phone_id" id="phone_id" />
-<!-- TODO: make phone input work in Rails -->
+        <label for="phone">Phone:</label>
+        <input type="text" size="14" name="phone" id="phoned" value="<%= @customer.phone_number_1 %>" readonly="readonly"/>
       </li>
 
       <li class="selfclear">
-        <label for="alt_phone_id">Alt. Phone:</label>
-        <input type="text" size="14" name="alt_phone_id" id="alt_phone_id" />
-<!-- TODO: make alt_phone input work in Rails -->
+        <label for="alt_phone">Alt. Phone:</label>
+        <input type="text" size="14" name="alt_phone" id="alt_phone" value="<%= @customer.phone_number_2 %>" readonly="readonly"/>
+
       </li>
     </ol>
     
