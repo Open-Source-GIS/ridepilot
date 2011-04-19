@@ -127,7 +127,7 @@ class TripsController < ApplicationController
     @mobilities = Mobility.all
     @funding_sources = FundingSource.all
     @drivers = Driver.where(:provider_id=>@trip.provider_id)
-    @vehicles = Vehicle.where(:provider_id=>@trip.provider_id)
+    @vehicles = Vehicle.active.where(:provider_id=>@trip.provider_id)
 
     respond_to do |format|
       format.html # new.html.erb
@@ -140,7 +140,7 @@ class TripsController < ApplicationController
     @mobilities = Mobility.all
     @funding_sources = FundingSource.by_provider(current_provider)
     @drivers = Driver.where(:provider_id=>@trip.provider_id)
-    @vehicles = Vehicle.where(:provider_id=>@trip.provider_id)
+    @vehicles = Vehicle.active.where(:provider_id=>@trip.provider_id)
   end
 
   def create
@@ -163,7 +163,7 @@ class TripsController < ApplicationController
         @mobilities = Mobility.all
         @funding_sources = FundingSource.all
         @drivers = Driver.where(:provider_id=>@trip.provider_id)
-        @vehicles = Vehicle.where(:provider_id=>@trip.provider_id)
+        @vehicles = Vehicle.active.where(:provider_id=>@trip.provider_id)
         format.html { render :action => "new" }
         format.xml  { render :xml => @trip.errors, :status => :unprocessable_entity }
       end
@@ -185,7 +185,7 @@ class TripsController < ApplicationController
         @mobilities = Mobility.all
         @funding_sources = FundingSource.all
         @drivers = Driver.where(:provider_id=>@trip.provider_id)
-        @vehicles = Vehicle.where(:provider_id=>@trip.provider_id)
+        @vehicles = Vehicle.active.where(:provider_id=>@trip.provider_id)
         format.html { render :action => "edit" }
         format.xml  { render :xml => @trip.errors, :status => :unprocessable_entity }
       end
