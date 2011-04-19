@@ -2,6 +2,7 @@
 require File.expand_path('../application', __FILE__)
 
 TRIP_RESULT_CODES = {
+  "unscheduled" => "Unscheduled",
   "COMP" => "Completed", # the trip was (as far as we know) completed
   "CANC" => "Cancelled", # the trip was cancelled by the customer
   "NS" => "No Show", # the customer did not show up for the trip
