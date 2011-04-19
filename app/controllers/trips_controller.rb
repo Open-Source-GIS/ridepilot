@@ -121,11 +121,13 @@ class TripsController < ApplicationController
   end
 
   def new
-    @trip = Trip.new
+    @trip = Trip.new(:provider_id=>current_provider_id)
     @customer = Customer.find(params[:customer_id])
     authorize! :read, @customer
     @mobilities = Mobility.all
     @funding_sources = FundingSource.all
+    @drivers = Driver.where(:provider_id=>@trip.provider_id)
+    @vehicles = Vehicle.where(:provider_id=>@trip.provider_id)
 
     respond_to do |format|
       format.html # new.html.erb
@@ -137,7 +139,8 @@ class TripsController < ApplicationController
     @customer = @trip.customer
     @mobilities = Mobility.all
     @funding_sources = FundingSource.by_provider(current_provider)
-
+    @drivers = Driver.where(:provider_id=>@trip.provider_id)
+    @vehicles = Vehicle.where(:provider_id=>@trip.provider_id)
   end
 
   def create
@@ -159,7 +162,8 @@ class TripsController < ApplicationController
       else
         @mobilities = Mobility.all
         @funding_sources = FundingSource.all
-
+        @drivers = Driver.where(:provider_id=>@trip.provider_id)
+        @vehicles = Vehicle.where(:provider_id=>@trip.provider_id)
         format.html { render :action => "new" }
         format.xml  { render :xml => @trip.errors, :status => :unprocessable_entity }
       end
@@ -180,7 +184,8 @@ class TripsController < ApplicationController
       else
         @mobilities = Mobility.all
         @funding_sources = FundingSource.all
-
+        @drivers = Driver.where(:provider_id=>@trip.provider_id)
+        @vehicles = Vehicle.where(:provider_id=>@trip.provider_id)
         format.html { render :action => "edit" }
         format.xml  { render :xml => @trip.errors, :status => :unprocessable_entity }
       end

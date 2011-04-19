@@ -94,8 +94,7 @@ users to add guests with their mobilities -->
 
       <li class="selfclear">
         <label for="vehicle_id">Vehicle:</label>
-        <select></select>
-<!-- TODO: make vehicle input work in Rails -->
+        <%= f.collection_select :vehicle_id, @vehicles, :id, :name %><br/>
       </li>
 
       <li class="selfclear">
