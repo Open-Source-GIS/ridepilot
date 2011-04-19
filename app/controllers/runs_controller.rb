@@ -10,6 +10,13 @@ class RunsController < ApplicationController
   load_and_authorize_resource
 
   def index
+    if params[:date] and params[:date].size > 0
+      params[:date] = Date.parse(params[:date])
+    else
+      params[:date] = Date.today
+    end
+    @runs = @runs.where(["cast(scheduled_start_time as date) = ?", params[:date]])
+
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @trips }
@@ -18,6 +25,7 @@ class RunsController < ApplicationController
 
   def new
     @run = Run.new
+    @run.provider_id = current_user.current_provider_id
     @drivers = Driver.where(:provider_id=>@run.provider_id)
     @vehicles = Vehicle.where(:provider_id=>@run.provider_id)
     respond_to do |format|
@@ -32,6 +40,8 @@ class RunsController < ApplicationController
   end
 
   def edit
+    @drivers = Driver.where(:provider_id=>@run.provider_id)
+    @vehicles = Vehicle.where(:provider_id=>@run.provider_id)
   end
 
   def create
@@ -47,6 +57,9 @@ class RunsController < ApplicationController
         format.html { redirect_to(@run, :notice => 'Run was successfully created.') }
         format.xml  { render :xml => @run, :status => :created, :location => @run }
       else
+        @drivers = Driver.where(:provider_id=>@run.provider_id)
+        @vehicles = Vehicle.where(:provider_id=>@run.provider_id)
+
         format.html { render :action => "new" }
         format.xml  { render :xml => @run.errors, :status => :unprocessable_entity }
       end
@@ -64,6 +77,8 @@ class RunsController < ApplicationController
         format.html { redirect_to(@run, :notice => 'Run was successfully updated.') }
         format.xml  { head :ok }
       else
+        @drivers = Driver.where(:provider_id=>@run.provider_id)
+        @vehicles = Vehicle.where(:provider_id=>@run.provider_id)
         format.html { render :action => "edit" }
         format.xml  { render :xml => @run.errors, :status => :unprocessable_entity }
       end

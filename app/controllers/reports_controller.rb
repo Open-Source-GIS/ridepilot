@@ -68,9 +68,9 @@ class ReportsController < ApplicationController
 
     @noncovered_events = @vehicle.vehicle_maintenance_events.where(["service_date BETWEEN ? and ? and reimbursable=false", @start_date, @end_date])
 
-    month_runs = Run.where(["vehicle_id = ? and date BETWEEN ? and ? ", @vehicle.id, @start_date, @end_date])
+    month_runs = Run.where(["vehicle_id = ? and date BETWEEN ? and ? and complete=true", @vehicle.id, @start_date, @end_date])
 
-    @total_hours = month_runs.sum("start_time - end_time").to_i 
+    @total_hours = month_runs.sum("actual_start_time - actual_end_time").to_i 
     @total_rides = Trip.find(:all, :joins => :run, :conditions=>{:runs => {:vehicle_id=>@vehicle.id }}).count.to_i #fixme: does not consider guests and attendants -- should it?
 
 
@@ -155,8 +155,8 @@ purpose
 
     @turndowns = Trip.where(["provider_id =? and trip_result = 'TD' and pickup_time BETWEEN ? and ? ", provider_id, @start_date, @end_date]).count
     
-    @volunteer_driver_hours = hms_to_hours(month_runs.where("paid = true").sum("end_time - start_time") || "0:00:00")
-    @paid_driver_hours = hms_to_hours(month_runs.where("paid = false").sum("end_time - start_time")  || "0:00:00")
+    @volunteer_driver_hours = hms_to_hours(month_runs.where("paid = true").sum("actual_end_time - actual_start_time") || "0:00:00")
+    @paid_driver_hours = hms_to_hours(month_runs.where("paid = false").sum("actual_end_time - actual_start_time")  || "0:00:00")
 
 
     undup_riders_sql = "select count(*) as undup_riders from (select customer_id, fiscal_year(pickup_time) as year, min(fiscal_month(pickup_time)) as month from trips where provider_id=? and trip_result = 'COMP' group by customer_id, year) as  morx where date (year || '-' || month || '-' || 1)  between ? and ? "

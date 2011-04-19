@@ -3,11 +3,17 @@
 <%= f.label :date %><br/>
 <%= f.text_field :date %><br/>
 <br/>
-<%= f.label :start_time %><br/>
-<%= f.text_field :start_time %><br/>
+<%= f.label :scheduled_start_time %><br/>
+<%= f.text_field :scheduled_start_time %><br/>
 <br/>
-<%= f.label :end_time %><br/>
-<%= f.text_field :end_time %><br/>
+<%= f.label :scheduled_end_time %><br/>
+<%= f.text_field :scheduled_end_time %><br/>
+<br/>
+<%= f.label :actual_start_time %><br/>
+<%= f.text_field :actual_start_time %><br/>
+<br/>
+<%= f.label :actual_end_time %><br/>
+<%= f.text_field :actual_end_time %><br/>
 <br/>
 <%= f.label :start_odometer %><br/>
 <%= f.text_field :start_odometer %><br/>
@@ -25,10 +31,8 @@
 <%= f.collection_select :driver_id, @drivers, :id, :name %><br/>
 <br/>
 <%= f.label :paid %><br/>
-<%= f.select :paid, [["Yes", "true"], ["No", "false"]], {:selected => @run.paid } %><br/>
-<br/>
-<%= f.label :complete %><br/>
-<%= f.select :complete, [["Yes", "true"], ["No", "false"]], {:selected => @run.complete } %><br/>
+<%= f.select :paid, [["Yes", "true"], ["No", "false"]], {:selected => @run.paid.to_s } %><br/>
 <br/>
 
+<%= f.submit %>
 <% end %>

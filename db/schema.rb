@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110415035738) do
+ActiveRecord::Schema.define(:version => 20110419152042) do
 
   create_table "addresses", :force => true do |t|
     t.string  "name"
@@ -122,18 +122,20 @@ ActiveRecord::Schema.define(:version => 20110415035738) do
     t.date     "date"
     t.integer  "start_odometer"
     t.integer  "end_odometer"
-    t.datetime "start_time"
-    t.datetime "end_time"
+    t.datetime "scheduled_start_time"
+    t.datetime "scheduled_end_time"
     t.integer  "unpaid_driver_break_time"
     t.integer  "vehicle_id"
     t.integer  "driver_id"
     t.boolean  "paid"
     t.boolean  "complete"
     t.integer  "provider_id"
+    t.datetime "actual_start_time"
+    t.datetime "actual_end_time"
   end
 
   add_index "runs", ["provider_id", "date"], :name => "index_runs_on_provider_id_and_date"
-  add_index "runs", ["provider_id", "start_time"], :name => "index_runs_on_provider_id_and_start_time"
+  add_index "runs", ["provider_id", "scheduled_start_time"], :name => "index_runs_on_provider_id_and_start_time"
 
   create_table "travel_time_estimates", :id => false, :force => true do |t|
     t.integer "from_address_id"
