@@ -14,6 +14,10 @@ class Trip < ActiveRecord::Base
   validates_presence_of :pickup_address
   validates_presence_of :dropoff_address
 
+  def complete
+    return trip_result == 'COMP'
+  end
+
   def vehicle_id=(vehicle_id)
       @vehicle_id = vehicle_id
   end

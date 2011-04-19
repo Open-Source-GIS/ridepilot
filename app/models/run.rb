@@ -11,7 +11,7 @@ class Run < ActiveRecord::Base
     if scheduled_end_time
       date = scheduled_end_time.to_date
     end
-    complete = (!actual_start_time.nil?) and (!actual_end_time.nil?) and actual_end_time < DateTime.now and vehicle_id and driver_id
+    complete = (!actual_start_time.nil?) and (!actual_end_time.nil?) and actual_end_time < DateTime.now and vehicle_id and driver_id and trips.all? &:complete
 
   end
 
