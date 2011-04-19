@@ -5,6 +5,17 @@ class TripsController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @trips }
+      format.json { 
+        trips = @trips.map { |trip| 
+          {:id => trip.id,
+           :start=> trip.pickup_time,
+           :end=> trip.appointment_time,
+           :title => trip.customer.name
+          }
+        }
+        json = ActiveSupport::JSON.encode trips
+        render :text => json 
+      }
     end
   end
 
