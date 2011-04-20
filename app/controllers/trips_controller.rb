@@ -156,6 +156,8 @@ class TripsController < ApplicationController
     authorize! :manage, provider
     trip_params[:provider_id] = @customer.provider.id
 
+    handle_cab trip_params
+
     if params[:interval].size > 0 and (params[:monday] or 
                                        params[:tuesday] or 
                                        params[:wednesday] or 
@@ -193,8 +195,6 @@ class TripsController < ApplicationController
       trip_params[:repeating_trip_id] = repeating_trip.id
       trip_params.delete :schedule_attributes
 
-      #FIXME: schedule_attributes = {:repeat => 1, :interval => 1, :start_date => Time.now.to_s, :interval_unit=>"day"}
-
       @trip = Trip.new(trip_params)
       if @trip.save
         redirect_to(@trip, :notice => 'Trip was successfully created.') 
@@ -219,7 +219,7 @@ class TripsController < ApplicationController
     provider = @customer.provider
     authorize! :manage, provider
     trip_params[:provider_id] = @customer.provider.id
-
+    handle_cab trip_params
     respond_to do |format|
       if @trip.update_attributes(trip_params)
         format.html { redirect_to(@trip, :notice => 'Trip was successfully updated.') }
@@ -258,5 +258,13 @@ class TripsController < ApplicationController
     @trip_results = TRIP_RESULT_CODES
     @trip_purposes = TRIP_PURPOSES
 
+  end
+
+  def handle_cab(trip_params)
+    if trip_params[:vehicle_id] == '-1' or trip_params[:vehicle_id] == ''
+      #cab trip
+      trip_params[:vehicle_id] = 0
+      trip_params[:cab] = true
+    end
   end
 end

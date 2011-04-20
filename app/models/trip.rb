@@ -33,9 +33,10 @@ class Trip < ActiveRecord::Base
   end
 
   def compute_run
-    if run
+    if run or cab
       return
     end
+
     #when the trip is saved, we need to find or create a run for it.
     #this will depend on the driver and vehicle.  
     run = Run.find(:first, :conditions=>["scheduled_start_time <= ? and scheduled_end_time >= ? and vehicle_id=? and provider_id=?", pickup_time, appointment_time, vehicle_id, provider_id])
