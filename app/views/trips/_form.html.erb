@@ -98,8 +98,8 @@
       </li>
 
       <li class="selfclear">
-        <label for="driver_notes">Driver Notes:</label>
-        <textarea rows="20" name="driver_notes" id="driver_notes" cols="40"></textarea>
+        <label for="driver_notes">Customer Private Notes:</label>
+        <textarea rows="20" name="customer_private_notes" id="customer_private_notes" cols="40" readonly="readonly"><%= @customer.private_notes %></textarea>
       </li>
     </ol>
 
@@ -126,13 +126,13 @@
 
       <li class="selfclear">
         <label for="mobility_notes">Mobility Notes:</label>
-        <textarea rows="20" name="mobility_notes" id="mobility_notes" cols="40"></textarea>
+        <textarea rows="20" name="mobility_notes" id="mobility_notes" cols="40" readonly="readonly"><%= @customer.mobility_notes %></textarea>
       </li>
     </ol>
 
     <ol class="section fourth double">
       <li class="selfclear">
-        <label for="notes">Notes:</label>
+        <label for="notes">Trip Notes:</label>
         <%= f.text_area :notes %>
       </li>
     </ol>
