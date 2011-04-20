@@ -166,16 +166,16 @@ regexp_replace(phone_number_2, '[^0-9]', '') = ?
  dmetaphone_alt(first_name) = dmetaphone(?) or
  dmetaphone(first_name) = dmetaphone(?)  or
  dmetaphone(first_name) = dmetaphone_alt(?)) or
-email = ?
+(email = ? and email !=  '' and email is not null and ? != '')
 ", 
 middle_initial, middle_initial, 
 last_name, last_name, last_name, last_name, 
 first_name, first_name, first_name, first_name,
-@customer.email]).limit(1)
+@customer.email, @customer.email]).limit(1)
 
       if dup_customers.size > 0
         dup = dup_customers[0]
-        flash[:notice] = "There is already a customer with a similar name: <a href=\"#{url_for :action=>:show, :id=>dup.id}\">#{dup.name}</a> (dob #{dup.birth_date}).  If this is truly a different customer, check the 'ignore duplicates' box to continue creating this customer.".html_safe
+        flash[:notice] = "There is already a customer with a similar name or the same email address: <a href=\"#{url_for :action=>:show, :id=>dup.id}\">#{dup.name}</a> (dob #{dup.birth_date}).  If this is truly a different customer, check the 'ignore duplicates' box to continue creating this customer.".html_safe
         @dup = true
         @mobilities = Mobility.all
         return render :action=>"new"
