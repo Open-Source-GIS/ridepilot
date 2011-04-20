@@ -358,13 +358,29 @@ body.funding-sources #secondary-nav li.funding-sources a:link, body.funding-sour
  * Content
  *
  */
+.notice {
+    background-color: #ffffc6;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px;
+    line-height: 1.2;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
 .alert {
     color: #fff;
     background-color: #e5004d;
     font-size: 18px;
     font-weight: bold;
-    margin: 20px;
-    padding: 0 10px;
+    padding: 10px;
+    line-height: 1.2;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+.alert a {
+    color: #ffffc6;
 }
 
 /* forms */
