@@ -16,87 +16,103 @@
     <%= check_box_tag :ignore_dups %><br/>
   <% end %>
 
-  <div class="field">
+  <p>
     <label for="group">For a group trip, check the box and use only the first name field to hold the group name</label>
-  <%= f.check_box :group %><br />
-  </div>
+    <%= f.check_box :group %>
+  </p>
 
-  Created: <%= @customer.activated_date %><br />
+  <% if @customer.activated_date %>
+    Created: <%= @customer.activated_date %>
+  <% end %>
+
   <% if @customer.inactivated_date %>
-  Inactivated: <%= @customer.inactivated_date %>
+    Inactivated: <%= @customer.inactivated_date %>
   <% else %>
-  Active
-  <% end %>
-  <br/>
-
-  <div class="field">
-    <%= f.label :first_name %><br />
-    <%= f.text_field :first_name %>
-  </div>
-  <div class="field">
-    <%= f.label :middle_initial %><br />
-    <%= f.text_field :middle_initial %>
-  </div>
-  <div class="field">
-    <%= f.label :last_name %><br />
-    <%= f.text_field :last_name %>
-  </div>
-  <div class="field">
-    <%= f.label :phone_number_1 %><br />
-    <%= f.text_field :phone_number_1 %>
-  </div>
-  <div class="field">
-    <%= f.label :phone_number_2 %><br />
-    <%= f.text_field :phone_number_2 %>
-  </div>
-  <div class="field">
-    Address<br />
-  <%= f.fields_for :address do |address_form| %>
-    <%= render 'addresses/form', :form=>address_form %>
+    <% if @customer.activated_date %>
+      Active
+    <% end %>
   <% end %>
 
+  <fieldset class="new-customer">
 
-  </div>
+    <ol class="section first">
+      <li class="selfclear">
+        <%= f.label :first_name %>
+        <%= f.text_field :first_name %>
+      </li>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.text_field :email %>
-  </div>
+      <li class="selfclear">
+        <%= f.label :middle_initial %>
+        <%= f.text_field :middle_initial %>
+      </li>
 
-  <div class="field">
-    <%= f.label :inactivated_reason %><br />
-    <%= f.text_field :inactivated_reason %>
-  </div>
-  <div class="field">
-    <%= f.label :birth_date %><br />
-    <%= f.date_select :birth_date, :start_year => 1896 %>
-  </div>
-  <div class="field">
-    <%= f.label :mobility_id %><br />
-    <%= f.collection_select :mobility_id, @mobilities, :id, :name %>
-  </div>
-  <div class="field">
-    <%= f.label :mobility_notes %><br />
-    <%= f.text_field :mobility_notes %>
-  </div>
-  <div class="field">
-    <%= f.label :ethnicity %><br />
-    <%= f.text_field :ethnicity %>
-  </div>
-  <div class="field">
-    <%= f.label :emergency_contact_notes %><br />
-    <%= f.text_area :emergency_contact_notes %>
-  </div>
-  <div class="field">
-    <%= f.label :private_notes %><br />
-    <%= f.text_area :private_notes %>
-  </div>
-  <div class="field">
-    <%= f.label :public_notes %><br />
-    <%= f.text_area :public_notes %>
-  </div>
+      <li class="selfclear">
+        <%= f.label :last_name %>
+        <%= f.text_field :last_name %>
+      </li>
 
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+      <li class="selfclear">
+        <%= f.label :phone_number_1 %>
+        <%= f.text_field :phone_number_1 %>
+      </li>
+
+      <li class="selfclear">
+        <%= f.label :phone_number_2 %>
+        <%= f.text_field :phone_number_2 %>
+      </li>
+
+      <%= f.fields_for :address do |address_form| %>
+      <%= render 'addresses/form', :form=>address_form %>
+      <% end %>
+
+      <li class="selfclear">
+        <%= f.label :email %>
+        <%= f.text_field :email %>
+      </li>
+
+      <li class="selfclear">
+        <%= f.label :inactivated_reason %>
+        <%= f.text_field :inactivated_reason %>
+      </li>
+
+      <li class="selfclear">
+        <%= f.label :birth_date %>
+        <%= f.date_select :birth_date, :start_year => 1896 %>
+      </li>
+
+      <li class="selfclear">
+        <%= f.label :mobility_id %>
+        <%= f.collection_select :mobility_id, @mobilities, :id, :name %>
+      </li>
+
+      <li class="selfclear">
+        <%= f.label :mobility_notes %>
+        <%= f.text_field :mobility_notes %>
+      </li>
+
+      <li class="selfclear">
+        <%= f.label :ethnicity %>
+        <%= f.text_field :ethnicity %>
+      </li>
+
+      <li class="selfclear">
+        <%= f.label :emergency_contact_notes %>
+        <%= f.text_area :emergency_contact_notes %>
+      </li>
+
+      <li class="selfclear">
+        <%= f.label :private_notes %>
+        <%= f.text_area :private_notes %>
+      </li>
+
+      <li class="selfclear">
+        <%= f.label :public_notes %>
+        <%= f.text_area :public_notes %>
+      </li>
+    </ol>
+
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+
 <% end %>

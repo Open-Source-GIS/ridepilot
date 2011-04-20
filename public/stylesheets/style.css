@@ -32,7 +32,7 @@ del { text-decoration: line-through; }
 abbr[title], dfn[title] { border-bottom:1px dotted; cursor:help; }
 /* tables still need cellspacing="0" in the markup */
 table { border-collapse:collapse; border-spacing:0; }
-hr { display:block; height:1px; border:0; border-top:1px solid #ccc; margin:1em 0; padding:0; }
+hr { display:block; height:1px; border:0; border-top:1px solid #bbb; margin:20px 0; padding:0; }
 input, select { vertical-align:middle; }
 
 /*
@@ -217,6 +217,7 @@ body {
     padding: 0 20px;
     background: #0d4680;
     color: #fff;
+    position: relative;
 }
 /* primary & secondary menu */
 #primary-nav,
@@ -224,12 +225,18 @@ body {
     margin: 0;
     background: #0a3968;
     float: left;
-    -moz-box-shadow: 0 0 10px #082a4d;
-    -webkit-box-shadow: 0 0 10px #082a4d;
-    box-shadow: 0 0 10px #082a4d;
+    -moz-box-shadow: 0 0 10px #062340;
+    -webkit-box-shadow: 0 0 10px #062340;
+    box-shadow: 0 0 10px #062340;
+}
+#primary-nav {
+    font-size: 15px;
+    font-weight: bold;
 }
 #secondary-nav {
-    float: right;
+    position: absolute;
+    right: 20px;
+    bottom: 0;
 }
 #primary-nav li,
 #secondary-nav li {
@@ -237,26 +244,17 @@ body {
     float: left;
     margin-right: 2px;
 }
-#primary-nav li:last-child,
+#primary-nav li:last-child, 
 #secondary-nav li:last-child { margin-right: 0; }
 
-#primary-nav li a:link,
-#primary-nav li a:visited,
-#secondary-nav li a:link,
-#secondary-nav li a:visited {
+#primary-nav li a:link, #primary-nav li a:visited,
+#secondary-nav li a:link, #secondary-nav li a:visited {
     display: block;
     padding: 0.5em 0.8em;
     text-decoration: none;
     background-color: #eee;
-    -webkit-border-top-left-radius: 3px;
-    -webkit-border-top-right-radius: 3px;
-    -moz-border-radius-topleft: 3px;
-    -moz-border-radius-topright: 3px;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
 }
-#primary-nav li a:link,
-#primary-nav li a:visited {
+#primary-nav li a:link, #primary-nav li a:visited {
     background-image: -webkit-gradient(
         linear,
         left bottom,
@@ -269,9 +267,14 @@ body {
         #eee 35%,
         #fff 100%
     );
+    -webkit-border-top-left-radius: 4px;
+    -webkit-border-top-right-radius: 4px;
+    -moz-border-radius-topleft: 4px;
+    -moz-border-radius-topright: 4px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
 }
-#secondary-nav li a:link,
-#secondary-nav li a:visited {
+#secondary-nav li a:link, #secondary-nav li a:visited {
     background-color: #8fa7bf;
     color: #fff;
     background-image: -webkit-gradient(
@@ -286,11 +289,17 @@ body {
         #6c89a6 28%,
         #8fa7bf 82%
     );
+    -webkit-border-top-left-radius: 2px;
+    -webkit-border-top-right-radius: 2px;
+    -moz-border-radius-topleft: 2px;
+    -moz-border-radius-topright: 2px;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
 }
-#primary-nav li a:hover,
-#primary-nav li a:active,
-#secondary-nav li a:hover,
-#secondary-nav li a:active {
+#primary-nav li a:hover, #primary-nav li a:active,
+#secondary-nav li a:hover, #secondary-nav li a:active,
+#primary-nav li a.active,
+#secondary-nav li a.active {
     background: #fff;
     color: #009FFB;
 }
@@ -344,62 +353,8 @@ body {
 }
 
 /* forms */
-fieldset {
-    background: #eee;
-    border: 1px solid #bbb;
-    padding: 15px 15px 5px;
-    margin: 0 0 20px;
-    -webkit-border-bottom-left-radius: 5px;
-    -moz-border-bottom-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-    -webkit-border-bottom-right-radius: 5px;
-    -moz-border-bottom-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-}
-legend {
-    padding: 10px;
-}
-form ol.section {
-    list-style: none;
-    margin: 0;
-    float: left;
-    width: 30%;
-}
-form ol.first,
-form ol.second {
-    margin-right: 5%;
-}
-form ol.fourth {
-    width: 65%;
-}
-form ol.section li {
-    margin-bottom: 10px;
-    clear: left;
-}
-form ol.section li label {
-    float: left;
-    width: 35%;
-    margin-right: 2%;
-    font-weight: bold;
-}
-form ol.section li input {
-    max-width: 60%;
-}
-form ol.section li textarea {
-    max-width: 60%;
-    height: 3.5em;
-    resize: none;
-}
-form ol.fourth li label {
-    width: 15%;
-}
-form ol.fourth li textarea {
-    width: 81.5%;
-    max-width: 81.5%;
-    height: 5em;
-}
-form ol.section li input,
-form ol.section li textarea {
+form input[type="text"],
+form textarea {
     padding: 0.25em;
     background: #fff;
     border: 1px solid #bbb;
@@ -407,29 +362,93 @@ form ol.section li textarea {
     -webkit-box-shadow:inset 1px 2px 2px #ccc;
     box-shadow:inset 1px 2px 2px #ccc;
 }
-form ol.section li input.full {
+ol.section {
+    list-style: none;
+    margin: 0;
+}
+ol.section li {
+    margin-bottom: 10px;
+    clear: left;
+}
+ol.section li label {
+    font-weight: bold;
+}
+fieldset {
+    background: #eee;
+    border: 1px solid #bbb;
+    padding: 15px 15px 5px;
+    margin: 0 0 20px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+}
+fieldset.new-trip {
+    -webkit-border-top-left-radius: 0;
+    -moz-border-top-left-radius: 0;
+    border-top-left-radius: 0;
+    -webkit-border-top-right-radius: 0;
+    -moz-border-top-right-radius: 0;
+    border-top-right-radius: 0;
+}
+fieldset.new-trip ol.first,
+fieldset.new-trip ol.second,
+fieldset.new-trip ol.third {
+    float: left;
+    width: 30%;
+    margin: 0 5% 0 0;
+}
+fieldset.new-trip ol.third {
+    margin: 0;
+}
+fieldset.new-trip ol.fourth {
+    float: left;
+    width: 65%;
+}
+fieldset.new-trip ol.section li label {
+    float: left;
+    width: 35%;
+    margin-right: 2%;
+}
+fieldset.new-trip ol.section li input {
+    max-width: 60%;
+}
+fieldset.new-trip ol.section li textarea {
+    max-width: 60%;
+    height: 3.5em;
+    resize: none;
+}
+fieldset.new-trip ol.fourth li label {
+    width: 15%;
+}
+fieldset.new-trip ol.fourth li textarea {
+    width: 81.5%;
+    max-width: 81.5%;
+    height: 5em;
+}
+fieldset.new-trip ol.section li input.full {
     width: 60%;
 }
-form ol.section li.passengers input,
+fieldset.new-trip ol.section li.passengers input,
 form ol.section li.time input {
     max-width: 3em;
 }
-form ol.section li div {
+fieldset.new-trip ol.section li div {
     float: left;
     width: 60%;
 }
-form ol.section li div input.full {
+fieldset.new-trip ol.section li div input.full {
     width: 100%;
 }
-form ol.section li p {
+fieldset.new-trip ol.section li p {
     line-height: 1.231; 
 }
 
-form .actions {
+form div.actions {
     clear: both;
     margin: 0 0 10px;
 }
-input[type="submit"] {
+form div.actions input[type="submit"] {
     padding: 0.5em 0.8em;
     background: #0081CC;
     color: #fff;
@@ -440,13 +459,13 @@ input[type="submit"] {
     -moz-border-radius: 5px;
     border-radius: 5px;
 }
-input[type="submit"]:hover {
+form div.actions input[type="submit"]:hover {
     background: #009FFB;
 }
 
 /* back button */
-a.back:link,
-a.back:visited {
+a.action-bttn:link,
+a.action-bttn:visited {
     padding: 0.5em 0.8em;
     background: #eee;
     color: #0081CC;
@@ -456,9 +475,13 @@ a.back:visited {
     -moz-border-radius: 5px;
     border-radius: 5px;
 }
-a.back:hover,
-a.back:active {
+a.action-bttn:hover,
+a.action-bttn:active {
     color: #009FFB;
+}
+/* tables */
+table {
+    width: 100%;
 }
 
 /*

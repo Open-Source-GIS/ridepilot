@@ -14,10 +14,9 @@
   <!-- the customer id needs to be passed in this action -->
   <%= f.hidden_field :customer_id, :value=>@customer.id %>
 
-  <fieldset>
+  <fieldset class="new-trip">
 
     <ol class="section first">
-
       <li class="selfclear">
         <label for="customer">Customer:</label>
         <strong><%= @customer.name %></strong><!---------- TODO: Why is there a trailing ' .'? -->
