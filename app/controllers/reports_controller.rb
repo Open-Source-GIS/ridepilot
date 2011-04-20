@@ -330,8 +330,13 @@ purpose
   def hms_to_hours(hms)
     #argumen is  a string of the form hours:minutes:seconds.  We would like
     #a float of hours
-
+    if !hms or hms.empty?
+      return 0
+    end
     hours, minutes, seconds = hms.split(":").map &:to_i
+    hours ||= 0
+    minutes ||= 0
+    seconds ||= 0
     return hours + minutes / 60.0 + seconds / 3600.0
   end
 
