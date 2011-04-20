@@ -34,16 +34,21 @@
       </li>
 
       <li class="selfclear">
+        <!-- we need some complexity, because this form handles 
+             both trips and repeating trips.
+             So, we'll just put all the repeating stuff into
+             plain params and handle it in the controller
+          -->
         <label for="repeats_id">Repeats:</label>
         <div>
           <p>
-            <input type="checkbox" name="monday" value="Monday" /> M&nbsp;
-            <input type="checkbox" name="tuesday" value="Tuesday" /> T&nbsp;
-            <input type="checkbox" name="wednesday" value="Wednesday" /> W&nbsp;
-            <input type="checkbox" name="thursday" value="Thrusday" /> R&nbsp;
-            <input type="checkbox" name="friday" value="Friday" /> F&nbsp;
+            <input type="checkbox" name="monday" value="Monday" <%= @schedule.monday ? 'checked="checked"' : '' %>/> M&nbsp;
+            <input type="checkbox" name="tuesday" value="Tuesday" <%= @schedule.tuesday ? 'checked="checked"' : '' %>/> T&nbsp;
+            <input type="checkbox" name="wednesday" value="Wednesday" <%= @schedule.wednesday ? 'checked="checked"' : '' %>/> W&nbsp;
+            <input type="checkbox" name="thursday" value="Thrusday" <%= @schedule.thursday ? 'checked="checked"' : '' %>/> R&nbsp;
+            <input type="checkbox" name="friday" value="Friday" <%= @schedule.friday ? 'checked="checked"' : '' %>/> F&nbsp;
           </p>
-          every <input type="text" size="2" name="trip[repeat_weeks]" id="trip_repeat_weeks" /> week(s)
+          every <input type="text" size="2" name="interval" id="interval" value="<%= @schedule.interval %>"/> week(s)
         </div>
 <!-- TODO: make repeats checkboxes work in Rails -->
       </li>
@@ -74,16 +79,12 @@
     <ol class="section second">
       <li class="selfclear">
         <label for="trip_purpose">Trip purpose:</label>
-        <%= f.text_field(:trip_purpose, :class => "full") %>
+        <%= f.select :trip_purpose, @trip_purposes %>
       </li>
 
       <li class="selfclear passengers">
         <label for="guest_count">Passengers:</label>
         <div>
-<!-- TODO: Guest count should be computed by
-considering actual guest information, which will
-be in @trip.guest; we need a widget which allows
-users to add guests with their mobilities -->
           <p>
             <span class="nobreak"><%= f.text_field :guest_count %>&nbsp;Guests&nbsp;</span>
             <span class="nobreak"><%= f.text_field :attendant_count %>&nbsp;Attendants</span>
@@ -106,8 +107,7 @@ users to add guests with their mobilities -->
     <ol class="section third">
       <li class="selfclear">
         <label for="result_id">Result:</label>
-        <select></select>
-<!-- TODO: make result input work in Rails -->
+        <%= f.select :trip_result, @trip_results %>
       </li>
 
       <li class="selfclear donation">
