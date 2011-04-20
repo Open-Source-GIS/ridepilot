@@ -1,6 +1,7 @@
 class Customer < ActiveRecord::Base
   belongs_to :provider
   belongs_to :address
+  belongs_to :mobility
   accepts_nested_attributes_for :address
 
   normalize_attribute :first_name, :with=> [:squish, :titleize]

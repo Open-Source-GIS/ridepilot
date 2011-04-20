@@ -1,24 +1,12 @@
 <table>
   <tr>
     <th></th>
-    <th>First name</th>
-    <th>Middle initial</th>
-    <th>Last name</th>
+    <th>Name</th>
     <th>Phone number 1</th>
-    <th>Phone number 2</th>
-    <th>Address</th>
-    <th>Email</th>
-    <th>Activated date</th>
-    <th>Inactivated date</th>
-    <th>Inactivated reason</th>
+    <th>Active</th>
     <th>Birth date</th>
     <th>Mobility</th>
-    <th>Mobility notes</th>
-    <th>Ethnicity</th>
-    <th>Emergency contact notes</th>
-    <th>Private notes</th>
-    <th>Public notes</th>
-    <th>Provider</th>
+    <th></th>
     <th></th>
     <th></th>
     <th></th>
@@ -27,25 +15,13 @@
 <% @customers.each do |customer| %>
   <tr>
     <td><%= customer.group ? "(Group)" : "" %></td>
-    <td><%= customer.first_name %></td>
-    <td><%= customer.middle_initial %></td>
-    <td><%= customer.last_name %></td>
+    <td><%= customer.name %></td>
     <td><%= customer.phone_number_1 %></td>
-    <td><%= customer.phone_number_2 %></td>
-    <td><%= customer.address_id %></td>
-    <td><%= customer.email %></td>
-    <td><%= customer.activated_date %></td>
-    <td><%= customer.inactivated_date %></td>
-    <td><%= customer.inactivated_reason %></td>
+    <td><%= customer.inactivated_date ? "Active" : "Inactive" %></td>
     <td><%= customer.birth_date %></td>
-    <td><%= customer.mobility_id %></td>
-    <td><%= customer.mobility_notes %></td>
-    <td><%= customer.ethnicity %></td>
-    <td><%= customer.emergency_contact_notes %></td>
-    <td><%= customer.private_notes %></td>
-    <td><%= customer.public_notes %></td>
-    <td><%= customer.provider_id %></td>
+    <td><%= customer.mobility.name %></td>
     <td><%= link_to 'Show', customer %></td>
+    <td><%= link_to 'New Trip', new_trip_path(:customer_id=>customer.id) %></td>
     <td><%= link_to 'Edit', edit_customer_path(customer) %></td>
     <td><%= link_to 'Destroy', customer, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
