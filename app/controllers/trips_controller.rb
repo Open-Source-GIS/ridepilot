@@ -121,15 +121,7 @@ class TripsController < ApplicationController
   end
 
   def new
-    @trip = Trip.new(:provider_id=>current_provider_id)
-    @customer = Customer.find(params[:customer_id])
-    authorize! :read, @customer
-    @mobilities = Mobility.all
-    @funding_sources = FundingSource.all
-    @drivers = Driver.where(:provider_id=>@trip.provider_id)
-    @vehicles = Vehicle.active.where(:provider_id=>@trip.provider_id)
-    @trip_results = TRIP_RESULT_CODES
-    @trip_purposes = TRIP_PURPOSES
+    prep_view
 
     #we only use this to get access to the schedule attributes
     repeating_trip = RepeatingTrip.new
@@ -143,13 +135,7 @@ class TripsController < ApplicationController
   end
 
   def edit
-    @customer = @trip.customer
-    @mobilities = Mobility.all
-    @funding_sources = FundingSource.by_provider(current_provider)
-    @drivers = Driver.where(:provider_id=>@trip.provider_id)
-    @vehicles = Vehicle.active.where(:provider_id=>@trip.provider_id)
-    @trip_results = TRIP_RESULT_CODES
-    @trip_purposes = TRIP_PURPOSES
+    prep_view
     if @trip.repeating_trip
       repeating_trip = @trip.repeating_trip
     else
@@ -194,13 +180,13 @@ class TripsController < ApplicationController
         :interval_unit => "week", 
         :start_date => DateTime.parse(trip_params[:pickup_time]).to_date.to_s,
         :interval => params[:interval], 
-        :monday => params[:monday],
-        :tuesday => params[:tuesday],
-        :wednesday => params[:wednesday],
-        :thursday => params[:thursday],
-        :friday => params[:friday],
-        :saturday => params[:saturday],
-        :sunday => params[:sunday]
+        :monday => params[:monday] ? 1 : 0,
+        :tuesday => params[:tuesday] ? 1 : 0,
+        :wednesday => params[:wednesday] ? 1 : 0,
+        :thursday => params[:thursday] ? 1 : 0,
+        :friday => params[:friday] ? 1 : 0,
+        :saturday => params[:saturday] ? 1 : 0,
+        :sunday => params[:sunday] ? 1 : 0
       }
 
       repeating_trip = RepeatingTrip.create(repeating_trip_params)
@@ -256,5 +242,19 @@ class TripsController < ApplicationController
       format.html { redirect_to(trips_url) }
       format.xml  { head :ok }
     end
+  end
+
+  def prep_view
+    @trip = Trip.new(:provider_id=>current_provider_id)
+    @customer = Customer.find(params[:customer_id])
+    authorize! :read, @customer
+    @mobilities = Mobility.all
+    @funding_sources = FundingSource.all
+    @drivers = Driver.where(:provider_id=>@trip.provider_id)
+    cab_vehicle = Vehicle.new(name="cab", id=-1)
+    @vehicles = Vehicle.active.where(:provider_id=>@trip.provider_id) + [cab_vehicle]
+    @trip_results = TRIP_RESULT_CODES
+    @trip_purposes = TRIP_PURPOSES
+
   end
 end
