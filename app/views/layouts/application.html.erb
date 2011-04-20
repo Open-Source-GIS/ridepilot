@@ -43,7 +43,6 @@
         <li class="trips"><%= link_to "Trips", trips_path %></li>
         <li class="runs"><%= link_to "Runs", runs_path %></li>
         <li class="customers"><%= link_to "Customers", customers_path %></li>
-        <li class="repeating-trips"><%= link_to "Repeating trips", repeating_trips_path %></li>
         <li class="reports"><%= link_to "Reports", reports_path %></li>
         <% if can? :edit, "Providers" %>
         <li class="vehicles-drivers-users"><%= link_to "Vehicles, Drivers & Users", provider_path(current_user.current_provider) %></li>
