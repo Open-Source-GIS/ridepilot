@@ -37,7 +37,24 @@
   </div><!-- /#header -->
   <div id="crossbar">
     <div class="wrap selfclear">
-      <%= content_for?(:menu_bar) ? yield(:menu_bar) : '' %> <!---------- TODO: Add current class menu items -->
+      <ul id="primary-nav" class="selfclear">
+        <li><%= link_to "Customers", customers_path %></li>
+        <li><%= link_to "Trips", trips_path %></li>
+        <li><%= link_to "Runs", runs_path %></li>
+        <li><%= link_to "Repeating trips", repeating_trips_path %></li>
+        <li><%= link_to "Reports", reports_path %></li>
+      </ul>
+
+      <ul id="secondary-nav" class="selfclear">
+        <% if can? :edit, "Providers" %>
+        <li><%= link_to "Providers", providers_path %></li>
+        <% end %>
+        <% if can? :edit, FundingSource %>
+        <li><%= link_to "Funding Sources", funding_sources_path %></li>
+        <% end %>
+        <li><%= link_to "Vehicles, Drivers & Users", provider_path(current_user.current_provider) %></li>
+      </ul>
+      <!---------- TODO: Add current class menu items -->
     </div><!-- /.wrap -->
   </div><!-- /#crossbar -->
 
@@ -49,6 +66,8 @@
   <% end %>
 
   <div id="main">
+
+    <%= content_for?(:menu_bar) ? yield(:menu_bar) : '' %>
 
 <%= yield %>
 

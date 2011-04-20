@@ -218,8 +218,9 @@ body {
     background: #0d4680;
     color: #fff;
 }
-/* sitenav - main menu */
-#sitenav {
+/* primary & secondary menu */
+#primary-nav,
+#secondary-nav {
     margin: 0;
     background: #0a3968;
     float: left;
@@ -227,18 +228,26 @@ body {
     -webkit-box-shadow: 0 0 10px #082a4d;
     box-shadow: 0 0 10px #082a4d;
 }
-#sitenav li {
+#secondary-nav {
+    float: right;
+}
+#primary-nav li,
+#secondary-nav li {
     list-style: none;
     float: left;
     margin-right: 2px;
 }
-#sitenav li:last-child { margin-right: 0; }
-#sitenav li a:link,
-#sitenav li a:visited {
+#primary-nav li:last-child,
+#secondary-nav li:last-child { margin-right: 0; }
+
+#primary-nav li a:link,
+#primary-nav li a:visited,
+#secondary-nav li a:link,
+#secondary-nav li a:visited {
     display: block;
     padding: 0.5em 0.8em;
     text-decoration: none;
-    background: #eee;
+    background-color: #eee;
     -webkit-border-top-left-radius: 3px;
     -webkit-border-top-right-radius: 3px;
     -moz-border-radius-topleft: 3px;
@@ -246,10 +255,60 @@ body {
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
 }
-#sitenav li a:hover,
-#sitenav li a:active {
-    background: #fff;
+#primary-nav li a:link,
+#primary-nav li a:visited {
+    background-image: -webkit-gradient(
+        linear,
+        left bottom,
+        left top,
+        #eee 35%,
+        #fff 100%
+    );
+        background-image: -moz-linear-gradient(
+        center bottom,
+        #eee 35%,
+        #fff 100%
+    );
 }
+#secondary-nav li a:link,
+#secondary-nav li a:visited {
+    background-color: #8fa7bf;
+    color: #fff;
+    background-image: -webkit-gradient(
+        linear,
+        left bottom,
+        left top,
+        #6c89a6 28%,
+        #8fa7bf 82%
+    );
+        background-image: -moz-linear-gradient(
+        center bottom,
+        #6c89a6 28%,
+        #8fa7bf 82%
+    );
+}
+#primary-nav li a:hover,
+#primary-nav li a:active,
+#secondary-nav li a:hover,
+#secondary-nav li a:active {
+    background: #fff;
+    color: #009FFB;
+}
+
+/* subnav - section navigation */
+#subnav {
+    float: right;
+    list-style: none;
+    margin-top: 0.8em;
+}
+#subnav li {
+    float: left;
+    margin-right: 1.25em;
+}
+#subnav a {
+    text-decoration: none;
+}
+
 #main {
     padding: 10px 20px;
     margin: 0 0 20px;

@@ -1,3 +1,7 @@
+<div id="page-header">
+  <h1>Search Customers</h1>
+</div>
+
 <%= form_tag found_customers_path, :method=>:get do %> 
   <%= autocomplete_field_tag 'customer_name', '', autocomplete_customers_path, :size => 30, :id_element => "#customer_id" %>
   <%= hidden_field_tag 'customer_id' %>
