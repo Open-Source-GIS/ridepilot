@@ -14,6 +14,8 @@ class Trip < ActiveRecord::Base
   validates_presence_of :pickup_address
   validates_presence_of :dropoff_address
 
+  accepts_nested_attributes_for :customer
+
   def complete
     return trip_result == 'COMP'
   end
