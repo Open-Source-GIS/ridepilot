@@ -108,10 +108,9 @@ regexp_replace(phone_number_2, '[^0-9]', '') = ?
   end
 
   def index
-    @customers = Customer.all
 
     respond_to do |format|
-      format.html # index.html.erb
+      format.html { @customers = @customers.paginate :page => params[:page], :per_page => 30 }
       format.xml  { render :xml => @customers }
     end
   end

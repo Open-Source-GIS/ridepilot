@@ -169,7 +169,7 @@ class TripsController < ApplicationController
 
       @trip = Trip.new(trip_params)
       if @trip.save
-        redirect_to(@trip, :notice => 'Trip was successfully created.') 
+        redirect_to(new_trip_path, :notice => 'Trip was successfully created.') 
       else
           new 
           render :action => "new" 
@@ -177,7 +177,7 @@ class TripsController < ApplicationController
     else
       @trip = Trip.new(trip_params)
       if @trip.save
-        redirect_to(@trip, :notice => 'Trip was successfully created.') 
+        redirect_to(new_trip_path, :notice => 'Trip was successfully created.') 
       else
           new 
           render :action => "new" 

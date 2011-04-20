@@ -7,6 +7,8 @@ class Customer < ActiveRecord::Base
   normalize_attribute :last_name, :with=> [:squish, :titleize]
   normalize_attribute :middle_initial, :with=> [:squish, :upcase]
 
+  default_scope :order => 'last_name, first_name, middle_initial'
+
   def name
     if group
       return "(Group) %s" % first_name
