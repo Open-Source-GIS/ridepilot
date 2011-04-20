@@ -159,39 +159,10 @@ class TripsController < ApplicationController
 
     handle_cab trip_params
 
-    if params[:interval].size > 0 and (params[:monday] or 
-                                       params[:tuesday] or 
-                                       params[:wednesday] or 
-                                       params[:thursday] or 
-                                       params[:friday] or 
-                                       params[:saturday] or 
-                                       params[:sunday])
+    if is_repeating_trip params
       #this is a repeating trip, so we need to create both
-      #the repeating trip, and the instance for this week
-
-      repeating_trip_params = trip_params.clone
-      repeating_trip_params.delete :in_district
-      repeating_trip_params.delete :called_back_by
-      repeating_trip_params.delete :called_back_at
-      repeating_trip_params.delete :cab
-      repeating_trip_params.delete :cab_notified
-      repeating_trip_params.delete :trip_result
-      repeating_trip_params.delete :vehicle_id
-      repeating_trip_params.delete :donation
-      repeating_trip_params[:schedule_attributes] = { 
-        :repeat => 1,
-        :interval_unit => "week", 
-        :start_date => DateTime.parse(trip_params[:pickup_time]).to_date.to_s,
-        :interval => params[:interval], 
-        :monday => params[:monday] ? 1 : 0,
-        :tuesday => params[:tuesday] ? 1 : 0,
-        :wednesday => params[:wednesday] ? 1 : 0,
-        :thursday => params[:thursday] ? 1 : 0,
-        :friday => params[:friday] ? 1 : 0,
-        :saturday => params[:saturday] ? 1 : 0,
-        :sunday => params[:sunday] ? 1 : 0
-      }
-
+      #the repeating trip, and the instance for today
+      repeating_trip_params = extract_repeating_trip_params trip_params
       repeating_trip = RepeatingTrip.create(repeating_trip_params)
       trip_params[:repeating_trip_id] = repeating_trip.id
       trip_params.delete :schedule_attributes
@@ -221,16 +192,23 @@ class TripsController < ApplicationController
     authorize! :manage, provider
     trip_params[:provider_id] = @customer.provider.id
     handle_cab trip_params
-    respond_to do |format|
+
+    if is_repeating_trip params
+      #this is a repeating trip, so we need to edit both
+      #the repeating trip, and the instance for today
+      repeating_trip_params = extract_repeating_trip_params trip_params
+      if not @trip.repeating_trip
+        trip.repeating_trip = RepeatingTrip.new
+      end
+
+      repeating_trip = @trip.repeating_trip.update_attributes(repeating_trip_params)
+      trip_params.delete :schedule_attributes
+
       if @trip.update_attributes(trip_params)
-        format.html { redirect_to(@trip, :notice => 'Trip was successfully updated.') }
-        format.xml  { head :ok }
+        redirect_to(@trip, :notice => 'Trip was successfully updated.')
       else
-        format.html { 
-          edit
-          render :action => "edit" 
-        }
-        format.xml  { render :xml => @trip.errors, :status => :unprocessable_entity }
+        edit
+        render :action => "edit" 
       end
     end
   end
@@ -266,5 +244,43 @@ class TripsController < ApplicationController
       trip_params[:vehicle_id] = 0
       trip_params[:cab] = true
     end
+  end
+
+  def is_repeating_trip(params)
+
+    return (params[:interval].size > 0 and (params[:monday] or 
+                                           params[:tuesday] or 
+                                           params[:wednesday] or 
+                                           params[:thursday] or 
+                                           params[:friday] or 
+                                           params[:saturday] or 
+                                           params[:sunday]))
+  end
+
+  def extract_repeating_trip_params(trip_params)
+
+    repeating_trip_params = trip_params.clone
+    repeating_trip_params.delete :in_district
+    repeating_trip_params.delete :called_back_by
+    repeating_trip_params.delete :called_back_at
+    repeating_trip_params.delete :cab
+    repeating_trip_params.delete :cab_notified
+    repeating_trip_params.delete :trip_result
+    repeating_trip_params.delete :vehicle_id
+    repeating_trip_params.delete :donation
+    repeating_trip_params[:schedule_attributes] = { 
+      :repeat => 1,
+      :interval_unit => "week", 
+      :start_date => DateTime.parse(trip_params[:pickup_time]).to_date.to_s,
+      :interval => params[:interval], 
+      :monday => params[:monday] ? 1 : 0,
+      :tuesday => params[:tuesday] ? 1 : 0,
+      :wednesday => params[:wednesday] ? 1 : 0,
+      :thursday => params[:thursday] ? 1 : 0,
+      :friday => params[:friday] ? 1 : 0,
+      :saturday => params[:saturday] ? 1 : 0,
+      :sunday => params[:sunday] ? 1 : 0
+    }
+    return repeating_trip_params
   end
 end
