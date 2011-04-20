@@ -121,6 +121,7 @@ class TripsController < ApplicationController
   end
 
   def new
+    @trip = Trip.new(:provider_id=>current_provider_id, :customer_id=>params[:customer_id])
     prep_view
 
     #we only use this to get access to the schedule attributes
@@ -247,8 +248,7 @@ class TripsController < ApplicationController
   private
 
   def prep_view
-    @trip = Trip.new(:provider_id=>current_provider_id)
-    @customer = Customer.find(params[:customer_id])
+    @customer = @trip.customer
     authorize! :read, @customer
     @mobilities = Mobility.all
     @funding_sources = FundingSource.all
