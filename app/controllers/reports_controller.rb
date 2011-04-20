@@ -105,7 +105,7 @@ class ReportsController < ApplicationController
     @query.start_date = @start_date
     @end_date = @start_date.next_month
     if @monthly.nil?
-      @monthly = Monthly.create(:start_date=>@start_date, :end_date=>@end_date, :provider_id=>provider_id)
+      @monthly = Monthly.create(:start_date=>@start_date, :end_date=>@end_date, :provider_id=>current_provider_id)
     end
 
     if !can? :read, @monthly
@@ -117,7 +117,7 @@ class ReportsController < ApplicationController
     sql = "select trip_purpose, in_district, count(*) as ct from trips where provider_id = ? and pickup_time between ? and ? group by trip_purpose, in_district"
 
     counts_by_purpose = ActiveRecord::Base.connection.select_all(bind(
-        [sql, provider_id, @start_date, @end_date]))
+        [sql, current_provider_id, @start_date, @end_date]))
 
     by_purpose = {}
     for purpose in TRIP_PURPOSES
@@ -144,7 +144,7 @@ class ReportsController < ApplicationController
     end
 purpose
     #compute monthly totals
-    month_runs = Run.where(["provider_id = ? and date BETWEEN ? and ? and start_odometer is not null and end_odometer is not null", provider_id, @start_date, @end_date])
+    month_runs = Run.where(["provider_id = ? and date BETWEEN ? and ? and start_odometer is not null and end_odometer is not null", current_provider_id, @start_date, @end_date])
 
     first_run = month_runs.order("date").first
     if first_run
@@ -153,7 +153,7 @@ purpose
       @total_miles_driven = end_odometer - start_odometer 
     end
 
-    @turndowns = Trip.where(["provider_id =? and trip_result = 'TD' and pickup_time BETWEEN ? and ? ", provider_id, @start_date, @end_date]).count
+    @turndowns = Trip.where(["provider_id =? and trip_result = 'TD' and pickup_time BETWEEN ? and ? ", current_provider_id, @start_date, @end_date]).count
     
     @volunteer_driver_hours = hms_to_hours(month_runs.where("paid = true").sum("actual_end_time - actual_start_time") || "0:00:00")
     @paid_driver_hours = hms_to_hours(month_runs.where("paid = false").sum("actual_end_time - actual_start_time")  || "0:00:00")
@@ -164,7 +164,7 @@ purpose
     year_start_date = Date.new(@start_date.year, 1, 1)
     year_end_date = year_start_date.next_year
 
-    row = ActiveRecord::Base.connection.select_one(bind([undup_riders_sql, provider_id, year_start_date, year_end_date]))
+    row = ActiveRecord::Base.connection.select_one(bind([undup_riders_sql, current_provider_id, year_start_date, year_end_date]))
 
     @undup_riders = row['undup_riders'].to_i
 
@@ -172,7 +172,7 @@ purpose
 
   def update_monthly
     @monthly = Monthly.find(params[:monthly][:id])
-    params[:monthly][:provider_id] = provider_id
+    params[:monthly][:provider_id] = current_provider_id
     if can? :edit, @monthly
       @monthly.update_attributes(params[:monthly])
     end
@@ -186,7 +186,7 @@ purpose
 
     @donations_by_customer = {}
     @total = 0
-    for trip in Trip.where(["provider_id = ? and pickup_time between ? and ? and donation > 0", provider_id, @query.start_date, @query.end_date])
+    for trip in Trip.where(["provider_id = ? and pickup_time between ? and ? and donation > 0", current_provider_id, @query.start_date, @query.end_date])
       customer = trip.customer
       if ! @donations_by_customer.member? customer
         @donations_by_customer[customer] = trip.donation
@@ -204,7 +204,7 @@ purpose
     query_params = params[:query]
     @query = Query.new(query_params)
 
-    @trips = Trip.where(["provider_id = ? and pickup_time between ? and ? and cab = true", provider_id, @query.start_date, @query.end_date])
+    @trips = Trip.where(["provider_id = ? and pickup_time between ? and ? and cab = true", current_provider_id, @query.start_date, @query.end_date])
   end
 
   def age_and_ethnicity
@@ -220,7 +220,7 @@ purpose
     sql = "select distinct customer_id from trips where provider_id = ? and pickup_time between ? and ?"
 
     customer_rows = ActiveRecord::Base.connection.select_all(bind(
-        [sql, provider_id, @query.start_date, @query.end_date]))
+        [sql, current_provider_id, @query.start_date, @query.end_date]))
 
     customer_ids = customer_rows.map {|x| x[0]}
     customers = Customer.where(:id => customer_ids)
@@ -233,7 +233,7 @@ purpose
 
     sql = "select distinct customer_id from trips where provider_id = ? and pickup_time between ? and ?"
     earlier_customer_rows = ActiveRecord::Base.connection.select_all(bind(
-        [sql, provider_id, fy_start_date, @query.start_date]))
+        [sql, current_provider_id, fy_start_date, @query.start_date]))
 
     earlier_customer_ids = earlier_customer_rows.map {|x| x[0]}
     earlier_customers = Customer.where(:id => earlier_customer_ids)
@@ -304,18 +304,18 @@ purpose
     if @query.driver_id == 'cab'
 
       @trips = {cab =>
-        Trip.where(["(trip_result = '' or trip_result = 'COMP') and cab = true and provider_id=? and cast(pickup_time as date) = ? ", @query.driver_id, provider_id, @date])}
+        Trip.where(["(trip_result = '' or trip_result = 'COMP') and cab = true and provider_id=? and cast(pickup_time as date) = ? ", @query.driver_id, current_provider_id, @date])}
 
     elsif @query.driver_id == ''
 
-      @trips = Trip.where(["(trip_result = '' or trip_result = 'COMP') and provider_id=? and cast(pickup_time as date) = ? ", provider_id, @date]).group_by {|trip| trip.run ? trip.run.driver : cab }
+      @trips = Trip.where(["(trip_result = '' or trip_result = 'COMP') and provider_id=? and cast(pickup_time as date) = ? ", current_provider_id, @date]).group_by {|trip| trip.run ? trip.run.driver : cab }
 
     else
 
       driver = Driver.find(@query.driver_id)
       authorize! :read, driver
       @trips = {driver =>
-        Trip.find(:all, :joins=>:run, :conditions=> ["(trip_result = '' or trip_result = 'COMP') and cab = false and driver_id = ? and trips.provider_id=? and cast(pickup_time as date) = ? ", @query.driver_id, provider_id, @date])}
+        Trip.find(:all, :joins=>:run, :conditions=> ["(trip_result = '' or trip_result = 'COMP') and cab = false and driver_id = ? and trips.provider_id=? and cast(pickup_time as date) = ? ", @query.driver_id, current_provider_id, @date])}
     end
   end
 
