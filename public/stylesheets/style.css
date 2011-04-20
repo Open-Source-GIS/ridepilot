@@ -213,6 +213,14 @@ body {
 #login-area a:active {
     text-decoration: underline;
 }
+#login-area form {
+    display: inline;
+}
+#login-area .separator {
+    padding: 0 0.4em;
+    color: #8FA7BF;
+}
+
 #crossbar {
     padding: 0 20px;
     background: #0d4680;
@@ -247,14 +255,14 @@ body {
 #primary-nav li:last-child, 
 #secondary-nav li:last-child { margin-right: 0; }
 
-#primary-nav li a:link, #primary-nav li a:visited,
-#secondary-nav li a:link, #secondary-nav li a:visited {
+#primary-nav a:link, #primary-nav a:visited,
+#secondary-nav a:link, #secondary-nav a:visited {
     display: block;
     padding: 0.5em 0.8em;
     text-decoration: none;
     background-color: #eee;
 }
-#primary-nav li a:link, #primary-nav li a:visited {
+#primary-nav a:link, #primary-nav a:visited {
     background-image: -webkit-gradient(
         linear,
         left bottom,
@@ -274,7 +282,7 @@ body {
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
 }
-#secondary-nav li a:link, #secondary-nav li a:visited {
+#secondary-nav a:link, #secondary-nav a:visited {
     background-color: #8fa7bf;
     color: #fff;
     background-image: -webkit-gradient(
@@ -296,10 +304,17 @@ body {
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;
 }
-#primary-nav li a:hover, #primary-nav li a:active,
-#secondary-nav li a:hover, #secondary-nav li a:active,
-#primary-nav li a.active,
-#secondary-nav li a.active {
+#primary-nav a:hover, #primary-nav a:active,
+#secondary-nav a:hover, #secondary-nav a:active {
+    background: #fff;
+    color: #009FFB;
+}
+body.trips #primary-nav li.trips a:link, body.trips #primary-nav li.trips a:visited,
+body.runs #primary-nav li.runs a:link, body.runs #primary-nav li.runs a:visited,
+body.customers #primary-nav li.customers a:link, body.customers #primary-nav li.customers a:visited,
+body.reports #primary-nav li.reports a:link, body.reports #primary-nav li.reports a:visited,
+body.providers #secondary-nav li.providers a:link, body.providers #secondary-nav li.providers a:visited,
+body.funding-sources #secondary-nav li.funding-sources a:link, body.funding-sources #secondary-nav li.funding-sources a:visited {
     background: #fff;
     color: #009FFB;
 }

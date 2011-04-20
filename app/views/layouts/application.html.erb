@@ -11,14 +11,16 @@
 
   <%= csrf_meta_tag %>
 </head>
-<body>
+<body class="<%= bodytag_class %>">
   <div id="header">
     <div class="wrap selfclear">
       <a id="logo" href="/">Ride Pilot</a>
       <div id="login-area">
         <% if current_user %>
-          <a href="#"><%= current_user.email %></a> | <%= link_to "Log out", destroy_user_session_path %>
-  
+          <a href="#"><%= current_user.email %></a> 
+          <span class="separator">|</span>
+          <%= link_to "Log out", destroy_user_session_path %>
+          <span class="separator">|</span>
           Logged in to 
           <% if @provider_map.size > 1 %>
           <%= form_tag change_provider_path %>
@@ -38,21 +40,23 @@
   <div id="crossbar">
     <div class="wrap selfclear">
       <ul id="primary-nav" class="selfclear">
-        <li><%= link_to_with_highlight "Trips", trips_path %></li>
-        <li><%= link_to_with_highlight "Runs", runs_path %></li>
-        <li><%= link_to_with_highlight "Customers", customers_path %></li><!-- TODO: fix the link_to_with_highlight helper so that subpages get the active class -->
-        <li><%= link_to_with_highlight "Repeating trips", repeating_trips_path %></li>
-        <li><%= link_to_with_highlight "Reports", reports_path %></li>
+        <li class="trips"><%= link_to "Trips", trips_path %></li>
+        <li class="runs"><%= link_to "Runs", runs_path %></li>
+        <li class="customers"><%= link_to "Customers", customers_path %></li>
+        <li class="repeating-trips"><%= link_to "Repeating trips", repeating_trips_path %></li>
+        <li class="reports"><%= link_to "Reports", reports_path %></li>
+        <% if can? :edit, "Providers" %>
+        <li class="vehicles-drivers-users"><%= link_to "Vehicles, Drivers & Users", provider_path(current_user.current_provider) %></li>
+        <% end %>
       </ul>
 
       <ul id="secondary-nav" class="selfclear">
         <% if can? :edit, "Providers" %>
-        <li><%= link_to_with_highlight "Providers", providers_path %></li>
+        <li class="providers"><%= link_to "Providers", providers_path %></li>
         <% end %>
         <% if can? :edit, FundingSource %>
-        <li><%= link_to_with_highlight "Funding Sources", funding_sources_path %></li>
+        <li class="funding-sources"><%= link_to "Funding Sources", funding_sources_path %></li>
         <% end %>
-        <li><%= link_to_with_highlight "Vehicles, Drivers & Users", provider_path(current_user.current_provider) %></li>
       </ul>
     </div><!-- /.wrap -->
   </div><!-- /#crossbar -->
