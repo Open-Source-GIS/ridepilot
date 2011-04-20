@@ -244,6 +244,8 @@ class TripsController < ApplicationController
     end
   end
 
+  private
+
   def prep_view
     @trip = Trip.new(:provider_id=>current_provider_id)
     @customer = Customer.find(params[:customer_id])
@@ -251,7 +253,7 @@ class TripsController < ApplicationController
     @mobilities = Mobility.all
     @funding_sources = FundingSource.all
     @drivers = Driver.where(:provider_id=>@trip.provider_id)
-    cab_vehicle = Vehicle.new(name="cab", id=-1)
+    cab_vehicle = Vehicle.new(:name=>"cab", :id=>-1)
     @vehicles = Vehicle.active.where(:provider_id=>@trip.provider_id) + [cab_vehicle]
     @trip_results = TRIP_RESULT_CODES
     @trip_purposes = TRIP_PURPOSES
