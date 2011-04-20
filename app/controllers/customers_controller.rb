@@ -18,22 +18,82 @@ class CustomersController < ApplicationController
 regexp_replace(phone_number_2, '[^0-9]', '') = ? 
 ", query, query])
     else
-      query = "%#{term.downcase}%"
-      customers = Customer.accessible_by(current_ability).where([
-"LOWER(first_name || ' ' || middle_initial || ' ' || last_name) LIKE ? or 
-LOWER(last_name) LIKE ? or 
-LOWER(first_name) LIKE ? or
-LOWER(last_name || ', ' || first_name) LIKE ? or
-dmetaphone(last_name) LIKE dmetaphone(?) || '%'  or 
-dmetaphone(first_name) LIKE dmetaphone(?) || '%'  or
-dmetaphone(last_name) LIKE dmetaphone_alt(?) || '%'  or 
-dmetaphone(first_name) LIKE dmetaphone_alt(?) || '%'  or
-dmetaphone_alt(last_name) LIKE dmetaphone(?) || '%'  or 
-dmetaphone_alt(first_name) LIKE dmetaphone(?) || '%'  or
-dmetaphone_alt(last_name) LIKE dmetaphone_alt(?) || '%'  or 
-dmetaphone_alt(first_name) LIKE dmetaphone_alt(?) || '%' 
-", query, query, query, query, term, term, term, term, term, term, term, term])
-    .limit(limit)
+      if term.match /^[a-z]+$/i
+        #a single word, either a first or a last name
+        query, args = make_customer_name_query("first_name", term)
+        lnquery, lnargs = make_customer_name_query("last_name", term)
+        query += " or " + lnquery
+        args += lnargs
+      elsif term.match /^[a-z]+[ ,]\s*$/i
+        comma = term.index(",")
+        #a single word, either a first or a last name, complete
+        term.gsub!(",", "")
+        term = term.strip
+        if comma
+          query, args = make_customer_name_query("last_name", term, :complete)
+        else
+          query, args = make_customer_name_query("first_name", term, :complete)
+        end
+      elsif term.match /^[a-z]+\s+[a-z]$/i
+        #a first name followed by either a middle initial or the first
+        #letter of a last name
+
+        first_name, last_name = term.split(" ").map(&:strip)
+
+        query, args = make_customer_name_query("first_name", first_name, :complete)
+        lnquery, lnargs = make_customer_name_query("last_name", last_name)
+        miquery, miargs = make_customer_name_query("middle_initial", last_name, :initial)
+
+        query += " and (" + lnquery +  " or " + miquery + ")"
+        args += lnargs + miargs
+
+      elsif term.match /^[a-z]+\s+[a-z]{2,}$/i
+        #a first name followed by two or more letters of a last name
+
+        first_name, last_name = term.split(" ").map(&:strip)
+
+        query, args = make_customer_name_query("first_name", first_name, :complete)
+        lnquery, lnargs = make_customer_name_query("last_name", last_name)
+        query += " and " + lnquery
+        args += lnargs
+      elsif term.match /^[a-z]+\s*,\s*[a-z]+$/i
+        #a last name, a comma, some or all of a first name
+
+        last_name, first_name = term.split(",").map(&:strip)
+
+        query, args = make_customer_name_query("last_name", last_name, :complete)
+        fnquery, fnargs = make_customer_name_query("first_name", first_name)
+        query += " and " + fnquery
+        args += fnargs
+      elsif term.match /^[a-z]+\s+[a-z][.]?\s+[a-z]+$/i
+        #a first name, middle initial, some or all of a last name
+
+        first_name, middle_initial, last_name = term.split(" ").map(&:strip)
+
+        middle_initial = middle_initial[0]
+
+        query, args = make_customer_name_query("first_name", first_name, :complete)
+        miquery, miargs = make_customer_name_query("middle_initial", middle_initial, :initial)
+
+        lnquery, lnargs = make_customer_name_query("last_name", last_name)
+        query += " and " + miquery + " and " + lnquery
+        args += miargs + lnargs
+      elsif term.match /^[a-z]+\s*,\s*[a-z]+\s+[a-z][.]?$/i
+        #a last name, a comma, a first name, a middle initial
+
+        last_name, first_and_middle = term.split(",").map(&:strip)
+        first_name, middle_initial = first_and_middle.split(" ").map(&:strip)
+        middle_initial = middle_initial[0]
+
+        query, args = make_customer_name_query("first_name", first_name, :complete)
+        miquery, miargs = make_customer_name_query("middle_initial", middle_initial, :initial)
+        lnquery, lnargs = make_customer_name_query("last_name", last_name, :complete)
+        query += " and " + miquery + " and " + lnquery
+        args += miargs + lnargs
+      end
+
+      conditions = [query] + args
+      customers = Customer.accessible_by(current_ability).where(conditions).limit(limit)
     end
     
     render :json => customers.map { |customer| {:label=>customer.name, :id=>customer.id}}
@@ -166,4 +226,27 @@ first_name, first_name, first_name, first_name,
       format.xml  { head :ok }
     end
   end
+
+  def make_customer_name_query(field, value, option=nil)
+    value = value.downcase
+    if option == :initial
+      return "(LOWER(%s) = ?)" % field, [value]
+    elsif option == :complete
+      return "(LOWER(%s) = ? or 
+dmetaphone(%s) = dmetaphone(?) or 
+dmetaphone(%s) = dmetaphone_alt(?)  or
+dmetaphone_alt(%s) = dmetaphone(?) or 
+dmetaphone_alt(%s) = dmetaphone_alt(?))" % [field, field, field, field, field], [value, value, value, value, value]
+    else
+      like = value + "%"
+
+      return "(LOWER(%s) like ? or 
+dmetaphone(%s) LIKE dmetaphone(?) || '%%' or 
+dmetaphone(%s) LIKE dmetaphone_alt(?)  || '%%' or
+dmetaphone_alt(%s) LIKE dmetaphone(?)  || '%%'or 
+dmetaphone_alt(%s) LIKE dmetaphone_alt(?) || '%%')" % [field, field, field, field, field], [like, value, value, value, value]
+
+    end
+  end
+
 end
