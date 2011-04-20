@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110419152042) do
+ActiveRecord::Schema.define(:version => 20110420001245) do
 
   create_table "addresses", :force => true do |t|
     t.string  "name"
@@ -95,7 +95,7 @@ ActiveRecord::Schema.define(:version => 20110419152042) do
   add_index "regions", ["the_geom"], :name => "index_regions_on_the_geom", :spatial => true
 
   create_table "repeating_trips", :force => true do |t|
-    t.string   "schedule_yaml"
+    t.text     "schedule_yaml"
     t.integer  "provider_id"
     t.integer  "customer_id"
     t.datetime "pickup_time"

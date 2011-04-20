@@ -128,6 +128,13 @@ class TripsController < ApplicationController
     @funding_sources = FundingSource.all
     @drivers = Driver.where(:provider_id=>@trip.provider_id)
     @vehicles = Vehicle.active.where(:provider_id=>@trip.provider_id)
+    @trip_results = TRIP_RESULT_CODES
+    @trip_purposes = TRIP_PURPOSES
+
+    #we only use this to get access to the schedule attributes
+    repeating_trip = RepeatingTrip.new
+    repeating_trip.schedule_attributes = {:repeat => 1, :interval => 1, :start_date => Time.now.to_s, :interval_unit=>"week"}
+    @schedule = repeating_trip.schedule_attributes
 
     respond_to do |format|
       format.html # new.html.erb
@@ -141,6 +148,16 @@ class TripsController < ApplicationController
     @funding_sources = FundingSource.by_provider(current_provider)
     @drivers = Driver.where(:provider_id=>@trip.provider_id)
     @vehicles = Vehicle.active.where(:provider_id=>@trip.provider_id)
+    @trip_results = TRIP_RESULT_CODES
+    @trip_purposes = TRIP_PURPOSES
+    if @trip.repeating_trip
+      repeating_trip = @trip.repeating_trip
+    else
+      #we only use this to get access to the schedule attributes
+      repeating_trip = RepeatingTrip.new
+      repeating_trip.schedule_attributes = {:repeat => 1, :interval => 1, :start_date => Time.now.to_s, :interval_unit=>"week"}
+    end
+    @schedule = repeating_trip.schedule_attributes
   end
 
   def create
@@ -153,19 +170,59 @@ class TripsController < ApplicationController
     authorize! :manage, provider
     trip_params[:provider_id] = @customer.provider.id
 
-    @trip = Trip.new(trip_params)
+    if params[:interval].size > 0 and (params[:monday] or 
+                                       params[:tuesday] or 
+                                       params[:wednesday] or 
+                                       params[:thursday] or 
+                                       params[:friday] or 
+                                       params[:saturday] or 
+                                       params[:sunday])
+      #this is a repeating trip, so we need to create both
+      #the repeating trip, and the instance for this week
 
-    respond_to do |format|
+      repeating_trip_params = trip_params.clone
+      repeating_trip_params.delete :in_district
+      repeating_trip_params.delete :called_back_by
+      repeating_trip_params.delete :called_back_at
+      repeating_trip_params.delete :cab
+      repeating_trip_params.delete :cab_notified
+      repeating_trip_params.delete :trip_result
+      repeating_trip_params.delete :vehicle_id
+      repeating_trip_params.delete :donation
+      repeating_trip_params[:schedule_attributes] = { 
+        :repeat => 1,
+        :interval_unit => "week", 
+        :start_date => DateTime.parse(trip_params[:pickup_time]).to_date.to_s,
+        :interval => params[:interval], 
+        :monday => params[:monday],
+        :tuesday => params[:tuesday],
+        :wednesday => params[:wednesday],
+        :thursday => params[:thursday],
+        :friday => params[:friday],
+        :saturday => params[:saturday],
+        :sunday => params[:sunday]
+      }
+
+      repeating_trip = RepeatingTrip.create(repeating_trip_params)
+      trip_params[:repeating_trip_id] = repeating_trip.id
+      trip_params.delete :schedule_attributes
+
+      #FIXME: schedule_attributes = {:repeat => 1, :interval => 1, :start_date => Time.now.to_s, :interval_unit=>"day"}
+
+      @trip = Trip.new(trip_params)
       if @trip.save
-        format.html { redirect_to(@trip, :notice => 'Trip was successfully created.') }
-        format.xml  { render :xml => @trip, :status => :created, :location => @trip }
+        redirect_to(@trip, :notice => 'Trip was successfully created.') 
       else
-        @mobilities = Mobility.all
-        @funding_sources = FundingSource.all
-        @drivers = Driver.where(:provider_id=>@trip.provider_id)
-        @vehicles = Vehicle.active.where(:provider_id=>@trip.provider_id)
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @trip.errors, :status => :unprocessable_entity }
+          new 
+          render :action => "new" 
+      end
+    else
+      @trip = Trip.new(trip_params)
+      if @trip.save
+        redirect_to(@trip, :notice => 'Trip was successfully created.') 
+      else
+          new 
+          render :action => "new" 
       end
     end
   end
@@ -182,11 +239,10 @@ class TripsController < ApplicationController
         format.html { redirect_to(@trip, :notice => 'Trip was successfully updated.') }
         format.xml  { head :ok }
       else
-        @mobilities = Mobility.all
-        @funding_sources = FundingSource.all
-        @drivers = Driver.where(:provider_id=>@trip.provider_id)
-        @vehicles = Vehicle.active.where(:provider_id=>@trip.provider_id)
-        format.html { render :action => "edit" }
+        format.html { 
+          edit
+          render :action => "edit" 
+        }
         format.xml  { render :xml => @trip.errors, :status => :unprocessable_entity }
       end
     end
