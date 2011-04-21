@@ -135,6 +135,14 @@
         <label for="notes">Trip Notes:</label>
         <%= f.text_area :notes %>
       </li>
+      <li class="selfclear">
+        <label for="customer_informed">Called back:</label>
+        <%= f.check_box :customer_informed %>
+        <% if @trip.customer_informed %>
+          on <%= @trip.called_back_at %>
+          by  <%= @trip.called_back_by.email %>
+        <% end %>
+      </li>
     </ol>
 
     <div class="actions">

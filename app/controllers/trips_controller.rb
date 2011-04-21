@@ -157,7 +157,7 @@ class TripsController < ApplicationController
     authorize! :manage, provider
     trip_params[:provider_id] = @customer.provider.id
 
-    handle_cab trip_params
+    handle_trip_params trip_params
 
     if is_repeating_trip params
       #this is a repeating trip, so we need to create both
@@ -191,7 +191,7 @@ class TripsController < ApplicationController
     provider = @customer.provider
     authorize! :manage, provider
     trip_params[:provider_id] = @customer.provider.id
-    handle_cab trip_params
+    handle_trip_params trip_params
 
     if is_repeating_trip params
       #this is a repeating trip, so we need to edit both
@@ -238,11 +238,16 @@ class TripsController < ApplicationController
 
   end
 
-  def handle_cab(trip_params)
+  def handle_trip_params(trip_params)
     if trip_params[:vehicle_id] == '-1' or trip_params[:vehicle_id] == ''
       #cab trip
       trip_params[:vehicle_id] = 0
       trip_params[:cab] = true
+    end
+
+    if trip_params[:customer_informed] and not @trip.customer_informed
+      trip_params[:called_back_by] = current_user
+      trip_params[:called_back_at] = DateTime.now.to_s
     end
   end
 
@@ -268,6 +273,9 @@ class TripsController < ApplicationController
     repeating_trip_params.delete :trip_result
     repeating_trip_params.delete :vehicle_id
     repeating_trip_params.delete :donation
+    repeating_trip_params.delete :customer_informed
+    repeating_trip_params.delete :called_back_at
+    repeating_trip_params.delete :called_back_by
     repeating_trip_params[:schedule_attributes] = { 
       :repeat => 1,
       :interval_unit => "week", 

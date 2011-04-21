@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110420001245) do
+ActiveRecord::Schema.define(:version => 20110420223646) do
 
   create_table "addresses", :force => true do |t|
     t.string  "name"
@@ -167,7 +167,7 @@ ActiveRecord::Schema.define(:version => 20110420001245) do
     t.boolean  "cab_notified",                                      :default => false
     t.text     "guests"
     t.boolean  "in_district"
-    t.integer  "called_back_by"
+    t.integer  "called_back_by_id"
   end
 
   add_index "trips", ["provider_id", "appointment_time"], :name => "index_trips_on_provider_id_and_appointment_time"
