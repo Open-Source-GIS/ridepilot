@@ -407,6 +407,7 @@ ol.section li label {
     font-weight: bold;
 }
 fieldset {
+    clear: both;
     background: #eee;
     border: 1px solid #bbb;
     padding: 15px 15px 5px;
@@ -423,60 +424,72 @@ fieldset.new-trip {
     -moz-border-top-right-radius: 0;
     border-top-right-radius: 0;
 }
-fieldset.new-trip ol.first,
-fieldset.new-trip ol.second,
-fieldset.new-trip ol.third {
+fieldset ol.first,
+fieldset ol.second,
+fieldset ol.third {
     float: left;
     width: 30%;
     margin: 0 5% 0 0;
 }
-fieldset.new-trip ol.third {
+fieldset ol.third {
     margin: 0;
 }
-fieldset.new-trip ol.fourth {
+fieldset ol.fourth {
     float: left;
     width: 65%;
 }
-fieldset.new-trip ol.section li label {
+fieldset ol.section li label {
     float: left;
     width: 35%;
     margin-right: 2%;
 }
-fieldset.new-trip ol.section li input {
+fieldset ol.section li input {
     max-width: 60%;
 }
-fieldset.new-trip ol.section li textarea {
+fieldset ol.section li textarea {
     max-width: 60%;
     height: 3.5em;
     resize: none;
 }
-fieldset.new-trip ol.fourth li label {
+fieldset ol.fourth li label {
     width: 15%;
 }
-fieldset.new-trip ol.fourth li textarea {
+fieldset ol.fourth li textarea {
     width: 81.5%;
     max-width: 81.5%;
     height: 5em;
 }
-fieldset.new-trip ol.section li input.full {
+fieldset ol.section li input.full {
     width: 60%;
 }
-fieldset.new-trip ol.section li.passengers input,
-form ol.section li.time input {
+fieldset ol.section li.passengers input,
+fieldset ol.section li.time input {
     max-width: 3em;
 }
-fieldset.new-trip ol.section li div {
+fieldset ol.section li div {
     float: left;
     width: 60%;
 }
-fieldset.new-trip ol.section li div input.full {
+fieldset ol.section li div input.full {
     width: 100%;
 }
-fieldset.new-trip ol.section li p {
+fieldset ol.section li p {
     line-height: 1.231; 
 }
 
+fieldset div.group {
+    border-top: 1px solid #bbb;
+    padding-top: 10px;
+    margin: 0 0 15px;
+    clear: both;
+}
+fieldset div.group label {
+    font-weight: bold;
+}
+
 form div.actions {
+    border-top: 1px solid #bbb;
+    padding-top: 10px;
     clear: both;
     margin: 0 0 10px;
 }
@@ -517,7 +530,7 @@ table {
 }
 table th {
     text-align: left;
-    background: #0d4680;
+    background: #2e6399;
     color: #ddd;
 }
 table th:first-child {
@@ -598,46 +611,131 @@ table th:last-child {
 .customer-list tr.odd {
     background: #f7f7f7;
 }
-.customer-list .group,
-.customer-list .individual {
+a.group,
+a.individual {
     display: block;
     height: 16px;
     width: 16px;
     text-indent: -9999px;
 }
-.customer-list .group {
+a.group {
     background: url(images/users.png) left center no-repeat scroll;
 }
-.customer-list .individual {
+a.individual {
     background: url(images/user.png) left center no-repeat scroll;
 }
-.customer-list .new-trip,
-.customer-list .edit,
-.customer-list .delete {
+a.new-trip,
+a.edit,
+a.delete {
     padding: 5px 0 5px 20px;
     text-decoration: none;
     font-size: 11px;
     line-height: 16px;
 }
-.customer-list .new-trip {
+a.new-trip {
     background: url(images/plus-button.png) left center no-repeat scroll;
 }
-.customer-list .edit {
+a.edit {
     background: url(images/card--pencil.png) left center no-repeat scroll;
 }
-.customer-list .delete {
+a.delete {
     background: url(images/cross-button.png) left center no-repeat scroll;
     color: #e5004d;
 }
-.customer-list .delete:hover,
-.customer-list .delete:active {
+a.delete:hover,
+.delete:active {
     color: #ff4d88;
 }
-.customer-list .new-trip:hover,
-.customer-list .new-trip:active,
-.customer-list .edit:hover,
-.customer-list .edit:active,
-.customer-list .delete:hover,
-.customer-list .delete:active {
+a.new-trip:hover,
+a.new-trip:active,
+a.edit:hover,
+a.edit:active,
+a.delete:hover,
+a.delete:active {
     text-decoration: underline;
+}
+a.cancel {
+    padding: 5px 0 5px 20px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    font-size: 11px;
+    line-height: 16px;
+    background: url(images/cross-button.png) left center no-repeat scroll;
+    color: #e5004d;
+    float: right;
+}
+p.customer-actions .edit {
+    float: right;
+}
+p.customer-actions .separator,
+p.activated-date .separator {
+    padding: 0 0.4em;
+    color: #bbb;
+    display: none;
+}
+
+div.customer-profile {
+    border-top: 1px solid #bbb;
+    padding: 20px 0 0;
+}
+div.customer-profile dl {
+    float: left;
+    width: 33%;
+    margin: 0;
+}
+div.customer-profile dt {
+    font-weight: bold;
+    float: left;
+    width: 30%;
+    margin-right: 2%;
+    clear: both;
+}
+div.customer-profile dd {
+    margin-bottom: 15px;
+    float: left;
+    width: 60%;
+}
+
+div.pagination {
+    text-align: center;
+    padding: 20px 0;
+}
+a.prev_page {
+    float: left;
+}
+a.next_page {
+    float: right;
+}
+a.prev_page,
+a.next_page {
+    padding: 0.5em 0.8em;
+    background: #009FFB;
+    color: #fff !important;
+    text-decoration: none;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+a.prev_page:hover,
+a.prev_page:active,
+a.next_page:hover,
+a.next_page:active {
+    background: #0081cc;
+}
+
+div.pagination span.prev_page.disabled,
+div.pagination span.next_page.disabled {
+    padding: 0.5em 0.8em;
+    background: #bbb;
+    color: #eee;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    cursor: default;
+}
+div.pagination span.prev_page.disabled {
+    float: left;
+}
+div.pagination span.next_page.disabled {
+    float: right;
 }

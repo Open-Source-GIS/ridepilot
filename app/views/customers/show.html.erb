@@ -1,91 +1,74 @@
-<p id="notice"><%= notice %></p>
+<div id="page-header">
+  <h1>Customer: <%= @customer.first_name + h(' ') + @customer.middle_initial + h(' ') + @customer.last_name %></h1>
+</div>
 
-<%= link_to 'Create trip', new_trip_path(:customer_id=>@customer.id) %>
-
-<p>
-  <b>First name:</b>
-  <%= @customer.first_name %>
+<p class="customer-actions">
+  <%= link_to 'New Trip', new_trip_path(:customer_id=>@customer.id), :class=>'new-trip'  %>
+  <span class="separator">|</span>
+  <%= link_to 'Edit', edit_customer_path(@customer), :class=>'edit' %>
 </p>
 
-<p>
-  <b>Middle initial:</b>
-  <%= @customer.middle_initial %>
-</p>
+<div class="customer-profile selfclear">
 
-<p>
-  <b>Last name:</b>
-  <%= @customer.last_name %>
-</p>
+<dl>
+  <dt>First name:</dt>
+  <dd><%= @customer.first_name %></dd>
 
-<p>
-  <b>Phone number 1:</b>
-  <%= @customer.phone_number_1 %>
-</p>
+  <dt>Middle initial:</dt>
+  <dd><%= @customer.middle_initial %></dd>
 
-<p>
-  <b>Phone number 2:</b>
-  <%= @customer.phone_number_2 %>
-</p>
+  <dt>Last name:</dt>
+  <dd><%= @customer.last_name %></dd>
 
-<p>
-  <b>Address:</b>
-  <%= raw format_newlines @customer.address.text %>
-</p>
+  <dt>Phone number 1:</dt>
+  <dd><%= @customer.phone_number_1 %></dd>
 
-<p>
-  <b>Email:</b>
-  <%= @customer.email %>
-</p>
+  <dt>Phone number 2:</dt>
+  <dd><%= @customer.phone_number_2 %></dd>
 
-<p>
-  <b>Activated date:</b>
-  <%= @customer.activated_date %>
-</p>
+  <dt>Address:</dt>
+  <dd><%= raw format_newlines @customer.address.text %></dd>
 
-<p>
-  <b>Inactivated date:</b>
-  <%= @customer.inactivated_date %>
-</p>
+  <dt>Email:</dt>
+  <dd><%= @customer.email %></dd>
+</dl>
 
-<p>
-  <b>Inactivated reason:</b>
-  <%= @customer.inactivated_reason %>
-</p>
+<dl>
+  <dt>Activated date:</dt>
+  <dd><%= @customer.activated_date %></dd>
 
-<p>
-  <b>Birth date:</b>
-  <%= @customer.birth_date %>
-</p>
+  <dt>Inactivated date:</dt>
+  <dd><%= @customer.inactivated_date %></dd>
 
-<p>
-  <b>Mobility:</b>
-  <%= @customer.mobility_id %>
-</p>
+  <dt>Inactivated reason:</dt>
+  <dd><%= @customer.inactivated_reason %></dd>
 
-<p>
-  <b>Mobility notes:</b>
-  <%= @customer.mobility_notes %>
-</p>
+  <dt>Birth date:</dt>
+  <dd><%= @customer.birth_date %></dd>
 
-<p>
-  <b>Ethnicity:</b>
-  <%= @customer.ethnicity %>
-</p>
+  <dt>Mobility:</dt>
+  <dd><%= @customer.mobility_id %></dd>
 
-<p>
-  <b>Emergency contact notes:</b>
-  <%= @customer.emergency_contact_notes %>
-</p>
+  <dt>Mobility notes:</dt>
+  <dd><%= @customer.mobility_notes %></dd>
+</dl>
 
-<p>
-  <b>Private notes:</b>
-  <%= @customer.private_notes %>
-</p>
+<dl>
+  <dt>Ethnicity:</dt>
+  <dd><%= @customer.ethnicity %></dd>
 
-<p>
-  <b>Public notes:</b>
-  <%= @customer.public_notes %>
-</p>
+  <dt>Emergency contact notes:</dt>
+  <dd><%= @customer.emergency_contact_notes %></dd>
 
-<%= link_to 'Edit', edit_customer_path(@customer) %> |
-<%= link_to 'Back', customers_path %>
+  <dt>Private notes:</dt>
+  <dd><%= @customer.private_notes %></dd>
+
+  <dt>Public notes:</dt>
+  <dd><%= @customer.public_notes %></dd>
+</dl>
+
+</div>
+
+<hr />
+
+<%= link_to 'Back', customers_path, :class=>'action-bttn' %>
