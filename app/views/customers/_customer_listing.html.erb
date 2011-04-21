@@ -8,7 +8,9 @@
       <th>Alternate Phone</th>
       <th>Email</th>
       <th>Activated date</th>
+      <% if show_inactivated_date %>
       <th>Inactivated date</th>
+      <% end %>
       <th></th>
       <th></th>
       <th></th>
@@ -24,8 +26,10 @@
       <td><%= customer.phone_number_2 %></td>
       <td><%= customer.email %></td>
       <td><%= customer.activated_date %></td>
+      <% if show_inactivated_date %>
       <td><%= customer.inactivated_date %></td>
-      <td><%= link_to 'New Trip', '#', :class=>'new-trip' %></td>
+      <% end %>
+      <td><%= link_to 'New Trip', new_trip_path(:customer_id=>customer.id), :class=>'new-trip' %></td>
       <td><%= link_to 'Edit', edit_customer_path(customer), :class=>'edit' %></td>
       <td><%= link_to 'Delete', customer, :confirm => 'Are you sure?', :method => :delete, :class=>'delete' %></td>
     </tr>
