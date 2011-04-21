@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110420223646) do
+ActiveRecord::Schema.define(:version => 20110421204717) do
 
   create_table "addresses", :force => true do |t|
     t.string  "name"
@@ -39,11 +39,11 @@ ActiveRecord::Schema.define(:version => 20110420223646) do
     t.string  "inactivated_reason"
     t.date    "birth_date"
     t.integer "mobility_id"
-    t.string  "mobility_notes"
+    t.text    "mobility_notes"
     t.string  "ethnicity"
-    t.string  "emergency_contact_notes"
-    t.string  "private_notes"
-    t.string  "public_notes"
+    t.text    "emergency_contact_notes"
+    t.text    "private_notes"
+    t.text    "public_notes"
     t.integer "provider_id"
     t.boolean "group",                   :default => false
   end
@@ -108,7 +108,7 @@ ActiveRecord::Schema.define(:version => 20110420223646) do
     t.integer  "mobility_id"
     t.integer  "funding_source_id"
     t.string   "trip_purpose"
-    t.string   "notes"
+    t.text     "notes"
   end
 
   create_table "roles", :force => true do |t|
@@ -157,7 +157,7 @@ ActiveRecord::Schema.define(:version => 20110420223646) do
     t.integer  "funding_source_id"
     t.string   "trip_purpose"
     t.string   "trip_result",                                       :default => "unscheduled"
-    t.string   "notes"
+    t.text     "notes"
     t.decimal  "donation",           :precision => 10, :scale => 2, :default => 0.0
     t.integer  "provider_id"
     t.datetime "called_back_at"
