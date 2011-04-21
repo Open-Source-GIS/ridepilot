@@ -12,7 +12,7 @@
   <% end %>
 <% end %>
 
-<%= render :partial=>"customer_listing", :locals=>{:show_inactivated_date=>false} %>
+<%= render :partial=>"customer_listing", :locals=>{:show_inactivated_date=>@show_inactivated_date} %>
 
 <%= will_paginate @customers %>
 
