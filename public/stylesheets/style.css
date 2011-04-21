@@ -515,6 +515,9 @@ a.action-bttn:active {
 table {
     width: 100%;
 }
+table th {
+    text-align: left;
+}
 
 /*
  *
