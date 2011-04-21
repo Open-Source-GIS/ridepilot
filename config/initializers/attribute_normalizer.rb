@@ -1,7 +1,7 @@
 AttributeNormalizer.configure do |config|
 
   config.normalizers[:titleize] = lambda do |value, options|
-    value.is_a?(String) ? value.titleize : value
+    (value.is_a?(String) && value.size > 0) ? (value[0].upcase + value[1..-1]) : value
   end
 
   config.normalizers[:upcase] = lambda do |value, options|
