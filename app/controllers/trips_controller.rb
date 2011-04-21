@@ -26,7 +26,7 @@ class TripsController < ApplicationController
     #not been marked as informed, ordered by when they were last
     #called.
 
-    @trips = Trip.accessible_by(current_ability).where(["trip_result = 'TD' or trip_result = 'COMP' and customer_informed = false and pickup_time >= ? ", Date.today]).order("called_back_at")
+    @trips = Trip.accessible_by(current_ability).where(["customer_informed = false and pickup_time >= ? ", Date.today]).order("called_back_at")
 
     respond_to do |format|
       format.html
