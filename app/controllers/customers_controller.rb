@@ -108,12 +108,19 @@ regexp_replace(phone_number_2, '[^0-9]', '') = ?
   end
 
   def index
-
+    @customers = @customers.where(:inactivated_date => nil)
     respond_to do |format|
       format.html { @customers = @customers.paginate :page => params[:page], :per_page => 30 }
       format.xml  { render :xml => @customers }
     end
   end
+
+  def inactive
+    @customers = Customers.accessible_by(current_ability).where("inactivated_date is not null")
+    @customers = @customers.paginate :page => params[:page], :per_page => 30 
+    render :action=>"index"
+  end
+
 
   def show
     @customer = Customer.find(params[:id])
