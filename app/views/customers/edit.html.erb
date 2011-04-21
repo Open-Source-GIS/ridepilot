@@ -1,6 +1,8 @@
 <div id="page-header">
-  <h1>Editing customer</h1>
+  <h1>Editing Customer: <%= @customer.first_name + h(' ') + @customer.middle_initial + h(' ') + @customer.last_name %></h1>
 </div>
+
+<%= link_to 'Cancel Editing', @customer, :class=>'cancel'  %>
 
 <%= render 'form' %>
 
@@ -11,5 +13,6 @@
 
 <% end %>
 
-<%= link_to 'Show', @customer %> |
-<%= link_to 'Back', customers_path %>
+<hr />
+
+<%= link_to 'Back', customers_path, :class=>'action-bttn' %>
