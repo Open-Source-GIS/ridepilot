@@ -611,17 +611,17 @@ table th:last-child {
 .customer-list tr.odd {
     background: #f7f7f7;
 }
-a.group,
-a.individual {
+span.group,
+span.individual {
     display: block;
     height: 16px;
     width: 16px;
     text-indent: -9999px;
 }
-a.group {
+span.group {
     background: url(images/users.png) left center no-repeat scroll;
 }
-a.individual {
+span.individual {
     background: url(images/user.png) left center no-repeat scroll;
 }
 a.new-trip,
