@@ -2,6 +2,16 @@
   <h1>Customer Listing</h1>
 </div>
 
+<%= form_tag found_customers_path, :class=>'customer-search', :method=>:get do %> 
+  <label for="customer_id">Search:</label>
+  <%= autocomplete_field_tag 'customer_name', '', autocomplete_customers_path, :size => 30, :id_element => "#customer_id" %>
+  <%= hidden_field_tag 'customer_id' %>
+  <%= submit_tag "Show Details" %>
+  <% if can? :create, Trip %>
+  <%= submit_tag "New Trip for This Customer" %>
+  <% end %>
+<% end %>
+
 <%= render :partial=>"customer_listing" %>
 
 <%= will_paginate @customers %>
@@ -9,3 +19,8 @@
 <hr />
 
 <%= link_to 'New Customer', new_customer_path, :class=>'action-bttn' %>
+
+
+<script type='text/javascript'>
+  $("tr:odd").addClass("odd");
+</script>

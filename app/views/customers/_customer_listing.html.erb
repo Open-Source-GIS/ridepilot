@@ -1,29 +1,34 @@
-<table>
-  <tr>
-    <th></th>
-    <th>Name</th>
-    <th>Phone number 1</th>
-    <th>Active</th>
-    <th>Birth date</th>
-    <th>Mobility</th>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
 
-<% @customers.each do |customer| %>
-  <tr>
-    <td><%= customer.group ? "(Group)" : "" %></td>
-    <td><%= customer.name %></td>
-    <td><%= customer.phone_number_1 %></td>
-    <td><%= customer.inactivated_date ? "Active" : "Inactive" %></td>
-    <td><%= customer.birth_date %></td>
-    <td><%= customer.mobility.name %></td>
-    <td><%= link_to 'Show', customer %></td>
-    <td><%= link_to 'New Trip', new_trip_path(:customer_id=>customer.id) %></td>
-    <td><%= link_to 'Edit', edit_customer_path(customer) %></td>
-    <td><%= link_to 'Destroy', customer, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
+<table class="customer-list">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Name</th>
+      <th>Phone</th>
+      <th>Alternate Phone</th>
+      <th>Email</th>
+      <th>Activated date</th>
+      <th>Inactivated date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+  <% @customers.each do |customer| %>
+    <tr>
+      <td class="plurality"><%= link_to customer.group ? content_tag(:span, "Group", :class=>'group') : content_tag(:span, "Individual", :class=>'individual'), customer %></td>
+      <td><%= link_to customer.first_name + h(' ') + customer.middle_initial + h(' ') + customer.last_name, customer %></td>
+      <td><%= customer.phone_number_1 %></td>
+      <td><%= customer.phone_number_2 %></td>
+      <td><%= customer.email %></td>
+      <td><%= customer.activated_date %></td>
+      <td><%= customer.inactivated_date %></td>
+      <td><%= link_to 'New Trip', '#', :class=>'new-trip' %></td>
+      <td><%= link_to 'Edit', edit_customer_path(customer), :class=>'edit' %></td>
+      <td><%= link_to 'Delete', customer, :confirm => 'Are you sure?', :method => :delete, :class=>'delete' %></td>
+    </tr>
+    <% end %>
+  </tbody>
 </table>

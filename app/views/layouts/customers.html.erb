@@ -1,8 +1,9 @@
 <% content_for :menu_bar do %>
         <ul id="subnav" class="selfclear">
+          <li><%= link_to "Active Customers", :action=>:index %></li>
+          <li><%= link_to "Inactive Customers", :action=>:index %></li>
           <li><%= link_to "New Customer", :action=>:new %></li>
-          <li><%= link_to "Search Customers", :action=>:search %></li>
-          <li><%= link_to "List Customers", :action=>:index %></li>
+          <!--li><%= link_to "Search Customers", :action=>:search %></li-->
         </ul>
 <% end %>
 

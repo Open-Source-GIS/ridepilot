@@ -515,6 +515,21 @@ a.action-bttn:active {
 table {
     width: 100%;
 }
+table th {
+    text-align: left;
+    background: #0d4680;
+    color: #ddd;
+}
+table th:first-child {
+    -webkit-top-left-border-radius: 5px;
+    -moz-top-left-border-radius: 5px;
+    border-top-left-radius: 5px;
+}
+table th:last-child {
+    -webkit-top-right-border-radius: 5px;
+    -moz-top-right-border-radius: 5px;
+    border-top-right-radius: 5px;
+}
 
 /*
  *
@@ -562,3 +577,67 @@ table {
 .wc-today.wc-day-column-last{border-right:3px double #FAD163;}
 .wc-today.wc-day-column-first{border-left:3px double #FAD163;}
 
+/*
+ *
+ * Customers
+ *
+ */
+.customer-search {
+    margin-bottom: 10px;
+}
+.customer-search label {
+    font-weight: bold;
+}
+.customer-list td,
+.customer-list th {
+    padding: 10px 10px 10px 0;
+}
+.customer-list td.plurality {
+    padding: 10px 0 10px 10px;
+}
+.customer-list tr.odd {
+    background: #f7f7f7;
+}
+.customer-list .group,
+.customer-list .individual {
+    display: block;
+    height: 16px;
+    width: 16px;
+    text-indent: -9999px;
+}
+.customer-list .group {
+    background: url(images/users.png) left center no-repeat scroll;
+}
+.customer-list .individual {
+    background: url(images/user.png) left center no-repeat scroll;
+}
+.customer-list .new-trip,
+.customer-list .edit,
+.customer-list .delete {
+    padding: 5px 0 5px 20px;
+    text-decoration: none;
+    font-size: 11px;
+    line-height: 16px;
+}
+.customer-list .new-trip {
+    background: url(images/plus-button.png) left center no-repeat scroll;
+}
+.customer-list .edit {
+    background: url(images/card--pencil.png) left center no-repeat scroll;
+}
+.customer-list .delete {
+    background: url(images/cross-button.png) left center no-repeat scroll;
+    color: #e5004d;
+}
+.customer-list .delete:hover,
+.customer-list .delete:active {
+    color: #ff4d88;
+}
+.customer-list .new-trip:hover,
+.customer-list .new-trip:active,
+.customer-list .edit:hover,
+.customer-list .edit:active,
+.customer-list .delete:hover,
+.customer-list .delete:active {
+    text-decoration: underline;
+}
