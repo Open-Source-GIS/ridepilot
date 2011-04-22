@@ -58,6 +58,11 @@ h1 {
     margin: 0 0 20px;
     line-height: 1.2;
 }
+h2 {
+    font-size: 18px;
+    margin: 0 0 10px;
+    line-height: 1.2;
+}
 
 
 /*
@@ -353,6 +358,9 @@ body.funding-sources #secondary-nav li.funding-sources a:link, body.funding-sour
 #page-header h1 {
     margin: 0;
 }
+.section-header {
+    margin: 20px 0 10px;
+}
 
 
 /*
@@ -417,12 +425,12 @@ fieldset {
     border-radius: 5px;
 }
 fieldset.new-trip {
-    -webkit-border-top-left-radius: 0;
-    -moz-border-top-left-radius: 0;
-    border-top-left-radius: 0;
     -webkit-border-top-right-radius: 0;
-    -moz-border-top-right-radius: 0;
+    -webkit-border-top-left-radius: 0;
+    -moz-border-radius-topright: 0;
+    -moz-border-radius-topleft: 0;
     border-top-right-radius: 0;
+    border-top-left-radius: 0;
 }
 fieldset ol.first,
 fieldset ol.second,
@@ -527,6 +535,28 @@ a.action-bttn:active {
 /* tables */
 table {
     width: 100%;
+    border-bottom: 10px solid #f7f7f7;
+    border-collapse: separate;
+    background: #f7f7f7;
+    -webkit-border-bottom-right-radius: 5px;
+    -webkit-border-bottom-left-radius: 5px;
+    -moz-border-radius-bottomright: 5px;
+    -moz-border-radius-bottomleft: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+body.providers.show table {
+    margin-bottom: 10px;
+}
+tr {
+    background: #fff;
+}
+tr.odd {
+    background: #f7f7f7;
+}
+table td,
+table th {
+    padding: 10px;
 }
 table th {
     text-align: left;
@@ -535,12 +565,12 @@ table th {
 }
 table th:first-child {
     -webkit-top-left-border-radius: 5px;
-    -moz-top-left-border-radius: 5px;
+    -moz-border-radius-topleft: 5px;
     border-top-left-radius: 5px;
 }
 table th:last-child {
     -webkit-top-right-border-radius: 5px;
-    -moz-top-right-border-radius: 5px;
+    -moz-border-radius-topright: 5px;
     border-top-right-radius: 5px;
 }
 
@@ -561,10 +591,10 @@ table th:last-child {
 .wc-toolbar{
     background:#BBCCFF; border:none; padding:5px !important;
     -webkit-border-top-left-radius: 5px;
-    -moz-border-top-left-radius: 5px;
+    -moz-border-radius-topleft: 5px;
     border-top-left-radius: 5px;
     -webkit-border-top-right-radius: 5px;
-    -moz-border-top-right-radius: 5px;
+    -moz-border-radius-topright: 5px;
     border-top-right-radius: 5px;
 }
 .wc-header{background:#E3E9FF;border:none;font-size:11px;}
@@ -608,9 +638,6 @@ table th:last-child {
 .customer-list td.plurality {
     padding: 10px 0 10px 10px;
 }
-.customer-list tr.odd {
-    background: #f7f7f7;
-}
 span.group,
 span.individual {
     display: block;
@@ -626,7 +653,11 @@ span.individual {
 }
 a.new-trip,
 a.edit,
-a.delete {
+a.delete,
+a.new-user,
+a.new-driver,
+a.new-vehicle,
+a.new-report {
     padding: 5px 0 5px 20px;
     text-decoration: none;
     font-size: 11px;
@@ -642,6 +673,18 @@ a.delete {
     background: url(images/cross-button.png) left center no-repeat scroll;
     color: #e5004d;
 }
+a.new-user {
+    background: url(images/user--plus.png) left center no-repeat scroll;
+}
+a.new-driver {
+    background: url(images/dashboard--plus.png) left center no-repeat scroll;
+}
+a.new-vehicle {
+    background: url(images/car--plus.png) left center no-repeat scroll;
+}
+a.new-report {
+    background: url(images/report--plus.png) left center no-repeat scroll;
+}
 a.delete:hover,
 .delete:active {
     color: #ff4d88;
@@ -651,7 +694,15 @@ a.new-trip:active,
 a.edit:hover,
 a.edit:active,
 a.delete:hover,
-a.delete:active {
+a.delete:active,
+a.new-user:hover,
+a.new-user:active,
+a.new-driver:hover,
+a.new-driver:active,
+a.new-vehicle:hover,
+a.new-vehicle:active,
+a.new-report:hover,
+a.new-report:active {
     text-decoration: underline;
 }
 a.cancel {
