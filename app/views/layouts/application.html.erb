@@ -44,16 +44,15 @@
         <li class="runs"><%= link_to "Runs", runs_path %></li>
         <li class="customers"><%= link_to "Customers", customers_path %></li>
         <li class="reports"><%= link_to "Reports", reports_path %></li>
-        <% if can? :edit, "Providers" %>
+        <% if current_user && can?(:edit, Provider) %>
         <li class="vehicles-drivers-users"><%= link_to "Vehicles, Drivers & Users", provider_path(current_user.current_provider) %></li>
         <% end %>
       </ul>
-
       <ul id="secondary-nav" class="selfclear">
-        <% if can? :edit, "Providers" %>
+        <% if current_user && can?(:edit, Provider) %>
         <li class="providers"><%= link_to "Providers", providers_path %></li>
         <% end %>
-        <% if can? :edit, FundingSource %>
+        <% if current_user && can?(:edit, FundingSource) %>
         <li class="funding-sources"><%= link_to "Funding Sources", funding_sources_path %></li>
         <% end %>
       </ul>
