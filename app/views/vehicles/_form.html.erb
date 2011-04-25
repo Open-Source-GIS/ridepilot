@@ -11,32 +11,56 @@
     </div>
   <% end %>
 
+  <fieldset>
 
+    <ol class="section first">
+      <li>
+        <%= f.label :name %>
+        <%= f.text_field :name %>
+      </li>
 
-<%= f.label :name %><br/>
-<%= f.text_field :name %><br/>
-<br/>
-<%= f.label :year %><br/>
-<%= f.text_field :year %><br/>
-<br/>
-<%= f.label :make %><br/>
-<%= f.text_field :make %><br/>
-<br/>
-<%= f.label :model %><br/>
-<%= f.text_field :model %><br/>
-<br/>
-<%= f.label :license_plate %><br/>
-<%= f.text_field :license_plate %><br/>
-<br/>
-<%= f.label :vin %><br/>
-<%= f.text_field :vin %><br/>
-<br/>
-<%= f.label :garaged_location %><br/>
-<%= f.text_field :garaged_location %><br/>
-<br/>
-<%= f.label :active %><br/>
-<%= f.select :active, [["Yes", "true"], ["No", "false"]], {:selected => @vehicle.active.to_s } %><br/>
-<br/>
+      <li>
+        <%= f.label :year %>
+        <%= f.text_field :year %>
+      </li>
 
-<%= f.submit %>
+      <li>
+        <%= f.label :make %>
+        <%= f.text_field :make %>
+      </li>
+
+      <li>
+        <%= f.label :model %>
+        <%= f.text_field :model %>
+      </li>
+    </ol>
+
+    <ol class="section second">
+      <li>
+        <%= f.label :license_plate %>
+        <%= f.text_field :license_plate %>
+      </li>
+
+      <li>
+        <%= f.label :vin %>
+        <%= f.text_field :vin %>
+      </li>
+
+      <li>
+        <%= f.label :garaged_location %>
+        <%= f.text_field :garaged_location %>
+      </li>
+
+      <li>
+        <%= f.label :active %>
+        <%= f.select :active, [["Yes", "true"], ["No", "false"]], {:selected => @vehicle.active.to_s } %>
+      </li>
+    </ol>
+
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+
+  </fieldset>
+
 <% end %> 

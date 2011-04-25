@@ -801,6 +801,45 @@ ul.funding-sources li a {
 
 /*
  *
+ * Providers
+ *
+ */
+td.admin,
+td.editor,
+td.user,
+td.active,
+td.inactive,
+tr.active td.name,
+tr.inactive td.name {
+    padding-left: 36px;
+}
+td.admin {
+    background: url(images/user-worker-boss.png) 10px 0.75em no-repeat scroll;
+}
+td.editor {
+    background: url(images/user-worker.png) 10px 0.75em no-repeat scroll;
+}
+td.user {
+    background: url(images/user.png) 10px 0.75em no-repeat scroll;
+}
+td.active {
+    background: url(images/dashboard--plus.png) 10px 0.75em no-repeat scroll;
+}
+td.inactive {
+    background: url(images/dashboard--inactive.png) 10px 0.75em no-repeat scroll;
+}
+td.inactive {
+    background: url(images/dashboard--inactive.png) 10px 0.75em no-repeat scroll;
+}
+tr.active td.name {
+    background: url(images/car.png) 10px 0.75em no-repeat scroll;
+}
+tr.inactive td.name {
+    background: url(images/car--inactive.png) 10px 0.75em no-repeat scroll;
+}
+
+/*
+ *
  * Action Button
  *
  */

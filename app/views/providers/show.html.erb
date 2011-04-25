@@ -21,7 +21,7 @@
 
     <% for role in @provider.roles %>
     <tr>
-      <td><%= role.user.email %></td>
+      <td class="<%= role.name.downcase %>"><%= role.user.email %></td>
       <td><%= role.name %></td>
       <td><%= role.user.last_sign_in_at %></td>
       <% if can? :edit, role %>
@@ -67,7 +67,7 @@
     </tr>
     <% for driver in @provider.drivers %>
     <tr>
-      <td><%= driver.first_name %></td>
+      <td class="<%= driver.active ? 'active' : 'inactive' %>"><%= driver.first_name %></td>
       <td><%= driver.last_name %></td>
       <td><%= driver.active ? "Active" : "Inactive" %></td>
       <td><%= driver.paid ? "Paid" : "Volunteer" %></td>
@@ -103,8 +103,8 @@
       <th>Model</th>
       <th>License Plate</th>
       <th>VIN</th>
-      <th>Garaged location</th>
-      <th>Active</th>
+      <th>Location</th>
+      <th></th>
       <th></th>
       <% if can? :edit, Vehicle %>
       <th></th>
@@ -112,7 +112,7 @@
     </tr>
     <% for vehicle in @provider.vehicles %>
     <tr class="<%= vehicle.active ? 'active' : 'inactive' %>">
-      <td><%= vehicle.name %></td>
+      <td class="name"><%= vehicle.name %></td>
       <td><%= vehicle.make %></td>
       <td><%= vehicle.model %></td>
       <td><%= vehicle.license_plate %></td>
