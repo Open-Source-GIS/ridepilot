@@ -492,6 +492,9 @@ fieldset ol.section li ul {
     float: left;
     width: 60%;
 }
+fieldset ol.section li ul li {
+    margin-bottom: 5px;
+}
 fieldset ol.section li ul label {
     float: none;
     width: auto;

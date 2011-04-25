@@ -19,16 +19,16 @@
     <ol class="section first">
       <li class="selfclear">
         <label for="customer">Customer:</label>
-        <strong><%= @customer.name %></strong><!---------- TODO: Why is there a trailing ' .'? -->
+        <strong><%= @customer.name %></strong>
       </li>
 
       <li class="selfclear time">
-        <label for="pickup_time">Pickup time:</label>
+        <%= f.label :pickup_time, "Pickup Time:" %>
         <%= f.text_field :pickup_time %>
       </li>
 
       <li class="selfclear time">
-        <label for="appointment_time">Appointment time:</label>
+        <%= f.label :appointment_time, "Appointment Time:" %>
         <%= f.text_field :appointment_time %>
       </li>
 
@@ -39,33 +39,35 @@
              plain params and handle it in the controller
           -->
         <label for="repeats_id">Repeats:</label>
-        <div>
-          <p>
+        <ul>
+          <li>
             <input type="checkbox" name="monday" value="Monday" <%= @schedule.monday ? 'checked="checked"' : '' %>/> M&nbsp;
             <input type="checkbox" name="tuesday" value="Tuesday" <%= @schedule.tuesday ? 'checked="checked"' : '' %>/> T&nbsp;
             <input type="checkbox" name="wednesday" value="Wednesday" <%= @schedule.wednesday ? 'checked="checked"' : '' %>/> W&nbsp;
             <input type="checkbox" name="thursday" value="Thursday" <%= @schedule.thursday ? 'checked="checked"' : '' %>/> R&nbsp;
             <input type="checkbox" name="friday" value="Friday" <%= @schedule.friday ? 'checked="checked"' : '' %>/> F&nbsp;
-          </p>
-          every <input type="text" size="2" name="interval" id="interval" value="<%= @schedule.interval %>"/> week(s)
-        </div>
+          </li>
+          <li>
+            every <input type="text" size="2" name="interval" id="interval" value="<%= @schedule.interval %>"/> week(s)
+          </li>
+        </ul>
 <!-- TODO: make repeats checkboxes work in Rails -->
       </li>
 
 <!-- TODO: autocomplete / geocode here -->
       <li class="selfclear">
-        <label for="pickup_address_id">Pickup address:</label>
+        <%= f.label :pickup_address_id, "Pickup Address:" %>
         <%= f.text_field(:pickup_address_id, :class => "full") %>
       </li>
 
       <li class="selfclear">
-        <label for="pickup_address_id">Dropoff address:</label>
+        <%= f.label :dropoff_address_id, "Dropoff Address:" %>
         <%= f.text_field(:dropoff_address_id, :class => "full") %>
       </li>
 
       <li class="selfclear">
         <label for="phone">Phone:</label>
-        <input type="text" size="14" name="phone" id="phoned" value="<%= @customer.phone_number_1 %>" readonly="readonly"/>
+        <input type="text" size="14" name="phone" id="phone" value="<%= @customer.phone_number_1 %>" readonly="readonly"/>
       </li>
 
       <li class="selfclear">
@@ -77,50 +79,52 @@
     
     <ol class="section second">
       <li class="selfclear">
-        <label for="trip_purpose">Trip purpose:</label>
+        <%= f.label :trip_purpose, "Trip Purpose:" %>
         <%= f.select :trip_purpose, @trip_purposes %>
       </li>
 
       <li class="selfclear passengers">
-        <label for="guest_count">Passengers:</label>
-        <div>
-          <p>
+        <%= f.label :guest_count, "Passengers:" %>
+        <ul>
+          <li>
             <span class="nobreak"><%= f.text_field :guest_count %>&nbsp;Guests&nbsp;</span>
             <span class="nobreak"><%= f.text_field :attendant_count %>&nbsp;Attendants</span>
-          </p>
-          <input type="checkbox" name="monday" value="Monday" /> Group
-        </div>
+          </li>
+          <li>
+            <input type="checkbox" name="group" value="Group" /> Group
+          </li>
+        </ul>
       </li>
 
       <li class="selfclear">
-        <label for="vehicle_id">Vehicle:</label>
+        <%= f.label :vehicle_id, "Vehicle:" %>
         <%= f.collection_select :vehicle_id, @vehicles, :id, :name %><br/>
       </li>
 
       <li class="selfclear">
-        <label for="driver_notes">Customer Private Notes:</label>
+        <label for="customer_private_notes">Customer Private Notes:</label>
         <textarea rows="20" name="customer_private_notes" id="customer_private_notes" cols="40" readonly="readonly"><%= @customer.private_notes %></textarea>
       </li>
     </ol>
 
     <ol class="section third">
       <li class="selfclear">
-        <label for="result_id">Result:</label>
+        <%= f.label :trip_result, "Result:" %>
         <%= f.select :trip_result, @trip_results %>
       </li>
 
       <li class="selfclear donation">
-        <label for="donation">Donation:</label>
+        <%= f.label :donation, "Donation:" %>
         <%= f.text_field :donation %>
       </li>
 
       <li class="selfclear">
-        <label for="funding_source_id">Funding source:</label>
+        <%= f.label :funding_source_id, "Funding Source:" %>
         <%= f.collection_select :funding_source_id, @funding_sources, :id, :name %>
       </li>
 
       <li class="selfclear">
-        <label for="mobility_id">Mobility Req.:</label>
+        <%= f.label :mobility_id, "Mobility Req.:" %>
         <%= f.collection_select :mobility_id, @mobilities, :id, :name %>
       </li>
 
@@ -132,11 +136,11 @@
 
     <ol class="section fourth double">
       <li class="selfclear">
-        <label for="notes">Trip Notes:</label>
+        <%= f.label :notes, "Trip Notes:" %>
         <%= f.text_area :notes %>
       </li>
       <li class="selfclear">
-        <label for="customer_informed">Called back:</label>
+        <%= f.label :customer_informed, "Called Back:" %>
         <%= f.check_box :customer_informed %>
         <% if @trip.customer_informed %>
           on <%= @trip.called_back_at %>
