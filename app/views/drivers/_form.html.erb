@@ -1,18 +1,30 @@
 <%= form_for @driver do |f| %>
-<%= f.label :first_name %><br/>
-<%= f.text_field :first_name %><br/>
-<br/>
-<%= f.label :last_name %><br/>
-<%= f.text_field :last_name %><br/>
-<br/>
-<%= f.label :active %><br/>
-<%= f.select :active, [["Active", "true"], ["Inactive", "false"]], {:selected => @driver.active.to_s} %><br/>
 
-<br/>
-<%= f.label :paid %><br/>
-<%= f.select :paid, [["Paid", "true"], ["Volunteer", "false"]], {:selected => @driver.paid.to_s} %><br/>
-<br/>
+  <fieldset class="new-driver">
+    <ol class="section first">
+      <li>
+        <%= f.label :first_name %>
+        <%= f.text_field :first_name %>
+      </li>
 
+      <li>
+        <%= f.label :last_name %>
+        <%= f.text_field :last_name %>
+      </li>
 
-<%= f.submit %>
+      <li>
+        <%= f.label :active %>
+        <%= f.select :active, [["Active", "true"], ["Inactive", "false"]], {:selected => @driver.active.to_s} %>
+      </li>
+
+      <li>
+        <%= f.label :paid %>
+        <%= f.select :paid, [["Paid", "true"], ["Volunteer", "false"]], {:selected => @driver.paid.to_s} %>
+      </li>
+    </ol>
+
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+
 <% end %> 

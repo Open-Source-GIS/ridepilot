@@ -19,5 +19,5 @@
 </table>
 
 <% if can? :edit, Provider %>
-<%= link_to "New Provider", new_provider_path %>
+<p><%= link_to "New Provider", new_provider_path, :class=>'action-bttn new-provider' %></p>
 <% end %>

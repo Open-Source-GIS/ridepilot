@@ -1,15 +1,31 @@
 <%= form_for @funding_source do |f| %>
 
-<%= f.label :name %><br/>
-<%= f.text_field :name %><br/>
-<br/>
-Available to:<br/>
-<% for provider in @providers %>
-  <% checked = @checked_providers.member? provider %>
-  <%= check_box_tag("provider[]", provider.id, checked, :id=>"provider[%s]" % provider.id) %> 
-<label for="provider[<%=provider.id%>]"><%= provider.name %></label><br/>
+  <fieldset>
+    <ol class="section first">
+      <li>
+        <%= f.label :name %>
+        <%= f.text_field :name %>
+      </li>
 
-<% end %>
+      <li>
+        <label>Available to:</label>
+        <ul>
+          <% for provider in @providers %>
+          <li>
+          <% checked = @checked_providers.member? provider %>
+          <%= check_box_tag("provider[]", provider.id, checked, :id=>"provider[%s]" % provider.id) %> 
+          <label for="provider[<%=provider.id%>]"><%= provider.name %></label><br />
+          </li>
+          <% end %>
+        </ul>
+      </li>
+    </ol>
 
-<%= f.submit %>
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+
+
+</fieldset>
+
 <% end %>

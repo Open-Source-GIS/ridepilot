@@ -360,7 +360,7 @@ body.funding-sources #secondary-nav li.funding-sources a:link, body.funding-sour
     margin: 0;
 }
 .section-header {
-    margin: 20px 0 10px;
+    margin: 10px 0;
 }
 
 
@@ -396,6 +396,7 @@ body.funding-sources #secondary-nav li.funding-sources a:link, body.funding-sour
 
 /* forms */
 form input[type="text"],
+form input[type="password"],
 form textarea {
     padding: 0.25em;
     background: #fff;
@@ -485,6 +486,18 @@ fieldset ol.section li div input.full {
 fieldset ol.section li p {
     line-height: 1.231; 
 }
+fieldset ol.section li ul {
+    list-style: none;
+    margin-left: 0;
+    float: left;
+    width: 60%;
+}
+fieldset ol.section li ul label {
+    float: none;
+    width: auto;
+    max-width: none;
+    font-weight: normal;
+}
 
 fieldset div.group {
     border-top: 1px solid #bbb;
@@ -516,26 +529,10 @@ form div.actions input[type="submit"] {
 form div.actions input[type="submit"]:hover {
     background: #009FFB;
 }
-
-/* back button */
-a.action-bttn:link,
-a.action-bttn:visited {
-    padding: 0.5em 0.8em;
-    background: #eee;
-    color: #0081CC;
-    font-size: 15px;
-    text-decoration: none;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-}
-a.action-bttn:hover,
-a.action-bttn:active {
-    color: #009FFB;
-}
 /* tables */
 table {
     width: 100%;
+    margin-bottom: 10px;
     border-bottom: 10px solid #f7f7f7;
     border-collapse: separate;
     background: #f7f7f7;
@@ -545,9 +542,6 @@ table {
     -moz-border-radius-bottomleft: 5px;
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
-}
-body.providers.show table {
-    margin-bottom: 10px;
 }
 tr {
     background: #fff;
@@ -655,9 +649,6 @@ span.individual {
 a.new-trip,
 a.edit,
 a.delete,
-a.new-user,
-a.new-driver,
-a.new-vehicle,
 a.new-report {
     padding: 5px 0 5px 20px;
     text-decoration: none;
@@ -674,15 +665,6 @@ a.delete {
     background: url(images/cross-button.png) left center no-repeat scroll;
     color: #e5004d;
 }
-a.new-user {
-    background: url(images/user--plus.png) left center no-repeat scroll;
-}
-a.new-driver {
-    background: url(images/dashboard--plus.png) left center no-repeat scroll;
-}
-a.new-vehicle {
-    background: url(images/car--plus.png) left center no-repeat scroll;
-}
 a.new-report {
     background: url(images/report--plus.png) left center no-repeat scroll;
 }
@@ -696,12 +678,6 @@ a.edit:hover,
 a.edit:active,
 a.delete:hover,
 a.delete:active,
-a.new-user:hover,
-a.new-user:active,
-a.new-driver:hover,
-a.new-driver:active,
-a.new-vehicle:hover,
-a.new-vehicle:active,
 a.new-report:hover,
 a.new-report:active {
     text-decoration: underline;
@@ -716,6 +692,16 @@ a.cancel {
     color: #e5004d;
     float: right;
 }
+input.delete {
+    background: url(images/cross-button.png) left center no-repeat scroll;
+    color: #e5004d;
+    padding: 5px 0 5px 20px;
+    text-decoration: none;
+    font-size: 11px;
+    line-height: 16px;
+    border: 0;
+}
+
 p.customer-actions .edit {
     float: right;
 }
@@ -790,4 +776,69 @@ div.pagination span.prev_page.disabled {
 }
 div.pagination span.next_page.disabled {
     float: right;
+}
+
+/*
+ *
+ * Funding Sources
+ *
+ */
+ul.funding-sources {
+    list-style: none;
+    margin-left: 0;
+}
+ul.funding-sources li {
+    margin: 0 0 10px;
+}
+ul.funding-sources li a {
+    padding: 5px 0 5px 20px;
+    text-decoration: none;
+    background: url(images/credit-card.png) left center no-repeat scroll;
+}
+
+/*
+ *
+ * Action Button
+ *
+ */
+a.action-bttn:link,
+a.action-bttn:visited {
+    padding: 0.5em 0.8em 0.5em 2.25em;
+    background: #eee url(images/arrow-180.png) 0.8em center no-repeat scroll;
+    color: #0081CC;
+    font-size: 15px;
+    text-decoration: none;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    display: inline-block;
+}
+a.action-bttn:hover,
+a.action-bttn:active {
+    color: #009FFB;
+}
+/* trip */
+body.trips.index a.action-bttn {
+    background: #eee url(images/plus.png) 0.8em center no-repeat scroll;
+}
+/* funding sources */
+body.funding-sources.index a.action-bttn {
+    background: #eee url(images/credit-card--plus.png) 0.8em center no-repeat scroll;
+}
+/* customers */
+body.customers.index a.action-bttn {
+    background: #eee url(images/user--plus.png) 0.8em center no-repeat scroll;
+}
+/* providers */
+body.providers a.new-user {
+    background: #eee url(images/user--plus.png) 0.8em center no-repeat scroll;
+}
+body.providers a.new-driver {
+    background: #eee url(images/dashboard--plus.png) 0.8em center no-repeat scroll;
+}
+body.providers a.new-vehicle {
+    background: #eee url(images/car--plus.png) 0.8em center no-repeat scroll;
+}
+body.providers a.new-provider {
+    background: #eee url(images/plus.png) 0.8em center no-repeat scroll;
 }

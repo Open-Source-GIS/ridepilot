@@ -2,7 +2,7 @@
   <h1>Provider: <%= @provider.name %></h1>
 </div>
 
-<h2 class="section-header">Roles</h2>
+<h2 class="section-header">Users</h2>
 
 
 <% if @provider.roles.size == 0 %>
@@ -25,7 +25,6 @@
       <td><%= role.name %></td>
       <td><%= role.user.last_sign_in_at %></td>
       <% if can? :edit, role %>
-      <td><%= button_to "Delete", provider_delete_role_path(@provider.id, :role_id=>role.id) %></td>
       <td>
         <%= form_for(role, :url=>provider_change_role_path(@provider.id), :html => { :method => :post }) do |f| %>
           <%= f.hidden_field :id %>
@@ -33,6 +32,7 @@
           <%= f.submit "Change role" %>
         <% end %>
       </td>
+      <td><%= button_to "Delete", provider_delete_role_path(@provider.id, :role_id=>role.id), :class=>'delete' %></td>
       <% end %>
     </tr>
     <% end %>
@@ -40,7 +40,7 @@
 <% end %>
 
 <% if @provider == current_user.current_provider %>
-  <%= link_to "Create User", new_user_path, :class=>'new-user' %>
+  <p><%= link_to "Create User", new_user_path, :class=>'new-user action-bttn' %></p>
 <% else %>
   <p>You are currently logged in to
   <%= current_user.current_provider.name %>.  To create a user for
@@ -72,7 +72,7 @@
       <td><%= driver.active ? "Active" : "Inactive" %></td>
       <td><%= driver.paid ? "Paid" : "Volunteer" %></td>
       <% if can? :edit, Driver %>
-      <td><%= link_to "Edit", edit_driver_path(driver) %></td>
+      <td><%= link_to "Edit", edit_driver_path(driver), :class=>'edit' %></td>
       <% end %>
     </tr>
     <% end %>
@@ -80,7 +80,7 @@
 <% end %>
 
 <% if @provider == current_user.current_provider %>
-  <%= link_to "Create Driver", new_driver_path, :class=>'new-driver' %>
+  <p><%= link_to "Create Driver", new_driver_path, :class=>'new-driver action-bttn' %>
 <% else %>
   <p>You are currently logged in to
   <%= current_user.current_provider.name %>.  To create a driver for
@@ -129,12 +129,10 @@
 <% end %>
 
 <% if @provider == current_user.current_provider %>
-  <%= link_to "Create Vehicle", new_vehicle_path, :class=>'new-vehicle' %>
+  <p><%= link_to "Create Vehicle", new_vehicle_path, :class=>'new-vehicle action-bttn' %></p>
 <% else %>
   <p>You are currently logged in to
   <%= current_user.current_provider.name %>.  To create a vehicle for
   <%= @provider.name %>, please switch providers by using the dropdown
   menu at the top of this page.</p>
 <% end %>
-
-<hr />
