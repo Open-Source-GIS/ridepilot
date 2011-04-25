@@ -6,7 +6,10 @@ OpenPlans.
 
 -----------------------
 
-To set up postgres for use with RidePilot, you will need the fuzzystrmatch library (included in postgresql-contrib-8.4 in Ubuntu), and postgis.  Run psql and then the following commands:
+To set up postgres for use with RidePilot, you will need the
+fuzzystrmatch library (included in postgresql-contrib-8.4 in Ubuntu),
+and postgis.  This adds support for dmetaphone, which is how we
+phonetically match names.  Run psql and then the following commands:
 
 -- Create a new database
 CREATE DATABASE template_postgis;
