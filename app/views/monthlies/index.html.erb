@@ -1,0 +1,37 @@
+<h2 class="section-header">Monthly Reports</h2>
+
+<% if @monthlies.size == 0 %>
+  <p>No monthly reports yet.</p>
+<% else %>
+  <table>
+    <tr>
+      <th>Start</th>
+      <th>End</th>
+      <th>Volunteer escort hours</th>
+      <th>Volunteer admin hours</th>
+      <th>Complaints</th>
+      <th>Compliments</th>
+      <% if can? :edit, Monthly %>
+      <th></th>
+      <% end %>
+    </tr>
+    
+    <% for monthly in @monthlies %>
+    <tr>
+      <td><%= monthly.start_date %></td>
+      <td><%= monthly.end_date %></td>
+      <td><%= monthly.volunteer_escort_hours %></td>
+      <td><%= monthly.volunteer_admin_hours %></td>
+      <td><%= monthly.complaints %></td>
+      <td><%= monthly.compliments %></td>
+      <% if can? :edit, monthly %>
+      <td><%= link_to "Edit", edit_monthly_path(monthly) %></td>
+      <% end %>
+    </tr>
+    <% end %>
+  </table>
+<% end %>
+
+<% if can? :edit, Monthly %>
+  <%= link_to "Create Monthly Report", new_monthly_path, :class=>'new-report' %>
+<% end %>

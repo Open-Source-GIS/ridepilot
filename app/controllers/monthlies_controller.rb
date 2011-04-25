@@ -5,7 +5,7 @@ class MonthliesController < ApplicationController
   end
 
   def index
-    redirect_to provider_path(current_provider)
+
   end
 
   def edit
