@@ -1,8 +1,21 @@
 <%= form_for @provider, :html => { :multipart => true } do |f| %>
-<%= f.label :name %><br/>
-<%= f.text_field :name %><br/>
 
-<%= f.label :logo %><br/>
-<%= f.file_field :logo %><br/>
-<%= f.submit %>
+  <fieldset>
+    <ol class="section first">
+      <li>
+        <%= f.label :name %>
+        <%= f.text_field :name %>
+      </li>
+
+      <li>
+        <%= f.label :logo %>
+        <%= f.file_field :logo %>
+      </li>
+    </ol>
+
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+  </fieldset>
+
 <% end %>
