@@ -41,6 +41,12 @@ $(document).ready(function(){
 	jQuery.railsAutocomplete.fn.extend = jQuery.railsAutocomplete.extend = jQuery.extend;
 	jQuery.railsAutocomplete.fn.extend({
 		init: function(e) {
+      e.button_ids = ($(e).attr('submit-buttons') || "").split(" ");
+      for (var i = 0; i < e.button_ids.length; ++i) {
+        var button_id = e.button_ids[i];
+        $(button_id)[0].disabled = true;
+      }
+
 			e.delimiter = $(e).attr('data-delimiter') || null;
 			function split( val ) {
 				return val.split( e.delimiter );
@@ -82,7 +88,11 @@ $(document).ready(function(){
 							$($(this).attr('id_element')).val(ui.item.id);
 						}
 					};
-				
+
+          for (var i = 0; i < e.button_ids.length; ++i) {
+            var button_id = e.button_ids[i];
+            $(button_id)[0].disabled = false;
+          }
 					return false;
 				}
 			});

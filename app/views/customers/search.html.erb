@@ -3,10 +3,10 @@
 </div>
 
 <%= form_tag found_customers_path, :method=>:get do %> 
-  <%= autocomplete_field_tag 'customer_name', '', autocomplete_customers_path, :size => 30, :id_element => "#customer_id" %>
+  <%= autocomplete_field_tag 'customer_name', '', autocomplete_customers_path, :size => 30, :id_element => "#customer_id", "submit-buttons" => "#show_details #new_trip" %>
   <%= hidden_field_tag 'customer_id' %>
-  <%= submit_tag "Show details" %>
+  <%= submit_tag "Show Details", :id=>:show_details %>
   <% if can? :create, Trip %>
-  <%= submit_tag "New trip for this customer" %>
+  <%= submit_tag "New Trip for This Customer", :id=>:new_trip %>
   <% end %>
 <% end %>
