@@ -2,181 +2,178 @@
   <h1>Provider: <%= @provider.name %></h1>
 </div>
 
-<h2>Roles:</h2>
+<h2 class="section-header">Roles</h2>
 
 
 <% if @provider.roles.size == 0 %>
-No users yet.<br/>
+  <p>No users yet.</p>
 <% else %>
+  <table>
+    <tr>
+      <th>Email</th>
+      <th>Role</th>
+      <th>Last login</th>
+      <% if can? :edit, Role %>
+      <th></th>
+      <th></th>
+      <% end %>
+    </tr>
 
-<table>
-<tr>
-<th>Email</th>
-<th>Role</th>
-<th>Last login</th>
-<% if can? :edit, Role %>
-<th></th>
-<th></th>
-<% end %>
-</tr>
-
-<% for role in @provider.roles %>
-<tr>
-<td><%= role.user.email %></td>
-<td><%= role.name %></td>
-<td><%= role.user.last_sign_in_at %></td>
-<% if can? :edit, role %>
-<td><%= button_to "Delete", provider_delete_role_path(@provider.id, :role_id=>role.id) %></td>
-<td>
-  <%= form_for(role, :url=>provider_change_role_path(@provider.id), :html => { :method => :post }) do |f| %>
-    <%= f.hidden_field :id %>
-    <%= f.select :level, [["Admin", 100], ["Editor", 50], ["User", 0]] %>
-    <%= f.submit "Change role" %>
-  <% end %>
-</td>
-<% end %>
-</tr>
-<% end %>
-</table>
-<br/>
-
+    <% for role in @provider.roles %>
+    <tr>
+      <td><%= role.user.email %></td>
+      <td><%= role.name %></td>
+      <td><%= role.user.last_sign_in_at %></td>
+      <% if can? :edit, role %>
+      <td><%= button_to "Delete", provider_delete_role_path(@provider.id, :role_id=>role.id) %></td>
+      <td>
+        <%= form_for(role, :url=>provider_change_role_path(@provider.id), :html => { :method => :post }) do |f| %>
+          <%= f.hidden_field :id %>
+          <%= f.select :level, [["Admin", 100], ["Editor", 50], ["User", 0]] %>
+          <%= f.submit "Change role" %>
+        <% end %>
+      </td>
+      <% end %>
+    </tr>
+    <% end %>
+ </table>
 <% end %>
 
 <% if @provider == current_user.current_provider %>
-<%= link_to "Create user", new_user_path %>
+  <%= link_to "Create User", new_user_path, :class=>'new-user' %>
 <% else %>
-You are currently logged in to
-<%= current_user.current_provider.name %>.  To create a user for
-<%= @provider.name %>, please switch providers by using the dropdown
-menu at the top of this page.
+  <p>You are currently logged in to
+  <%= current_user.current_provider.name %>.  To create a user for
+  <%= @provider.name %>, please switch providers by using the dropdown
+  menu at the top of this page.</p>
 <% end %>
 
+<hr />
 
-<h2>Drivers:</h2>
+<h2 class="section-header">Drivers</h2>
+
 <% if @provider.drivers.size == 0 %>
-No drivers yet.<br/>
+  <p>No drivers yet.</p>
 <% else %>
+  <table>
+    <tr>
+      <th>First name</th>
+      <th>Last name</th>
+      <th>Active</th>
+      <th>Paid</th>
+      <% if can? :edit, Driver %>
+      <th></th>
+      <% end %>
+    </tr>
+    <% for driver in @provider.drivers %>
+    <tr>
+      <td><%= driver.first_name %></td>
+      <td><%= driver.last_name %></td>
+      <td><%= driver.active ? "Active" : "Inactive" %></td>
+      <td><%= driver.paid ? "Paid" : "Volunteer" %></td>
+      <% if can? :edit, Driver %>
+      <td><%= link_to "Edit", edit_driver_path(driver) %></td>
+      <% end %>
+    </tr>
+    <% end %>
+  </table>
+<% end %>
 
-<table>
-<tr>
-<th>First name</th>
-<th>Last name</th>
-<th>Active</th>
-<th>Paid</th>
-<% if can? :edit, Driver %>
-<th></th>
-<% end %>
-</tr>
-
-<% for driver in @provider.drivers %>
-<tr>
-<td><%= driver.first_name %></td>
-<td><%= driver.last_name %></td>
-<td><%= driver.active ? "Active" : "Inactive" %></td>
-<td><%= driver.paid ? "Paid" : "Volunteer" %></td>
-<% if can? :edit, Driver %>
-<td><%= link_to "Edit", edit_driver_path(driver) %></td>
-<% end %>
-</tr>
-<% end %>
-</table>
-<br/>
-<% end %>
 <% if @provider == current_user.current_provider %>
-<%= link_to "Create driver", new_driver_path %>
+  <%= link_to "Create Driver", new_driver_path, :class=>'new-driver' %>
 <% else %>
-You are currently logged in to
-<%= current_user.current_provider.name %>.  To create a driver for
-<%= @provider.name %>, please switch providers by using the dropdown
-menu at the top of this page.
+  <p>You are currently logged in to
+  <%= current_user.current_provider.name %>.  To create a driver for
+  <%= @provider.name %>, please switch providers by using the dropdown
+  menu at the top of this page.</p>
 <% end %>
 
+<hr />
 
-<h2>Vehicles:</h2>
+<h2 class="section-header">Vehicles</h2>
+
 <% if @provider.vehicles.size == 0 %>
-No vehicles yet.<br/>
+  <p>No vehicles yet.</p>
 <% else %>
-
-<table>
-<tr>
-<th>Name</th>
-<th>Year</th>
-<th>Make</th>
-<th>Model</th>
-<th>License Plate</th>
-<th>VIN</th>
-<th>Garaged location</th>
-<th>Active</th>
-<th></th>
-<% if can? :edit, Vehicle %>
-<th></th>
-<% end %>
-</tr>
-
-<% for vehicle in @provider.vehicles %>
-  <tr class="<%= vehicle.active ? 'active' : 'inactive' %>">
-  <td><%= vehicle.name %></td>
-  <td><%= vehicle.make %></td>
-  <td><%= vehicle.model %></td>
-  <td><%= vehicle.license_plate %></td>
-  <td><%= vehicle.vin %></td>
-  <td><%= vehicle.garaged_location %></td>
-  <td><%= vehicle.active ? "Active" : "Inactive" %></td>
-  <td><%= link_to "Details", vehicle_path(vehicle) %></td>
-  <% if can? :edit, Vehicle %>
-    <td><%= link_to "Edit", edit_vehicle_path(vehicle) %></td>
-  <% end %>
-  </tr>
-<% end %>
-<br/>
-</table>
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Year</th>
+      <th>Make</th>
+      <th>Model</th>
+      <th>License Plate</th>
+      <th>VIN</th>
+      <th>Garaged location</th>
+      <th>Active</th>
+      <th></th>
+      <% if can? :edit, Vehicle %>
+      <th></th>
+      <% end %>
+    </tr>
+    <% for vehicle in @provider.vehicles %>
+    <tr class="<%= vehicle.active ? 'active' : 'inactive' %>">
+      <td><%= vehicle.name %></td>
+      <td><%= vehicle.make %></td>
+      <td><%= vehicle.model %></td>
+      <td><%= vehicle.license_plate %></td>
+      <td><%= vehicle.vin %></td>
+      <td><%= vehicle.garaged_location %></td>
+      <td><%= vehicle.active ? "Active" : "Inactive" %></td>
+      <td><%= link_to "Details", vehicle_path(vehicle) %></td>
+      <% if can? :edit, Vehicle %>
+        <td><%= link_to "Edit", edit_vehicle_path(vehicle) %></td>
+      <% end %>
+    </tr>
+    <% end %>
+  </table>
 <% end %>
 
 <% if @provider == current_user.current_provider %>
-<%= link_to "Create vehicle", new_vehicle_path %>
+  <%= link_to "Create Vehicle", new_vehicle_path, :class=>'new-vehicle' %>
 <% else %>
-You are currently logged in to
-<%= current_user.current_provider.name %>.  To create a vehicle for
-<%= @provider.name %>, please switch providers by using the dropdown
-menu at the top of this page.
+  <p>You are currently logged in to
+  <%= current_user.current_provider.name %>.  To create a vehicle for
+  <%= @provider.name %>, please switch providers by using the dropdown
+  menu at the top of this page.</p>
 <% end %>
 
+<hr />
 
-<h2>Monthly reports:</h2>
+<h2 class="section-header">Monthly Reports</h2>
+
 <% if @provider.monthlies.size == 0 %>
-No monthly reports yet.<br/>
+  <p>No monthly reports yet.</p>
 <% else %>
+  <table>
+    <tr>
+      <th>Start</th>
+      <th>End</th>
+      <th>Volunteer escort hours</th>
+      <th>Volunteer admin hours</th>
+      <% if can? :edit, Monthly %>
+      <th></th>
+      <% end %>
+    </tr>
+    
+    <% for monthly in @provider.monthlies %>
+    <tr>
+      <td><%= monthly.start_date %></td>
+      <td><%= monthly.end_date %></td>
+      <td><%= monthly.volunteer_escort_hours %></td>
+      <td><%= monthly.volunteer_admin_hours %></td>
+      <% if can? :edit, Monthly %>
+      <td><%= link_to "Edit", edit_monthly_path(monthly) %></td>
+      <% end %>
+    </tr>
+    <% end %>
+  </table>
+<% end %>
 
-<table>
-<tr>
-<th>Start</th>
-<th>End</th>
-<th>Volunteer escort hours</th>
-<th>Volunteer admin hours</th>
-<% if can? :edit, Monthly %>
-<th></th>
-<% end %>
-</tr>
-
-<% for monthly in @provider.monthlies %>
-<tr>
-<td><%= monthly.start_date %></td>
-<td><%= monthly.end_date %></td>
-<td><%= monthly.volunteer_escort_hours %></td>
-<td><%= monthly.volunteer_admin_hours %></td>
-<% if can? :edit, Monthly %>
-<td><%= link_to "Edit", edit_monthly_path(monthly) %></td>
-<% end %>
-</tr>
-<% end %>
-</table>
-<br/>
-<% end %>
 <% if @provider == current_user.current_provider %>
-<%= link_to "Create monthly report", new_monthly_path %>
+  <%= link_to "Create Monthly Report", new_monthly_path, :class=>'new-report' %>
 <% else %>
-You are currently logged in to
-<%= current_user.current_provider.name %>.  To create a monthly report for
-<%= @provider.name %>, please switch providers by using the dropdown
-menu at the top of this page.
+  <p>You are currently logged in to
+  <%= current_user.current_provider.name %>.  To create a monthly report for
+  <%= @provider.name %>, please switch providers by using the dropdown
+  menu at the top of this page.</p>
 <% end %>
