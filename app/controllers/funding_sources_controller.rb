@@ -16,7 +16,15 @@ class FundingSourcesController < ApplicationController
 
   def create
     funding_source_params = params[:funding_source]
-    @funding_source = FundingSource.create(funding_source_params)
+    @funding_source = FundingSource.new(funding_source_params)
+
+    if not params["provider"]
+      flash[:alert] = "New funding sources must be associated with at least one provider"
+      @providers = Provider.all
+      @checked_providers = []
+      render :action=>:new
+      return
+    end
 
     if @funding_source.save
       new_provider_ids = params["provider"]
@@ -40,7 +48,7 @@ class FundingSourcesController < ApplicationController
     if @funding_source.update_attributes(funding_source_params)
 
       #now, handle changes to the provider list
-      new_provider_ids = params["provider"]
+      new_provider_ids = params["provider"] or []
 
       current_visibilities = @funding_source.funding_source_visibilities
       for visibility in current_visibilities
