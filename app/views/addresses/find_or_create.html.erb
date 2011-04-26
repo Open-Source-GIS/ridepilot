@@ -1,0 +1,94 @@
+<%= form_tag addresses_path, :class=>'address-search', :method=>:post, :remote=>true do %> 
+  <label for="customer_id">Search:</label>
+  <%= autocomplete_field_tag 'pickup_address', '', autocomplete_addresses_path, :size => 30, :id_element => "#pickup_address_id", :select_func => "autocompleted"  %>
+  <%= hidden_field_tag 'pickup_address_id' %>
+  <%= hidden_field_tag 'lat' %>
+  <%= hidden_field_tag 'lon' %>
+
+  <ul>
+  <li class="selfclear">
+    <%= label_tag :name, "Address Name:" %>
+    <%= text_field_tag :name %>
+  </li>
+
+  <li class="selfclear">
+    <%= label_tag :building_name, "Building Name:" %>
+    <%= text_field_tag :building_name %>
+  </li>
+
+  <li class="selfclear">
+    <%= label_tag :address, "Address:" %>
+    <%= text_field_tag :address %>
+  </li>
+
+  <li class="selfclear">
+    <%= label_tag :city, "City:" %>
+    <%= text_field_tag :city %>
+  </li>
+
+  <li class="selfclear">
+    <%= label_tag :state, "State:" %>
+    <%= text_field_tag :state, '', :size=>2 %>
+  </li>
+
+  <li class="selfclear">
+    <%= label_tag :zip, "ZIP:" %>
+    <%= text_field_tag :zip %>
+  </li>
+
+  <li class="selfclear">
+    <%= label_tag :in_district, "In TriMet District:" %>
+    <%= select_tag :in_district, options_for_select([["Yes", "true"], ["No", "false"]]) %>
+  </li>
+  </ul>
+
+  <%= submit_tag "Create" %>
+
+<% end %>
+
+
+<script type='text/javascript'>
+
+function autocompleted(address) {
+  if (address.id) {
+    alert("found existing record: " + address);
+  } else {
+    $('#name').val(address.name);
+    $('#building_name').val(address.building_name);
+    $('#address').val(address.address);
+    $('#city').val(address.city);
+    $('#state').val(address.state);
+    $('#zip').val(address.zip);
+    $('#lat').val(address.lat);
+    $('#lon').val(address.lon);
+    $('#in_district').val(address.in_district);
+  }
+}
+
+$('.address-search').bind('ajax:success', function(evt, data, status, xhr){
+  alert('address', data['id']);
+
+});
+
+
+
+</script>
+
+
+Cases:
+(1) address exists in database
+(2) address exists in geocoder
+(3) neither
+
+result:
+in the case of an existing address, we can get an id back immediately (
+when we click the result).
+
+in the case of a geocodeable address, we split it out into the fields
+magically and then allow manual editing of them (checking the
+geocodability on the back end before submit); submit is via
+form_for_remote (?), giving back an id.
+
+But, so, what about ambiguous geocodability?
+
+in the case of neither, we do not accept the input.
