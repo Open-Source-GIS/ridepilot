@@ -37,6 +37,7 @@ class VehiclesController < ApplicationController
 
   def destroy
     @vehicle.destroy
+    redirect_to provider_path(current_provider)
   end
 
 end

@@ -27,6 +27,7 @@ class DriversController < ApplicationController
 
   def destroy
     @driver.destroy
+    redirect_to provider_path(current_provider)
   end
 
 end
