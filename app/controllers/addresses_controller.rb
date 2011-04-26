@@ -102,8 +102,14 @@ class AddressesController < ApplicationController
     end
     address_params[:provider_id] = current_provider_id
     address_params[:the_geom] = the_geom
-    address = Address.create(address_params)
-    render :json => {'id' => address.id, 'label' => address.text}
+    address = Address.new(address_params)
+    if address.save
+      render :json => {'id' => address.id, 'label' => address.text}
+    else
+      errors = address.errors.clone
+      errors['prefix'] = prefix
+      render :json => errors
+    end
 
   end
 
