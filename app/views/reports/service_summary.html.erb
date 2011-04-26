@@ -1,135 +1,146 @@
+<div id="page-header">
+  <h1>Reports: Service Summary</h1>
+</div>
+
 <%= form_for @query, :url=>url_for(:action=>:service_summary), :html=>{:method=>:get} do |f| %>
-
-<%= f.date_select :start_date, :discard_day=>true %><br/>
-
-<%= f.submit "Report" %>
+  <p>
+    <%= f.date_select :start_date, :discard_day=>true %>
+    <%= f.submit "Report" %>
+  </p>
 <% end %>
-<br/>
+
 
 <%= form_for @monthly, :url=> {:action=>:update_monthly} do |f| %>
-<%= f.hidden_field :id %>
+  <%= f.hidden_field :id %>
 
-<table>
-<tr>
-<th>Section 1 - Ride Data</th>
-<th>In-district trips</th>
-<th>Out-of-district trips</th>
-<th>Total</th>
-<% for row in @trips_by_purpose %>
-  <tr>
-  <th><%= row['purpose'] %></th>
-  <td><%= row['in_district'] %></td>
-  <td><%= row['out_of_district'] %></td>
-  <td><%= row['in_district'] + row['out_of_district'] %></td>
-  </tr>
+  <fieldset>
+
+    <table>
+      <tr>
+        <th>Section 1 - Ride Data</th>
+        <th>In-district trips</th>
+        <th>Out-of-district trips</th>
+        <th>Total</th>
+      </tr>
+    
+      <% for row in @trips_by_purpose %>
+      <tr>
+        <td><%= row['purpose'] %></td>
+        <td><%= row['in_district'] %></td>
+        <td><%= row['out_of_district'] %></td>
+        <td><%= row['in_district'] + row['out_of_district'] %></td>
+      </tr>
+      <% end %>
+    
+      <tr>
+        <td>Total</td>
+        <td><%= @total['in_district'] %></td>
+        <td><%= @total['out_of_district'] %></td>
+        <td><%= @total['in_district'] + @total['out_of_district'] %></td>
+      </tr>
+    
+      <tr>
+        <tD>Total miles driven</td>
+        <td><%= @total_miles_driven %></td>
+        <td></td>
+        <td></td>
+      </tr>
+    
+      <tr>
+        <td>Turndowns</td>
+        <td><%= @turndowns %></td>
+        <td></td>
+        <td></td>
+      </tr>
+    
+      <tr>
+        <td>Driver hours: Volunteer</td>
+        <td><%= @volunteer_driver_hours %></td>
+        <td></td>
+        <td></td>
+      </tr>
+    
+      <tr>
+        <td>Driver hours: Paid</td>
+        <td><%= @paid_driver_hours %></td>
+        <td></td>
+        <td></td>
+      </tr>
+    
+      <tr>
+        <td>Total Driver hours</td>
+        <td><%= @paid_driver_hours + @volunteer_driver_hours %></td>
+        <td></td>
+        <td></td>
+      </tr>
+    
+      <tr>
+        <td>Volunteer hours: Escort</td>
+        <td>
+          <% if can? :edit, @monthly %>
+          <%= f.text_field :volunteer_escort_hours %>
+          <% else %>
+          <%= @monthly.volunteer_escort_hours %>
+          <% end %>
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+    
+      <tr>
+        <td>Volunteer hours: Administrative</td>
+        <td>
+          <% if can? :edit, @monthly %>
+          <%= f.text_field :volunteer_admin_hours %>
+          <% else %>
+          <%= @monthly.volunteer_admin_hours %>
+          <% end %>
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+    
+      <tr>
+        <td>Unduplicated riders</td>
+        <td><%= @undup_riders %></td>
+        <td></td>
+        <td></td>
+      </tr>
+    
+      <tr>
+        <td>Compliments</td>
+        <td>
+          <% if can? :edit, @monthly %>
+          <%= f.text_field :compliments %>
+          <% else %>
+          <%= @monthly.compliments %>
+          <% end %>
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+    
+      <tr>
+        <td>Complaints</td>
+        <td>
+          <% if can? :edit, @monthly %>
+          <%= f.text_field :complaints %>
+          <% else %>
+          <%= @monthly.complaints %>
+          <% end %>
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+    
+    </table>
+    
+    <% if can? :edit, @monthly %>
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+    <% end %>
+
+  </fieldset>
+
 <% end %>
-
-<tr>
-<th>Total</th>
-<td><%= @total['in_district'] %></td>
-<td><%= @total['out_of_district'] %></td>
-<td><%= @total['in_district'] + @total['out_of_district'] %></td>
-</tr>
-
-<tr>
-<th>Total miles driven</th>
-<td><%= @total_miles_driven %></td>
-<td></td>
-<td></td>
-</tr>
-
-<tr>
-<th>Turndowns</th>
-<td><%= @turndowns %></td>
-<td></td>
-<td></td>
-</tr>
-
-<tr>
-<th>Driver hours: Volunteer</th>
-<td><%= @volunteer_driver_hours %></td>
-<td></td>
-<td></td>
-</tr>
-
-<tr>
-<th>Driver hours: Paid</th>
-<td><%= @paid_driver_hours %></td>
-<td></td>
-<td></td>
-</tr>
-
-
-<tr>
-<th>Total Driver hours</th>
-<td><%= @paid_driver_hours + @volunteer_driver_hours %></td>
-<td></td>
-<td></td>
-</tr>
-
-<tr>
-<th>Volunteer hours: Escort</th>
-<td>
-<% if can? :edit, @monthly %>
-  <%= f.text_field :volunteer_escort_hours %>
-<% else %>
-  <%= @monthly.volunteer_escort_hours %>
-<% end %>
-</td>
-<td></td>
-<td></td>
-</tr>
-
-<tr>
-<th>Volunteer hours: Administrative</th>
-<td>
-<% if can? :edit, @monthly %>
-  <%= f.text_field :volunteer_admin_hours %>
-<% else %>
-  <%= @monthly.volunteer_admin_hours %>
-<% end %>
-</td>
-<td></td>
-<td></td>
-</tr>
-
-<tr>
-<th>Unduplicated riders</th>
-<td><%= @undup_riders %></td>
-<td></td>
-<td></td>
-</tr>
-
-<tr>
-<th>Compliments</th>
-<td>
-<% if can? :edit, @monthly %>
-  <%= f.text_field :compliments %>
-<% else %>
-  <%= @monthly.compliments %>
-<% end %>
-</td>
-<td></td>
-<td></td>
-</tr>
-
-<tr>
-<th>Complaints</th>
-<td>
-<% if can? :edit, @monthly %>
-  <%= f.text_field :complaints %>
-<% else %>
-  <%= @monthly.complaints %>
-<% end %>
-</td>
-<td></td>
-<td></td>
-</tr>
-
-</table>
-
-<% if can? :edit, @monthly %>
-<%= f.submit %>
-<% end %>
-<% end %>
-

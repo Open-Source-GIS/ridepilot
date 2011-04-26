@@ -1,55 +1,82 @@
+<div id="page-header">
+  <h1>Vehicle Details</h1>
+</div>
 
+<p class="profile-actions selfclear">
+  <% if can? :edit, @vehicle %>
+  <%= link_to "Add maintenance event", new_vehicle_maintenance_event_path(:vehicle_id=>@vehicle), :class=>'new-maintenance' %>
+  <% end %>
+  <span class="separator">|</span>
+  <% if can? :edit, @vehicle %>
+  <%= link_to "Edit Vehicle", edit_vehicle_path(@vehicle), :class=>'edit edit-vehicle' %>
+  <% end %>
+</p>
 
-Name: <%= @vehicle.name %><br/>
-Make: <%= @vehicle.make %><br/>
-Model: <%= @vehicle.model %><br/>
-License plate: <%= @vehicle.license_plate %><br/>
-Vin: <%= @vehicle.vin %><br/>
-Garaged: <%= @vehicle.garaged_location %><br/>
+<div class="vehicle-profile selfclear">
 
+<dl>
+  <dt>Name:</dt>
+  <dd><%= @vehicle.name %></dd>
+
+  <dt>Make:</dt>
+  <dd><%= @vehicle.make %></dd>
+
+  <dt>Model:</dt>
+  <dd><%= @vehicle.model %></dd>
+
+</dl>
+<dl>
+  <dt>License plate:</dt>
+  <dd><%= @vehicle.license_plate %></dd>
+
+  <dt>Vin:</dt>
+  <dd><%= @vehicle.vin %></dd>
+
+  <dt>Garaged:</dt>
+  <dd><%= @vehicle.garaged_location %></dd>
+</dl>
+
+</div>
 
 <% if @vehicle.vehicle_maintenance_events.size > 0 %>
 <table>
-<tr>
-<th>Service date</th>
-<th>Invoice date</th>
-<th>Odometer</th>
-<th>Vendor name</th>
-<th>Invoice number</th>
-<th>Invoice Amount</th>
-<th>Reimbursable</th>
-<th>Services Performed</th>
-<% if can? :edit, @vehicle %>
-<th></th>
-<% end %>
-</tr>
 
-<% for event in @vehicle.vehicle_maintenance_events %>
-<tr>
-<td><%= event.service_date %></td>
-<td><%= event.invoice_date %></td>
-<td><%= event.odometer %></td>
-<td><%= event.vendor_name %></td>
-<td><%= event.invoice_number %></td>
-<td><%= event.invoice_amount %></td>
-<td><%= event.reimbursable %></td>
-<td><%= event.services_performed %></td>
-<% if can? :edit, @vehicle %>
-<td><%= link_to "Edit", edit_vehicle_maintenance_event_path(event) %></td>
-<% end %>
-</tr>
-<% end %>
-</table>
+  <tr>
+    <th>Service date</th>
+    <th>Invoice date</th>
+    <th>Odometer</th>
+    <th>Vendor name</th>
+    <th>Invoice number</th>
+    <th>Invoice Amount</th>
+    <th>Reimbursable</th>
+    <th>Services Performed</th>
+    <% if can? :edit, @vehicle %>
+    <th></th>
+    <% end %>
+  </tr>
+
+  <% for event in @vehicle.vehicle_maintenance_events %>
+  <tr>
+    <td><%= event.service_date %></td>
+    <td><%= event.invoice_date %></td>
+    <td><%= event.odometer %></td>
+    <td><%= event.vendor_name %></td>
+    <td><%= event.invoice_number %></td>
+    <td><%= event.invoice_amount %></td>
+    <td><%= event.reimbursable %></td>
+    <td><%= event.services_performed %></td>
+    <% if can? :edit, @vehicle %>
+    <td><%= link_to "Edit", edit_vehicle_maintenance_event_path(event), :class=>'edit-maintenance' %></td>
+    <% end %>
+  </tr>
+  <% end %>
+
+</table>  
 
 <% else %> 
-
 <% end %>
-<br/>
 
-<% if can? :edit, @vehicle %>
-<%= link_to "Add maintenance event", new_vehicle_maintenance_event_path(:vehicle_id=>@vehicle) %>
-<% end %><br/>
-
-<% if can? :edit, @vehicle %>
-<%= link_to "Edit vehicle", edit_vehicle_path(@vehicle) %>
+<% if current_user && can?(:edit, Provider) %>
+<hr />
+<%= link_to 'Back', provider_path(current_user.current_provider), :class=>'action-bttn' %>
 <% end %>

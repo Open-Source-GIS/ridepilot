@@ -1,5 +1,10 @@
+<div id="page-header">
+  <h1>Edit Vehicle</h1>
+</div>
+
 <%= render :partial=>"form" %>
 
-<% if can? :edit, @vehicle %>
-<%= link_to "Add maintenance event", new_vehicle_maintenance_event_path(:vehicle_id=>@vehicle) %>
-<% end %><br/>
+<% if current_user && can?(:edit, Provider) %>
+<hr />
+<%= link_to 'Back', provider_path(current_user.current_provider), :class=>'action-bttn' %>
+<% end %>

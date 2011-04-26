@@ -63,6 +63,7 @@
       <th>Paid</th>
       <% if can? :edit, Driver %>
       <th></th>
+      <th></th>
       <% end %>
     </tr>
     <% for driver in @provider.drivers %>
@@ -72,7 +73,8 @@
       <td><%= driver.active ? "Active" : "Inactive" %></td>
       <td><%= driver.paid ? "Paid" : "Volunteer" %></td>
       <% if can? :edit, Driver %>
-      <td><%= link_to "Edit", edit_driver_path(driver), :class=>'edit' %></td>
+      <td><%= link_to "Edit", edit_driver_path(driver), :class=>'edit edit-driver' %></td>
+      <td><%= link_to "Delete", driver, :confirm => 'Are you sure?', :method => :delete, :class=>'delete' %></td>
       <% end %>
     </tr>
     <% end %>
@@ -105,23 +107,30 @@
       <th>VIN</th>
       <th>Location</th>
       <th></th>
-      <th></th>
       <% if can? :edit, Vehicle %>
+      <th></th>
       <th></th>
       <% end %>
     </tr>
     <% for vehicle in @provider.vehicles %>
     <tr class="<%= vehicle.active ? 'active' : 'inactive' %>">
-      <td class="name"><%= vehicle.name %></td>
+      <td class="name">
+        <% if can? :edit, Vehicle %>
+        <%= link_to vehicle.name, vehicle_path(vehicle) %>
+        <% else %>
+        <%= vehicle.name %>
+        <% end %>
+      </td>
+      <td><%= vehicle.year %></td>
       <td><%= vehicle.make %></td>
       <td><%= vehicle.model %></td>
       <td><%= vehicle.license_plate %></td>
       <td><%= vehicle.vin %></td>
       <td><%= vehicle.garaged_location %></td>
       <td><%= vehicle.active ? "Active" : "Inactive" %></td>
-      <td><%= link_to "Details", vehicle_path(vehicle) %></td>
       <% if can? :edit, Vehicle %>
-        <td><%= link_to "Edit", edit_vehicle_path(vehicle) %></td>
+      <td><%= link_to "Edit", edit_vehicle_path(vehicle), :class=>'edit edit-vehicle' %></td>
+      <td><%= link_to "Delete", vehicle, :confirm => 'Are you sure?', :method => :delete, :class=>'delete' %></td>
       <% end %>
     </tr>
     <% end %>

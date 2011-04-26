@@ -1,8 +1,14 @@
-<%= link_to "Vehicles", :action=>:vehicles %><br/>
-<%= link_to "Service Summary", :action=>:service_summary %><br/>
-<%= link_to "Donations", :action=>:donations %><br/>
-<%= link_to "Cab Log", :action=>:cab %><br/>
-<%= link_to "Age and Ethnicity", :action=>:age_and_ethnicity %><br/>
+<div id="page-header">
+  <h1>Reports</h1>
+</div>
+
+<ul class="reports">
+  <li><%= link_to "Vehicles", :action=>:vehicles %></li>
+  <li><%= link_to "Service Summary", :action=>:service_summary %></li>
+  <li><%= link_to "Donations", :action=>:donations %></li>
+  <li><%= link_to "Cab Log", :action=>:cab %></li>
+  <li><%= link_to "Age and Ethnicity", :action=>:age_and_ethnicity %></li>
+</ul>
 
 <%= form_for @driver_query, :url=>url_for(:action=>:daily_manifest), :html=>{:method=>:get} do |f| %>
 

@@ -2,7 +2,7 @@
   <h1>Customer: <%= @customer.first_name + h(' ') + @customer.middle_initial + h(' ') + @customer.last_name %></h1>
 </div>
 
-<p class="customer-actions">
+<p class="profile-actions selfclear">
   <%= link_to 'New Trip', new_trip_path(:customer_id=>@customer.id), :class=>'new-trip'  %>
   <span class="separator">|</span>
   <%= link_to 'Edit', edit_customer_path(@customer), :class=>'edit' %>

@@ -321,11 +321,24 @@ body.repeating-trips #primary-nav li.repeating-trips a:link, body.repeating-trip
 body.reports #primary-nav li.reports a:link, body.reports #primary-nav li.reports a:visited,
 body.monthlies #primary-nav li.reports a:link, body.monthlies #primary-nav li.reports a:visited,
 body.providers.show #primary-nav li.vehicles-drivers-users a:link, body.providers.show #primary-nav li.vehicles-drivers-users a:visited,
+    body.new-user #primary-nav li.vehicles-drivers-users a:link, body.new-user #primary-nav li.vehicles-drivers-users a:visited,
+    body.drivers #primary-nav li.vehicles-drivers-users a:link, body.drivers #primary-nav li.vehicles-drivers-users a:visited,
+    body.vehicles #primary-nav li.vehicles-drivers-users a:link, body.vehicles #primary-nav li.vehicles-drivers-users a:visited,
 body.providers.index #secondary-nav li.providers a:link, body.providers.index #secondary-nav li.providers a:visited,
 body.funding-sources #secondary-nav li.funding-sources a:link, body.funding-sources #secondary-nav li.funding-sources a:visited {
     background: #fff;
     color: #009FFB;
 }
+/* override reports' vehicles class */
+body.reports #primary-nav li.vehicles-drivers-users a:link, body.reports #primary-nav li.vehicles-drivers-users a:visited { 
+    color: #0081CC; background-image: -webkit-gradient( linear, left bottom, left top, #eee 35%, #fff 100% ); 
+    background-image: -moz-linear-gradient( center bottom, #eee 35%, #fff 100% ); 
+    }
+body.reports #primary-nav li.vehicles-drivers-users a:hover, body.reports #primary-nav li.vehicles-drivers-users a:active { 
+    background: #fff; 
+    color: #009FFB; 
+    }
+
 
 /* subnav - section navigation */
 #subnav {
@@ -536,14 +549,25 @@ form div.actions input[type="submit"]:hover {
 table {
     width: 100%;
     margin-bottom: 10px;
+    border-top: 5px solid #2e6399;
     border-bottom: 10px solid #f7f7f7;
     border-collapse: separate;
     background: #f7f7f7;
+
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius-topright: 5px;
+    border-top-right-radius: 5px;
+
+    -webkit-border-top-left-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    border-top-left-radius: 5px;
+
     -webkit-border-bottom-right-radius: 5px;
-    -webkit-border-bottom-left-radius: 5px;
     -moz-border-radius-bottomright: 5px;
-    -moz-border-radius-bottomleft: 5px;
     border-bottom-right-radius: 5px;
+
+    -webkit-border-bottom-left-radius: 5px;
+    -moz-border-radius-bottomleft: 5px;
     border-bottom-left-radius: 5px;
 }
 tr {
@@ -554,22 +578,12 @@ tr.odd {
 }
 table td,
 table th {
-    padding: 10px;
+    padding: 5px 10px 10px;
 }
 table th {
     text-align: left;
     background: #2e6399;
     color: #ddd;
-}
-table th:first-child {
-    -webkit-top-left-border-radius: 5px;
-    -moz-border-radius-topleft: 5px;
-    border-top-left-radius: 5px;
-}
-table th:last-child {
-    -webkit-top-right-border-radius: 5px;
-    -moz-border-radius-topright: 5px;
-    border-top-right-radius: 5px;
 }
 
 /*
@@ -620,7 +634,7 @@ table th:last-child {
 
 /*
  *
- * Customers
+ * Customers, Users, Drivers, Vehicles
  *
  */
 .customer-search {
@@ -649,30 +663,46 @@ span.group {
 span.individual {
     background: url(images/user.png) left center no-repeat scroll;
 }
-a.new-trip,
 a.edit,
+a.new-trip,
 a.delete,
+a.new-maintenance,
+a.edit-maintenance,
+a.edit-driver,
+a.edit-vehicle,
 a.new-report {
     padding: 5px 0 5px 20px;
     text-decoration: none;
     font-size: 11px;
     line-height: 16px;
 }
-a.new-trip {
-    background: url(images/plus-button.png) left center no-repeat scroll;
-}
 a.edit {
     background: url(images/card--pencil.png) left center no-repeat scroll;
+}
+a.new-trip {
+    background: url(images/plus-button.png) left center no-repeat scroll;
 }
 a.delete {
     background: url(images/cross-button.png) left center no-repeat scroll;
     color: #e5004d;
 }
+a.new-maintenance {
+    background: url(images/wrench--plus.png) left center no-repeat scroll;
+}
+a.edit-maintenance {
+    background: url(images/wrench--pencil.png) left center no-repeat scroll;
+}
+a.edit-driver {
+    background: url(images/pencil.png) left center no-repeat scroll;
+}
+a.edit-vehicle {
+    background: url(images/pencil.png) left center no-repeat scroll;
+}
 a.new-report {
     background: url(images/report--plus.png) left center no-repeat scroll;
 }
 a.delete:hover,
-.delete:active {
+a.delete:active {
     color: #ff4d88;
 }
 a.new-trip:hover,
@@ -698,45 +728,60 @@ a.cancel {
 input.delete {
     background: url(images/cross-button.png) left center no-repeat scroll;
     color: #e5004d;
-    padding: 5px 0 5px 20px;
+    padding: 5px 0 5px 17px;
     text-decoration: none;
     font-size: 11px;
     line-height: 16px;
     border: 0;
 }
+input.delete:hover,
+input.delete:active {
+    color: #ff4d88;
+    text-decoration: underline;
+}
 
-p.customer-actions .edit {
+p.profile-actions .edit {
     float: right;
 }
-p.customer-actions .separator,
+p.profile-actions .separator,
 p.activated-date .separator {
     padding: 0 0.4em;
     color: #bbb;
     display: none;
 }
 
-div.customer-profile {
+div.customer-profile,
+div.vehicle-profile {
     border-top: 1px solid #bbb;
     padding: 20px 0 0;
+    margin: 0 0 20px;
 }
-div.customer-profile dl {
+div.customer-profile dl,
+div.vehicle-profile dl {
     float: left;
     width: 33%;
     margin: 0;
 }
-div.customer-profile dt {
+div.customer-profile dt,
+div.vehicle-profile dt {
     font-weight: bold;
     float: left;
     width: 30%;
     margin-right: 2%;
     clear: both;
 }
-div.customer-profile dd {
+div.customer-profile dd,
+div.vehicle-profile dd {
     margin-bottom: 15px;
     float: left;
     width: 60%;
 }
 
+/*
+ *
+ * Pagination
+ *
+ */
 div.pagination {
     text-align: center;
     padding: 20px 0;
@@ -779,6 +824,24 @@ div.pagination span.prev_page.disabled {
 }
 div.pagination span.next_page.disabled {
     float: right;
+}
+
+/*
+ *
+ * Reports
+ *
+ */
+ul.reports {
+    list-style: none;
+    margin-left: 0;
+}
+ul.reports li {
+    margin: 0 0 10px;
+}
+ul.reports li a {
+    padding: 5px 0 5px 20px;
+    text-decoration: none;
+    background: url(images/reports-stack.png) left center no-repeat scroll;
 }
 
 /*
