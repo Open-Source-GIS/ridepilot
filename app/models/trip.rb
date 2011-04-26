@@ -12,8 +12,11 @@ class Trip < ActiveRecord::Base
 
   before_validation :compute_in_district
   before_validation :compute_run
-  validates_presence_of :pickup_address
-  validates_presence_of :dropoff_address
+  validates_presence_of :pickup_address_id
+  validates_presence_of :dropoff_address_id
+
+  validates_associated :pickup_address
+  validates_associated :dropoff_address
 
   accepts_nested_attributes_for :customer
 
@@ -30,6 +33,9 @@ class Trip < ActiveRecord::Base
   end
 
   def compute_in_district
+    if !pickup_address or !dropoff_address
+      return false
+    end
     in_district = pickup_address.in_district && dropoff_address.in_district
   end
 
