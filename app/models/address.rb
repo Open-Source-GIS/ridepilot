@@ -6,17 +6,28 @@ class Address < ActiveRecord::Base
   normalize_attribute :address, :with=> [:squish, :titleize]
   normalize_attribute :city, :with=> [:squish, :titleize]
 
-  def compute_in_trimet_district
-    return Region.count(:conditions => ["name='TriMet' and st_contains(the_geom, ?)", the_geom]) > 0
+  before_validation :compute_in_trimet_district
 
+  def compute_in_trimet_district
+    if the_geom and in_district.nil?
+      in_district = Region.count(:conditions => ["name='TriMet' and st_contains(the_geom, ?)", the_geom]) > 0
+    end 
   end
 
   def latitude
-    return the_geom.x
+    if the_geom
+      return the_geom.x
+    else
+      return nil
+    end
   end
 
   def longitude
-    return the_geom.y
+    if the_geom
+      return the_geom.y
+    else
+      return nil
+    end
   end
 
   def latitude=(x)
@@ -28,15 +39,34 @@ class Address < ActiveRecord::Base
   end
 
   def text
-    if building_name and name
+    if building_name.to_s .size > 0 and name.to_s.size > 0
       first_line = "%s - %s\n" % [name, building_name]
-    elsif building_name
+    elsif building_name.to_s.size > 0
       first_line = building_name + "\n"
-    elsif name
+    elsif name.to_s.size > 0
       first_line = name + "\n"
+    else
+      first_line = ''
     end
 
-    return first_line + "%s\n%s, %s  %s" % [address, city, state, zip]
+    return "%s%s\n%s, %s  %s" % [first_line, address, city, state, zip]
 
   end
+
+  def json
+    {
+      :label => text, 
+      :id => id, 
+      :name => name,
+      :building_name => building_name,
+      :address => address,
+      :city => city,
+      :state => state,
+      :zip => zip,
+      :in_district => in_district,
+      :lat => latitude,
+      :lon => longitude
+    }
+  end
+
 end

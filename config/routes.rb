@@ -37,7 +37,8 @@ Ridepilot::Application.routes.draw do
   end
 
   resources :addresses do
-    get :geocode_address, :on=>:collection
+    get :find_or_create, :on=>:collection
+    get :autocomplete, :on=>:collection
   end
 
   resources :drivers
