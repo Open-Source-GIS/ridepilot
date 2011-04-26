@@ -94,16 +94,22 @@ class AddressesController < ApplicationController
     else
       the_geom = nil
     end
-    address = Address.new(:provider_id => current_provider_id, 
-                          :name => params[:name],
-                          :building_name => params[:building_name],
-                          :address => params[:address],
-                          :city => params[:city],
-                          :state => params[:state],
-                          :zip => params[:zip],
-                          :the_geom => the_geom)
-    address.save!
-    render :json => {'id' => address.id}
+
+    prefix = params['prefix']
+    address_params = {}
+    for param in ['name', 'building_name', 'address', 'city', 'state', 'zip']
+      address_params[param] = params[prefix + "_" + param]
+    end
+    address_params[:provider_id] = current_provider_id
+    address_params[:the_geom] = the_geom
+    address = Address.new(address_params)
+    if address.save
+      render :json => {'id' => address.id, 'label' => address.text}
+    else
+      errors = address.errors.clone
+      errors['prefix'] = prefix
+      render :json => errors
+    end
 
   end
 

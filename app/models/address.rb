@@ -6,6 +6,11 @@ class Address < ActiveRecord::Base
   normalize_attribute :address, :with=> [:squish, :titleize]
   normalize_attribute :city, :with=> [:squish, :titleize]
 
+  validates_length_of :address, :minimum=>5
+  validates_length_of :city, :minimum=>2
+  validates_length_of :state, :is=>2
+  validates_length_of :zip, :is=>5
+
   before_validation :compute_in_trimet_district
 
   def compute_in_trimet_district
