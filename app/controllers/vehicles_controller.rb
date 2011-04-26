@@ -35,4 +35,8 @@ class VehiclesController < ApplicationController
     end
   end
 
+  def destroy
+    @vehicle.destroy
+  end
+
 end
