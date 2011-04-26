@@ -1,0 +1,50 @@
+<%= form_tag addresses_path, :class=>'address-search', :method=>:post, :remote=>true, 'data-id-element' => "#trip_#{prefix}_address_id", 'data-label-element' => "##{prefix}_address_label" do %> 
+  <label for="customer_id">Search:</label>
+  <%= autocomplete_field_tag "#{prefix}_address", '', autocomplete_addresses_path, :size => 30, :id_element => "##{prefix}_address_id", :select_func => "#{prefix}_autocompleted"  %>
+  <%= hidden_field_tag "#{prefix}_address_id" %>
+  <%= hidden_field_tag 'prefix', prefix %>
+  <%= hidden_field_tag 'lat' %>
+  <%= hidden_field_tag 'lon' %>
+
+  <ul>
+  <li class="selfclear">
+    <%= label_tag "#{prefix}_name", "Address Name:" %>
+    <%= text_field_tag "#{prefix}_name" %>
+  </li>
+
+  <li class="selfclear">
+    <%= label_tag "#{prefix}_building_name", "Building Name:" %>
+    <%= text_field_tag "#{prefix}_building_name" %>
+  </li>
+
+  <li class="selfclear">
+    <%= label_tag "#{prefix}_address", "Address:" %>
+    <%= text_field_tag "#{prefix}_address" %>
+  </li>
+
+  <li class="selfclear">
+    <%= label_tag "#{prefix}_city", "City:" %>
+    <%= text_field_tag "#{prefix}_city" %>
+  </li>
+
+  <li class="selfclear">
+    <%= label_tag "#{prefix}_state", "State:" %>
+    <%= text_field_tag "#{prefix}_state", '', :size=>2 %>
+  </li>
+
+  <li class="selfclear">
+    <%= label_tag "#{prefix}_zip", "ZIP:" %>
+    <%= text_field_tag "#{prefix}_zip" %>
+  </li>
+
+  <li class="selfclear">
+    <%= label_tag "#{prefix}_in_district", "In TriMet District:" %>
+    <%= select_tag "#{prefix}_in_district", options_for_select([["Yes", "true"], ["No", "false"]]) %>
+  </li>
+  </ul>
+
+  <%= submit_tag "Create" %>
+
+<% end %>
+
+
