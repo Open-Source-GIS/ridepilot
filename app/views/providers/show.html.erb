@@ -32,7 +32,7 @@
           <%= f.submit "Change role" %>
         <% end %>
       </td>
-      <td><%= button_to "Delete", provider_delete_role_path(@provider.id, :role_id=>role.id), :class=>'delete' %></td>
+      <td><%= button_to "Delete", provider_delete_role_path(@provider.id, :role_id=>role.id), :confirm => 'Are you sure?', :class=>'delete' %></td>
       <% end %>
     </tr>
     <% end %>
