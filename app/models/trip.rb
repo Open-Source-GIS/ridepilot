@@ -14,6 +14,8 @@ class Trip < ActiveRecord::Base
   before_validation :compute_run
   validates_presence_of :pickup_address_id
   validates_presence_of :dropoff_address_id
+  validates_presence_of :pickup_time
+  validates_presence_of :appointment_time
 
   validates_associated :pickup_address
   validates_associated :dropoff_address
@@ -34,7 +36,7 @@ class Trip < ActiveRecord::Base
 
   def compute_in_district
     if !pickup_address or !dropoff_address
-      return false
+      return
     end
     in_district = pickup_address.in_district && dropoff_address.in_district
   end
@@ -42,6 +44,10 @@ class Trip < ActiveRecord::Base
   def compute_run
     if run or cab
       return
+    end
+
+    if !pickup_time or !appointment_time 
+      return #we'll error out in validation
     end
 
     #when the trip is saved, we need to find or create a run for it.

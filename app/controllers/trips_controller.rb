@@ -171,16 +171,20 @@ class TripsController < ApplicationController
       if @trip.save
         redirect_to(new_trip_path, :notice => 'Trip was successfully created.') 
       else
-          new 
-          render :action => "new" 
+        prep_view
+        @schedule = repeating_trip.schedule_attributes
+        render :action => "new" 
       end
     else
       @trip = Trip.new(trip_params)
       if @trip.save
         redirect_to(new_trip_path, :notice => 'Trip was successfully created.') 
       else
-          new 
-          render :action => "new" 
+        prep_view
+        repeating_trip = RepeatingTrip.new
+        repeating_trip.schedule_attributes = {:repeat => 1, :interval => 1, :start_date => Time.now.to_s, :interval_unit=>"week"}
+        @schedule = repeating_trip.schedule_attributes
+        render :action => "new" 
       end
     end
   end
