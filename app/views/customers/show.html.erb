@@ -27,7 +27,7 @@
   <dd><%= @customer.phone_number_2 %></dd>
 
   <dt>Address:</dt>
-  <dd><%= raw format_newlines @customer.address.text %></dd>
+  <dd><%= @customer.address ? raw(format_newlines @customer.address.text) : '' %></dd>
 
   <dt>Email:</dt>
   <dd><%= @customer.email %></dd>
