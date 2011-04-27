@@ -55,13 +55,13 @@
 
       <li class="selfclear">
         <%= f.label :pickup_address_label, "Pickup Address:" %>
-        <%= text_field_tag "pickup_address_label", '', :class => "full" %>
+        <%= text_field_tag "pickup_address_label", @trip.pickup_address ? @trip.pickup_address.text : '', :class => "full" %>
         <%= f.hidden_field(:pickup_address_id) %>
       </li>
 
       <li class="selfclear">
         <%= f.label :dropoff_address_label, "Dropoff Address:" %>
-        <%= text_field_tag "dropoff_address_label", '', :class => "full" %>
+        <%= text_field_tag "dropoff_address_label", @trip.dropoff_address ? @trip.dropoff_address.text : '', :class => "full" %>
         <%= f.hidden_field(:dropoff_address_id) %>
       </li>
 
@@ -180,7 +180,7 @@
   function autocompleted(address, field) {
       if (address.id) {
         //found an existing address
-        id_field = '#' + field + '_address_id';
+        id_field = '#trip_' + field + '_address_id';
         $(id_field).val(address.id);
         label_field = '#' + field + '_address_label';
         $(label_field).val(address.label);
