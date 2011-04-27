@@ -207,14 +207,15 @@ class TripsController < ApplicationController
 
       repeating_trip = @trip.repeating_trip.update_attributes(repeating_trip_params)
       trip_params.delete :schedule_attributes
-
-      if @trip.update_attributes(trip_params)
-        redirect_to(@trip, :notice => 'Trip was successfully updated.')
-      else
-        edit
-        render :action => "edit" 
-      end
     end
+
+    if @trip.update_attributes(trip_params)
+      redirect_to(@trip, :notice => 'Trip was successfully updated.')
+    else
+      edit
+      render :action => "edit" 
+    end
+
   end
 
   def destroy
