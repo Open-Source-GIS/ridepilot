@@ -570,6 +570,15 @@ table {
     -moz-border-radius-bottomleft: 5px;
     border-bottom-left-radius: 5px;
 }
+#calendar table {
+    border: 0;
+    border-collapse: collapse;
+    background: #fff;
+    margin: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
 tr {
     background: #fff;
 }
@@ -592,6 +601,7 @@ table th {
  *
  */
 #calendar { margin: 0; }
+body.index #calendar { margin: 0 0 20px; border-bottom: 1px solid #bbb; }
 
 /* buttons */
 .ui-button-text-icon-primary .ui-icon-seek-prev, .ui-button-text-icons .ui-icon-seek-prev, .ui-button-icons-only .ui-icon-seek-prev { left: 50% !important; }

@@ -2,6 +2,8 @@
   <h1>Listing Trips</h1>
 </div>
 
+<div id="calendar"></div>
+
 <table>
   <tr>
     <th>Customer</th>
@@ -27,3 +29,6 @@
 <hr />
 
 <%= link_to 'New Trip', search_customers_path, :class=>'action-bttn' %>
+
+<%= render 'javascript' %>
+
