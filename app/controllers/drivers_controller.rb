@@ -15,7 +15,7 @@ class DriversController < ApplicationController
     @driver.update_attributes(params[:driver])
     @driver.save!
     flash[:notice] = "Driver updated"
-    redirect_to provider_path(user.current_provider)
+    redirect_to provider_path(current_user.current_provider)
   end
 
   def create
