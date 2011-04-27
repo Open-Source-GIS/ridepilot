@@ -57,8 +57,7 @@
 <% else %>
   <table>
     <tr>
-      <th>First name</th>
-      <th>Last name</th>
+      <th>Name</th>
       <th>Active</th>
       <th>Paid</th>
       <% if can? :edit, Driver %>
@@ -68,8 +67,7 @@
     </tr>
     <% for driver in @provider.drivers %>
     <tr>
-      <td class="<%= driver.active ? 'active' : 'inactive' %>"><%= driver.first_name %></td>
-      <td><%= driver.last_name %></td>
+      <td class="<%= driver.active ? 'active' : 'inactive' %>"><%= driver.name %></td>
       <td><%= driver.active ? "Active" : "Inactive" %></td>
       <td><%= driver.paid ? "Paid" : "Volunteer" %></td>
       <% if can? :edit, Driver %>

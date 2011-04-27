@@ -45,8 +45,8 @@ class ReportsController < ApplicationController
 
   def index
     @driver_query = Query.new
-    cab = Driver.new(:id=>"cab", :first_name=>"Cab")
-    all = Driver.new(:id=>"all", :first_name=>"All")
+    cab = Driver.new(:id=>"cab", :name=>"Cab")
+    all = Driver.new(:id=>"all", :name=>"All")
     @drivers =  [all, cab] + Driver.accessible_by(current_ability)
   end
 
