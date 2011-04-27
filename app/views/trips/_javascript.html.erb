@@ -9,7 +9,7 @@
   function autocompleted(address, field) {
     if (address.id) {
       //found an existing address
-      id_field = '#' + field + '_address_id';
+        id_field = '#trip_' + field + '_address_id';
       $(id_field).val(address.id);
       label_field = '#' + field + '_address_label';
       $(label_field).val(address.label);
