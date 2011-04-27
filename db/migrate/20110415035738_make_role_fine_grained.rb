@@ -5,6 +5,7 @@ class MakeRoleFineGrained < ActiveRecord::Migration
     end
     for role in Role.all
       role.level = role.admin ? 0 : 100
+      role.save!
     end
     change_table :roles do |t|
       t.remove :admin
