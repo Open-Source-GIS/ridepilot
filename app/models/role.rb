@@ -1,6 +1,7 @@
 class Role < ActiveRecord::Base
   belongs_to :user
   belongs_to :provider
+  validates_uniqueness_of :user_id, :scope=>:provider_id
 
   def admin
     return level == 100

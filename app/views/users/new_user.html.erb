@@ -3,6 +3,15 @@
 </div>
 
 <%= form_for @user, :url=>url_for(:action=>:create_user) do |f| %>
+  <% if @errors %>
+    <div id="error_explanation">
+      <ul>
+      <% @errors.each do |field, msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
 
   <fieldset>
 

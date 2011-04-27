@@ -21,21 +21,26 @@ class UsersController < Devise::SessionsController
 
     #this user might already be a member of the site, but not of this
     #provider, in which case we ought to just set up the role
-    user = User.where(:email=>params[:user][:email]).first
-    if not user
-      user = User.new(params[:user])
-      user.password = user.password_confirmation = Devise.friendly_token[0..8]
-      user.current_provider_id = current_provider_id
-      user.save!
-      NewUserMailer.new_user_email(user, user.password).deliver
+    @user = User.where(:email=>params[:user][:email]).first
+    if not @user
+      @user = User.new(params[:user])
+      @user.password = @user.password_confirmation = Devise.friendly_token[0..8]
+      @user.current_provider_id = current_provider_id
+      @user.save!
+      NewUserMailer.new_user_email(@user, @user.password).deliver
     end
 
-    Role.new(:user_id=>user.id, 
+    role = Role.new(:user_id=>@user.id, 
              :provider_id=>current_provider_id, 
-             :level=>params[:role][:level]).save!
+             :level=>params[:role][:level])
+    if role.save
 
-    flash[:notice] = "%s has been added and a password has been emailed" % user.email
-    redirect_to provider_path(current_provider)
+      flash[:notice] = "%s has been added and a password has been emailed" % @user.email
+      redirect_to provider_path(current_provider)
+    else
+      @errors = {'email' => 'A user with this email address already exists'}
+      render :action=>:new_user
+    end
   end
 
   def show_init
