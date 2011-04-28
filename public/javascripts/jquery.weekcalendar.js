@@ -2055,7 +2055,8 @@
               return this._cleanDate(parseInt(d, 10));
             }
             // this is a human readable date
-            return Date.parse(d) || new Date(d);
+//            return Date.parse(d) || new Date(d);
+            return new Date(d);  
           }
           if (typeof d == 'number') {
             return new Date(d);

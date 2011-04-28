@@ -406,6 +406,12 @@ body.reports #primary-nav li.vehicles-drivers-users a:hover, body.reports #prima
 .alert a {
     color: #ffffc6;
 }
+fieldset ol.section li div.field_with_errors {
+    display: inline;
+    color: #e5004d;
+    float: none;
+}
+
 
 /* forms */
 form input[type="text"],
@@ -485,9 +491,11 @@ fieldset ol.fourth li textarea {
 fieldset ol.section li input.full {
     width: 60%;
 }
-fieldset ol.section li.passengers input,
-fieldset ol.section li.time input {
+fieldset ol.section li.passengers input {
     max-width: 3em;
+}
+fieldset ol.section li.time input {
+    max-width: 5em;
 }
 fieldset ol.section li div {
     float: left;
@@ -641,6 +649,34 @@ body.index #calendar { margin: 0 0 20px; border-bottom: 1px solid #bbb; }
 .wc-header .wc-today.wc-user-header{font-weight:normal;}
 .wc-today.wc-day-column-last{border-right:3px double #FAD163;}
 .wc-today.wc-day-column-first{border-left:3px double #FAD163;}
+
+/*
+ *
+ * Timepicker 
+ *
+ */
+#ui-datepicker-div table {
+    border-bottom: 0;
+    border-top: 0;
+    margin-bottom: 0;
+    background: transparent;
+}
+#ui-datepicker-div table tr {
+    background: transparent;
+}
+#ui-datepicker-div table th {
+    background: #fff;
+    color: #444;
+    font-size: 11px;
+}
+.ui-timepicker-div .ui-widget-header{ margin-bottom: 8px; }
+.ui-timepicker-div dl{ text-align: left; }
+.ui-timepicker-div dl dt{ height: 25px; }
+.ui-timepicker-div dl dd{ margin: -25px 0 10px 65px; }
+.ui-timepicker-div td {  }
+.ui_tpicker_hour,
+.ui_tpicker_minute { font-size: 9px; }
+  
 
 /*
  *
