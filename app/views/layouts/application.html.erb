@@ -8,14 +8,10 @@
   <%= javascript_include_tag :defaults %>
   <%= javascript_include_tag "autocomplete-rails.js" %>
   <%= javascript_include_tag "jquery.weekcalendar.js" %>
+  <%= javascript_include_tag "jquery-ui-timepicker-addon.js" %>
 
   <%= csrf_meta_tag %>
 
-  <script type='text/javascript'>
-    $(document).ready(function() {
-      $("tr:odd").addClass("odd");
-    });
-  </script>
 </head>
 <body class="<%= bodytag_class %>">
   <div id="header">

@@ -70,7 +70,7 @@
           businessHours: {start: 8, end: 18, limitDisplay: true},
           allowCalEventOverlap: true,
           headerSeparator: ", ",
-          timeslotHeight: 10,
+          timeslotHeight: 15,
           height: function($calendar){
                 calHeight = $(window).height() * 0.3 + 40;
                 return calHeight;
@@ -85,6 +85,19 @@
           },
           data:'<%= trips_path :json %>'
       });
+
+
+      // add time picker functionality
+      // http://trentrichardson.com/examples/timepicker/
+      $('#trip_pickup_time, #trip_appointment_time').datetimepicker({
+      	ampm: false,
+      	hourMin: 8,
+      	hourMax: 18,
+    		hourGrid: 3,
+       	minuteGrid: 15,
+    		timeFormat: 'hh:mm:ss',
+  			dateFormat: 'yy-mm-dd'    		
+      })
 
 
       // stubbing in address dialog functionality

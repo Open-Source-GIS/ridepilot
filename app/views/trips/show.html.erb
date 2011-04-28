@@ -1,5 +1,99 @@
-<p id="notice"><%= notice %></p>
+<div id="page-header">
+  <h1>Trip</h1>
+</div>
 
+<p class="profile-actions selfclear">
+  <%= link_to 'Edit', edit_trip_path(@trip), :class=>'edit' %>
+</p>
 
-<%= link_to 'Edit', edit_trip_path(@trip) %> |
-<%= link_to 'Back', trips_path %>
+<div class="trip-profile selfclear">
+
+  <dl>
+    <dt>Customer:</dt>
+    <dd><%= @trip.customer.name %></dd>
+
+    <dt>Pickup Time:</dt>
+    <dd><%= @trip.pickup_time %></dd>
+
+    <dt>Appointment Time:</dt>
+    <dd><%= @trip.appointment_time %></dd>
+
+    <dt>Repeats:</dt>
+    <dd>
+      <% if @trip.repeating_trip %>
+        M? T? W? R? F? --------------- TODO: FIX ME
+        every X week(s) -------------- TODO: FIX ME
+      <% else %>
+        No
+      <% end %>
+    </dd>
+
+    <dt>Pickup Address:</dt>
+    <dd>TODO: FIX ME</dd>
+
+    <dt>Dropoff Address:</dt>
+    <dd>TODO: FIX ME</dd>
+
+    <dt>Phone:</dt>
+    <dd><%= @trip.customer.phone_number_1 %></dd>
+
+    <dt>Alt. Phone:</dt>
+    <dd><%= @trip.customer.phone_number_2 %></dd>
+  </dl>
+
+  <dl>
+    <dt>Trip Purpose:</dt>
+    <dd><%= @trip_purposes %></dd>
+
+    <dt>Passengers:</dt>
+    <dd>TODO: FIX ME</dd>
+
+    <dt>Vehicle:</dt>
+    <dd>TODO: FIX ME</dd>
+
+    <dt>Customer Private Notes:</dt>
+    <dd>
+      <div class="notes">
+        TODO: FIX ME
+      </div>
+    </dd>
+  </dl>
+
+  <dl>
+    <dt>Result:</dt>
+    <dd><%= @trip.trip_result %></dd>
+
+    <dt>Donation:</dt>
+    <dd><%= @trip.donation %></dd>
+
+    <dt>Funding Source:</dt>
+    <dd>TODO: FIX ME</dd>
+
+    <dt>Mobility Req.:</dt>
+    <dd>TODO: FIX ME</dd>
+
+    <dt>Mobility Notes:</dt>
+    <dd>
+      <div class="notes">
+        TODO: FIX ME
+      </div>
+    </dd>
+  </dl>
+
+  <dl>
+    <dt>Trip Notes:</dt>
+    <dd>
+      <div class="notes">
+        TODO: FIX ME
+      </div>
+    </dd>
+
+    <dt>Called Back:</dt>
+    <dd><%= @trip.called_back_at %>---TODO: FIX ME</dd>
+  </dl>
+
+</div>
+
+<hr />
+
+<%= link_to 'Back', trips_path, :class=>'action-bttn' %>
