@@ -2,6 +2,8 @@ class Trip < ActiveRecord::Base
   belongs_to :provider
   belongs_to :run
   belongs_to :customer
+  belongs_to :funding_source
+  belongs_to :mobility
   belongs_to :pickup_address, :class_name=>"Address"
   belongs_to :dropoff_address, :class_name=>"Address"
   belongs_to :called_back_by, :class_name=>"User"
@@ -77,6 +79,7 @@ class Trip < ActiveRecord::Base
           else
             run = previous_run
             previous_run.scheduled_end_time = run.appointment_time
+            previous_run.save!
           end
         end
       else
@@ -87,6 +90,7 @@ class Trip < ActiveRecord::Base
           else
             run = next_run
             next_run.scheduled_start_time = run.pickup_time
+            next_run.save!
           end
         else
           #no overlap, create a new run
@@ -136,7 +140,7 @@ class Trip < ActiveRecord::Base
     before.end_odometer = after.end_odometer
     before.save!
     for trip in after.runs
-      trip. run = before
+      trip.run = before
     end
     after.destroy
     return before
