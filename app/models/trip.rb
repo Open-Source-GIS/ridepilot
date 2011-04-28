@@ -53,6 +53,7 @@ class Trip < ActiveRecord::Base
     #when the trip is saved, we need to find or create a run for it.
     #this will depend on the driver and vehicle.  
     run = Run.find(:first, :conditions=>["scheduled_start_time <= ? and scheduled_end_time >= ? and vehicle_id=? and provider_id=?", pickup_time, appointment_time, vehicle_id, provider_id])
+
     if run.nil?
       #find the next/previous runs for this vehicle and, if necessary,
       #split or change times on them
@@ -109,7 +110,9 @@ class Trip < ActiveRecord::Base
     if first_trip.scheduled_start_time > appointment_time
       #yes, we can
       next_run.scheduled_start_time = appointment_time
+      next_run.save!
       previous_run.scheduled_end_time = appointment_time
+      previous_run.save!
       run = previous_run
     else
       #no, the second run is fixed.  Can we push the end of the
@@ -118,7 +121,9 @@ class Trip < ActiveRecord::Base
       if last_trip.scheduled_end_time <= pickup_time
         #yes, we can
         previous_run.scheduled_end_time = pickup_time
+        previous_run.save!
         next_run.scheduled_start_time = appointment_time
+        next_run.save!
         run = next_run
       else
         return false
@@ -129,15 +134,16 @@ class Trip < ActiveRecord::Base
   def unify_runs(before, after)
     before.scheduled_end_time = after.scheduled_end_time
     before.end_odometer = after.end_odometer
-
+    before.save!
     for trip in after.runs
       trip. run = before
     end
+    after.destroy
     return before
   end
 
   def make_run
-    return Run.create ({
+    the_run = Run.create ({
                       :provider_id=>provider_id,
                       :date => pickup_time.to_date,
                       :scheduled_start_time=>DateTime.new(pickup_time.year,
@@ -153,6 +159,7 @@ class Trip < ActiveRecord::Base
                       :vehicle_id=>vehicle_id,
                       :complete=>false,
                       :paid=>true})
+    return the_run
   end
 
 end
