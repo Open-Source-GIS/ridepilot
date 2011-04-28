@@ -3,10 +3,12 @@
 </div>
 
 <%= form_for @query, :url=>url_for(:action=>:service_summary), :html=>{:method=>:get} do |f| %>
-  <p>
-    <%= f.date_select :start_date, :discard_day=>true %>
-    <%= f.submit "Report" %>
-  </p>
+  <fieldset>
+    <p>
+      <%= f.date_select :start_date, :discard_day=>true %>
+      <%= f.submit "Report" %>
+    </p>
+  </fieldset>
 <% end %>
 
 

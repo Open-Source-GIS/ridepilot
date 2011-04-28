@@ -445,6 +445,13 @@ fieldset {
     -moz-border-radius: 5px;
     border-radius: 5px;
 }
+fieldset legend {
+    background: #e5f2ff;
+    padding: 5px 10px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
 fieldset.new-trip {
     -webkit-border-top-right-radius: 0;
     -webkit-border-top-left-radius: 0;
@@ -715,8 +722,7 @@ a.delete,
 a.new-maintenance,
 a.edit-maintenance,
 a.edit-driver,
-a.edit-vehicle,
-a.new-report {
+a.edit-vehicle {
     padding: 5px 0 5px 20px;
     text-decoration: none;
     font-size: 11px;
@@ -744,9 +750,6 @@ a.edit-driver {
 a.edit-vehicle {
     background: url(images/pencil.png) left center no-repeat scroll;
 }
-a.new-report {
-    background: url(images/report--plus.png) left center no-repeat scroll;
-}
 a.delete:hover,
 a.delete:active {
     color: #ff4d88;
@@ -756,9 +759,7 @@ a.new-trip:active,
 a.edit:hover,
 a.edit:active,
 a.delete:hover,
-a.delete:active,
-a.new-report:hover,
-a.new-report:active {
+a.delete:active {
     text-decoration: underline;
 }
 a.cancel {
@@ -798,21 +799,24 @@ p.activated-date .separator {
 
 div.customer-profile,
 div.vehicle-profile,
-div.trip-profile {
+div.trip-profile,
+div.report {
     border-top: 1px solid #bbb;
     padding: 20px 0 0;
     margin: 0 0 20px;
 }
 div.customer-profile dl,
 div.vehicle-profile dl,
-div.trip-profile dl {
+div.trip-profile dl,
+div.report dl {
     float: left;
     width: 33%;
     margin: 0;
 }
 div.customer-profile dt,
 div.vehicle-profile dt,
-div.trip-profile dt {
+div.trip-profile dt,
+div.report dt {
     font-weight: bold;
     float: left;
     width: 30%;
@@ -821,7 +825,8 @@ div.trip-profile dt {
 }
 div.customer-profile dd,
 div.vehicle-profile dd,
-div.trip-profile dd {
+div.trip-profile dd,
+div.report dd {
     margin-bottom: 15px;
     float: left;
     width: 60%;
@@ -996,4 +1001,7 @@ body.providers a.new-vehicle {
 }
 body.providers a.new-provider {
     background: #eee url(images/plus.png) 0.8em center no-repeat scroll;
+}
+body.monthlies a.new-report {
+    background: #eee url(images/report--plus.png) 0.8em center no-repeat scroll;
 }

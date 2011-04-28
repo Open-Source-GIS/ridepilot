@@ -1,4 +1,6 @@
-<h2 class="section-header">Monthly Reports</h2>
+<div id="page-header">
+  <h1>Reports: Monthly</h1>
+</div>
 
 <% if @monthlies.size == 0 %>
   <p>No monthly reports yet.</p>
@@ -33,5 +35,6 @@
 <% end %>
 
 <% if can? :edit, Monthly %>
-  <%= link_to "Create Monthly Report", new_monthly_path, :class=>'new-report' %>
+<hr />
+<p><%= link_to "Create Monthly Report", new_monthly_path, :class=>'action-bttn new-report' %></p>
 <% end %>

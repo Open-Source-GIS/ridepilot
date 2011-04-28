@@ -1,22 +1,47 @@
 <%= form_for @monthly do |f| %>
-<%= f.label :start_date %><br/>
-<%= f.text_field :start_date %><br/>
-<br/>
-<%= f.label :end_date %><br/>
-<%= f.text_field :end_date %><br/>
-<br/>
-<%= f.label :volunteer_escort_hours %><br/>
-<%= f.text_field :volunteer_escort_hours %><br/>
-<br/>
-<%= f.label :volunteer_admin_hours %><br/>
-<%= f.text_field :volunteer_admin_hours %><br/>
-<br/>
-<%= f.label :complaints %><br/>
-<%= f.text_field :complaints %><br/>
-<br/>
-<%= f.label :compliments %><br/>
-<%= f.text_field :compliments %><br/>
-<br/>
 
-<%= f.submit %>
+  <fieldset>
+
+    <ol class="section first">
+      <li>
+        <%= f.label :start_date %>
+        <%= f.text_field :start_date %>    
+      </li>
+
+      <li>
+        <%= f.label :end_date %>
+        <%= f.text_field :end_date %>
+      </li>
+    </ol>
+
+    <ol class="section second">
+      <li>
+        <%= f.label :volunteer_escort_hours %>
+        <%= f.text_field :volunteer_escort_hours %>
+      </li>
+
+      <li>
+        <%= f.label :volunteer_admin_hours %>
+        <%= f.text_field :volunteer_admin_hours %>
+      </li>
+    </ol>
+
+    <ol class="section third">
+      <li>
+        <%= f.label :complaints %>
+        <%= f.text_field :complaints %>
+      </li>
+
+      <li>
+        <%= f.label :compliments %>
+        <%= f.text_field :compliments %>
+      </li>
+    </ol>
+    
+    <div class="actions">    
+      <%= f.submit %>
+    </div>
+
+  </fieldset>
+
 <% end %> 

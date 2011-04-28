@@ -1,27 +1,65 @@
+<div id="page-header">
+  <h1>Vehicle Report: <%= @vehicle.name %></h1>
+</div>
+
 <%= render :partial=>"vehicle_select" %>
-<br/>
-Vehicle: <%= @vehicle.name %><br/>
-Year / Make / Model: <%= @vehicle.year %> <%= @vehicle.make %> <%= @vehicle.model %><br/>
-License Plate: <%= @vehicle.license_plate %><br/>
-Parked or Garaged Location: <%= @vehicle.garaged_location %><br/>
 
+<div class="report selfclear">
 
-Total Hours in Operation: <%= @total_hours %><br/>
-Total Rides this month: <%= @total_rides %><br/>
-Average rides per hour: 
-<% if @total_hours == 0 %>
- 0
-<% else %>
- <%= @total_rides / @total_hours  %>
-<% end %>
-<br/>
-Beginning odometer: <%= @beginning_odometer  %><br/>
-Ending odometer: <%= @ending_odometer  %><br/>
-Total Mileage: <%= @beginning_odometer - @ending_odometer %><br/>
+<dl>
+  <dt>Vehicle:</dt> 
+  <dd><%= @vehicle.name %></dd>
 
-<br/>
-Repairs not covered by Preventive Maintenance Reimbursement Program:<br/>
+  <dt>Year / Make / Model:</dt> 
+  <dd><%= @vehicle.year %> <%= @vehicle.make %> <%= @vehicle.model %></dd>
+
+  <dt>License Plate:</dt> 
+  <dd><%= @vehicle.license_plate %></dd>
+
+  <dt>Parked/Garaged Location:</dt> 
+  <dd><%= @vehicle.garaged_location %></dd>
+</dl>
+
+<dl>
+  <dt>Total Hours in Operation:</dt>
+  <dd><%= @total_hours %></dd>
+
+  <dt>Total Rides this month:</dt>
+  <dd><%= @total_rides %></dd>
+
+  <dt>Average rides per hour:</dt>
+  <dd>
+    <% if @total_hours == 0 %>
+     0
+    <% else %>
+     <%= @total_rides / @total_hours  %>
+    <% end %>
+  </dd>
+</dl>
+
+<dl>
+  <dt>Beginning odometer:</dt>
+  <dd><%= @beginning_odometer %></dd>
+
+  <dt>Ending odometer:</dt>
+  <dd><%= @ending_odometer %></dd>
+
+  <dt>Total Mileage:</dt>
+  <dd><%= @beginning_odometer - @ending_odometer %></dd>
+</dl>
+
+</div>
+
+<hr />
+
+<h2 class="section-header">Repairs not covered by Preventive Maintenance Reimbursement Program</h2>
 <%= render :partial=>"event_table", :locals=>{:events => @noncoverered_events} %>
-<br/>
-Scheduled maintenance covered under the Preventive Maintenance Reimbursement Program<br/>
+
+<hr />
+
+<h2 class="section-header">Scheduled maintenance covered under the Preventive Maintenance Reimbursement Program</h2>
 <%= render :partial=>"event_table", :locals=>{:events => @coverered_events} %>
+
+<hr />
+
+<%= link_to 'Back to Reports', reports_path, :class=>'action-bttn' %>

@@ -2,11 +2,13 @@
   <h1>Reports: Cab Log</h1>
 </div>
 
-<%= form_for @query, :url=>url_for(:action=>:donations), :html=>{:method=>:get} do |f| %>
-
-<%= f.date_select  :start_date, :discard_day=>true %><br/>
-
-<%= f.submit "Report" %>
+<%= form_for @query, :url=>url_for(:action=>:cab), :html=>{:method=>:get} do |f| %>
+  <fieldset>
+    <p>
+      <%= f.date_select  :start_date, :discard_day=>true %>
+      <%= f.submit "Report" %>
+    </p>
+  </fieldset>
 <% end %>
 
 <table>
