@@ -797,19 +797,22 @@ p.activated-date .separator {
 }
 
 div.customer-profile,
-div.vehicle-profile {
+div.vehicle-profile,
+div.trip-profile {
     border-top: 1px solid #bbb;
     padding: 20px 0 0;
     margin: 0 0 20px;
 }
 div.customer-profile dl,
-div.vehicle-profile dl {
+div.vehicle-profile dl,
+div.trip-profile dl {
     float: left;
     width: 33%;
     margin: 0;
 }
 div.customer-profile dt,
-div.vehicle-profile dt {
+div.vehicle-profile dt,
+div.trip-profile dt {
     font-weight: bold;
     float: left;
     width: 30%;
@@ -817,7 +820,8 @@ div.vehicle-profile dt {
     clear: both;
 }
 div.customer-profile dd,
-div.vehicle-profile dd {
+div.vehicle-profile dd,
+div.trip-profile dd {
     margin-bottom: 15px;
     float: left;
     width: 60%;
