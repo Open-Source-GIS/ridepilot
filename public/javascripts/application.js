@@ -20,5 +20,4 @@ $(document).ready(function() {
   $('#new_monthly #monthly_start_date, #new_monthly #monthly_end_date').datepicker({
 		dateFormat: 'yy-mm-dd'    		
   });
-
 });

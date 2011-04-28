@@ -21,18 +21,21 @@
     <dt>Repeats:</dt>
     <dd>
       <% if @trip.repeating_trip %>
-        M? T? W? R? F? --------------- TODO: FIX ME
-        every X week(s) -------------- TODO: FIX ME
+        <% repeating_trip = @trip.repeating_trip %>
+        <% attributes = repeating_trip.schedule_attributes %>
+        <% weekdays = collect_weekdays(attributes) %>
+        <%= (weekdays.map {|x| weekday_abbrev(x) }).join(", ") %>
+        every <%= attributes.interval %> week(s)
       <% else %>
         No
       <% end %>
     </dd>
 
     <dt>Pickup Address:</dt>
-    <dd>TODO: FIX ME</dd>
+    <dd><%= @trip.pickup_address.text %></dd>
 
     <dt>Dropoff Address:</dt>
-    <dd>TODO: FIX ME</dd>
+    <dd><%= @trip.dropoff_address.text %></dd>
 
     <dt>Phone:</dt>
     <dd><%= @trip.customer.phone_number_1 %></dd>
@@ -46,15 +49,15 @@
     <dd><%= @trip_purposes %></dd>
 
     <dt>Passengers:</dt>
-    <dd>TODO: FIX ME</dd>
+    <dd><%= @trip.group_size == 0 ? @trip.guest_count + @trip.attendant_count  : @trip.group_size %></dd>
 
     <dt>Vehicle:</dt>
-    <dd>TODO: FIX ME</dd>
+    <dd><%= @trip.run ? @trip.run.vehicle.name : 'cab' %></dd>
 
     <dt>Customer Private Notes:</dt>
     <dd>
       <div class="notes">
-        TODO: FIX ME
+        <%= @trip.customer.private_notes %>
       </div>
     </dd>
   </dl>
@@ -67,15 +70,15 @@
     <dd><%= @trip.donation %></dd>
 
     <dt>Funding Source:</dt>
-    <dd>TODO: FIX ME</dd>
+    <dd><%= @trip.funding_source ? @trip.funding_source.name : '' %></dd>
 
     <dt>Mobility Req.:</dt>
-    <dd>TODO: FIX ME</dd>
+    <dd><%= @trip.mobility.name %></dd>
 
     <dt>Mobility Notes:</dt>
     <dd>
       <div class="notes">
-        TODO: FIX ME
+        <%= @trip.customer.mobility_notes %>
       </div>
     </dd>
   </dl>
@@ -84,12 +87,12 @@
     <dt>Trip Notes:</dt>
     <dd>
       <div class="notes">
-        TODO: FIX ME
+        <%= @trip.notes %>
       </div>
     </dd>
 
     <dt>Called Back:</dt>
-    <dd><%= @trip.called_back_at %>---TODO: FIX ME</dd>
+    <dd><%= @trip.called_back_at ? @trip.called_back_at : 'not yet'%></dd>
   </dl>
 
 </div>
