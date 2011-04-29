@@ -4,14 +4,37 @@
 
 <%= link_to 'Cancel Editing', @customer, :class=>'cancel'  %>
 
-<%= render 'form' %>
-
 <%= form_for @customer, :url=>customer_inactivate_path(@customer), :html=>{:method=>:post} do |f| %>
 
-  <%= f.text_field :inactivated_reason %>
-  <%= f.submit "Inactivate" %>
+  <p class="activation-dates">
+    <% if @customer.inactivated_date %>
+
+      <% if @customer.activated_date %>
+        <strong>Activated:</strong> <%= @customer.activated_date %>
+      <% end %>
+
+      <span class="separator">|</span>
+
+      <strong>Inactivated:</strong> <%= @customer.inactivated_date %>
+
+    <% else %>
+
+      <% if @customer.activated_date %>
+        <strong>Activated:</strong> <%= @customer.activated_date %>
+      <% end %>
+
+      <span class="separator">|</span>
+
+      <%= f.label :inactivated_reason, "Inactivation Reason:" %>
+      <%= f.text_field :inactivated_reason %>
+      <%= f.submit "Inactivate" %>
+
+    <% end %>
+  </p>
 
 <% end %>
+
+<%= render 'form' %>
 
 <hr />
 

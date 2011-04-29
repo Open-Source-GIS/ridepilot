@@ -512,8 +512,8 @@ fieldset ol.section li input.full {
 fieldset ol.section li.passengers input {
     max-width: 3em;
 }
-fieldset ol.section li.time input {
-    max-width: 5em;
+fieldset ol.section li.timepicker input {
+    width: 10em;
 }
 fieldset ol.section li div {
     float: left;
@@ -695,6 +695,10 @@ body.index #calendar { margin: 0 0 20px; border-bottom: 1px solid #bbb; }
 .ui_tpicker_hour,
 .ui_tpicker_minute { font-size: 9px; }
   
+.ui-datepicker-trigger {
+    padding-left: 5px;
+    vertical-align: middle;
+}
 
 /*
  *
@@ -801,11 +805,15 @@ input.delete:active {
 p.profile-actions .edit {
     float: right;
 }
-p.profile-actions .separator,
-p.activated-date .separator {
+p.profile-actions .separator {
+    display: none;
+}
+p.activation-dates .separator {
     padding: 0 0.4em;
     color: #bbb;
-    display: none;
+}
+p.activation-dates label {
+    font-weight: bold;
 }
 
 div.customer-profile,

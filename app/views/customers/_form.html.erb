@@ -16,19 +16,6 @@
     <%= check_box_tag :ignore_dups %><br/>
   <% end %>
 
-  <p class="activated-date">
-  <% if @customer.activated_date %>
-    <strong>Created:</strong> <%= @customer.activated_date %> <span class="separator">|</span>
-  <% end %>
-  <% if @customer.inactivated_date %>
-    <strong>Inactivated:</strong> <%= @customer.inactivated_date %>
-  <% else %>
-    <% if @customer.activated_date %>
-      <strong>Active</strong>
-    <% end %>
-  <% end %>
-  </p>
-
   <fieldset class="new-customer">
 
     <ol class="section first">
@@ -105,10 +92,12 @@
         <%= f.text_area :public_notes %>
       </li>
 
+      <% if @customer.inactivated_date %>
       <li class="selfclear">
         <%= f.label :inactivated_reason, "Inactivated Reason:" %>
         <%= f.text_field :inactivated_reason %>
       </li>
+      <% end %>
     </ol>
 
     <div class="group">
