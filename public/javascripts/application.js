@@ -3,9 +3,20 @@
 
 $(document).ready(function() {
 
-
   $("tr:odd").addClass("odd");
 
+  // hide middle/last names for group customer
+  var updateGroupField = function() {
+    if ( $('input#customer_group').is(':checked') ){
+      $('li.middlename, li.lastname').hide();
+      $('li.firstname label').html("Group Name:");
+    } else {
+      $('li.middlename, li.lastname').show();
+      $('li.firstname label').html("First Name:");
+    }
+  };
+  updateGroupField();
+  $('input#customer_group').click(updateGroupField);
 
   // add time picker functionality
   // http://trentrichardson.com/examples/timepicker/
@@ -26,7 +37,6 @@ $(document).ready(function() {
   $('#new_monthly #monthly_start_date, #new_monthly #monthly_end_date').datepicker({
 		dateFormat: 'yy-mm-dd'    		
   });
-
 
   var ISODateFormatToDateObject = function(str) {
     if(str === null) {

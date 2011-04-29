@@ -18,18 +18,23 @@
 
   <fieldset class="new-customer">
 
+    <div class="group">
+      <%= f.check_box :group %>
+      <%= f.label :group, "Group" %>
+    </div>
+
     <ol class="section first">
-      <li class="selfclear">
+      <li class="selfclear firstname">
         <%= f.label :first_name, "First Name:" %>
         <%= f.text_field :first_name %>
       </li>
 
-      <li class="selfclear">
+      <li class="selfclear middlename">
         <%= f.label :middle_initial, "Middle Initial:" %>
         <%= f.text_field :middle_initial %>
       </li>
 
-      <li class="selfclear">
+      <li class="selfclear lastname">
         <%= f.label :last_name, "Last Name:" %>
         <%= f.text_field :last_name %>
       </li>
@@ -99,11 +104,6 @@
       </li>
       <% end %>
     </ol>
-
-    <div class="group">
-      <%= f.label :group, "Group:" %>
-      <%= f.check_box :group %> For groups, check the box and use only the first name field to hold the group name.
-    </div>
 
     <div class="actions">
       <%= f.submit %>
