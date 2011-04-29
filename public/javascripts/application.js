@@ -3,7 +3,9 @@
 
 $(document).ready(function() {
 
+
   $("tr:odd").addClass("odd");
+
 
   // add time picker functionality
   // http://trentrichardson.com/examples/timepicker/
@@ -12,7 +14,7 @@ $(document).ready(function() {
   	hourMin: 8,
   	hourMax: 18,
 		hourGrid: 3,
-    	minuteGrid: 15,
+  	minuteGrid: 15,
 		timeFormat: 'hh:mm:ss',
 		dateFormat: 'yy-mm-dd',
     showOn: "button",
