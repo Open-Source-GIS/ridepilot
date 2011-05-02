@@ -1,0 +1,67 @@
+/*
+ *
+ * Print Stylesheet
+ *
+ */
+
+/* Base Print Style Reset */
+* { background: transparent !important; color: #000 !important; text-shadow: none !important; 
+    -moz-box-shadow: none !important; -webkit-box-shadow: none !important; box-shadow: none !important;}
+a, a:visited { text-decoration: underline; color: blue !important; }
+a:after { content: " (" attr(href) ")"; } 
+abbr:after { content: " (" attr(title) ")"; }
+.ir a:after { content: ""; }  /* Don't show links for images */
+pre, blockquote { border: 1px solid #999; page-break-inside: avoid; }
+thead { display: table-header-group; } /* css-discuss.incutio.com/wiki/Printing_Tables */ 
+tr, img { page-break-inside: avoid; }
+@page { margin: 0.5cm; }
+p, h2, h3 { orphans: 3; widows: 3; }
+h2, h3{ page-break-after: avoid; }
+
+body {
+  font-family: "Helvetica Neue",Arial,Helvetica,sans-serif;
+  background: white;
+  font-size: 9pt;
+}
+
+/* hide stuff */
+#crossbar,
+#login-area,
+#subnav,
+#calendar,
+.action-bttn,
+form.customer-search { display: none; clear: both; }
+
+
+/* format stuff */
+#header {
+  margin: 0 auto 1em;
+}
+#header a {
+  text-decoration: none;
+}
+#main {
+  border-top: 1pt solid #000;
+}
+table {
+  border-collapse: collapse;
+}
+td, th {
+  border-collapse: collapse;
+  border: 1px solid #bbb;
+  padding: 0.5em;
+}
+
+dl { } 
+dt { 
+  float: left; 
+  clear: left; 
+  width: 30%; 
+  text-align: right; 
+  font-weight: bold; 
+  white-space: nowrap;
+  } 
+dd { 
+  margin: 0 0 0 32%; 
+  padding: 0 0 1em 0; 
+}

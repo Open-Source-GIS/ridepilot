@@ -84,16 +84,18 @@
       </li>
 
       <li class="selfclear passengers">
-        <%= f.label :guest_count, "Passengers:" %>
-        <ul>
-          <li>
-            <span class="nobreak"><%= f.text_field :guest_count %>&nbsp;Guests&nbsp;</span>
-            <span class="nobreak"><%= f.text_field :attendant_count %>&nbsp;Attendants</span>
-          </li>
-          <li>
-            <input type="checkbox" name="group" value="Group" /> Group
-          </li>
-        </ul>
+        <% if @customer.group %>
+          <%= f.label :group_size, "Group Size:" %>
+          <%= f.text_field :group_size %>
+        <% else %>
+          <%= f.label :guest_count, "Passengers:" %>
+          <ul>
+            <li>
+              <span class="nobreak"><%= f.text_field :guest_count %>&nbsp;Guests&nbsp;</span>
+              <span class="nobreak"><%= f.text_field :attendant_count %>&nbsp;Attendants</span>
+            </li>
+          </ul>
+        <% end %>
       </li>
 
       <li class="selfclear">
