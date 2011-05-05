@@ -11,14 +11,14 @@ require 'bundler/capistrano'
 
 #-----Basic Recipe-----
 set :application, "RidePilot"
-set :repository,  "http://github.com/chrispatterson/ridepilot.git"
+set :repository,  "http://github.com/openplans/ridepilot.git"
 set :deploy_to, "/home/deployer/rails/ridepilot"
 
 set :scm, :git
 set :branch, "master"
 set :deploy_via, :remote_cache
 
-set :user, "deployer"  # The server's user for deploys
+set :user, "deployer"  # The server's user for deployments
 set :use_sudo, false
 
 role :web, "184.154.79.122"
