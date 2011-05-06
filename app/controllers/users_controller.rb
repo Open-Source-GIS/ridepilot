@@ -59,7 +59,7 @@ class UsersController < Devise::SessionsController
     @user = User.new params[:user]
     @user.current_provider_id = 1
     @user.save!
-    @role = Role.new ({:user_id=>@user.id, :provider_id=>1, :admin=>true})
+    @role = Role.new ({:user_id=>@user.id, :provider_id=>1, :level=>100})
     @role.save
 
     flash[:notice] = "OK, now sign in"
