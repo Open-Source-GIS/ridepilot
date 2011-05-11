@@ -267,7 +267,7 @@ purpose
         @this_year_less_than_sixty += 1
       end
 
-      if counts_by_ethnicity.member? customer.ethnicity.nil?
+      if @counts_by_ethnicity.member? customer.ethnicity.nil?
         @counts_by_ethnicity[customer.ethnicity] = {'month' => 0, 'year' => 0}
       end
       @counts_by_ethnicity[customer.ethnicity]['month'] += 1
@@ -284,7 +284,7 @@ purpose
         @this_year_less_than_sixty += 1
       end
 
-      if counts_by_ethnicity.member? customer.ethnicity.nil?
+      if @counts_by_ethnicity.member? customer.ethnicity.nil?
         @counts_by_ethnicity[customer.ethnicity] = {'month' => 0, 'year' => 0}
       end
       @counts_by_ethnicity[customer.ethnicity]['year'] += 1
