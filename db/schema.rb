@@ -10,49 +10,64 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110427165144) do
+ActiveRecord::Schema.define(:version => 20110517195041) do
 
   create_table "addresses", :force => true do |t|
-    t.string  "name"
-    t.string  "building_name"
-    t.string  "address"
-    t.string  "city"
-    t.string  "state"
-    t.string  "zip"
-    t.boolean "in_district"
-    t.point   "the_geom",      :limit => nil, :srid => 4326
-    t.integer "provider_id"
+    t.string   "name"
+    t.string   "building_name"
+    t.string   "address"
+    t.string   "city"
+    t.string   "state"
+    t.string   "zip"
+    t.boolean  "in_district"
+    t.point    "the_geom",      :limit => nil,                :srid => 4326
+    t.integer  "provider_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "created_by_id"
+    t.integer  "updated_by_id"
+    t.integer  "lock_version",                 :default => 0
   end
 
   add_index "addresses", ["the_geom"], :name => "index_addresses_on_the_geom", :spatial => true
 
   create_table "customers", :force => true do |t|
-    t.string  "first_name"
-    t.string  "middle_initial"
-    t.string  "last_name"
-    t.string  "phone_number_1"
-    t.string  "phone_number_2"
-    t.integer "address_id"
-    t.string  "email"
-    t.date    "activated_date"
-    t.date    "inactivated_date"
-    t.string  "inactivated_reason"
-    t.date    "birth_date"
-    t.integer "mobility_id"
-    t.text    "mobility_notes"
-    t.string  "ethnicity"
-    t.text    "emergency_contact_notes"
-    t.text    "private_notes"
-    t.text    "public_notes"
-    t.integer "provider_id"
-    t.boolean "group",                   :default => false
+    t.string   "first_name"
+    t.string   "middle_initial"
+    t.string   "last_name"
+    t.string   "phone_number_1"
+    t.string   "phone_number_2"
+    t.integer  "address_id"
+    t.string   "email"
+    t.date     "activated_date"
+    t.date     "inactivated_date"
+    t.string   "inactivated_reason"
+    t.date     "birth_date"
+    t.integer  "mobility_id"
+    t.text     "mobility_notes"
+    t.string   "ethnicity"
+    t.text     "emergency_contact_notes"
+    t.text     "private_notes"
+    t.text     "public_notes"
+    t.integer  "provider_id"
+    t.boolean  "group",                   :default => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "created_by_id"
+    t.integer  "updated_by_id"
+    t.integer  "lock_version",            :default => 0
   end
 
   create_table "drivers", :force => true do |t|
-    t.boolean "active"
-    t.boolean "paid"
-    t.integer "provider_id"
-    t.string  "name"
+    t.boolean  "active"
+    t.boolean  "paid"
+    t.integer  "provider_id"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "created_by_id"
+    t.integer  "updated_by_id"
+    t.integer  "lock_version",  :default => 0
   end
 
   create_table "funding_source_visibilities", :force => true do |t|
@@ -69,13 +84,18 @@ ActiveRecord::Schema.define(:version => 20110427165144) do
   end
 
   create_table "monthlies", :force => true do |t|
-    t.date    "start_date"
-    t.date    "end_date"
-    t.integer "volunteer_escort_hours"
-    t.integer "volunteer_admin_hours"
-    t.integer "provider_id"
-    t.integer "complaints"
-    t.integer "compliments"
+    t.date     "start_date"
+    t.date     "end_date"
+    t.integer  "volunteer_escort_hours"
+    t.integer  "volunteer_admin_hours"
+    t.integer  "provider_id"
+    t.integer  "complaints"
+    t.integer  "compliments"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "created_by_id"
+    t.integer  "updated_by_id"
+    t.integer  "lock_version",           :default => 0
   end
 
   create_table "providers", :force => true do |t|
@@ -108,6 +128,11 @@ ActiveRecord::Schema.define(:version => 20110427165144) do
     t.integer  "funding_source_id"
     t.string   "trip_purpose"
     t.text     "notes"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "created_by_id"
+    t.integer  "updated_by_id"
+    t.integer  "lock_version",       :default => 0
   end
 
   create_table "roles", :force => true do |t|
@@ -131,6 +156,11 @@ ActiveRecord::Schema.define(:version => 20110427165144) do
     t.integer  "provider_id"
     t.datetime "actual_start_time"
     t.datetime "actual_end_time"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "created_by_id"
+    t.integer  "updated_by_id"
+    t.integer  "lock_version",             :default => 0
   end
 
   add_index "runs", ["provider_id", "date"], :name => "index_runs_on_provider_id_and_date"
@@ -167,6 +197,11 @@ ActiveRecord::Schema.define(:version => 20110427165144) do
     t.text     "guests"
     t.boolean  "in_district"
     t.integer  "called_back_by_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "created_by_id"
+    t.integer  "updated_by_id"
+    t.integer  "lock_version",                                      :default => 0
   end
 
   add_index "trips", ["provider_id", "appointment_time"], :name => "index_trips_on_provider_id_and_appointment_time"
@@ -193,28 +228,38 @@ ActiveRecord::Schema.define(:version => 20110427165144) do
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
   create_table "vehicle_maintenance_events", :force => true do |t|
-    t.integer "vehicle_id",                                        :null => false
-    t.integer "provider_id",                                       :null => false
-    t.boolean "reimbursable"
-    t.date    "service_date"
-    t.date    "invoice_date"
-    t.text    "services_performed"
-    t.decimal "odometer",           :precision => 10, :scale => 1
-    t.string  "vendor_name"
-    t.string  "invoice_number"
-    t.decimal "invoice_amount",     :precision => 10, :scale => 2
+    t.integer  "vehicle_id",                                                       :null => false
+    t.integer  "provider_id",                                                      :null => false
+    t.boolean  "reimbursable"
+    t.date     "service_date"
+    t.date     "invoice_date"
+    t.text     "services_performed"
+    t.decimal  "odometer",           :precision => 10, :scale => 1
+    t.string   "vendor_name"
+    t.string   "invoice_number"
+    t.decimal  "invoice_amount",     :precision => 10, :scale => 2
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "created_by_id"
+    t.integer  "updated_by_id"
+    t.integer  "lock_version",                                      :default => 0
   end
 
   create_table "vehicles", :force => true do |t|
-    t.string  "name"
-    t.integer "year"
-    t.string  "make"
-    t.string  "model"
-    t.string  "license_plate"
-    t.string  "vin"
-    t.string  "garaged_location"
-    t.integer "provider_id"
-    t.boolean "active",           :default => true
+    t.string   "name"
+    t.integer  "year"
+    t.string   "make"
+    t.string   "model"
+    t.string   "license_plate"
+    t.string   "vin"
+    t.string   "garaged_location"
+    t.integer  "provider_id"
+    t.boolean  "active",           :default => true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "created_by_id"
+    t.integer  "updated_by_id"
+    t.integer  "lock_version",     :default => 0
   end
 
 end

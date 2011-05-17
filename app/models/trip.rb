@@ -8,6 +8,8 @@ class Trip < ActiveRecord::Base
   belongs_to :dropoff_address, :class_name=>"Address"
   belongs_to :called_back_by, :class_name=>"User"
   belongs_to :repeating_trip
+  belongs_to :created_by, :foreign_key => :created_by_id, :class_name=>'User'
+  belongs_to :updated_by, :foreign_key => :updated_by_id, :class_name=>'User'
   default_scope :order => 'pickup_time'
 
   serialize :guests
@@ -23,6 +25,8 @@ class Trip < ActiveRecord::Base
   validates_associated :dropoff_address
 
   accepts_nested_attributes_for :customer
+
+  stampable :creator_attribute => :created_by_id, :updater_attribute => :updated_by_id
 
   def complete
     return trip_result == 'COMP'
