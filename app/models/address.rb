@@ -9,7 +9,7 @@ class Address < ActiveRecord::Base
   validates_length_of :address, :minimum=>5
   validates_length_of :city, :minimum=>2
   validates_length_of :state, :is=>2
-  validates_length_of :zip, :is=>5
+  validates_length_of :zip, :is=>5, :allow_nil => true
 
   before_validation :compute_in_trimet_district
 
