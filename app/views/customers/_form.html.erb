@@ -61,7 +61,7 @@
 
       <li class="selfclear">
         <%= f.label :ethnicity, "Ethnicity:" %>
-        <%= f.text_field :ethnicity %>
+	<%= f.select :ethnicity, @ethnicities %>
       </li>
     </ol>
 

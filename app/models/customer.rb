@@ -2,6 +2,8 @@ class Customer < ActiveRecord::Base
   belongs_to :provider
   belongs_to :address
   belongs_to :mobility
+  belongs_to :created_by, :foreign_key => :created_by_id, :class_name=>'User'
+  belongs_to :updated_by, :foreign_key => :updated_by_id, :class_name=>'User'
   accepts_nested_attributes_for :address
 
   normalize_attribute :first_name, :with=> [:squish, :titleize]
@@ -9,6 +11,8 @@ class Customer < ActiveRecord::Base
   normalize_attribute :middle_initial, :with=> [:squish, :upcase]
 
   default_scope :order => 'last_name, first_name, middle_initial'
+
+  stampable :creator_attribute => :created_by_id, :updater_attribute => :updated_by_id
 
   def name
     if group

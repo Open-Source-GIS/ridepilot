@@ -6,9 +6,13 @@ class RepeatingTrip < ActiveRecord::Base
   belongs_to :pickup_address, :class_name=>"Address"
   belongs_to :dropoff_address, :class_name=>"Address"
   belongs_to :repeating_trip
+  belongs_to :created_by, :foreign_key => :created_by_id, :class_name=>'User'
+  belongs_to :updated_by, :foreign_key => :updated_by_id, :class_name=>'User'
 
   validates_date :pickup_time
   validates_date :appointment_time
+
+  stampable :creator_attribute => :created_by_id, :updater_attribute => :updated_by_id
 
   #Create concrete trips from all repeating trips.  This method
   #is idempotent.

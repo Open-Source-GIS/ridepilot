@@ -137,6 +137,7 @@ regexp_replace(phone_number_2, '[^0-9]', '') = ?
     @customer = Customer.new
     @customer.address ||= Address.new
     @mobilities = Mobility.all
+    @ethnicities = ETHNICITIES
 
     respond_to do |format|
       format.html # new.html.erb
@@ -147,6 +148,7 @@ regexp_replace(phone_number_2, '[^0-9]', '') = ?
   def edit
     @customer = Customer.find(params[:id])
     @mobilities = Mobility.all
+    @ethnicities = ETHNICITIES
   end
 
   def create
@@ -186,6 +188,7 @@ first_name, first_name, first_name, first_name,
         flash[:alert] = "There is already a customer with a similar name or the same email address: <a href=\"#{url_for :action=>:show, :id=>dup.id}\">#{dup.name}</a> (dob #{dup.birth_date}).  If this is truly a different customer, check the 'ignore duplicates' box to continue creating this customer.".html_safe
         @dup = true
         @mobilities = Mobility.all
+        @ethnicities = ETHNICITIES
         return render :action=>"new"
       end
     end

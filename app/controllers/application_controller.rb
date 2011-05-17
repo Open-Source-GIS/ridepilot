@@ -1,8 +1,8 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
   before_filter :authenticate_user!
-
   before_filter :get_providers
+  include Userstamp
 
   def get_providers
     if !current_user
