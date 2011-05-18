@@ -11,5 +11,8 @@ def clean_address(addr)
   addr = addr.gsub(/ e /i,' E ')
   addr = addr.gsub(/ w /i,' W ')
   addr = addr.gsub(/ n /i,' N ')
+  if addr == 'NWPP' || addr == '1430 SW Braodway'
+    addr = '1430 SW Broadway' 
+  end
   addr
 end
