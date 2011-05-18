@@ -20,8 +20,8 @@ ActiveRecord::Schema.define(:version => 20110517195041) do
     t.string   "state"
     t.string   "zip"
     t.boolean  "in_district"
-    t.point    "the_geom",      :limit => nil,                :srid => 4326
     t.integer  "provider_id"
+    t.point    "the_geom",      :limit => nil,                :srid => 4326
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "created_by_id"
