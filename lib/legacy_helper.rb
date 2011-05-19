@@ -14,5 +14,14 @@ def clean_address(addr)
   if addr == 'NWPP' || addr == '1430 SW Braodway'
     addr = '1430 SW Broadway' 
   end
+  addr = addr + ("_" * (5 - addr.size)) if addr.size < 5
   addr
+end
+
+# Format in: 10/13/1998 14:30:00
+def fix_up_date(x)
+  d, ti = x.split(' ')
+  m, d, y = d.split('/').map{|i| if i.length == 1 then "0#{i}" else i end}
+  #puts m, d, y
+  return "#{y}-#{m}-#{d} #{ti}"
 end
