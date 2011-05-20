@@ -4,8 +4,10 @@ require 'legacy_helper'
 ETHNICITIES = {'W' => 'Caucasian','B' => 'African American','A' => 'Asian','I' => 'Asian Indian','C' => 'Chinese','F' => 'Filipino','J' => 'Japanese','K' => 'Korean','V' => 'Vietnamese','P' => 'Pacific Islander','N' => 'American Indian/Alaska Native','X' => 'Native Hawaiian','G' => 'Guamanian or Chamorrow','S' => 'Samoan','R' => 'Russian','U' => 'Unknown','R' => 'Refused','O' => 'Other'}
 TRIP_REASONS = {'MED' => 'Medical','LIFE' => 'Life-sustaining Medical','PER' => 'Personal/Support Services','SHOP' => 'Shopping','WORK' => 'School/Work','VOL' => 'Volunteer Work','REC' => 'Recreation','NUT' => 'Nutrition'}
 
+p = Provider.find_or_create_by_name('Northwest Pilot Project')
+
 puts 'Addresses:'
-CSV.foreach(File.join(Rails.root,'tblDestination.txt'),headers: true) do |r|
+CSV.foreach(File.join(Rails.root,'db','legacy','tblDestination.txt'),headers: true) do |r|
   a = Address.find_or_initialize_by_id(r['DestinationID'])
   a.address = clean_address(r['Location'])
   a.address = '_____' if a.address.nil?
@@ -13,13 +15,14 @@ CSV.foreach(File.join(Rails.root,'tblDestination.txt'),headers: true) do |r|
   a.city = 'Portland'
   a.state = 'OR'
   a.zip = '97201' if a.address == '1430 SW Broadway'
+  a.provider = p
   a.save! 
   puts a.id if a.id.modulo(100) == 0
 end
 ActiveRecord::Base.connection.execute("SELECT setval('addresses_id_seq',#{Address.maximum(:id)})")
 
 puts 'Customers:'
-CSV.foreach(File.join(Rails.root,'tblClient.txt'),headers: true) do |r|
+CSV.foreach(File.join(Rails.root,'db','legacy','tblClient.txt'),headers: true) do |r|
   unless r['FirstName'].blank? && r['LastName'].blank?
     c = Customer.find_or_initialize_by_id(r['ClientID'])
     c.first_name = r['FirstName']
@@ -30,6 +33,7 @@ CSV.foreach(File.join(Rails.root,'tblClient.txt'),headers: true) do |r|
     c.updated_at = r['LastChanged']
     c.inactivated_date = Date.today if r['Gone']=1 
     c.private_notes = r['Comment']
+    c.provider = p
     if !r['Address'].blank?
       # puts "[#{r['Address']}]"
       addr = clean_address(r['Address'])
@@ -57,13 +61,32 @@ end
 ActiveRecord::Base.connection.execute("SELECT setval('customers_id_seq',#{Customer.maximum(:id)})")
 
 puts 'Trips:'
-CSV.foreach(File.join(Rails.root,'tblRide.txt'),headers: true) do |r|
+CSV.foreach(File.join(Rails.root,'db','legacy','tblRide.txt'),headers: true) do |r|
   t = Trip.find_or_initialize_by_id(r['RideID'])
   t.customer_id = r['ClientID']
   #puts r['Pickup'], r['Appointment']
   t.pickup_time = fix_up_date(r['Pickup'])
   t.appointment_time = fix_up_date(r['Appointment'])
-  #puts t.pickup_time, t.appointment_time
+  t.provider = p
+  
+  unless r['DriverCode'].blank? 
+    driver = Driver.find_or_initialize_by_name(r['DriverCode']) 
+    driver.provider = p
+    driver.save!
+  end
+  
+  if r['Cab'] = 0 
+    run = Run.find_or_initialize_by_date_and_driver_id(t.pickup_time.to_date, driver.nil? ? nil : driver.id)
+    run.scheduled_start_time = t.pickup_time if run.scheduled_start_time.nil? || run.scheduled_start_time > t.pickup_time
+    run.actual_start_time = t.pickup_time if run.actual_start_time.nil? || run.actual_start_time > t.pickup_time
+    run.scheduled_end_time = t.appointment_time if run.scheduled_end_time.nil? || run.scheduled_end_time < t.appointment_time
+    run.actual_end_time = t.appointment_time if run.actual_end_time.nil? || run.actual_end_time < t.appointment_time
+    run.provider = p
+    run.driver = driver
+    run.save!
+    t.run = run
+  end
+  
   t.trip_purpose = TRIP_REASONS[r['ReasonCode']]
   pu_addr = clean_address(r['PickupAt'])
   a = Address.find_or_initialize_by_address(pu_addr)
@@ -78,3 +101,4 @@ CSV.foreach(File.join(Rails.root,'tblRide.txt'),headers: true) do |r|
   puts t.id if t.id.modulo(100) == 0
 end
 ActiveRecord::Base.connection.execute("SELECT setval('trips_id_seq',#{Trip.maximum(:id)})")
+
