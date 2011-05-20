@@ -63,16 +63,17 @@ CSV.foreach(File.join(Rails.root,'tblRide.txt'),headers: true) do |r|
   #puts r['Pickup'], r['Appointment']
   t.pickup_time = fix_up_date(r['Pickup'])
   t.appointment_time = fix_up_date(r['Appointment'])
-  puts t.pickup_time, t.appointment_time
+  #puts t.pickup_time, t.appointment_time
   t.trip_purpose = TRIP_REASONS[r['ReasonCode']]
   pu_addr = clean_address(r['PickupAt'])
   a = Address.find_or_initialize_by_address(pu_addr)
-  a.city = 'Portland'
-  a.state = 'OR'
+  if a.new_record?
+    a.city = 'Portland'
+    a.state = 'OR'
+    a.save!
+  end
   t.pickup_address = a
   t.dropoff_address_id = r['DestinationID']
-  
-  
   t.save!
   puts t.id if t.id.modulo(100) == 0
 end
