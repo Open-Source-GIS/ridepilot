@@ -60,45 +60,49 @@ CSV.foreach(File.join(Rails.root,'db','legacy','tblClient.txt'),headers: true) d
 end
 ActiveRecord::Base.connection.execute("SELECT setval('customers_id_seq',#{Customer.maximum(:id)})")
 
+m = Mobility.find_by_name("Unknown")  
 puts 'Trips:'
 CSV.foreach(File.join(Rails.root,'db','legacy','tblRide.txt'),headers: true) do |r|
-  t = Trip.find_or_initialize_by_id(r['RideID'])
-  t.customer_id = r['ClientID']
-  #puts r['Pickup'], r['Appointment']
-  t.pickup_time = fix_up_date(r['Pickup'])
-  t.appointment_time = fix_up_date(r['Appointment'])
-  t.provider = p
-  
-  unless r['DriverCode'].blank? 
-    driver = Driver.find_or_initialize_by_name(r['DriverCode']) 
-    driver.provider = p
-    driver.save!
+  if Customer.exists?(r['ClientID'])
+    t = Trip.find_or_initialize_by_id(r['RideID'])
+    t.customer_id = r['ClientID']
+    #puts r['Pickup'], r['Appointment']
+    t.pickup_time = fix_up_date(r['Pickup'])
+    t.appointment_time = fix_up_date(r['Appointment'])
+    t.provider = p
+    t.mobility = m 
+
+    unless r['DriverCode'].blank? 
+      driver = Driver.find_or_initialize_by_name(r['DriverCode']) 
+      driver.provider = p
+      driver.save!
+    end
+    
+    if r['Cab'] = 0 
+      run = Run.find_or_initialize_by_date_and_driver_id(t.pickup_time.to_date, driver.nil? ? nil : driver.id)
+      run.scheduled_start_time = t.pickup_time if run.scheduled_start_time.nil? || run.scheduled_start_time > t.pickup_time
+      run.actual_start_time = t.pickup_time if run.actual_start_time.nil? || run.actual_start_time > t.pickup_time
+      run.scheduled_end_time = t.appointment_time if run.scheduled_end_time.nil? || run.scheduled_end_time < t.appointment_time
+      run.actual_end_time = t.appointment_time if run.actual_end_time.nil? || run.actual_end_time < t.appointment_time
+      run.provider = p
+      run.driver = driver
+      run.save!
+      t.run = run
+    end
+    
+    t.trip_purpose = TRIP_REASONS[r['ReasonCode']]
+    pu_addr = clean_address(r['PickupAt'])
+    a = Address.find_or_initialize_by_address(pu_addr)
+    if a.new_record?
+      a.city = 'Portland'
+      a.state = 'OR'
+      a.save!
+    end
+    t.pickup_address = a
+    t.dropoff_address_id = r['DestinationID']
+    t.save!
+    puts t.id if t.id.modulo(100) == 0
   end
-  
-  if r['Cab'] = 0 
-    run = Run.find_or_initialize_by_date_and_driver_id(t.pickup_time.to_date, driver.nil? ? nil : driver.id)
-    run.scheduled_start_time = t.pickup_time if run.scheduled_start_time.nil? || run.scheduled_start_time > t.pickup_time
-    run.actual_start_time = t.pickup_time if run.actual_start_time.nil? || run.actual_start_time > t.pickup_time
-    run.scheduled_end_time = t.appointment_time if run.scheduled_end_time.nil? || run.scheduled_end_time < t.appointment_time
-    run.actual_end_time = t.appointment_time if run.actual_end_time.nil? || run.actual_end_time < t.appointment_time
-    run.provider = p
-    run.driver = driver
-    run.save!
-    t.run = run
-  end
-  
-  t.trip_purpose = TRIP_REASONS[r['ReasonCode']]
-  pu_addr = clean_address(r['PickupAt'])
-  a = Address.find_or_initialize_by_address(pu_addr)
-  if a.new_record?
-    a.city = 'Portland'
-    a.state = 'OR'
-    a.save!
-  end
-  t.pickup_address = a
-  t.dropoff_address_id = r['DestinationID']
-  t.save!
-  puts t.id if t.id.modulo(100) == 0
 end
 ActiveRecord::Base.connection.execute("SELECT setval('trips_id_seq',#{Trip.maximum(:id)})")
 
