@@ -18,7 +18,7 @@ class Customer < ActiveRecord::Base
     if group
       return "(Group) %s" % first_name
     end
-    if middle_initial.size > 0
+    if middle_initial.present?
       return "%s %s. %s" % [first_name, middle_initial, last_name]
     else
       return "%s %s " % [first_name, last_name]
