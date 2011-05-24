@@ -52,7 +52,7 @@
     <dd><%= @trip.group_size == 0 ? @trip.guest_count + @trip.attendant_count  : @trip.group_size %></dd>
 
     <dt>Vehicle:</dt>
-    <dd><%= @trip.run ? @trip.run.vehicle.name : 'cab' %></dd>
+    <dd><%= @trip.run ? @trip.run.vehicle_name : 'cab' %></dd>
 
     <dt>Customer Private Notes:</dt>
     <dd>

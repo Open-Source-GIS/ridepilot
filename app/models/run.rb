@@ -19,4 +19,8 @@ class Run < ActiveRecord::Base
     true
   end
 
+  def vehicle_name
+    vehicle.name if vehicle.present?
+  end
+
 end
