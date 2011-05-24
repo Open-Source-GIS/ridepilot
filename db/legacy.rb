@@ -5,6 +5,7 @@ ETHNICITIES = {'W' => 'Caucasian','B' => 'African American','A' => 'Asian','I' =
 TRIP_REASONS = {'MED' => 'Medical','LIFE' => 'Life-sustaining Medical','PER' => 'Personal/Support Services','SHOP' => 'Shopping','WORK' => 'School/Work','VOL' => 'Volunteer Work','REC' => 'Recreation','NUT' => 'Nutrition'}
 
 p = Provider.find_or_create_by_name('Northwest Pilot Project')
+m = Mobility.find_by_name("Unknown")  
 
 puts 'Addresses:'
 CSV.foreach(File.join(Rails.root,'db','legacy','tblDestination.txt'),headers: true) do |r|
@@ -34,6 +35,7 @@ CSV.foreach(File.join(Rails.root,'db','legacy','tblClient.txt'),headers: true) d
     c.inactivated_date = Date.today if r['Gone']=1 
     c.private_notes = r['Comment']
     c.provider = p
+    c.mobility = m
     if !r['Address'].blank?
       # puts "[#{r['Address']}]"
       addr = clean_address(r['Address'])
@@ -60,7 +62,6 @@ CSV.foreach(File.join(Rails.root,'db','legacy','tblClient.txt'),headers: true) d
 end
 ActiveRecord::Base.connection.execute("SELECT setval('customers_id_seq',#{Customer.maximum(:id)})")
 
-m = Mobility.find_by_name("Unknown")  
 puts 'Trips:'
 CSV.foreach(File.join(Rails.root,'db','legacy','tblRide.txt'),headers: true) do |r|
   if Customer.exists?(r['ClientID'])
