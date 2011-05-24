@@ -17,8 +17,12 @@ class ProvidersController < ApplicationController
 
   def delete_role
     role = Role.find(params[:role_id])
+    user = role.user
     authorize! :edit, role
     role.destroy
+    if user.roles.size == 0
+      user.destroy
+    end
     redirect_to provider_path(params[:provider_id])
   end
 
