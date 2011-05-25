@@ -7,8 +7,8 @@ class Vehicle < ActiveRecord::Base
   default_scope :order => 'active, name'
   named_scope :active, :conditions => { :active => true }
 
-  validates_length_of :vin, :is=>17
-  validates_format_of :vin, :with => /^[^ioq]*$/i
+  validates_length_of :vin, :is=>17, :allow_nil => true
+  validates_format_of :vin, :with => /^[^ioq]*$/i, :allow_nil => true
 
   stampable :creator_attribute => :created_by_id, :updater_attribute => :updated_by_id
 end
