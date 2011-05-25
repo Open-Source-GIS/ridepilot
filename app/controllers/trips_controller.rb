@@ -1,5 +1,6 @@
 class TripsController < ApplicationController
   load_and_authorize_resource
+  before_filter :filter_trips, :only => :index
 
   def index
     respond_to do |format|
@@ -13,8 +14,12 @@ class TripsController < ApplicationController
            :title => trip.customer.name
           }
         }
-        json = ActiveSupport::JSON.encode trips
-        render :text => json 
+
+        rows = @trips.map do |t|
+          render_to_string :partial => "trip_row.html", :locals => { :trip => t }
+        end
+
+        render :json => {:events => trips, :rows => rows }
       }
     end
   end
@@ -295,5 +300,20 @@ class TripsController < ApplicationController
       :sunday => params[:sunday] ? 1 : 0
     }
     return repeating_trip_params
+  end
+
+  def filter_trips
+    if params[:end].present? && params[:start].present?
+      t_start = Time.at params[:start].to_i
+      t_end   = Time.at params[:end].to_i
+    else
+      time    = Time.now
+      t_start = time.beginning_of_week
+      t_end   = t_start + 6.days
+    end
+
+    @trips = @trips.
+      where("pickup_time >= '#{t_start.strftime "%Y-%m-%d %H:%M:%S"}'").
+      where("pickup_time <= '#{t_end.strftime "%Y-%m-%d %H:%M:%S"}'")
   end
 end

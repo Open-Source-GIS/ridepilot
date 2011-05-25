@@ -151,7 +151,7 @@ class Trip < ActiveRecord::Base
   end
 
   def make_run
-    the_run = Run.create ({
+    the_run = Run.create({
                       :provider_id=>provider_id,
                       :date => pickup_time.to_date,
                       :scheduled_start_time=>DateTime.new(pickup_time.year,

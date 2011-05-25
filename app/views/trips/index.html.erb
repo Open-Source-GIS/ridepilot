@@ -15,14 +15,7 @@
   </tr>
 
 <% @trips.each do |trip| %>
-  <tr>
-    <td><%= trip.customer.name %></td>
-    <td><%= trip.pickup_time.to_s %></td>
-    <td><%= trip.trip_result %></td>
-    <td><%= link_to 'Show', trip %></td>
-    <td><% if can? :edit, trip %><%= link_to 'Edit', edit_trip_path(trip) %><% end %></td>
-    <td><%= link_to 'Destroy', trip, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
+  <%= render "trip_row", :trip => trip %>
 <% end %>
 </table>
 

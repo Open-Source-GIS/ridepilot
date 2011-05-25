@@ -83,7 +83,20 @@
                   $event.css({ opacity: 0.33 });
               }
           },
-          data:'<%= trips_path :json %>'
+          data: function(start, end, callback){
+            $.getJSON('<%= trips_path :json %>',
+              { start:start.getTime()/1000, end:end.getTime()/1000 },
+              function(data, textStatus, jqXHR){
+                callback(data.events);
+
+                var table = $("#calendar").next("table");
+                table.find("tr.trip").remove();
+                $.each(data.rows, function(i, row){
+                  table.append(row);
+                })
+              }
+            );
+          }
       });
 
 
