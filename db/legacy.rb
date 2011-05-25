@@ -4,9 +4,12 @@ require 'legacy_helper'
 ETHNICITIES = {'W' => 'Caucasian','B' => 'African American','A' => 'Asian','I' => 'Asian Indian','C' => 'Chinese','F' => 'Filipino','J' => 'Japanese','K' => 'Korean','V' => 'Vietnamese','P' => 'Pacific Islander','N' => 'American Indian/Alaska Native','X' => 'Native Hawaiian','G' => 'Guamanian or Chamorrow','S' => 'Samoan','R' => 'Russian','U' => 'Unknown','R' => 'Refused','O' => 'Other'}
 TRIP_REASONS = {'MED' => 'Medical','LIFE' => 'Life-sustaining Medical','PER' => 'Personal/Support Services','SHOP' => 'Shopping','WORK' => 'School/Work','VOL' => 'Volunteer Work','REC' => 'Recreation','NUT' => 'Nutrition'}
 
-p = Provider.find_or_create_by_name('Northwest Pilot Project')
+p = Provider.find_or_initialize_by_name('Northwest Pilot Project')
+p.save(:validate => false) if p.new_record?
+
 m = Mobility.find_by_name("Unknown")  
 
+#if false
 puts 'Addresses:'
 CSV.foreach(File.join(Rails.root,'db','legacy','tblDestination.txt'),headers: true) do |r|
   a = Address.find_or_initialize_by_id(r['DestinationID'])
@@ -106,4 +109,40 @@ CSV.foreach(File.join(Rails.root,'db','legacy','tblRide.txt'),headers: true) do 
   end
 end
 ActiveRecord::Base.connection.execute("SELECT setval('trips_id_seq',#{Trip.maximum(:id)})")
+#end
 
+puts 'Vehicles:'
+CSV.foreach(File.join(Rails.root,'db','legacy','tblVehicle.txt'),headers: true) do |r|
+  v = Vehicle.find_or_initialize_by_id(r['VehicleID'])
+  v.name = r['VehicleName']
+  v.year = r['YearMakeModel'].split(' ')[0].to_i unless r['YearMakeModel'].blank?
+  v.make = r['YearMakeModel'].split(' ')[1] unless r['YearMakeModel'].blank?
+  v.model = r['YearMakeModel'].split(' ')[2..-1].join(' ') unless r['YearMakeModel'].blank?
+  v.vin = r['VIN']
+  v.license_plate = r['LicensePlate']
+  v.garaged_location = r['ParkedLocation']
+  v.provider = p
+  v.save!
+  puts v.id
+end
+ActiveRecord::Base.connection.execute("SELECT setval('vehicles_id_seq',#{Vehicle.maximum(:id)})")
+
+puts 'Vehicle Maintenance'
+CSV.foreach(File.join(Rails.root,'db','legacy','tblVehicleMaintenance.txt'),headers: true) do |r|
+  if r['ServicePerformed'].present?
+    vm = VehicleMaintenanceEvent.find_or_initialize_by_id(r['ID'])
+    vm.vehicle_id = r['VehicleID']
+    vm.provider = p
+    vm.reimbursable = true
+    vm.service_date = fix_up_date(r['ServiceDate'])
+    vm.invoice_date = fix_up_date(r['InvoiceDate'])
+    vm.services_performed = r['ServicePerformed']
+    vm.odometer = r['OdometerReading']
+    vm.vendor_name = r['Vendor']
+    vm.invoice_number = r['InvoiceNumber']
+    vm.invoice_amount = r['InvoiceAmount']
+    vm.save!
+    puts vm.id
+  end
+end
+ActiveRecord::Base.connection.execute("SELECT setval('vehicle_maintenance_events_id_seq',#{VehicleMaintenanceEvent.maximum(:id)})")
