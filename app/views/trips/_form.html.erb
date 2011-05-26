@@ -67,12 +67,12 @@
 
       <li class="selfclear">
         <label for="phone">Phone:</label>
-        <input type="text" size="14" name="phone" id="phone" value="<%= @customer.phone_number_1 %>" readonly="readonly"/>
+        <input type="text" size="30" name="phone" id="phone" value="<%= @customer.phone_number_1 %>" readonly="readonly"/>
       </li>
 
       <li class="selfclear">
         <label for="alt_phone">Alt. Phone:</label>
-        <input type="text" size="14" name="alt_phone" id="alt_phone" value="<%= @customer.phone_number_2 %>" readonly="readonly"/>
+        <input type="text" size="30" name="alt_phone" id="alt_phone" value="<%= @customer.phone_number_2 %>" readonly="readonly"/>
 
       </li>
     </ol>
@@ -117,7 +117,7 @@
 
       <li class="selfclear donation">
         <%= f.label :donation, "Donation:" %>
-        <%= f.text_field :donation %>
+        <%= f.text_field :donation, :size => 8 %>
       </li>
 
       <li class="selfclear">
