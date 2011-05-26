@@ -48,7 +48,7 @@ class Address < ActiveRecord::Base
   end
 
   def text
-    if building_name.to_s .size > 0 and name.to_s.size > 0
+    if building_name.to_s.size > 0 and name.to_s.size > 0
       first_line = "%s - %s\n" % [name, building_name]
     elsif building_name.to_s.size > 0
       first_line = building_name + "\n"
@@ -58,7 +58,7 @@ class Address < ActiveRecord::Base
       first_line = ''
     end
 
-    return "%s%s\n%s, %s  %s" % [first_line, address, city, state, zip]
+    return ("%s %s \n%s, %s  %s" % [first_line, address, city, state, zip]).strip
 
   end
 
