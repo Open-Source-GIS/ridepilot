@@ -207,7 +207,7 @@ class TripsController < ApplicationController
       #the repeating trip, and the instance for today
       repeating_trip_params = extract_repeating_trip_params trip_params
       if not @trip.repeating_trip
-        trip.repeating_trip = RepeatingTrip.new
+        @trip.repeating_trip = RepeatingTrip.new
       end
 
       repeating_trip = @trip.repeating_trip.update_attributes(repeating_trip_params)
