@@ -34,7 +34,7 @@ $(document).ready(function() {
     constrainInput: false
   });
 
-  $('#new_monthly #monthly_start_date, #new_monthly #monthly_end_date').datepicker({
+  $('#new_monthly #monthly_start_date, #new_monthly #monthly_end_date, input.datepicker').datepicker({
 		dateFormat: 'yy-mm-dd'    		
   });
 
