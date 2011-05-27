@@ -5,8 +5,8 @@
   <%= hidden_field_tag 'prefix', prefix %>
   <%= hidden_field_tag 'lat' %>
   <%= hidden_field_tag 'lon' %>
-
-  <ul>
+  <fieldset>
+  <ol class="section">
   <li class="selfclear">
     <%= label_tag "#{prefix}_name", "Address Name:" %>
     <%= text_field_tag "#{prefix}_name" %>
@@ -41,8 +41,8 @@
     <%= label_tag "#{prefix}_in_district", "In TriMet District:" %>
     <%= select_tag "#{prefix}_in_district", options_for_select([["Yes", "true"], ["No", "false"]]) %>
   </li>
-  </ul>
-
+  </ol>
+  </fieldset>
 <% end %>
 
 

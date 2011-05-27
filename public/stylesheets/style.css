@@ -493,6 +493,9 @@ fieldset ol.section li label {
 fieldset ol.section li input {
     max-width: 60%;
 }
+#pickup-address-form fieldset ol.section li input {
+  width: 60%;
+}
 fieldset ol.section li textarea {
     max-width: 60%;
     height: 3.5em;

@@ -102,36 +102,31 @@
 
       // address dialog functionality
       // via http://jqueryui.com/demos/dialog/#modal-form 
-      $(function() {
-
-          $( ".address-form" ).dialog({
-              autoOpen: false,
-              height: 330,
-              width: 600,
-              modal: true,
-              buttons: {
-                  "Add Address": function() {
-                      form = $( this )[0].children[0];
-                      $(form).trigger('submit'); 
-                  },
-                  Cancel: function() {
-                      $( this ).dialog( "close" );
-                  }
+      $( ".address-form" ).dialog({
+          autoOpen: false,
+          height: 395,
+          width: 600,
+          modal: true,
+          buttons: {
+              "Add Address": function() {
+                  form = $( this )[0].children[0];
+                  $(form).trigger('submit'); 
               },
-              close: function() {
+              Cancel: function() {
+                  $( this ).dialog( "close" );
               }
-          });
-
-          $( "#pickup_address_label" ).click(function() {
-              $( "#pickup-address-form" ).dialog( "open" );
-          });
-
-          $( "#dropoff_address_label" ).click(function() {
-              $( "#dropoff-address-form" ).dialog( "open" );
-          });
-
+          },
+          close: function() {
+          }
       });
 
+      $( "#pickup_address_label" ).click(function() {
+          $( "#pickup-address-form" ).dialog( "open" );
+      });
+
+      $( "#dropoff_address_label" ).click(function() {
+          $( "#dropoff-address-form" ).dialog( "open" );
+      });
 
   });
 
