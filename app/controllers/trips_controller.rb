@@ -118,13 +118,6 @@ class TripsController < ApplicationController
     redirect_to :action=>:unscheduled
   end
 
-  def show
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @trip }
-    end
-  end
-
   def new
     @trip = Trip.new(:provider_id=>current_provider_id, :customer_id=>params[:customer_id])
     prep_view
@@ -160,7 +153,7 @@ class TripsController < ApplicationController
 
     provider = @customer.provider
     authorize! :manage, provider
-    trip_params[:provider_id] = @customer.provider.id
+    trip_params[:provider_id] = @customer.provider.id if @customer.provider.present?
 
     handle_trip_params trip_params
 
@@ -199,7 +192,7 @@ class TripsController < ApplicationController
     @customer = Customer.find(trip_params[:customer_id])
     provider = @customer.provider
     authorize! :manage, provider
-    trip_params[:provider_id] = @customer.provider.id
+    trip_params[:provider_id] = @customer.provider.id if @customer.provider.present?
     handle_trip_params trip_params
 
     if is_repeating_trip params
@@ -215,7 +208,7 @@ class TripsController < ApplicationController
     end
 
     if @trip.update_attributes(trip_params)
-      redirect_to(@trip, :notice => 'Trip was successfully updated.')
+      redirect_to(trips_path, :notice => 'Trip was successfully updated.')
     else
       edit
       render :action => "edit" 
