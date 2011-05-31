@@ -96,7 +96,7 @@ regexp_replace(phone_number_2, '[^0-9]', '') = ?
       customers = Customer.accessible_by(current_ability).where(conditions).limit(limit)
     end
     
-    render :json => customers.map { |customer| {:label=>customer.name, :id=>customer.id}}
+    render :json => customers.map { |customer| customer.as_autocomplete }
   end
 
   def found

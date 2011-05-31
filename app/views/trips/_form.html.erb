@@ -12,14 +12,14 @@
   <% end %>
 
   <!-- the customer id needs to be passed in this action -->
-  <%= f.hidden_field :customer_id, :value=>@customer.id %>
+  <%= f.hidden_field :customer_id %>
 
   <fieldset class="new-trip">
 
     <ol class="section first">
       <li class="selfclear">
         <label for="customer">Customer:</label>
-        <strong><%= @customer.name %></strong>
+        <%= render "customer", :f => f, :trip => @trip %>
       </li>
 
       <li class="selfclear timepicker">
@@ -67,12 +67,12 @@
 
       <li class="selfclear">
         <label for="phone">Phone:</label>
-        <input type="text" size="30" name="phone" id="phone" value="<%= @customer.phone_number_1 %>" readonly="readonly"/>
+        <input type="text" size="30" name="phone" id="phone" value="<%= @customer.try(:phone_number_1) %>" readonly="readonly"/>
       </li>
 
       <li class="selfclear">
         <label for="alt_phone">Alt. Phone:</label>
-        <input type="text" size="30" name="alt_phone" id="alt_phone" value="<%= @customer.phone_number_2 %>" readonly="readonly"/>
+        <input type="text" size="30" name="alt_phone" id="alt_phone" value="<%= @customer.try(:phone_number_2) %>" readonly="readonly"/>
 
       </li>
     </ol>
@@ -83,11 +83,26 @@
         <%= f.select :trip_purpose, @trip_purposes %>
       </li>
 
-      <li class="selfclear passengers">
-        <% if @customer.group %>
+      <li class="selfclear passengers group_size">
+        <% if @customer %>
+          <% if @customer.group %>
+            <%= f.label :group_size, "Group Size:" %>
+            <%= f.text_field :group_size %>
+          <% else %>
+            <%= f.label :guest_count, "Passengers:" %>
+            <ul>
+              <li>
+                <span class="nobreak"><%= f.text_field :guest_count %>&nbsp;Guests&nbsp;</span>
+                <span class="nobreak"><%= f.text_field :attendant_count %>&nbsp;Attendants</span>
+              </li>
+            </ul>
+          <% end %>
+        <% else %>
+          <%= hidden_field_tag "trip_group" %>
           <%= f.label :group_size, "Group Size:" %>
           <%= f.text_field :group_size %>
-        <% else %>
+        </li>
+        <li class="selfclear passengers">
           <%= f.label :guest_count, "Passengers:" %>
           <ul>
             <li>
@@ -105,7 +120,7 @@
 
       <li class="selfclear">
         <label for="customer_private_notes">Customer Private Notes:</label>
-        <textarea rows="20" name="customer_private_notes" id="customer_private_notes" cols="40" readonly="readonly"><%= @customer.private_notes %></textarea>
+        <textarea rows="20" name="customer_private_notes" id="customer_private_notes" cols="40" readonly="readonly"><%= @customer.try :private_notes %></textarea>
       </li>
     </ol>
 
@@ -132,7 +147,7 @@
 
       <li class="selfclear">
         <label for="mobility_notes">Mobility Notes:</label>
-        <textarea rows="20" name="mobility_notes" id="mobility_notes" cols="40" readonly="readonly"><%= @customer.mobility_notes %></textarea>
+        <textarea rows="20" name="mobility_notes" id="mobility_notes" cols="40" readonly="readonly"><%= @customer.try :mobility_notes %></textarea>
       </li>
     </ol>
 

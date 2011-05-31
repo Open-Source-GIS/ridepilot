@@ -64,5 +64,15 @@ $(document).ready(function() {
     var appointmentTimeDate = new Date(pickupTimeDate.getTime() + (1000 * 60 * 30));    
     $('#trip_appointment_time').attr( "value", appointmentTimeDate.format("yyyy-mm-dd HH:MM"));
   });
-
+  
+  $('#new_trip #customer_name').bind('railsAutocomplete.select', function(e){ 
+    if ($("#trip_group").val() == "true") {
+      $("li.passengers").hide();
+      $("li.group_size").show();
+    } else {
+      $("li.passengers").show();
+      $("li.group_size").hide();
+    } 
+  });
+  
 });

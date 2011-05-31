@@ -1,0 +1,14 @@
+<%- if @customer.present? -%>
+  <strong><%= @customer.name %></strong>
+<%- else -%>
+  <%= autocomplete_field_tag 'customer_name', '', autocomplete_customers_path, 
+      :size => 30, 
+      :update_elements => {
+        :id              => '#trip_customer_id',
+        :phone_number_1  => '#phone', 
+        :phone_number_2  => '#alt_phone',
+        :mobility_notes  => '#mobility_notes',
+        :private_notes   => '#customer_private_notes',
+        :group           => '#trip_group'
+      } %>
+<%- end -%>

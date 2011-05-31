@@ -36,5 +36,16 @@ class Customer < ActiveRecord::Base
     end
     return years
   end
+  
+  def as_autocomplete
+    { :label           => name, 
+      :id              => id,
+      :phone_number_1  => phone_number_1, 
+      :phone_number_2  => phone_number_2,
+      :mobility_notes  => mobility_notes,
+      :private_notes   => private_notes,
+      :group           => group
+    }
+  end
 
 end
