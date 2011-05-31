@@ -26,7 +26,7 @@ $(document).ready(function() {
   	hourMax: 18,
 		hourGrid: 3,
   	minuteGrid: 15,
-		timeFormat: 'hh:mm:ss',
+		timeFormat: 'hh:mm',
 		dateFormat: 'yy-mm-dd',
     showOn: "button",
     buttonImage: "/stylesheets/images/calendar-clock.png",
@@ -50,28 +50,19 @@ $(document).ready(function() {
     
     var dateParts = parts[0].split('-'),
     timeSubParts = parts[1].split(':'),
-    timeSecParts = timeSubParts[2].split('.'),
     timeHours = Number(timeSubParts[0]);
 
     _date = new Date();
-    _date.setFullYear(Number(dateParts[0]));
-    _date.setMonth(Number(dateParts[1])-1);
-    _date.setDate(Number(dateParts[2]));
-    _date.setHours(Number(timeHours));
-    _date.setMinutes(Number(timeSubParts[1]));
-    _date.setSeconds(Number(timeSecParts[0]));
-    if (timeSecParts[1]) {
-        _date.setMilliseconds(Number(timeSecParts[1]));
-    }
-
+    _date.setFullYear( Number(dateParts[0]), (Number(dateParts[1])-1), Number(dateParts[2]) );
+    _date.setHours(Number(timeHours), Number(timeSubParts[1]), 0, 0);
+    
     return _date;
   };
 
   $('#trip_pickup_time').change(function() {
     var pickupTimeDate = ISODateFormatToDateObject($('#trip_pickup_time').attr("value"));
-    var appointmentTimeDate = ISODateFormatToDateObject($('#trip_appointment_time').attr("value"));
-    var newPickupDate = new Date(pickupTimeDate.getTime() + (1000 * 60 * 30));    
-    $('#trip_appointment_time').attr( "value", newPickupDate.format("yyyy-mm-dd HH:MM:ss"));
+    var appointmentTimeDate = new Date(pickupTimeDate.getTime() + (1000 * 60 * 30));    
+    $('#trip_appointment_time').attr( "value", appointmentTimeDate.format("yyyy-mm-dd HH:MM"));
   });
 
 });
