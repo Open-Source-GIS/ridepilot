@@ -9,8 +9,8 @@ class TripsController < ApplicationController
       format.json { 
         trips = @trips.map { |trip| 
           {:id => trip.id,
-           :start=> trip.pickup_time,
-           :end=> trip.appointment_time,
+           :start=> trip.pickup_time.to_s(:no_tz),
+           :end=> trip.appointment_time.to_s(:no_tz),
            :title => trip.customer.name
           }
         }
