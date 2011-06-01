@@ -54,11 +54,23 @@ $(document).ready(function() {
     
     return _date;
   };
-
-  $('#trip_pickup_time').change(function() {
+  
+  var setAppointmentTime = function() {
     var pickupTimeDate = ISODateFormatToDateObject($('#trip_pickup_time').attr("value"));
     var appointmentTimeDate = new Date(pickupTimeDate.getTime() + (1000 * 60 * 30));    
     $('#trip_appointment_time').attr( "value", appointmentTimeDate.format("yyyy-mm-dd HH:MM"));
+    
+    return appointmentTimeDate;
+  };
+  
+  var setCurrentWeek = function( dateTime ) {
+    var calendar = $("#calendar");
+    calendar.weekCalendar("gotoWeek", dateTime.getTime());
+  };
+
+  $('#trip_pickup_time').change(function() {
+    var appointmentTime = setAppointmentTime();
+    setCurrentWeek( appointmentTime );
   });
   
   $('#new_trip #customer_name').bind('railsAutocomplete.select', function(e){ 
