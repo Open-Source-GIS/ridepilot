@@ -134,7 +134,7 @@ regexp_replace(phone_number_2, '[^0-9]', '') = ?
   end
 
   def new
-    @customer = Customer.new
+    @customer = Customer.new name_options
     @customer.address ||= Address.new
     @mobilities = Mobility.all
     @ethnicities = ETHNICITIES
@@ -257,6 +257,23 @@ dmetaphone(%s) LIKE dmetaphone_alt(?)  || '%%' or
 dmetaphone_alt(%s) LIKE dmetaphone(?)  || '%%'or 
 dmetaphone_alt(%s) LIKE dmetaphone_alt(?) || '%%')" % [field, field, field, field, field], [like, value, value, value, value]
 
+    end
+  end
+
+  def name_options
+    if params[:customer_name]
+      parts = params[:customer_name].split " "
+      atts  = { :first_name => parts.first }
+
+      case parts.length
+      when 2
+        atts[:last_name]      = parts.last
+      else
+        atts[:middle_initial] = parts[1]
+        atts[:last_name]      = parts[2, parts.length - 2].join " "
+      end if parts.length > 1
+
+      atts
     end
   end
 

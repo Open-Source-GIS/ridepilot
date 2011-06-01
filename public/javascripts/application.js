@@ -39,14 +39,10 @@ $(document).ready(function() {
   });
 
   var ISODateFormatToDateObject = function(str) {
-    if(str === null) {
-        return null;
-    }
+    if(str === null) return null;
 
     var parts = str.split(' ');
-    if(parts.length < 2) {
-      return null;
-    }
+    if(parts.length < 2) return null;
     
     var dateParts = parts[0].split('-'),
     timeSubParts = parts[1].split(':'),
@@ -73,6 +69,10 @@ $(document).ready(function() {
       $("li.passengers").show();
       $("li.group_size").hide();
     } 
+  });
+  
+  $("#new_customer[data-path]").live("click", function(e) {
+    window.location = $(this).attr("data-path") + "?customer_name=" + $("#customer_name").val();
   });
   
 });
