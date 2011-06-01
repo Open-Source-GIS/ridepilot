@@ -83,6 +83,9 @@
                   $event.css({ opacity: 0.33 });
               }
           },
+          eventClick: function(calEvent, element) {
+            window.location = "/trips/" + calEvent['id'] + "/edit";
+          },
           data: function(start, end, callback){
             $.getJSON('<%= trips_path :json %>',
               { start:start.getTime()/1000, end:end.getTime()/1000 },
