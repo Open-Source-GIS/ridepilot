@@ -84,7 +84,7 @@
               }
           },
           eventClick: function(calEvent, element) {
-            window.location = "/trips/" + calEvent['id'] + "/edit";
+            window.location = "<%= edit_trip_path 'CHANGE_ME' %>".replace(/CHANGE_ME/, calEvent['id']);
           },
           data: function(start, end, callback){
             $.getJSON('<%= trips_path :json %>',
