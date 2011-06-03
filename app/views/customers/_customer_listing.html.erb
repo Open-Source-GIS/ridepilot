@@ -21,7 +21,7 @@
   <% @customers.each do |customer| %>
     <tr>
       <td class="plurality"><%= link_to customer.group ? content_tag(:span, "Group", :class=>'group') : content_tag(:span, "Individual", :class=>'individual'), customer %></td>
-      <td><%= link_to customer.first_name + h(' ') + customer.middle_initial + h(' ') + customer.last_name, customer %></td>
+      <td><%= link_to customer.name, customer %></td>
       <td><%= customer.phone_number_1 %></td>
       <td><%= customer.phone_number_2 %></td>
       <td><%= customer.email %></td>
