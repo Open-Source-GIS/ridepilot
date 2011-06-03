@@ -18,22 +18,6 @@ $(document).ready(function() {
   updateGroupField();
   $('input#customer_group').click(updateGroupField);
 
-  // add time picker functionality
-  // http://trentrichardson.com/examples/timepicker/
-  $('#trip_pickup_time, #trip_appointment_time').datetimepicker({
-  	ampm: false,
-  	hourMin: 8,
-  	hourMax: 18,
-		hourGrid: 3,
-  	minuteGrid: 15,
-		timeFormat: 'hh:mm',
-		dateFormat: 'yy-mm-dd',
-    showOn: "button",
-    buttonImage: "/stylesheets/images/calendar-clock.png",
-    buttonImageOnly: true,
-    constrainInput: false
-  });
-
   $('#new_monthly #monthly_start_date, #new_monthly #monthly_end_date, input.datepicker').datepicker({
 		dateFormat: 'yy-mm-dd'    		
   });
