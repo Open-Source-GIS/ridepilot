@@ -96,7 +96,7 @@ $(document).ready(function(){
                             }
                         }
 					}
-					$(this).trigger('railsAutocomplete.select');
+					$(this).trigger('railsAutocomplete.select', ui.item);
 
 					return false;
 				}

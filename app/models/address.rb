@@ -16,6 +16,8 @@ class Address < ActiveRecord::Base
   before_validation :compute_in_trimet_district
 
   stampable :creator_attribute => :created_by_id, :updater_attribute => :updated_by_id
+  
+  NewAddressOption = { :label => "New Address", :id => nil }
 
   def compute_in_trimet_district
     if the_geom and in_district.nil?

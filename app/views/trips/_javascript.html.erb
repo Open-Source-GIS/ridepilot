@@ -1,13 +1,9 @@
 <script type='text/javascript'>
 
-  function pickup_autocompleted(address) {
-    autocompleted(address, 'pickup');
-  }
-  function dropoff_autocompleted(address) {
-    autocompleted(address, 'dropoff');
-  }
   function autocompleted(address, field) {
-    if (address.id) {
+    if (address.label == "New Address") {
+      $( "#" + field + "-address-form" ).dialog( "open" );
+    } else if (address.id) {
       //found an existing address
         id_field = '#trip_' + field + '_address_id';
       $(id_field).val(address.id);
@@ -16,7 +12,7 @@
       //close dialog
       $( "#" + field + "-address-form" ).dialog( "close" );
     } else {
-      //found a geocode, fill in fields
+      //found a geocode, fill in fields, open the dialog for saving
       $('#' + field + '_name').val(address.name);
       $('#' + field + '_building_name').val(address.building_name);
       $('#' + field + '_address').val(address.address);
@@ -26,10 +22,15 @@
       $('#' + field + '_lat').val(address.lat);
       $('#' + field + '_lon').val(address.lon);
       $('#' + field + '_in_district').val(address.in_district);
+      $( "#" + field + "-address-form" ).dialog( "open" );
     }
   }
 
   $(document).ready(function() {
+    
+    // happens after you submit an address (not autocomplete)
+    // an id should be returned, and then the form should close.
+    // if no id is returned, error messages are filled in. 
     $('.address-search').bind('ajax:success', function(evt, data, status, xhr){
       if (data.id) {
         //successfully created a new address
@@ -134,14 +135,14 @@
       constrainInput: false
     });
 
-    $( "#pickup_address_label" ).click(function() {
-        $( "#pickup-address-form" ).dialog( "open" );
+    $('#pickup_search_address').bind('railsAutocomplete.select', function(e, selected){
+      autocompleted(selected, 'pickup');
     });
-
-    $( "#dropoff_address_label" ).click(function() {
-        $( "#dropoff-address-form" ).dialog( "open" );
+    
+    $('#dropoff_search_address').bind('railsAutocomplete.select', function(e, selected){
+      autocompleted(selected, 'dropoff');
     });
-
+    
   });
 
 </script>

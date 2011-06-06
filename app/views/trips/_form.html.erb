@@ -55,14 +55,14 @@
 
       <li class="selfclear">
         <%= f.label :pickup_address_label, "Pickup Address:" %>
-        <%= text_field_tag "pickup_address_label", @trip.pickup_address ? @trip.pickup_address.text : '', :class => "full" %>
-        <%= f.hidden_field(:pickup_address_id) %>
+        <%= autocomplete_field_tag "pickup_search_address", @trip.pickup_address ? @trip.pickup_address.text : '', autocomplete_addresses_path, :size => 30, :id_element => "#trip_pickup_address_id", :class => "full"  %>
+        <%= f.hidden_field :pickup_address_id %>
       </li>
 
       <li class="selfclear">
         <%= f.label :dropoff_address_label, "Dropoff Address:" %>
-        <%= text_field_tag "dropoff_address_label", @trip.dropoff_address ? @trip.dropoff_address.text : '', :class => "full" %>
-        <%= f.hidden_field(:dropoff_address_id) %>
+        <%= autocomplete_field_tag "dropoff_search_address", @trip.dropoff_address ? @trip.dropoff_address.text : '', autocomplete_addresses_path, :size => 30, :id_element => "#trip_dropoff_address_id", :class => "full"  %>
+        <%= f.hidden_field :dropoff_address_id %>
       </li>
 
       <li class="selfclear">
@@ -73,7 +73,6 @@
       <li class="selfclear">
         <label for="alt_phone">Alt. Phone:</label>
         <input type="text" size="30" name="alt_phone" id="alt_phone" value="<%= @customer.try(:phone_number_2) %>" readonly="readonly"/>
-
       </li>
     </ol>
     

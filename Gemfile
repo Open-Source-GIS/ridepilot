@@ -19,7 +19,7 @@ gem "spatial_adapter"
 
 gem 'jquery-rails', '>= 0.2.6'
 
-gem "rails3-jquery-autocomplete"
+gem "rails3-jquery-autocomplete", :git => "git://github.com/juliamae/rails3-jquery-autocomplete"
 
 gem "schedule_atts", :git => "git://github.com/zpearce/Schedule-Attributes.git"
 

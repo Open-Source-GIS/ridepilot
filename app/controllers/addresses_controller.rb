@@ -42,7 +42,7 @@ class AddressesController < ApplicationController
 
     if addresses.size > 0
       #there are some existing addresses
-      render :json => addresses.map { |address| address.json }
+      render :json => addresses.map { |address| address.json } << Address::NewAddressOption
     else
       #no existing addresses, try geocoding
 
@@ -50,7 +50,7 @@ class AddressesController < ApplicationController
 
       if term.size < 5 or ! term.match /[a-z]{2}/
         #do not geocode too-short terms
-        return render :json => [] 
+        return render :json => [Address::NewAddressOption] 
       end
       url = "http://open.mapquestapi.com/nominatim/v1/search?format=json&addressdetails=1&countrycodes=us&q=" + CGI.escape(term)
     
@@ -80,7 +80,7 @@ class AddressesController < ApplicationController
                     )
         address_obj.json
 
-      }
+      } << Address::NewAddressOption
     end
   end
 
