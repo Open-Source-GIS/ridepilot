@@ -8,18 +8,19 @@
 
 class RunsController < ApplicationController
   load_and_authorize_resource
+  before_filter :filter_runs
 
   def index
-    if params[:date] and params[:date].size > 0
-      params[:date] = Date.parse(params[:date])
-    else
-      params[:date] = Date.today
-    end
-    @runs = @runs.where(["cast(scheduled_start_time as date) = ?", params[:date]])
-    @date = params[:date]
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @trips }
+      format.js {
+        rows = @runs.present? ? @runs.map do |r|
+          render_to_string :partial => "row.html", :locals => { :run => r }
+        end : [render_to_string( :partial => "no_runs.html" )]
+
+        render :json => { :rows => rows }
+      }
     end
   end
 
@@ -91,5 +92,23 @@ class RunsController < ApplicationController
       format.html { redirect_to(runs_url) }
       format.xml  { head :ok }
     end
+  end
+  
+  def filter_runs
+    if params[:end].present? && params[:start].present?
+      @week_start = Time.at params[:start].to_i/1000
+      @week_end   = Time.at params[:end].to_i/1000
+    else
+      time     = Time.now
+      @week_start = time.beginning_of_week
+      @week_end   = @week_start + 7.days
+    end
+    
+    Rails.logger.debug("WEEK START: #{@week_start}")
+    Rails.logger.debug("WEEK END: #{@week_end}")
+    
+    @runs = @runs.
+      where("scheduled_start_time >= '#{@week_start.strftime "%Y-%m-%d %H:%M:%S"}'").
+      where("scheduled_start_time <= '#{@week_end.strftime "%Y-%m-%d %H:%M:%S"}'")
   end
 end

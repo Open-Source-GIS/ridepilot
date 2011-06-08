@@ -67,5 +67,42 @@ $(document).ready(function() {
   $("#new_customer[data-path]").live("click", function(e) {
     window.location = $(this).attr("data-path") + "?customer_name=" + $("#customer_name").val();
   });
+    
+  $("body.runs .wc-nav").click(function(e){
+    var current_start, new_start, new_end;
+    var target        = $(e.target);
+    var week_nav      = $(this);
+    
+    if (target.hasClass("wc-today")){
+      current_start   = new Date(parseInt(week_nav.attr("data-current-week-start")));
+      new_start       = new Date(current_start.getTime());
+      new_end         = new Date(current_start.getTime());
+      new_end.setDate(new_end.getDate() + 7);
+    } else {
+      current_start = new Date(parseInt(week_nav.attr("data-start-time")));
+      new_start     = new Date(current_start.getTime());
+      new_end       = new Date(current_start.getTime());
+      
+      if (target.hasClass("wc-prev")) {
+        new_start.setDate(new_start.getDate() - 7); 
+        new_end = current_start;
+      } else {
+        new_start.setDate(new_start.getDate() + 7); 
+        new_end.setDate(new_end.getDate() + 14);
+      }
+    }
+
+    $.get(window.location.href, {
+      start : new_start.getTime(),
+      end : new_end.getTime()
+    }, function(data) {
+      $("#runs tr").not(".head").remove();
+      $("#runs").append(data.rows.join(""));
+      week_nav.attr("data-start-time", new_start.getTime());
+      $("#start_date").html((new_start.getMonth()+1) + "-" + new_start.getDate() + "-" + new_start.getFullYear());
+      $("#end_date").html((new_end.getMonth()+1) + "-" + new_end.getDate() + "-" + new_end.getFullYear());  
+    }, "json");
+    
+  });
   
 });

@@ -2,17 +2,33 @@
   <h1>Listing runs</h1>
 </div>
 
-<form action="<%= runs_path %>" method="get">
-  <p><label>Date:</label> <input type="text" name="date" value="<%= @date %>" class="datepicker"></p>
-  <input type="submit" name="submit" value="submit">
-</form>
-<br/>
+<div class="wc-nav ui-buttonset" data-current-week-start="<%= @week_start.to_i * 1000 %>" data-start-time="<%= @week_start.to_i * 1000 %>">
+  <button class="wc-prev ui-button ui-widget ui-state-default ui-button-text-icon-primary ui-button-icon-only ui-corner-left" role="button" aria-disabled="false" title="previous">
+    <span class="ui-button-icon-primary ui-icon ui-icon-seek-prev"></span>
+    <span class="ui-button-text">previous</span>
+  </button>
+  <button class="wc-today ui-button ui-widget ui-state-default ui-button-text-icon-primary" role="button" aria-disabled="false">
+    <span class="ui-button-icon-primary ui-icon ui-icon-home"></span>
+    <span class="ui-button-text">This Week</span>
+  </button>
+  <button class="wc-next ui-button ui-widget ui-state-default ui-button-text-icon-primary ui-button-icon-only ui-corner-right" role="button" aria-disabled="false" title="next">
+    <span class="ui-button-icon-primary ui-icon ui-icon-seek-next"></span>
+    <span class="ui-button-text">next</span>
+  </button>
+</div>
 
 
-Runs for <%= @date %>:
-<% if @runs.size > 0 %>
-<table>
-  <tr>
+<h2>
+  Runs between 
+  <span id="start_date">
+    <%= @week_start.strftime "%m-%d-%Y" %>
+  </span> and 
+  <span id="end_date">
+    <%= @week_end.strftime "%m-%d-%Y" %>
+  </span>
+</h2>
+<table id="runs">
+  <tr class="head">
     <th>Scheduled Start time</th>
     <th>Scheduled End time</th>
     <th>Vehicle</th>
@@ -22,22 +38,11 @@ Runs for <%= @date %>:
     <th></th>
     <th></th>
   </tr>
-
-<% @runs.each do |run| %>
-  <tr>
-    <td><%= run.scheduled_start_time.to_s %></td>
-    <td><%= run.scheduled_end_time.to_s %></td>
-    <td><%= run.vehicle ? run.vehicle.name : 'no vehicle' %></td>
-    <td><%= run.driver  ? run.driver.name : 'no driver' %></td>
-    <td><%= run.complete ? 'Complete' : 'Incomplete' %></td>
-    <td><%= link_to 'Show', run %></td>
-    <td><% if can? :edit, run %><%= link_to 'Edit', edit_run_path(run) %><% end %></td>
-    <td><%= link_to 'Destroy', run, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
+  <% if @runs.size > 0 %>
+    <% @runs.each do |run| %>
+      <%= render "row", :run => run %>
+    <% end %>
+  <% else %>
+    <%= render "no_runs" %>
+  <% end %>
 </table>
-<% else %>
-no runs
-<% end %>
-<br />
-
