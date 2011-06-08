@@ -49,7 +49,7 @@ $(document).ready(function() {
     calendar.weekCalendar("gotoWeek", dateTime.getTime());
   };
 
-  $('#trip_pickup_time').change(function() {
+  $('#trip_pickup_time').live('change', function() {
     var appointmentTime = setAppointmentTime();
     setWeek( appointmentTime );
   });

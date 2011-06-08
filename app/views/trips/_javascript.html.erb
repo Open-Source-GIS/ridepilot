@@ -26,12 +26,12 @@
     }
   }
 
-  $(document).ready(function() {
+  $(function() {
     
     // happens after you submit an address (not autocomplete)
     // an id should be returned, and then the form should close.
     // if no id is returned, error messages are filled in. 
-    $('.address-search').bind('ajax:success', function(evt, data, status, xhr){
+    $('.address-search').live('ajax:success', function(evt, data, status, xhr){
       if (data.id) {
         //successfully created a new address
         id_field_id = $(this).attr('data-id-element');
@@ -42,7 +42,6 @@
         $($(this)[0].parentNode).dialog( "close" );
       } else {
         //failed to create an address
-
         for (var field in data) {
           text_field = $('#' + data.prefix + "_" + field);
           error_element = text_field.attr('data-error-element');
@@ -55,7 +54,7 @@
           $(error_element).innerHtml = data[field]
         }
       }
-    });
+    })
 
     $('#calendar').weekCalendar({
         timeslotsPerHour: 4,
@@ -103,46 +102,78 @@
 
     // address dialog functionality
     // via http://jqueryui.com/demos/dialog/#modal-form 
-    $( ".address-form" ).dialog({
-        autoOpen: false,
-        height: 395,
-        width: 600,
-        modal: true,
-        buttons: {
-            "Add Address": function() {
-                form = $( this )[0].children[0];
-                $(form).trigger('submit'); 
-            },
-            Cancel: function() {
+    function makeDialogs() {
+      $( ".address-form" ).dialog({
+          autoOpen: false,
+          height: 395,
+          width: 600,
+          modal: true,
+          buttons: {
+              "Add Address": function() {
+                  form = $( this )[0].children[0];
+                  $(form).trigger('submit'); 
+              },
+              Cancel: function() {
+                var prefix = $(this).attr("id").replace(/\-address\-form/, "");
+                var field  = $( "#" + prefix + "_search_address" );
+                field.val( field.attr("data-original-value") );
+                $("#trip_" + prefix + "_address_id").val(field.attr("data-original-id"));
                 $( this ).dialog( "close" );
-            }
-        },
-        close: function() {
-        }
-    });
+              }
+          },
+          close: function() {
+          }
+      });
+    };
     
-    $('#trip_pickup_time, #trip_appointment_time').datetimepicker({
-    	ampm: false,
-    	hourMin: 8,
-    	hourMax: 18,
-  		hourGrid: 3,
-    	minuteGrid: 15,
-  		timeFormat: 'hh:mm',
-  		dateFormat: 'yy-mm-dd',
-      showOn: "button",
-      buttonImage: "<%=  image_path 'calendar-clock.png' %>",
-      buttonImageOnly: true,
-      constrainInput: false
-    });
+    function makeDatePickers () {
+      $('#trip_pickup_time, #trip_appointment_time').datetimepicker({
+      	ampm: false,
+      	hourMin: 8,
+      	hourMax: 18,
+    		hourGrid: 3,
+      	minuteGrid: 15,
+    		timeFormat: 'hh:mm',
+    		dateFormat: 'yy-mm-dd',
+        showOn: "button",
+        buttonImage: "<%=  image_path 'calendar-clock.png' %>",
+        buttonImageOnly: true,
+        constrainInput: false
+      });
+    }
+    
+    makeDialogs();
+    makeDatePickers();
 
-    $('#pickup_search_address').bind('railsAutocomplete.select', function(e, selected){
+    $('#pickup_search_address').live('railsAutocomplete.select', function(e, selected){
       autocompleted(selected, 'pickup');
     });
     
-    $('#dropoff_search_address').bind('railsAutocomplete.select', function(e, selected){
+    $('#dropoff_search_address').live('railsAutocomplete.select', function(e, selected){
       autocompleted(selected, 'dropoff');
     });
     
+    $('tr.trip a[data-remote]').live('ajax:success', function(e, data, status, xhr){
+      $('table.trips').after(data.form).hide();    
+      makeDialogs();
+      makeDatePickers();
+      
+      $("#page-header h1").html("Edit Trip");
+    });
+    
+    $("form.edit_trip").live('ajax:complete', function(e, data, status, xhr){
+      var json = eval('(' + data.responseText + ')');
+      if (json.form) {
+        $("form.edit_trip").replaceWith(json.form);
+        makeDialogs();
+        makeDatePickers();
+      } else  {
+        $("form.edit_trip").remove();
+        $("#calendar").weekCalendar("refresh");
+        $("table.trips").show();
+        $("#page-header h1").html("View Trips");
+      }
+    })
   });
 
 </script>

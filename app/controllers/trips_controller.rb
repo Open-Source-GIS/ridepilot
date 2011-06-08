@@ -6,21 +6,7 @@ class TripsController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @trips }
-      format.json { 
-        trips = @trips.map { |trip| 
-          {:id => trip.id,
-           :start=> trip.pickup_time.to_s(:no_tz),
-           :end=> trip.appointment_time.to_s(:no_tz),
-           :title => trip.customer.name
-          }
-        }
-
-        rows = @trips.map do |t|
-          render_to_string :partial => "trip_row.html", :locals => { :trip => t }
-        end
-
-        render :json => {:events => trips, :rows => rows }
-      }
+      format.json { render :json => trips_json }
     end
   end
 
@@ -134,15 +120,12 @@ class TripsController < ApplicationController
   end
 
   def edit
-    prep_view
-    if @trip.repeating_trip
-      repeating_trip = @trip.repeating_trip
-    else
-      #we only use this to get access to the schedule attributes
-      repeating_trip = RepeatingTrip.new
-      repeating_trip.schedule_attributes = {:repeat => 1, :interval => 1, :start_date => Time.now.to_s, :interval_unit=>"week"}
+    prep_edit
+    
+    respond_to do |format|
+      format.html 
+      format.js  { @remote = true; render :json => {:form => render_to_string(:partial => 'form') }, :content_type => "text/json" }
     end
-    @schedule = repeating_trip.schedule_attributes
   end
 
   def create
@@ -206,12 +189,18 @@ class TripsController < ApplicationController
       repeating_trip = @trip.repeating_trip.update_attributes(repeating_trip_params)
       trip_params.delete :schedule_attributes
     end
-
-    if @trip.update_attributes(trip_params)
-      redirect_to(trips_path, :notice => 'Trip was successfully updated.')
-    else
-      edit
-      render :action => "edit" 
+    
+    respond_to do |format|
+      if @trip.update_attributes(trip_params)
+        format.html { redirect_to(trips_path, :notice => 'Trip was successfully updated.')  }
+        format.js { 
+          render :json => {:status => "success"}, :content_type => "text/json"
+        }
+      else
+        prep_edit
+        format.html { render :action => "edit"  }
+        format.js   { @remote = true; render :json => {:form => render_to_string(:partial => 'form') }, :content_type => "text/json" }
+      end
     end
 
   end
@@ -227,6 +216,22 @@ class TripsController < ApplicationController
   end
 
   private
+  
+  def trips_json
+    trips = @trips.map { |trip| 
+      { :id    => trip.id,
+        :start => trip.pickup_time.to_s(:no_tz),
+        :end   => trip.appointment_time.to_s(:no_tz),
+        :title => trip.customer.name
+      }
+    }
+
+    rows = @trips.map do |t|
+      render_to_string :partial => "trip_row.html", :locals => { :trip => t }
+    end
+
+    {:events => trips, :rows => rows }    
+  end
 
   def prep_view
     @customer = @trip.customer
@@ -238,7 +243,18 @@ class TripsController < ApplicationController
     @vehicles = Vehicle.active.where(:provider_id=>@trip.provider_id) + [cab_vehicle]
     @trip_results = TRIP_RESULT_CODES
     @trip_purposes = TRIP_PURPOSES
-
+  end
+  
+  def prep_edit
+    prep_view
+    if @trip.repeating_trip
+      repeating_trip = @trip.repeating_trip
+    else
+      #we only use this to get access to the schedule attributes
+      repeating_trip = RepeatingTrip.new
+      repeating_trip.schedule_attributes = {:repeat => 1, :interval => 1, :start_date => Time.now.to_s, :interval_unit=>"week"}
+    end
+    @schedule = repeating_trip.schedule_attributes
   end
 
   def handle_trip_params(trip_params)
