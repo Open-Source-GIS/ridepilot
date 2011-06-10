@@ -1,10 +1,9 @@
 class TripsController < ApplicationController
   load_and_authorize_resource
-  before_filter :filter_trips, :only => :index
 
   def index
     respond_to do |format|
-      format.html # index.html.erb
+      format.html { @start = params[:start].to_i; @trips = [] } # let js handle grabbing the trips
       format.xml  { render :xml => @trips }
       format.json { render :json => trips_json }
     end
@@ -218,6 +217,7 @@ class TripsController < ApplicationController
   private
   
   def trips_json
+    filter_trips
     trips = @trips.map { |trip| 
       { :id    => trip.id,
         :start => trip.pickup_time.to_s(:no_tz),
