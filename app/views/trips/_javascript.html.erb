@@ -53,6 +53,10 @@
     function push_edit_state(path) {
       if (supports_history_api()) history.pushState({edit: path}, "edit trip", path);
     }
+    
+    function on_trip_index() {
+      return ($("form.edit_trip").length == 0);
+    }
 
     window.onpopstate = function(event) {
       if (event.state) {
@@ -126,7 +130,7 @@
             calendar_range,
             function(data, textStatus, jqXHR){  
               // we probably didn't have the right range before, so now  we should update the state
-              if ( $("form.edit_trip").length == 0 ) replace_index_state(); 
+              if ( on_trip_index() ) replace_index_state(); 
                           
               callback(data.events);              
 
@@ -141,7 +145,7 @@
     });
     
     $("#calendar .wc-nav button").bind("click", function(e){
-      if ( $("form.edit_trip").length == 0 ) push_index_state(); 
+      if ( on_trip_index() ) push_index_state(); 
     });
 
     <% if @trip.present? && @trip.pickup_time.present? %>
