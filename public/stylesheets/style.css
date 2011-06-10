@@ -1000,7 +1000,7 @@ a.action-bttn:active {
     color: #009FFB;
 }
 /* trip */
-body.trips.index a.action-bttn {
+body.trips.index a.action-bttn.new {
     background: #eee url(images/plus.png) 0.8em center no-repeat scroll;
 }
 /* funding sources */

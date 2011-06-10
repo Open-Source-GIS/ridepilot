@@ -170,15 +170,20 @@
     </div>
 
   </fieldset>
-
+  <hr />
+  <% if @remote %>
+    <%= link_to "Back to View Trips", trips_path, :class => 'action-bttn', :onclick => "window.history.back();return false;" %>
+  <% else %>
+    <%= link_to 'Back to View Trips', trips_path, :class=>'action-bttn' %>
+  <% end %>
+  
 <% end %>
 
+<div id="pickup-address-form" class="address-form">
+  <%= render :partial=>'find_or_create_address', :locals=>{:prefix=>'pickup', :address => @trip.pickup_address || @trip.build_pickup_address } %>
+</div>
 
-        <div id="pickup-address-form" class="address-form">
-          <%= render :partial=>'find_or_create_address', :locals=>{:prefix=>'pickup', :address => @trip.pickup_address || @trip.build_pickup_address } %>
-        </div>
 
-
-        <div id="dropoff-address-form" class="address-form">
-          <%= render :partial=>'find_or_create_address', :locals=>{:prefix=>'dropoff', :address => @trip.dropoff_address || @trip.build_dropoff_address } %>
-        </div>
+<div id="dropoff-address-form" class="address-form">
+  <%= render :partial=>'find_or_create_address', :locals=>{:prefix=>'dropoff', :address => @trip.dropoff_address || @trip.build_dropoff_address } %>
+</div>
