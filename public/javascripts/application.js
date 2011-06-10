@@ -15,7 +15,11 @@ function ISODateFormatToDateObject(str) {
   return _date;
 }
 
-$(document).ready(function() {
+function supports_history_api() {
+  return !!(window.history && history.pushState);
+}
+
+$(function() {
 
   $("tr:odd").addClass("odd");
 

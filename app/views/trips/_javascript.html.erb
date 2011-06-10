@@ -28,6 +28,39 @@
 
   $(function() {
     
+    function load_index_trips(start_time) {
+      $("form.edit_trip").remove(); $("table.trips").show();
+      if (start_time) $("#calendar").weekCalendar("gotoWeek", start_time );
+      $("#page-header h1").html("View Trips");
+    }
+
+    function load_edit_trip(form) {
+      $('table.trips').after(form).hide();    
+      makeDialogs();
+      makeDatePickers();
+
+      $("#page-header h1").html("Edit Trip");
+    }
+    
+    function push_index_state() {
+       if (supports_history_api()) history.pushState({index: calendar_range}, "list trips", "<%= trips_path %>?" + $.param(calendar_range));
+    }
+    
+    function replace_index_state() {
+       if (supports_history_api()) history.replaceState({index: calendar_range}, "list trips", "<%= trips_path %>?" + $.param(calendar_range));
+    }
+    
+    function push_edit_state(path) {
+      if (supports_history_api()) history.pushState({edit: path}, "edit trip", path);
+    }
+
+    window.onpopstate = function(event) {
+      if (event.state) {
+        if (event.state['index']) load_index_trips(event.state['index'].start * 1000);
+        if (event.state.edit) $.get(event.state.edit, function(data){ load_edit_trip(data.form) }, "json");
+      }
+    };
+    
     // happens after you submit an address (not autocomplete)
     // an id should be returned, and then the form should close.
     // if no id is returned, error messages are filled in. 
@@ -55,6 +88,8 @@
         }
       }
     })
+    
+    var calendar_range;
 
     $('#calendar').weekCalendar({
         timeslotsPerHour: 4,
@@ -78,13 +113,22 @@
             }
         },
         eventClick: function(calEvent, element) {
-          window.location = "<%= edit_trip_path 'CHANGE_ME' %>".replace(/CHANGE_ME/, calEvent['id']);
+          var path = "<%= edit_trip_path 'CHANGE_ME' %>".replace(/CHANGE_ME/, calEvent['id']);
+          $.get(path, function(data){
+            push_edit_state(path);
+            load_edit_trip(data.form);
+          }, "json");
         },
         data: function(start, end, callback){
+          calendar_range = { start:start.getTime()/1000, end:end.getTime()/1000 };
+          
           $.getJSON('<%= trips_path :json %>',
-            { start:start.getTime()/1000, end:end.getTime()/1000 },
-            function(data, textStatus, jqXHR){
-              callback(data.events);
+            calendar_range,
+            function(data, textStatus, jqXHR){  
+              // we probably didn't have the right range before, so now  we should update the state
+              if ( $("form.edit_trip").length == 0 ) replace_index_state(); 
+                          
+              callback(data.events);              
 
               var table = $("#calendar").next("table");
               table.find("tr.trip").remove();
@@ -94,6 +138,10 @@
             }
           );
         }
+    });
+    
+    $("#calendar .wc-nav button").bind("click", function(e){
+      if ( $("form.edit_trip").length == 0 ) push_index_state(); 
     });
 
     <% if @trip.present? && @trip.pickup_time.present? %>
@@ -154,11 +202,8 @@
     });
     
     $('tr.trip a[data-remote]').live('ajax:success', function(e, data, status, xhr){
-      $('table.trips').after(data.form).hide();    
-      makeDialogs();
-      makeDatePickers();
-      
-      $("#page-header h1").html("Edit Trip");
+      push_edit_state($(this).attr("href"));
+      load_edit_trip(data.form);
     });
     
     $("form.edit_trip").live('ajax:complete', function(e, data, status, xhr){
@@ -168,10 +213,8 @@
         makeDialogs();
         makeDatePickers();
       } else  {
-        $("form.edit_trip").remove();
-        $("#calendar").weekCalendar("refresh");
-        $("table.trips").show();
-        $("#page-header h1").html("View Trips");
+        push_index_state();
+        load_index_trips(calendar_range.start * 1000);
       }
     })
   });
