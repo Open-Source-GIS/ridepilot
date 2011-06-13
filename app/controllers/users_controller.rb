@@ -42,6 +42,21 @@ class UsersController < Devise::SessionsController
       render :action=>:new_user
     end
   end
+  
+  def show_change_password
+    @user = current_user
+  end
+
+  def change_password
+    if current_user.update_password(params[:user])
+      sign_in(current_user, :bypass => true)
+      flash[:notice] = "Password changed"
+      redirect_to '/'
+    else
+      flash.now[:alert] = "Error updating password"
+      render :action=>:show_change_password
+    end
+  end
 
   def show_init
     #create initial user

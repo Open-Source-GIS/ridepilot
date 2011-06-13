@@ -8,6 +8,8 @@ Ridepilot::Application.routes.draw do
     get "init" => "users#show_init"
     post "init" => "users#init"
     post "change_provider" => "users#change_provider"
+    get "show_change_password" => "users#show_change_password"
+    match "change_password"  => "users#change_password"
   end
 
   resources :customers do

@@ -13,4 +13,13 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me
 
   model_stamper
+  
+  def update_password(params)
+    unless params[:password].blank?
+      self.update_with_password(params)
+    else
+      self.errors.add('password', :blank)
+      false
+    end
+  end
 end
