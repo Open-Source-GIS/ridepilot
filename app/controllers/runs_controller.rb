@@ -8,7 +8,7 @@
 
 class RunsController < ApplicationController
   load_and_authorize_resource
-  before_filter :filter_runs
+  before_filter :filter_runs, :only => :index
 
   def index
     respond_to do |format|
@@ -41,8 +41,9 @@ class RunsController < ApplicationController
   end
 
   def edit
-    @drivers = Driver.where(:provider_id=>@run.provider_id)
-    @vehicles = Vehicle.active.where(:provider_id=>@run.provider_id)
+    @drivers      = Driver.where(:provider_id=>@run.provider_id)
+    @vehicles     = Vehicle.active.where(:provider_id=>@run.provider_id)
+    @trip_results = TRIP_RESULT_CODES
   end
 
   def create

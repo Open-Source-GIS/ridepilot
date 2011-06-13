@@ -1,0 +1,23 @@
+<script type='text/javascript'>
+
+function makeDatePickers () {
+  $('#trip_pickup_time, #trip_appointment_time, [data-behavior=date-time-picker]').datetimepicker({
+  	ampm: false,
+  	hourMin: 8,
+  	hourMax: 18,
+		hourGrid: 3,
+  	minuteGrid: 15,
+		timeFormat: 'hh:mm',
+		dateFormat: 'yy-mm-dd',
+    showOn: "button",
+    buttonImage: "<%=  image_path 'calendar-clock.png' %>",
+    buttonImageOnly: true,
+    constrainInput: false
+  });
+}
+
+$(function(){
+  makeDatePickers();
+})
+
+</script>

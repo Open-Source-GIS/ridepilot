@@ -1,38 +1,83 @@
 <%= form_for @run do |f| %>
+<fieldset>
+  <ol class="section first">
+    <li>
+      <%= f.label :vehicle %>
+      <%= f.collection_select :vehicle_id, @vehicles, :id, :name %>
+    </li>
+    <li>
+      <%= f.label :driver %>
+      <%= f.collection_select :driver_id, @drivers, :id, :name %>
+    </li>
+    <li>
+      <%= f.label :date %>
+      <%= f.text_field :date, :class => "datepicker" %>
+    </li>
+  </ol>
+  <ol class="section second">
+    <li>
+      <%= f.label :scheduled_start_time %>
+      <%= f.text_field :scheduled_start_time, "data-behavior" => "date-time-picker" %>
+    </li>
+    <li>
+      <%= f.label :scheduled_end_time %>
+      <%= f.text_field :scheduled_end_time, "data-behavior" => "date-time-picker" %>
+    </li>
+    <li>
+      <%= f.label :actual_start_time %>
+      <%= f.text_field :actual_start_time, "data-behavior" => "date-time-picker" %>
+    </li>
+    <li>
+      <%= f.label :actual_end_time %>
+      <%= f.text_field :actual_end_time, "data-behavior" => "date-time-picker" %>
+    </li>
+  </ol>
+  <ol class="section third">
+    <li>
+      <%= f.label :start_odometer %>
+      <%= f.text_field :start_odometer %>
+    </li>
+    <li>
+      <%= f.label :end_odometer %>
+      <%= f.text_field :end_odometer %>
+    </li>
+    <li>
+      <%= f.label :unpaid_driver_break_time %>
+      <%= f.text_field :unpaid_driver_break_time %>
+    </li>
+    <li>
+      <%= f.label :paid %>
+      <%= f.select :paid, [["Yes", "true"], ["No", "false"]], {:selected => @run.paid.to_s } %>
+    </li>
+  </ol>
+</fieldset>
 
-<%= f.label :date %><br/>
-<%= f.text_field :date %><br/>
-<br/>
-<%= f.label :scheduled_start_time %><br/>
-<%= f.text_field :scheduled_start_time %><br/>
-<br/>
-<%= f.label :scheduled_end_time %><br/>
-<%= f.text_field :scheduled_end_time %><br/>
-<br/>
-<%= f.label :actual_start_time %><br/>
-<%= f.text_field :actual_start_time %><br/>
-<br/>
-<%= f.label :actual_end_time %><br/>
-<%= f.text_field :actual_end_time %><br/>
-<br/>
-<%= f.label :start_odometer %><br/>
-<%= f.text_field :start_odometer %><br/>
-<br/>
-<%= f.label :end_odometer %><br/>
-<%= f.text_field :end_odometer %><br/>
-<br/>
-<%= f.label :unpaid_driver_break_time %><br/>
-<%= f.text_field :unpaid_driver_break_time %><br/>
-<br/>
-<%= f.label :vehicle %><br/>
-<%= f.collection_select :vehicle_id, @vehicles, :id, :name %><br/>
-<br/>
-<%= f.label :driver %><br/>
-<%= f.collection_select :driver_id, @drivers, :id, :name %><br/>
-<br/>
-<%= f.label :paid %><br/>
-<%= f.select :paid, [["Yes", "true"], ["No", "false"]], {:selected => @run.paid.to_s } %><br/>
-<br/>
+<fieldset>
+  <table>
+    <tr>
+      <th>Customer Name</th>
+      <th>Result</th>
+      <th>Notes</th>
+    </tr>
+    <% @run.trips.each do |trip| %>
+      <% f.fields_for :trips, trip do |trip_fields| %>
+        <tr>
+          <td>
+            <%= trip.customer.name %>
+          </td>
+          <td>
+            <%= trip_fields.select :trip_result, @trip_results %>
+          </td>
+          <td>
+            <%= trip_fields.text_area :notes, :rows => 5 %>
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
+  </table>
+</fieldset>
 
-<%= f.submit %>
+<div class="actions">
+  <%= f.submit %>
+</div>
 <% end %>

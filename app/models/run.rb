@@ -10,6 +10,8 @@ class Run < ActiveRecord::Base
   before_validation :set_complete
 
   stampable :creator_attribute => :created_by_id, :updater_attribute => :updated_by_id
+  
+  accepts_nested_attributes_for :trips
 
   def set_complete
     if scheduled_end_time
