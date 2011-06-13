@@ -98,7 +98,7 @@
     var calendar_range;
 
     $('#calendar').weekCalendar({
-        date: <%= @start > 0 ? @start * 1000 : "new Date()" %>,
+        date: <%= @start && @start > 0 ? @start * 1000 : "new Date()" %>,
         timeslotsPerHour: 4,
         daysToShow: 5,
         firstDayOfWeek: 1,

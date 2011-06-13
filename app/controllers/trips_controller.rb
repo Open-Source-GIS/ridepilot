@@ -149,7 +149,7 @@ class TripsController < ApplicationController
 
       @trip = Trip.new(trip_params)
       if @trip.save
-        redirect_to(trips_path, :notice => 'Trip was successfully created.') 
+        redirect_to(trips_path(:start => @trip.pickup_time.to_i), :notice => 'Trip was successfully created.') 
       else
         prep_view
         @schedule = repeating_trip.schedule_attributes
@@ -158,7 +158,7 @@ class TripsController < ApplicationController
     else
       @trip = Trip.new(trip_params)
       if @trip.save
-        redirect_to(trips_path, :notice => 'Trip was successfully created.') 
+        redirect_to(trips_path(:start => @trip.pickup_time.to_i), :notice => 'Trip was successfully created.') 
       else
         prep_view
         repeating_trip = RepeatingTrip.new
