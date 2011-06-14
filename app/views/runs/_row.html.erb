@@ -4,7 +4,6 @@
   <td><%= run.vehicle ? run.vehicle.name : 'no vehicle' %></td>
   <td><%= run.driver  ? run.driver.name : 'no driver' %></td>
   <td><%= run.complete ? 'Complete' : 'Incomplete' %></td>
-  <td><%= link_to 'Show', run %></td>
   <td><% if can? :edit, run %><%= link_to 'Edit', edit_run_path(run) %><% end %></td>
   <td><%= link_to 'Destroy', run, :confirm => 'Are you sure?', :method => :delete %></td>
 </tr>

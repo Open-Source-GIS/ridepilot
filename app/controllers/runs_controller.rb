@@ -55,7 +55,7 @@ class RunsController < ApplicationController
 
     respond_to do |format|
       if @run.save
-        format.html { redirect_to(@run, :notice => 'Run was successfully created.') }
+        format.html { redirect_to(runs_path, :notice => 'Run was successfully created.') }
         format.xml  { render :xml => @run, :status => :created, :location => @run }
       else
         @drivers = Driver.where(:provider_id=>@run.provider_id)
@@ -74,7 +74,7 @@ class RunsController < ApplicationController
 
     respond_to do |format|
       if @run.update_attributes(run_params)
-        format.html { redirect_to(@run, :notice => 'Run was successfully updated.') }
+        format.html { redirect_to(runs_path, :notice => 'Run was successfully updated.') }
         format.xml  { head :ok }
       else
         @drivers = Driver.where(:provider_id=>@run.provider_id)
