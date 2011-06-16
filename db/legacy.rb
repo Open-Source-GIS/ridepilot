@@ -35,7 +35,11 @@ CSV.foreach(File.join(Rails.root,'db','legacy','tblClient.txt'),headers: true) d
     c.ethnicity = ETHNICITIES[r['Race']]
     c.created_at = r['Created']
     c.updated_at = r['LastChanged']
-    c.inactivated_date = Date.today if r['Gone']=1 
+    if r['Gone'] == '1'
+      c.inactivated_date = Date.today
+    else
+      c.inactivated_date = nil
+    end
     c.private_notes = r['Comment']
     c.provider = p
     c.mobility = m
