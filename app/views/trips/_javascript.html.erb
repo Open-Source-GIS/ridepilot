@@ -108,9 +108,15 @@
         overlapEventsSeparate: true,
         headerSeparator: ", ",
         timeslotHeight: 15,
+        calendarBeforeLoad: function($calendar){
+          // Add the calendar expander
+          $("#expand_calendar").remove().appendTo("div.wc-toolbar").show();
+        },
         height: function($calendar){
-              calHeight = $(window).height() * 0.3 + 40;
-              return calHeight;
+          if ( $("#calendar")[0].$expanded )
+            return ($(".wc-hour-header").eq(0).height() + 8) * 10 - 7;
+          else
+            return ($(window).height() * 0.3 + 40);
         },
         textSize: 10,
         defaultEventLength: 3,
@@ -183,6 +189,21 @@
     };
     
     makeDialogs();
+
+    $("#expand_calendar button").live("click", function(e){
+      var cal       = $("#calendar")[0];
+      cal.$expanded = !cal.$expanded; // toggle expanded state
+
+      // toggle class on expander button
+      $(this).find(".ui-icon").
+        toggleClass("ui-icon-arrowthickstop-1-s").
+        toggleClass("ui-icon-arrowthickstop-1-n");
+
+      $(this).attr("title", cal.$expanded ? "Shrink" : "Expand" );
+
+      // Trigger window resize so calendar is resized properly
+      $(window).trigger("resize");
+    });
 
     $('#pickup_search_address').live('railsAutocomplete.select', function(e, selected){
       autocompleted(selected, 'pickup');
