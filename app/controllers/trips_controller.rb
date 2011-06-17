@@ -144,6 +144,7 @@ class TripsController < ApplicationController
       #the repeating trip, and the instance for today
       repeating_trip_params = extract_repeating_trip_params trip_params
       repeating_trip = RepeatingTrip.create(repeating_trip_params)
+      repeating_trip.instantiate
       trip_params[:repeating_trip_id] = repeating_trip.id
       trip_params.delete :schedule_attributes
 
@@ -186,6 +187,7 @@ class TripsController < ApplicationController
       end
 
       repeating_trip = @trip.repeating_trip.update_attributes(repeating_trip_params)
+      @trip.repeating_trip.instantiate
       trip_params.delete :schedule_attributes
     end
     
