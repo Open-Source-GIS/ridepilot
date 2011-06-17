@@ -39,7 +39,7 @@ class AddressesController < ApplicationController
       city_state_zip = ''
     end
 
-    addresses = Address.accessible_by(current_ability).where(["((LOWER(address) like ? || '%' ) and  (city || ', ' || state || ' ' || zip like ? || '%')) or LOWER(building_name) like ? || '%' or LOWER(name) like ? || '%' ", address, city_state_zip, term, term])
+    addresses = Address.accessible_by(current_ability).where(["((LOWER(address) like '%' || ? || '%' ) and  (city || ', ' || state || ' ' || zip like ? || '%')) or LOWER(building_name) like '%' || ? || '%' or LOWER(name) like '%' || ? || '%' ", address, city_state_zip, term, term])
 
     if addresses.size > 0
       #there are some existing addresses
