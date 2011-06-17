@@ -1036,3 +1036,22 @@ body.monthlies a.new-report {
 body.runs .wc-nav {
   margin-bottom : 20px;
 }
+
+/*
+ *
+ * Trips
+ *
+ */
+body.trips div.wc-toolbar {
+  position : relative;
+}
+
+body.trips div.wc-toolbar div#expand_calendar {
+  position : absolute;
+  right    : 5px;
+  top      : 5px;
+}
+
+body.trips div.wc-toolbar div#expand_calendar span.ui-icon {
+  margin : -6px 0 0 -1px;
+}
