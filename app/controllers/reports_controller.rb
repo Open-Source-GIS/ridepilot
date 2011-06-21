@@ -114,11 +114,11 @@ class ReportsController < ApplicationController
 
     #computes number of trips in and out of district by purpose
 
-    sql = "select trip_purpose, in_district, count(*) as ct from trips where provider_id = ? and pickup_time between ? and ? group by trip_purpose, in_district"
+    sql = "select trip_purpose, in_district, round_trip, count(*) as ct from trips where provider_id = ? and pickup_time between ? and ? group by trip_purpose, in_district, round_trip"
 
     counts_by_purpose = ActiveRecord::Base.connection.select_all(bind(
         [sql, current_provider_id, @start_date, @end_date]))
-
+    
     by_purpose = {}
     for purpose in TRIP_PURPOSES
       by_purpose[purpose] = {'purpose' => purpose, 'in_district' => 0, 'out_of_district' => 0}
@@ -126,23 +126,25 @@ class ReportsController < ApplicationController
     @total = {'in_district' => 0, 'out_of_district' => 0}
 
     for row in counts_by_purpose
-      purpose = row[0]
-      if !by_purpose.member? purpose
-        next
-      end
-      if row[1]
-        by_purpose[purpose]['in_district'] = row[2]
-        @total['in_district'] += row[2]
+      purpose = row["trip_purpose"]
+      next unless by_purpose.member?( purpose )
+
+      multiplier = row["round_trip"] == "t" ? 2 : 1
+           
+      if row["in_district"] == "t"
+        by_purpose[purpose]['in_district'] += row["ct"].to_i * multiplier
+        @total['in_district'] += row["ct"].to_i * multiplier
       else
-        by_purpose[purpose]['out_of_district'] = row[2]
-        @total['out_of_district'] += row[2]
+        by_purpose[purpose]['out_of_district'] += row["ct"].to_i * multiplier        
+        @total['out_of_district'] += row["ct"].to_i * multiplier
       end
     end
+        
     @trips_by_purpose = []
     for purpose in TRIP_PURPOSES
       @trips_by_purpose << by_purpose[purpose]
     end
-purpose
+    
     #compute monthly totals
     month_runs = Run.where(["provider_id = ? and date BETWEEN ? and ? and start_odometer is not null and end_odometer is not null", current_provider_id, @start_date, @end_date])
 
