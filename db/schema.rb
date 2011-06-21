@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110517195041) do
+ActiveRecord::Schema.define(:version => 20110621175302) do
 
   create_table "addresses", :force => true do |t|
     t.string   "name"
@@ -20,8 +20,8 @@ ActiveRecord::Schema.define(:version => 20110517195041) do
     t.string   "state"
     t.string   "zip"
     t.boolean  "in_district"
-    t.integer  "provider_id"
     t.point    "the_geom",      :limit => nil,                :srid => 4326
+    t.integer  "provider_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "created_by_id"
@@ -202,6 +202,7 @@ ActiveRecord::Schema.define(:version => 20110517195041) do
     t.integer  "created_by_id"
     t.integer  "updated_by_id"
     t.integer  "lock_version",                                      :default => 0
+    t.boolean  "round_trip"
   end
 
   add_index "trips", ["provider_id", "appointment_time"], :name => "index_trips_on_provider_id_and_appointment_time"
@@ -210,7 +211,6 @@ ActiveRecord::Schema.define(:version => 20110517195041) do
   create_table "users", :force => true do |t|
     t.string   "email",                               :default => "", :null => false
     t.string   "encrypted_password",   :limit => 128, :default => "", :null => false
-    t.string   "password_salt",                       :default => "", :null => false
     t.string   "reset_password_token"
     t.string   "remember_token"
     t.datetime "remember_created_at"

@@ -33,6 +33,11 @@
       </li>
 
       <li class="selfclear">
+        <%= f.label :round_trip, "Round Trip:" %>
+        <%= f.check_box :round_trip %>
+      </li>
+
+      <li class="selfclear">
         <!-- we need some complexity, because this form handles 
              both trips and repeating trips.
              So, we'll just put all the repeating stuff into
