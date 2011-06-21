@@ -1052,3 +1052,14 @@ body.trips div.wc-toolbar div#expand_calendar {
 body.trips div.wc-toolbar div#expand_calendar span.ui-icon {
   margin : -6px 0 0 -1px;
 }
+
+body.trips div.wc-cal-event {
+  background-color : #A9CAF2;
+  color : #000;
+}
+
+body.trips .wc-cal-event .wc-time {
+  color : #000;
+  background-color: #68A1E5;
+  border: 1px solid #68A1E5;
+}
