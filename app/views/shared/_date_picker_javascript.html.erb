@@ -2,12 +2,12 @@
 
 function makeDatePickers () {
   $('#trip_pickup_time, #trip_appointment_time, [data-behavior=date-time-picker]').datetimepicker({
-  	ampm: false,
+  	ampm: true,
   	hourMin: 8,
   	hourMax: 18,
 		hourGrid: 3,
   	minuteGrid: 15,
-		timeFormat: 'hh:mm',
+		timeFormat: 'hh:mm TT',
 		dateFormat: 'yy-mm-dd',
     showOn: "button",
     buttonImage: "<%=  image_path 'calendar-clock.png' %>",

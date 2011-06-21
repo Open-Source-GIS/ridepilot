@@ -2,15 +2,17 @@ function ISODateFormatToDateObject(str) {
   if(str === null) return null;
 
   var parts = str.split(' ');
-  if(parts.length < 2) return null;
+  if(parts.length < 3) return null;
 
   var dateParts = parts[0].split('-'),
   timeSubParts = parts[1].split(':'),
-  timeHours = Number(timeSubParts[0]);
+  timeHours = Number(timeSubParts[0]),
+  amPm = parts[2].toUpperCase();
 
   _date = new Date();
   _date.setFullYear( Number(dateParts[0]), (Number(dateParts[1])-1), Number(dateParts[2]) );
-  _date.setHours(Number(timeHours), Number(timeSubParts[1]), 0, 0);
+  
+  _date.setHours(Number( amPm == "PM" && timeHours != 12 ? timeHours + 12 : timeHours), Number(timeSubParts[1]), 0, 0);
 
   return _date;
 }
@@ -43,7 +45,7 @@ $(function() {
   var setAppointmentTime = function() {
     var pickupTimeDate = ISODateFormatToDateObject($('#trip_pickup_time').attr("value"));
     var appointmentTimeDate = new Date(pickupTimeDate.getTime() + (1000 * 60 * 30));    
-    $('#trip_appointment_time').attr( "value", appointmentTimeDate.format("yyyy-mm-dd HH:MM"));
+    $('#trip_appointment_time').attr( "value", appointmentTimeDate.format("yyyy-mm-dd hh:MM TT"));
     
     return appointmentTimeDate;
   };
