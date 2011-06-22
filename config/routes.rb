@@ -22,7 +22,6 @@ Ridepilot::Application.routes.draw do
 
   resources :trips do 
     post :reached, :as => :reached
-    post :unreached, :as => :unreached
     post :confirm, :as => :confirm
     post :turndown, :as => :turndown
     post :no_show, :as => :no_show

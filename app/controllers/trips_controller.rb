@@ -65,21 +65,8 @@ class TripsController < ApplicationController
     @trip = Trip.find(params[:trip_id])
     if can? :edit, @trip
       @trip.called_back_at = Time.now
-      @trip.called_back_by = current_user.id
+      @trip.called_back_by = current_user
       @trip.customer_informed = true
-      @trip.save
-    end
-    redirect_to :action=>:trips_requiring_callback
-  end
-
-  def unreached
-    #note that we have called the user to approve or turn down their trip
-    #but did not reach them
-    @trip = Trip.find(params[:trip_id])
-    if can? :edit, @trip
-      @trip.called_back_at = Time.now
-      @trip.called_back_by = current_user.id
-      @trip.customer_informed = false
       @trip.save
     end
     redirect_to :action=>:trips_requiring_callback

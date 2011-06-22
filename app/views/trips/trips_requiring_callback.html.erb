@@ -9,7 +9,6 @@
     <th>Result</th>
     <th>Last called back</th>
     <th></th>
-    <th></th>
   </tr>
 
 <% @trips.each do |trip| %>
@@ -19,7 +18,6 @@
     <td><%= trip.trip_result %></td>
     <td><%= trip.called_back_at ? trip.called_back_at : "not yet called" %></td>
     <td><%= button_to 'Mark as reached', trip_reached_path(trip) %></td>
-    <td><%= button_to "Called but didn't reach", trip_unreached_path(trip) %></td>
   </tr>
 <% end %>
 </table>
