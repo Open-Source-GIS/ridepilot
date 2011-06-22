@@ -16,6 +16,7 @@ class Trip < ActiveRecord::Base
 
   before_validation :compute_in_district
   before_validation :compute_run
+  
   validates_presence_of :pickup_address_id
   validates_presence_of :dropoff_address_id
   validates_presence_of :pickup_time

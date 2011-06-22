@@ -29,7 +29,7 @@ class TripsController < ApplicationController
     #trips.  This is a list of all trips that haven't been decided
     #on yet.
 
-    @trips = Trip.accessible_by(current_ability).where(["trip_result = 'unscheduled' and pickup_time >= ? ", Date.today]).order("pickup_time")
+    @trips = Trip.accessible_by(current_ability).where(["trip_result = '' and pickup_time >= ? ", Date.today]).order("pickup_time")
   end
 
   def reconcile_cab
@@ -230,7 +230,7 @@ class TripsController < ApplicationController
     @drivers = Driver.where(:provider_id=>@trip.provider_id)
     cab_vehicle = Vehicle.new(:name=>"cab", :id=>-1)
     @vehicles = Vehicle.active.where(:provider_id=>@trip.provider_id) + [cab_vehicle]
-    @trip_results = TRIP_RESULT_CODES
+    @trip_results = TRIP_RESULT_CODES.map { |k,v| [v,k] }
     @trip_purposes = TRIP_PURPOSES
   end
   

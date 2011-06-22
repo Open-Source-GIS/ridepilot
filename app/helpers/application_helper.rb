@@ -1,5 +1,9 @@
 module ApplicationHelper
-
+  
+  def display_trip_result(trip_result)
+    TRIP_RESULT_CODES[trip_result] || "Unscheduled"
+  end
+  
   def format_newlines(text)
     return text.gsub("\n", "<br/>")
   end

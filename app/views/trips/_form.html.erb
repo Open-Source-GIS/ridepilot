@@ -131,7 +131,7 @@
     <ol class="section third">
       <li class="selfclear">
         <%= f.label :trip_result, "Result:" %>
-        <%= f.select :trip_result, @trip_results %>
+        <%= f.select :trip_result, @trip_results, :include_blank => true %>
       </li>
 
       <li class="selfclear donation">

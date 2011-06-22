@@ -43,7 +43,7 @@ class RunsController < ApplicationController
   def edit
     @drivers      = Driver.where(:provider_id=>@run.provider_id)
     @vehicles     = Vehicle.active.where(:provider_id=>@run.provider_id)
-    @trip_results = TRIP_RESULT_CODES
+    @trip_results = TRIP_RESULT_CODES.map { |k,v| [v,k] }
   end
 
   def create

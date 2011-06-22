@@ -18,7 +18,7 @@
     <td><%= trip.customer.name %></td>
     <td><%= trip.pickup_address.text %></td>
     <td><%= trip.dropoff_address.text %></td>
-    <td><%= trip.trip_result %></td>
+    <td><%= display_trip_result trip.trip_result %></td>
 
     <td><%= button_to 'Mark as no-show', trip_no_show_path(trip) %></td>
 

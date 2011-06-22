@@ -66,7 +66,7 @@
             <%= trip.customer.name %>
           </td>
           <td>
-            <%= trip_fields.select :trip_result, @trip_results %>
+            <%= trip_fields.select :trip_result, @trip_results, :include_blank => true %>
           </td>
           <td>
             <%= trip_fields.text_area :notes, :rows => 5 %>

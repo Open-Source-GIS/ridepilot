@@ -1,7 +1,7 @@
 <tr class="trip">
   <td><%= trip.customer.name %></td>
   <td><%= trip.pickup_time.to_s %></td>
-  <td><%= trip.trip_result %></td>
+  <td><%= display_trip_result(trip.trip_result) %></td>
   <td><% if can? :edit, trip %><%= link_to 'Edit', edit_trip_path(trip), "data-remote" => true %><% end %></td>
   <td><%= link_to 'Destroy', trip, :confirm => 'Are you sure?', :method => :delete %></td>
 </tr>
