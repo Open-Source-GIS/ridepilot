@@ -33,6 +33,11 @@
     <%= label_tag "#{prefix}_zip", "ZIP:" %>
     <%= text_field_tag "#{prefix}_zip", address.zip %>
   </li>
+  
+  <li class="selfclear">
+    <%= label_tag "#{prefix}_phone_number", "Phone Number:" %>
+    <%= text_field_tag "#{prefix}_phone_number", address.phone_number %>
+  </li>
 
   <li class="selfclear">
     <%= label_tag "#{prefix}_in_district", "In TriMet District:" %>

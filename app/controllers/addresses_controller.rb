@@ -98,7 +98,7 @@ class AddressesController < ApplicationController
 
     prefix = params['prefix']
     address_params = {}
-    for param in ['name', 'building_name', 'address', 'city', 'state', 'zip']
+    for param in ['name', 'building_name', 'address', 'city', 'state', 'zip', 'phone_number']
       address_params[param] = params[prefix + "_" + param]
     end
     address_params[:provider_id] = current_provider_id
