@@ -20,6 +20,7 @@ class Trip < ActiveRecord::Base
   validates_presence_of :dropoff_address_id
   validates_presence_of :pickup_time
   validates_presence_of :appointment_time
+  validates_presence_of :trip_purpose
 
   validates_associated :pickup_address
   validates_associated :dropoff_address
