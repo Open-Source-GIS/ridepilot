@@ -8,11 +8,11 @@ class Address < ActiveRecord::Base
   normalize_attribute :address, :with=> [:squish, :titleize]
   normalize_attribute :city, :with=> [:squish, :titleize]
 
-  validates_length_of :address, :minimum=>5
-  validates_length_of :city, :minimum=>2
-  validates_length_of :state, :is=>2
-  validates_length_of :zip, :is=>5, :allow_nil => true
-
+  validates :address, :length => { :minimum => 5 }
+  validates :city,    :length => { :minimum => 2 }
+  validates :state,   :length => { :is => 2 }
+  validates :zip,     :length => { :is => 5, :if => lambda { |a| a.zip.present? } }
+  
   before_validation :compute_in_trimet_district
 
   stampable :creator_attribute => :created_by_id, :updater_attribute => :updated_by_id
