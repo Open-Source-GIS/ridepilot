@@ -90,22 +90,24 @@ class AddressesController < ApplicationController
 
   def create
     authorize! :new, Address
-    if params[:lat].to_s.size > 0
-      the_geom = Point.from_x_y(params[:lon].to_f, params[:lat].to_f, 4326)
-    else
-      the_geom = nil
-    end
-
-    prefix = params['prefix']
+    
+    the_geom       = params[:lat].to_s.size > 0 ? Point.from_x_y(params[:lon].to_f, params[:lat].to_f, 4326) : nil
+    prefix         = params['prefix']
     address_params = {}
+    
     for param in ['name', 'building_name', 'address', 'city', 'state', 'zip', 'phone_number']
       address_params[param] = params[prefix + "_" + param]
     end
+    
     address_params[:provider_id] = current_provider_id
-    address_params[:the_geom] = the_geom
+    address_params[:the_geom]    = the_geom
+    
     address = Address.new(address_params)
+    
     if address.save
-      render :json => {'id' => address.id, 'label' => address.text}
+      address_json = {'id' => address.id, 'label' => address.text}
+      address_json.merge!( 'phone_number' => address.phone_number ) if prefix == "dropoff"
+      render :json => address_json
     else
       errors = address.errors.clone
       errors['prefix'] = prefix

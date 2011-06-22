@@ -73,13 +73,12 @@
     // if no id is returned, error messages are filled in. 
     $('.address-search').live('ajax:success', function(evt, data, status, xhr){
       if (data.id) {
-        //successfully created a new address
-        id_field_id = $(this).attr('data-id-element');
-        $(id_field_id).val(data.id);
-        label_field_id = $(this).attr('data-label-element');
-        $(label_field_id).val(data.label);
-        //close dialog
-        $($(this)[0].parentNode).dialog( "close" );
+        $( $(this).attr('data-id-element') ).val(data.id);
+        $( $(this).attr('data-label-element') ).val(data.label);
+        
+        if (data.phone_number) $("#dropoff_phone").val(data.phone_number);
+
+        $( $(this)[0].parentNode ).dialog( "close" );
       } else {
         //failed to create an address
         for (var field in data) {

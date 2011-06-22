@@ -76,8 +76,8 @@
       </li>
 
       <li class="selfclear">
-        <label for="alt_phone">Alt. Phone:</label>
-        <input type="text" size="30" name="alt_phone" id="alt_phone" value="<%= @customer.try(:phone_number_2) %>" readonly="readonly"/>
+        <label for="dropoff_phone">Dropoff Phone:</label>
+        <input type="text" size="30" name="dropoff_phone" id="dropoff_phone" value="<%= @trip.dropoff_address.try(:phone_number) %>" readonly="readonly"/>
       </li>
     </ol>
     
