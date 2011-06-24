@@ -14,6 +14,15 @@ class User < ActiveRecord::Base
 
   model_stamper
   
+  before_create do
+    self.email.downcase! if self.email
+  end
+  
+  def self.find_for_authentication(conditions) 
+    conditions[:email].downcase! 
+    super(conditions) 
+  end
+  
   def update_password(params)
     unless params[:password].blank?
       self.update_with_password(params)
