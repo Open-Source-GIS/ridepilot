@@ -39,8 +39,11 @@ Ridepilot::Application.routes.draw do
   end
 
   resources :addresses do
-    get :find_or_create, :on=>:collection
-    get :autocomplete, :on=>:collection
+    collection do
+      get :find_or_create
+      get :autocomplete
+      get :search
+    end
   end
 
   resources :drivers

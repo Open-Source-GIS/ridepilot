@@ -6,6 +6,7 @@ class Provider < ActiveRecord::Base
   has_many :monthlies
   has_many :funding_source_visibilities
   has_many :funding_sources, :through=>:funding_source_visibilities
+  has_many :addresses
 
   has_attached_file :logo, :styles => { :small => "150x150>" }
 

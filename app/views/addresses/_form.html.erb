@@ -1,3 +1,18 @@
+<% form_for @address do |form| %>
+  <% if @address.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@address.errors.count, "error") %> prohibited this address from being saved:</h2>
+      <ul>
+      <% @address.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <fieldset>
+
+    <ol class="section first">
       <li class="selfclear">
         <%= form.label :name, "Address Name:" %>
         <%= form.text_field :name %>
@@ -32,5 +47,14 @@
         <%= form.label :phone_number, "Phone Number:" %>
         <%= form.text_field :phone_number %>
       </li>
-
-<!-- TODO: geocode -->
+      
+      <li class="selfclear">
+        <%= form.label :in_district, "In TriMet District:" %>
+        <%= form.select :in_district, options_for_select([["Yes", "true"], ["No", "false"]]) %>
+      </li>
+    </ol>
+  </fieldset>
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

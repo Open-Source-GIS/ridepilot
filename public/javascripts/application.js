@@ -111,4 +111,17 @@ $(function() {
     
   });
   
+  $("#search_addresses").bind('ajax:complete', function(event, data, xhr, status){
+    var form    = $(this);
+    var table   = $("#address_results");
+    var results = $(data.responseText);
+    
+    table.find("tr").not("tr:first-child").remove();
+    
+    if (results[0] && results[0].nodeName.toUpperCase() == "TR")
+      table.append(results);
+    else
+      table.append("<tr><td>There was an error searching</td></tr>");
+  });
+  
 });

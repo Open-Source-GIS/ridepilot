@@ -1,0 +1,21 @@
+<% if @addresses.present? %>
+  <% for address in @addresses %>
+    <tr>
+      <td class="name">
+        <%= can?(:edit, Address) ? link_to( address.name, edit_address_path(address) ) : address.name %>
+      </td>
+      <td><%= address.building_name %></td>
+      <td><%= address.address %></td>
+      <td><%= address.city %></td>
+      <td><%= address.state %></td>
+      <td><%= address.phone_number %></td>
+      <td><%= address.in_district? ? "In District" : "Out of District" %></td>
+      <% if can? :edit, Address %>
+      <td><%= link_to "Edit", edit_address_path(address), :class=>'edit edit-address' %></td>
+      <!-- <td><%#= link_to "Delete", address, :confirm => 'Are you sure?', :method => :delete, :class=>'delete' %></td> -->
+      <% end %>
+    </tr>
+  <% end %>
+<% else %>
+  <tr><td>No results for &lsquo;<%= @term %>&rsquo;</td></tr>
+<% end %>

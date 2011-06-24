@@ -1,7 +1,7 @@
 require 'open-uri'
 
 class AddressesController < ApplicationController
-
+  load_and_authorize_resource
   def autocomplete
     term = params['term'].downcase.strip
 
@@ -95,7 +95,7 @@ class AddressesController < ApplicationController
     prefix         = params['prefix']
     address_params = {}
     
-    for param in ['name', 'building_name', 'address', 'city', 'state', 'zip', 'phone_number']
+    for param in ['name', 'building_name', 'address', 'city', 'state', 'zip', 'phone_number', 'in_district']
       address_params[param] = params[prefix + "_" + param]
     end
     
@@ -113,7 +113,25 @@ class AddressesController < ApplicationController
       errors['prefix'] = prefix
       render :json => errors
     end
-
+  end
+  
+  def search
+    @term      = params[:name]
+    @addresses = Address.accessible_by(current_ability).
+      where(["LOWER(name) like '%' || ? || '%' ", @term])
+    
+    respond_to do |format|
+      format.json { render :text => render_to_string(:partial => "results.html") }
+    end
+  end
+  
+  def update
+    if @address.update_attributes params[:address]
+      flash[:notice] = "Address '#{@address.name}' was successfully updated"
+      redirect_to provider_path(@address.provider)
+    else
+      render :action => :edit
+    end
   end
 
 end
