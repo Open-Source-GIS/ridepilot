@@ -2,6 +2,7 @@ require 'open-uri'
 
 class AddressesController < ApplicationController
   load_and_authorize_resource
+    
   def autocomplete
     term = params['term'].downcase.strip
 
@@ -118,7 +119,7 @@ class AddressesController < ApplicationController
   def search
     @term      = params[:name]
     @addresses = Address.accessible_by(current_ability).
-      where(["LOWER(name) like '%' || ? || '%' ", @term])
+      where(["LOWER(name) like '%' || ? || '%' ", @term]).where(:inactive => false)
     
     respond_to do |format|
       format.json { render :text => render_to_string(:partial => "results.html") }
