@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110622210256) do
+ActiveRecord::Schema.define(:version => 20110627162828) do
 
   create_table "addresses", :force => true do |t|
     t.string   "name"
@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(:version => 20110622210256) do
     t.string   "state"
     t.string   "zip"
     t.boolean  "in_district"
-    t.point    "the_geom",      :limit => nil,                :srid => 4326
+    t.point    "the_geom",      :limit => nil,                    :srid => 4326
     t.integer  "provider_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(:version => 20110622210256) do
     t.integer  "updated_by_id"
     t.integer  "lock_version",                 :default => 0
     t.string   "phone_number"
+    t.boolean  "inactive",                     :default => false
   end
 
   add_index "addresses", ["the_geom"], :name => "index_addresses_on_the_geom", :spatial => true
@@ -186,7 +187,7 @@ ActiveRecord::Schema.define(:version => 20110622210256) do
     t.integer  "mobility_id"
     t.integer  "funding_source_id"
     t.string   "trip_purpose"
-    t.string   "trip_result"
+    t.string   "trip_result",                                       :default => ""
     t.text     "notes"
     t.decimal  "donation",           :precision => 10, :scale => 2, :default => 0.0
     t.integer  "provider_id"
