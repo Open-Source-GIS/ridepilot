@@ -67,7 +67,7 @@
 
     <ol class="section second">
       <%= f.fields_for :address do |address_form| %>
-      <%= render 'addresses/form', :form=>address_form %>
+      <%= render 'addresses/form', :form=>address_form, :editing_address => false %>
       <% end %>
 
       <li class="selfclear">
