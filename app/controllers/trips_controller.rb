@@ -224,7 +224,7 @@ class TripsController < ApplicationController
 
   def prep_view
     @customer = @trip.customer
-    authorize! :read, @customer
+    authorize! :read, @trip
     @mobilities = Mobility.all
     @funding_sources = FundingSource.all
     @drivers = Driver.where(:provider_id=>@trip.provider_id)
