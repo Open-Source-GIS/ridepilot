@@ -154,6 +154,7 @@
 <h2 class="section-header">Addresses</h2>
 
 <% form_tag search_addresses_path, :method => :get, :remote => true, :id => "search_addresses" do %>
+  <%= hidden_field_tag :provider_id, @provider.id %>
   <fieldset>
     <ol class="section fourth">
       <li>

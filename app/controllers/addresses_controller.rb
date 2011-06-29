@@ -118,8 +118,9 @@ class AddressesController < ApplicationController
   
   def search
     @term      = params[:name]
+    @provider  = Provider.find params[:provider_id]
     @addresses = Address.accessible_by(current_ability).
-      where(["LOWER(name) like '%' || ? || '%' ", @term]).where(:inactive => false)
+      where(["LOWER(name) like '%' || ? || '%' ", @term]).where(:provider_id => @provider.id)
     
     respond_to do |format|
       format.json { render :text => render_to_string(:partial => "results.html") }
