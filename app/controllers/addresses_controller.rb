@@ -117,7 +117,7 @@ class AddressesController < ApplicationController
   end
   
   def search
-    @term      = params[:name]
+    @term      = params[:name].downcase
     @provider  = Provider.find params[:provider_id]
     @addresses = Address.accessible_by(current_ability).
       where(["LOWER(name) like '%' || ? || '%' ", @term]).where(:provider_id => @provider.id)

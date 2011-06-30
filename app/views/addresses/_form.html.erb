@@ -29,6 +29,8 @@
         <%= form.text_field :zip %>
       </li>
       
+      <%= form.hidden_field :provider_id %>
+
       <% if editing_address %>
       <li class="selfclear">
         <%= form.label :phone_number, "Phone Number:" %>

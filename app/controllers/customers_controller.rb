@@ -135,7 +135,7 @@ regexp_replace(phone_number_2, '[^0-9]', '') = ?
 
   def new
     @customer = Customer.new name_options
-    @customer.address ||= Address.new
+    @customer.address ||= @customer.build_address :provider => current_provider
     @mobilities = Mobility.all
     @ethnicities = ETHNICITIES
 
@@ -276,7 +276,7 @@ dmetaphone_alt(%s) LIKE dmetaphone_alt(?) || '%%')" % [field, field, field, fiel
       end if parts.length > 1
 
       atts
-    end
+    end || {}
   end
 
 end
