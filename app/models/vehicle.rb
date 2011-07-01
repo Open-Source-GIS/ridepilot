@@ -5,7 +5,7 @@ class Vehicle < ActiveRecord::Base
   has_many :vehicle_maintenance_events
 
   default_scope :order => 'active, name'
-  named_scope :active, :conditions => { :active => true }
+  scope :active, :conditions => { :active => true }
 
   validates_length_of :vin, :is=>17, :allow_nil => true
   validates_format_of :vin, :with => /^[^ioq]*$/i, :allow_nil => true
