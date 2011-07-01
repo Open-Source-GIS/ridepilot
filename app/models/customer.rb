@@ -43,6 +43,8 @@ class Customer < ActiveRecord::Base
       :phone_number_1  => phone_number_1, 
       :phone_number_2  => phone_number_2,
       :mobility_notes  => mobility_notes,
+      :address         => address.text,
+      :address_id      => address.id,
       :private_notes   => private_notes,
       :group           => group
     }
