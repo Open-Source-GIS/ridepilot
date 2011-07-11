@@ -1,0 +1,49 @@
+<div id="page-header">
+  <h1>Dispatcher</h1>
+</div>
+
+<div id="tree">
+  Tree
+</div>
+
+<div id="map-container">
+  
+</div>
+
+<style type="text/css" media="screen">
+  #tree {
+    width : 300px;
+    margin: 0 20px 0;
+    float : left;
+  }
+  
+  #map-container {
+    width : 625px;
+    height : 490px;
+  }
+</style>
+
+<script type="text/javascript"
+    src="http://maps.google.com/maps/api/js?sensor=false">
+</script>
+
+<script type="text/javascript" charset="utf-8">
+  function Dispatcher (tree_id, map_id) {
+    this._dispatcher    = this,
+    this.tree           = $("#" + tree_id),
+    this.map            = null,
+    
+    this.init = function(container){
+      this._dispatcher.map = new google.maps.Map( document.getElementById(container), {
+        zoom      : 11,
+        mapTypeId : google.maps.MapTypeId.ROADMAP, 
+        center    : new google.maps.LatLng(45.5234515, -122.6762071)
+      });
+    };
+    
+    this.init(map_id);
+  }
+  
+  var d = new Dispatcher("tree", "map-container");
+  
+</script>

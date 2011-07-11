@@ -16,7 +16,7 @@ GIT
 
 GIT
   remote: https://github.com/javan/whenever.git
-  revision: 8515ffb528f2a31d5bcee786e4e037efb97d4882
+  revision: 42061be142ea9dc05f45921c91a8631dc1a6c77b
   specs:
     whenever (0.6.8)
       activesupport (>= 2.3.4)
@@ -73,7 +73,7 @@ GEM
       xpath (~> 0.1.4)
     childprocess (0.1.9)
       ffi (~> 1.0.6)
-    chronic (0.4.4)
+    chronic (0.5.0)
     cocaine (0.1.0)
     devise (1.4.2)
       bcrypt-ruby (~> 2.1.2)
@@ -109,10 +109,11 @@ GEM
       net-ssh (>= 1.99.1)
     nokogiri (1.5.0)
     orm_adapter (0.0.5)
-    paperclip (2.3.12)
+    paperclip (2.3.15)
       activerecord (>= 2.3.0)
       activesupport (>= 2.3.2)
       cocaine (>= 0.0.2)
+      mime-types
     pg (0.11.0)
     polyglot (0.3.1)
     rack (1.2.3)

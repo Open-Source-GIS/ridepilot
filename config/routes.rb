@@ -45,7 +45,7 @@ Ridepilot::Application.routes.draw do
       get :search
     end
   end
-
+  
   resources :drivers
   resources :vehicles
   resources :vehicle_maintenance_events
@@ -58,7 +58,8 @@ Ridepilot::Application.routes.draw do
   match 'reports', :controller=>:reports, :action=>:index
   match 'reports/:action/:id', :controller=>:reports
   match 'reports/:action', :controller=>:reports
-
+  match 'dispatch', :controller => :dispatch, :action => :index
+  
   root :to => "home#index"
 
 end

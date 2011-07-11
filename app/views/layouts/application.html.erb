@@ -51,6 +51,7 @@
         <% if current_user && can?(:edit, Provider) %>
         <li class="vehicles-drivers-users"><%= link_to "Users, Drivers & Vehicles", provider_path(current_user.current_provider) %></li>
         <% end %>
+        <li class="dispatch"><%= link_to "Dispatch", dispatch_path %></li>
       </ul>
       <ul id="secondary-nav" class="selfclear">
         <% if current_user && can?(:edit, Provider) %>
