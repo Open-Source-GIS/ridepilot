@@ -24,13 +24,16 @@
 </style>
 
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<%= javascript_include_tag "styledmarker.js" %>
 <%= javascript_include_tag "jquery.jstree.js" %>
+<%= stylesheet_link_tag "jstree-apple/style.css" %>
 
 <script type="text/javascript" charset="utf-8">
   function Dispatcher (tree_id, map_id) {
     _d             = this,
     this.tree      = null,
     this.map       = null,
+    this.markers   = {},
     this._data     = null, 
     this._tree_elem  = $("#" + tree_id),
     
@@ -47,26 +50,81 @@
       
       _d.initTree();
       _d.initMarkers();
+      _d.createNodeListeners();
     },
     
     this.initTree = function(){
       _d.tree = _d._tree_elem.jstree({
         core    : {},
-        plugins : [ "json_data"],// "ui"],//, "types"],
-        json_data : tree//,
-        // ui      : {
-        //           select_multiple_modifier : "on",
-        //           select_prev_on_delete : false, 
-        //           disable_selecting_children : true
-        //         },
+        plugins : [ "json_data", "ui", "themes"],//, "types"],// "ui"],
+        themes : { theme : "apple" },
+        json_data : {data: tree} , 
+        //         types : {
+        //           valid_children : ["provider"],
+        //           types : {
+        //             "provider" : {
+        //               // max_depth : 3, 
+        //               select_node : function(){ console.log("selected provider");},
+        //               valid_children : "device_pool"
+        //             },
+        //            "device_pool" : {
+        //               valid_children : "device",
+        //               select_node : function(){ console.log("selected device_pool");}
+        //             },
+        //             "device" : {
+        //               select_node : function(){ console.log("selected device");}
+        //             }
+        //           }
+        //          
+        //         }//,
+        ui      : {
+          select_multiple_modifier : "on",
+          select_prev_on_delete : false, 
+          disable_selecting_children : true
+        }
       });
       
       // this isnt working without a delay ?
-      window.setTimeout(function(){_d._tree_elem.jstree("open_all", -1);}, 1);
+      window.setTimeout(function(){
+        _d._tree_elem.jstree("open_all", -1);
+      }, 1);
     },
     
     this.initMarkers = function(){
-      // add points to map
+      $.each(_d._data, function(){
+        var provider = this;
+        $.each(provider.children, function(){
+          var device_pool = this;
+          $.each(device_pool.children, function(){
+            var device = this;
+            var marker = new StyledMarker({
+              styleIcon : new StyledIcon( StyledIconTypes.MARKER, { color : device_pool.attr["data-color"] } ),
+              position  : new google.maps.LatLng( device.metadata.lat, device.metadata.lng ),
+              map       : _d.map
+            });
+            _d.markers[device.metadata.id] = marker;
+          })
+        })
+      });
+    }, 
+    
+    this.createNodeListeners = function(){
+      _d._tree_elem.delegate("a","click", function(e) { 
+        _d._tree_elem.jstree("toggle_node", this); 
+        
+        // now what do we do with this click?
+        var meta = $(this).parent("li").data(); 
+        if (meta.lat) // it's a marker
+          return _d.toggleVisibility(_d.markers[meta.id.toString()]);
+        
+        // TODO on click of groups, toggle all beneath
+      });
+    },
+    
+    // assumes only device nodes
+    this.toggleVisibility = function(node){
+      if (!node.getMap()) node.setMap(_d.map);
+      else node.setMap(null);
     };
     
     this.init(map_id);
@@ -74,55 +132,60 @@
   
   var d = new Dispatcher("tree", "map-container");
   
-  var tree = {
-    data : [ // providers
+  var tree = [{ // weird format required by jstree
+    data : "Ride Connection",
+    metadata : { id : 1 },
+    attr : { rel : "provider" },
+    children : [ // device_pools
       {
-        data : "Ride Connection",
-        metadata : { id : 1 },
-        children : [ // device_pools
+        data : "Device Pool 1", // do device pools have names ?
+        metadata : { id : 1},
+        attr : { rel : "device_pool", "data-color" : "ccc", "style" : "background-color:#ccc" },
+        children : [ // devices
           {
-            data : "Device Pool 1", // do device pools have names ?
-            metadata : { color : "#ccc", id : 1},
-            children : [ // devices
-              {
-              	data   : "Device 1",
-              	metadata : { id : 1, lat : 45.520300607576864, lng : -122.72346496582031, status : 'break' }
-              }
-            ]
-          },
-          {
-            data : "Device Pool 2",
-            metadata : { color   : "#FFC", id : 2 },
-            children : [
-              {
-                data : "Device 2",
-                metadata : { id : 2,  lat : 45.51945867165255, lng : -122.65480041503906, status : 'active' }
-              }
-            ]
+          	data   : "Device 1",
+          	attr : { rel : "device" },
+            metadata : { id : 1, lat : 45.520300607576864, lng : -122.72346496582031, status : 'break' }
           }
         ]
-      }, {
-        data : "Someone Else",
+      },
+      {
+        data : "Device Pool 2",
+        attr : { rel : "device_pool", "data-color" : "FFC", "style" : "background-color:#ffc"  },
         metadata : { id : 2 },
-        children : [ // device pools
+        children : [
           {
-            data : "Device Pool 3",
-            metadata : { color   : "#0D4680", id: 3},
-            children : [ // devices
-              {
-                data : "Device 3",
-                metadata : { id : 3, lat : 45.54447082163623,  lng : -122.66055107116699, status : 'inactive' }  
-              },
-              {
-              	data : "Device 4",
-              	metadata : { id : 4, lat : 45.540683638652524, lng : -122.69479751586914, status : 'active' }
-            	}
-            ]
+            data : "Device 2",
+            attr : { rel : "device" },
+            metadata : { id : 2,  lat : 45.51945867165255, lng : -122.65480041503906, status : 'active' }
           }
         ]
       }
     ]
-  };
+  }, {
+    data : "Someone Else",
+    attr : { rel : "provider" },
+    metadata : { id : 2 },
+    children : [ // device pools
+      {
+        data : "Device Pool 3",
+        attr : { rel : "device_pool",  "data-color" : "0D4680", "style" : "background-color:#0D4680"  },
+        metadata : { id: 3},
+        children : [ // devices
+          {
+            data : "Device 3",
+            attr : { rel : "device" },
+            metadata : { id : 3, lat : 45.54447082163623,  lng : -122.66055107116699, status : 'inactive' }  
+          },
+          {
+          	data : "Device 4",
+          	attr : { rel : "device" },
+            metadata : { id : 4, lat : 45.540683638652524, lng : -122.69479751586914, status : 'active' }
+        	}
+        ]
+      }
+    ]
+  }];
   
   d.setData(tree);
 </script>
