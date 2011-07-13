@@ -21,6 +21,15 @@
     width : 625px;
     height : 490px;
   }
+  
+  span.color {
+    display : inline-block;
+    width : 12px;
+    height : 12px;
+    border-radius : 6px;
+    vertical-align : middle;
+    border: 1px solid black;
+  }
 </style>
 
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
@@ -55,38 +64,16 @@
     
     this.initTree = function(){
       _d.tree = _d._tree_elem.jstree({
-        core    : {},
-        plugins : [ "json_data", "ui", "themes"],//, "types"],// "ui"],
-        themes : { theme : "apple" },
-        json_data : {data: tree} , 
-        //         types : {
-        //           valid_children : ["provider"],
-        //           types : {
-        //             "provider" : {
-        //               // max_depth : 3, 
-        //               select_node : function(){ console.log("selected provider");},
-        //               valid_children : "device_pool"
-        //             },
-        //            "device_pool" : {
-        //               valid_children : "device",
-        //               select_node : function(){ console.log("selected device_pool");}
-        //             },
-        //             "device" : {
-        //               select_node : function(){ console.log("selected device");}
-        //             }
-        //           }
-        //          
-        //         }//,
-        ui      : {
-          select_multiple_modifier : "on",
-          select_prev_on_delete : false, 
-          disable_selecting_children : true
-        }
+        core      : { html_titles : true },
+        plugins   : [ "json_data", "themes", "checkbox" ],
+        themes    : { theme : "apple" },
+        json_data : { data : tree }
       });
       
       // this isnt working without a delay ?
       window.setTimeout(function(){
         _d._tree_elem.jstree("open_all", -1);
+        _d._tree_elem.jstree("check_all");
       }, 1);
     },
     
@@ -108,23 +95,40 @@
       });
     }, 
     
+    this.uncheckNode = function(node){
+      _d._tree_elem.jstree("uncheck_node", node );
+    },
+    
+    this.checkNode = function(node){
+      _d._tree_elem.jstree("check_node", node );
+    },
+    
     this.createNodeListeners = function(){
       _d._tree_elem.delegate("a","click", function(e) { 
-        _d._tree_elem.jstree("toggle_node", this); 
+        if ( _d._tree_elem.jstree("is_checked", this) )
+          _d.uncheckNode(this);
+        else 
+          _d.checkNode(this);
         
-        // now what do we do with this click?
-        var meta = $(this).parent("li").data(); 
-        if (meta.lat) // it's a marker
-          return _d.toggleVisibility(_d.markers[meta.id.toString()]);
-        
-        // TODO on click of groups, toggle all beneath
+        // TODO this should be handled with an event listener for checked and unchecked,
+        //      right now only clicking the titles toggle visibility
+        var node = $(this).parent("li"); 
+        if (node.data().lat) // it's a marker
+          return _d.toggleVisibility( [_d.markers[node.data().id.toString()]] );
+        else {
+          $.each( node.find("[rel=device]"), function(){
+            return _d.toggleVisibility( [_d.markers[$(this).data().id.toString()]] );
+          });
+        }
       });
     },
     
-    // assumes only device nodes
-    this.toggleVisibility = function(node){
-      if (!node.getMap()) node.setMap(_d.map);
-      else node.setMap(null);
+    this.toggleVisibility = function(markers){
+      $.each(markers, function(){
+        var marker = this;
+        if (!marker.getMap()) marker.setMap(_d.map);
+        else marker.setMap(null);
+      })
     };
     
     this.init(map_id);
@@ -138,9 +142,9 @@
     attr : { rel : "provider" },
     children : [ // device_pools
       {
-        data : "Device Pool 1", // do device pools have names ?
+        data : "Device Pool 1 <span class='color' style='background-color:#ccc'> </span>", // do device pools have names ?
         metadata : { id : 1},
-        attr : { rel : "device_pool", "data-color" : "ccc", "style" : "background-color:#ccc" },
+        attr : { rel : "device_pool", "data-color" : "ccc" },
         children : [ // devices
           {
           	data   : "Device 1",
@@ -150,8 +154,8 @@
         ]
       },
       {
-        data : "Device Pool 2",
-        attr : { rel : "device_pool", "data-color" : "FFC", "style" : "background-color:#ffc"  },
+        data : "Device Pool 2 <span class='color' style='background-color:#FFC'> </span>",
+        attr : { rel : "device_pool", "data-color" : "FFC" },
         metadata : { id : 2 },
         children : [
           {
@@ -168,8 +172,8 @@
     metadata : { id : 2 },
     children : [ // device pools
       {
-        data : "Device Pool 3",
-        attr : { rel : "device_pool",  "data-color" : "0D4680", "style" : "background-color:#0D4680"  },
+        data : "Device Pool 3 <span class='color' style='background-color:#0D4680'> </span>",
+        attr : { rel : "device_pool",  "data-color" : "0D4680" },
         metadata : { id: 3},
         children : [ // devices
           {
