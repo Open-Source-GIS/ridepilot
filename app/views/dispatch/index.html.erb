@@ -11,15 +11,21 @@
 </div>
 
 <style type="text/css" media="screen">
+
+  .dispatch #main {
+    padding: 10px 1% 10px 1%;
+    margin-bottom: 10px;
+  }
+
   #tree {
-    width : 300px;
-    margin: 0 20px 0;
+    width: 20%;
+    margin: 0 1% 0 0;
     float : left;
   }
   
   #map-container {
-    width : 625px;
-    height : 490px;
+    width : 79%;
+    min-height : 300px;
   }
   
   span.color {
@@ -45,8 +51,11 @@
     this.markers   = {},
     this._data     = null, 
     this._tree_elem  = $("#" + tree_id),
+    this._map_elem = $("#" + map_id),
     
     this.init = function(map_id){
+      $(window).resize(_d.adjustMapHeight).resize();
+
       _d.map = new google.maps.Map( document.getElementById(map_id), {
         zoom      : 11,
         mapTypeId : google.maps.MapTypeId.ROADMAP, 
@@ -54,6 +63,16 @@
       });
     },
     
+    this.adjustMapHeight = function() {
+      _d._map_elem.css("height", function(){
+        return $(window).height() -
+        $("#header").outerHeight() -
+        $("#crossbar").outerHeight() -
+        ( $("#main").outerHeight() - $("#main").height() ) -
+        $("#page-header").outerHeight() - 21 + "px"
+      });
+    },
+
     this.setData = function(data){
       _d._data = data;
       
