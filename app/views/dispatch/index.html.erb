@@ -55,7 +55,7 @@
     
     this.init = function(map_id){
       $(window).resize(_d.adjustMapHeight).resize();
-
+      
       _d.map = new google.maps.Map( document.getElementById(map_id), {
         zoom      : 11,
         mapTypeId : google.maps.MapTypeId.ROADMAP, 
@@ -72,7 +72,7 @@
         $("#page-header").outerHeight() - 21 + "px"
       });
     },
-
+    
     this.setData = function(data){
       _d._data = data;
       
@@ -84,9 +84,10 @@
     this.initTree = function(){
       _d.tree = _d._tree_elem.jstree({
         core      : { html_titles : true },
-        plugins   : [ "json_data", "themes", "checkbox" ],
+        plugins   : [ "json_data", "themes", "checkbox", "ui" ],
         themes    : { theme : "apple" },
-        json_data : { data : tree }
+        json_data : { data : tree },
+        checkbox  : { override_ui : true }
       });
       
       // this isnt working without a delay ?
@@ -122,16 +123,10 @@
       _d._tree_elem.jstree("check_node", node );
     },
     
-    this.createNodeListeners = function(){
+    this.createNodeListeners = function(){      
       _d._tree_elem.delegate("a","click", function(e) { 
-        if ( _d._tree_elem.jstree("is_checked", this) )
-          _d.uncheckNode(this);
-        else 
-          _d.checkNode(this);
-        
-        // TODO this should be handled with an event listener for checked and unchecked,
-        //      right now only clicking the titles toggle visibility
         var node = $(this).parent("li"); 
+        
         if (node.data().lat) // it's a marker
           return _d.toggleVisibility( [_d.markers[node.data().id.toString()]] );
         else {
@@ -139,7 +134,7 @@
             return _d.toggleVisibility( [_d.markers[$(this).data().id.toString()]] );
           });
         }
-      });
+      });     
     },
     
     this.toggleVisibility = function(markers){
