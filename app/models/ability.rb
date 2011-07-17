@@ -43,6 +43,7 @@ class Ability
     can action, Address, :provider_id => provider.id
     can action, Customer, :provider_id => provider.id
     can action, RepeatingTrip, :provider_id => provider.id
+    can action, DevicePool, :provider_id => provider.id
     can :read, FundingSource, {:providers => {:id => provider.id}}
 
     if role.admin

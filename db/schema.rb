@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110627162828) do
+ActiveRecord::Schema.define(:version => 20110716192143) do
 
   create_table "addresses", :force => true do |t|
     t.string   "name"
@@ -20,13 +20,13 @@ ActiveRecord::Schema.define(:version => 20110627162828) do
     t.string   "state"
     t.string   "zip"
     t.boolean  "in_district"
+    t.point    "the_geom",      :limit => nil,                    :srid => 4326
     t.integer  "provider_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "created_by_id"
     t.integer  "updated_by_id"
     t.integer  "lock_version",                 :default => 0
-    t.point    "the_geom",      :limit => nil,                    :srid => 4326
     t.string   "phone_number"
     t.boolean  "inactive",                     :default => false
   end
@@ -59,6 +59,27 @@ ActiveRecord::Schema.define(:version => 20110627162828) do
     t.integer  "updated_by_id"
     t.integer  "lock_version",            :default => 0
   end
+
+  create_table "device_pools", :force => true do |t|
+    t.integer  "provider_id"
+    t.string   "name"
+    t.string   "color"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "devices", :force => true do |t|
+    t.string   "name"
+    t.string   "status"
+    t.float    "lat"
+    t.float    "lng"
+    t.integer  "driver_id"
+    t.integer  "device_pool_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "devices", ["device_pool_id"], :name => "index_devices_on_device_pool_id"
 
   create_table "drivers", :force => true do |t|
     t.boolean  "active"
@@ -213,7 +234,6 @@ ActiveRecord::Schema.define(:version => 20110627162828) do
   create_table "users", :force => true do |t|
     t.string   "email",                               :default => "", :null => false
     t.string   "encrypted_password",   :limit => 128, :default => "", :null => false
-    t.string   "password_salt",                       :default => "", :null => false
     t.string   "reset_password_token"
     t.string   "remember_token"
     t.datetime "remember_created_at"
