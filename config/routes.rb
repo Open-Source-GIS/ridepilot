@@ -36,6 +36,9 @@ Ridepilot::Application.routes.draw do
   resources :providers do
     post :delete_role
     post :change_role
+    member do
+      post :change_dispatch
+    end
   end
 
   resources :addresses do

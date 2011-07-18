@@ -34,5 +34,11 @@ class ProvidersController < ApplicationController
     role.save!
     redirect_to provider_path(params[:provider_id])
   end
+  
+  def change_dispatch    
+    @provider.update_attribute :dispatch, params[:provider][:dispatch]
+    
+    render :json => { :dispatch => @provider.dispatch? }
+  end
 
 end

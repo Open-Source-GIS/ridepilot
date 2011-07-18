@@ -55,6 +55,31 @@
 
 <hr />
 
+<h2 class="section-header">Dispatch</h2>
+<% if can? :edit, @provider %>
+  <%= form_for @provider do |f| %>
+    <fieldset>
+      <ol class="section fourth">
+        <li>
+          <%= f.label :dispatch, "Enabled?" %>
+          <%= f.select :dispatch, { "Yes" => true, "No" => false }, {}, { 
+            "data-remote" => true,
+            "data-method" => "post", 
+            "data-url" => change_dispatch_provider_path(@provider)
+          } %>
+        </li>
+      </ol>
+    </fieldset>
+  <% end %>
+<% end %>
+
+<% if @provider.dispatch? && can?(:edit, DevicePool) %>
+//    device pool table : 
+//    new device pool
+<% end %>
+
+<hr />
+
 <h2 class="section-header">Drivers</h2>
 
 <% if @provider.drivers.size == 0 %>
