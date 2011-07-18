@@ -1,5 +1,9 @@
 module ApplicationHelper
   
+  def show_dispatch?
+    current_user && current_user.current_provider && current_user.current_provider.dispatch?
+  end
+  
   def display_trip_result(trip_result)
     TRIP_RESULT_CODES[trip_result] || "Unscheduled"
   end
