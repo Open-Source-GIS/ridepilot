@@ -81,6 +81,7 @@
       <tr>
         <th>Name</th>
         <th></th>
+        <th>Devices</th>
         <% if can? :edit, DevicePool %>
         <th></th>
         <% end %>
@@ -89,6 +90,25 @@
         <tr>
           <td><%= device_pool.name %></td>
           <td><%= device_pool.color %> (TODO, make color)</td>
+          <td>
+            <% if device_pool.devices.length == 0 %>
+              <p>No devices yet.</p>
+            <% else %>
+            <table>
+              <% for device in device_pool.devices %>
+              <tr>
+                <td><%= device.name %></td>
+                <% if can? :edit, device %>
+                  <td><%= link_to "Edit", edit_device_pool_device_path(device_pool, device), :class => "edit" %></td>
+                <% end %>
+              </tr>
+              <% end %>
+            </table>
+            <% end %>
+            <% if can? :create, Device %>
+              <p><%= link_to "Create Device", new_device_pool_device_path(device_pool), :class=>'action-bttn' %>
+            <% end %>
+          </td>
           <% if can? :edit, device_pool %>
             <td><%= link_to "Edit", edit_device_pool_path(device_pool), :class => "edit" %></td>
           <% end %>

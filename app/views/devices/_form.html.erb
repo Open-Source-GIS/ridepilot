@@ -1,0 +1,26 @@
+<%= form_for [@device_pool, @device] do |f| %>
+  <% if @device.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@device.errors.count, "error") %> prohibited this device from being saved:</h2>
+      <ul>
+        <% @device.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <fieldset class="new-device">
+    <ol class="section first">
+      <li>
+        <%= f.label :name %>
+        <%= f.text_field :name %>
+      </li>
+    </ol>
+
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+  </fieldset>
+
+<% end %> 
