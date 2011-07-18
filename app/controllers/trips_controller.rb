@@ -121,10 +121,10 @@ class TripsController < ApplicationController
     authorize! :read, @customer
 
     provider = @customer.provider
-    authorize! :manage, provider
     trip_params[:provider_id] = @customer.provider.id if @customer.provider.present?
-
     handle_trip_params trip_params
+
+    authorize! :manage, Trip.new(trip_params)
 
     if is_repeating_trip params
       #this is a repeating trip, so we need to create both
@@ -161,9 +161,9 @@ class TripsController < ApplicationController
     trip_params = params[:trip]
     @customer = Customer.find(trip_params[:customer_id])
     provider = @customer.provider
-    authorize! :manage, provider
     trip_params[:provider_id] = @customer.provider.id if @customer.provider.present?
     handle_trip_params trip_params
+    authorize! :manage, @trip
 
     if is_repeating_trip params
       #this is a repeating trip, so we need to edit both
