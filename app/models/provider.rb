@@ -3,6 +3,7 @@ class Provider < ActiveRecord::Base
   has_many :users, :through=>:roles
   has_many :drivers
   has_many :vehicles
+  has_many :device_pools
   has_many :monthlies
   has_many :funding_source_visibilities
   has_many :funding_sources, :through=>:funding_source_visibilities

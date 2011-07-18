@@ -49,6 +49,7 @@ Ridepilot::Application.routes.draw do
     end
   end
   
+  resources :device_pools, :except => [:index, :destroy]
   resources :drivers
   resources :vehicles
   resources :vehicle_maintenance_events
