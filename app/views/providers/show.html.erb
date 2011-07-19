@@ -77,15 +77,18 @@
       <tr>
         <th>Name</th>
         <th></th>
-        <th>Devices</th>
         <% if can? :edit, DevicePool %>
         <th></th>
         <% end %>
+        <th>Devices</th>
       </tr>
       <% for device_pool in @provider.device_pools %>
         <tr>
           <td><%= device_pool.name %></td>
-          <td><%= device_pool.color %> (TODO, make color)</td>
+          <td><span class="device-pool-color" style="background-color:#<%= device_pool.color %>;"> </span></td>
+          <% if can? :edit, device_pool %>
+            <td><%= link_to "Edit", edit_device_pool_path(device_pool), :class => "edit" %></td>
+          <% end %>
           <td>
             <% if device_pool.devices.length == 0 %>
               <p>No devices yet.</p>
@@ -105,9 +108,6 @@
               <p><%= link_to "Create Device", new_device_pool_device_path(device_pool), :class=>'action-bttn' %>
             <% end %>
           </td>
-          <% if can? :edit, device_pool %>
-            <td><%= link_to "Edit", edit_device_pool_path(device_pool), :class => "edit" %></td>
-          <% end %>
         </tr>
       <% end %>
     </table>

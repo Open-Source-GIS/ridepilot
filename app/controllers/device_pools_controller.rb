@@ -5,6 +5,8 @@ class DevicePoolsController < ApplicationController
   
   def create
     @device_pool.provider = current_provider
+    @device_pool.color    = @device_pool.color.gsub(/#/, "")
+    
     if @device_pool.save
       flash[:notice] = "Device pool created"
       redirect_to provider_path(current_provider)
@@ -16,6 +18,8 @@ class DevicePoolsController < ApplicationController
   def edit; end
   
   def update
+    params[:device_pool][:color] = params[:device_pool][:color].gsub(/#/, "")
+    
     @device_pool.update_attributes(params[:device_pool])
     if @device_pool.save
       flash[:notice] = "Device pool updated"

@@ -18,11 +18,15 @@
       </li>
 
       <li>
-        <%= f.label :color, "Color (replace with picker)" %>
-        <%= f.text_field :color %>
+        <%= f.label :color, "Color" %>
+        <%= f.text_field :color, :style => "display:none;", :value => "##{@device_pool.color}" %>
       </li>
     </ol>
-
+    <script type="text/javascript" charset="utf-8">
+      $(function(){
+        $('#device_pool_color').colorPicker();
+      });
+    </script>
     <div class="actions">
       <%= f.submit %>
     </div>
