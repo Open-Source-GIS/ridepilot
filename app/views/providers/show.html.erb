@@ -101,7 +101,7 @@
               <% end %>
             </table>
             <% end %>
-            <% if can? :create, Device %>
+            <% if @provider == current_user.current_provider && can?( :create, Device ) %>
               <p><%= link_to "Create Device", new_device_pool_device_path(device_pool), :class=>'action-bttn' %>
             <% end %>
           </td>
