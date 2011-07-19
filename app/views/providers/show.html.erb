@@ -57,16 +57,12 @@
 
 <h2 class="section-header">Dispatch</h2>
 <% if can? :edit, @provider %>
-  <%= form_for @provider do |f| %>
+  <%= form_tag change_dispatch_provider_path(@provider) do %>
     <fieldset>
       <ol class="section fourth">
         <li>
-          <%= f.label :dispatch, "Enabled?" %>
-          <%= f.select :dispatch, { "Yes" => true, "No" => false }, {}, { 
-            "data-remote" => true,
-            "data-method" => "post", 
-            "data-url" => change_dispatch_provider_path(@provider)
-          } %>
+          <%= label_tag "Enabled?" %>
+          <%= select_tag "dispatch", options_for_select( [["No", false], ["Yes", true]], @provider.dispatch? ), { :onchange => "form.submit();" } %>
         </li>
       </ol>
     </fieldset>
