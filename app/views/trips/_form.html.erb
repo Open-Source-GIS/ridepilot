@@ -165,7 +165,7 @@
         <%= f.check_box :customer_informed %>
         <% if @trip.customer_informed %>
           on <%= @trip.called_back_at %>
-          by  <%= @trip.called_back_by.email %>
+          by <%= @trip.called_back_by.email if @trip.called_back_by.present? %>
         <% end %>
       </li>
     </ol>
