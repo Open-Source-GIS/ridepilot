@@ -20,7 +20,7 @@ class Ability
         else
           action = :read
         end
-        can action, Provider, :provider_id => role.provider.id
+        can action, Provider, :id => role.provider.id
       end
     end
     provider = user.current_provider
