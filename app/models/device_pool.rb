@@ -7,4 +7,31 @@ class DevicePool < ActiveRecord::Base
   
   validates :color, :length => { :is => 6, :if => lambda { self.color.present? } }
   
+  def as_json
+    {
+      :data     => "#{name} <span class='color' style='background-color: ##{color}'> </span>",
+      :metadata => { :id => id },
+      :attr     => { :rel => "device_pool", "data-color" => color },
+      :children => devices.map( &:as_json )
+    }
+  end
+  
+  class Tree < Hash
+    
+    def initialize(pools)
+      for pool in pools do
+        self[pool.provider.name] = ( self[pool.provider.name] || [] ) << pool
+      end
+    end
+    
+    def as_json
+      self.map do |provider_name, device_pools|
+        {
+          :data     => provider_name,
+          :attr     => { :rel => "provider" },
+          :children => self[provider_name].map( &:as_json )
+        }
+      end
+    end
+  end
 end

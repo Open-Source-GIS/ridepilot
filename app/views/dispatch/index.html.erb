@@ -36,6 +36,11 @@
     vertical-align : middle;
     border: 1px solid black;
   }
+  
+  span.inactive {
+    font-style : italic;
+    color : #999;
+  }
 </style>
 
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
@@ -150,60 +155,7 @@
   
   var d = new Dispatcher("tree", "map-container");
   
-  var tree = [{ // weird format required by jstree
-    data : "Ride Connection",
-    metadata : { id : 1 },
-    attr : { rel : "provider" },
-    children : [ // device_pools
-      {
-        data : "Device Pool 1 <span class='color' style='background-color:#ccc'> </span>", // do device pools have names ?
-        metadata : { id : 1},
-        attr : { rel : "device_pool", "data-color" : "ccc" },
-        children : [ // devices
-          {
-          	data   : "Device 1",
-          	attr : { rel : "device" },
-            metadata : { id : 1, lat : 45.520300607576864, lng : -122.72346496582031, status : 'break' }
-          }
-        ]
-      },
-      {
-        data : "Device Pool 2 <span class='color' style='background-color:#FFC'> </span>",
-        attr : { rel : "device_pool", "data-color" : "FFC" },
-        metadata : { id : 2 },
-        children : [
-          {
-            data : "Device 2",
-            attr : { rel : "device" },
-            metadata : { id : 2,  lat : 45.51945867165255, lng : -122.65480041503906, status : 'active' }
-          }
-        ]
-      }
-    ]
-  }, {
-    data : "Someone Else",
-    attr : { rel : "provider" },
-    metadata : { id : 2 },
-    children : [ // device pools
-      {
-        data : "Device Pool 3 <span class='color' style='background-color:#0D4680'> </span>",
-        attr : { rel : "device_pool",  "data-color" : "0D4680" },
-        metadata : { id: 3},
-        children : [ // devices
-          {
-            data : "Device 3",
-            attr : { rel : "device" },
-            metadata : { id : 3, lat : 45.54447082163623,  lng : -122.66055107116699, status : 'inactive' }  
-          },
-          {
-          	data : "Device 4",
-          	attr : { rel : "device" },
-            metadata : { id : 4, lat : 45.540683638652524, lng : -122.69479751586914, status : 'active' }
-        	}
-        ]
-      }
-    ]
-  }];
+  var tree = <%= raw @device_tree.to_json %>;
   
   d.setData(tree);
 </script>
