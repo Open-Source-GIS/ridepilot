@@ -22,7 +22,10 @@ class ApplicationController < ActionController::Base
       end
       @provider_map[role.provider_id] = role.provider.name
     end
+  end
 
+  def test_exception_notification
+    raise 'Testing, 1 2 3.'
   end
 
   private
