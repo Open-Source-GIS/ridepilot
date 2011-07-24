@@ -1,7 +1,7 @@
 class Device < ActiveRecord::Base
   belongs_to :device_pool
   
-  validates :name, :presence => true
+  validates :android_id, :presence => true
     
   def as_json
     {

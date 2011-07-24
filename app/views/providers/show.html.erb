@@ -97,6 +97,7 @@
               <% for device in device_pool.devices %>
               <tr>
                 <td><%= device.name %></td>
+                <td><%= device.android_id %></td>
                 <% if can? :edit, device %>
                   <td><%= link_to "Edit", edit_device_pool_device_path(device_pool, device), :class => "edit" %></td>
                 <% end %>
