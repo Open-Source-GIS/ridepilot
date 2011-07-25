@@ -80,6 +80,7 @@ ActiveRecord::Schema.define(:version => 20110724172639) do
     t.string   "android_id"
   end
 
+  add_index "devices", ["android_id"], :name => "index_devices_on_android_id"
   add_index "devices", ["device_pool_id"], :name => "index_devices_on_device_pool_id"
 
   create_table "drivers", :force => true do |t|

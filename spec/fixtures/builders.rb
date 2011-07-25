@@ -29,4 +29,17 @@ Fixjour :verify => false do
     
     user
   end  
+  
+  define_builder(Driver) do |klass, overrides|
+    klass.new({
+      :name => Faker::Lorem.words(2), 
+      :provider => new_provider
+    })
+  end
+  
+  define_builder(Device) do |klass, overrides|
+    klass.new({
+      :android_id => ActiveSupport::SecureRandom.hex(32)
+    })
+  end
 end

@@ -61,6 +61,10 @@ Ridepilot::Application.routes.draw do
   resources :runs do
     get :uncompleted_runs, :on=>:collection
   end
+  
+  namespace :v1 do
+    resources :devices, :only => [:create, :update]
+  end
 
   match 'reports', :controller=>:reports, :action=>:index
   match 'reports/:action/:id', :controller=>:reports

@@ -12,7 +12,7 @@ class DevicePool < ActiveRecord::Base
       :data     => "#{name} <span class='color' style='background-color: ##{color}'> </span>",
       :metadata => { :id => id },
       :attr     => { :rel => "device_pool", "data-color" => color },
-      :children => devices.map( &:as_json )
+      :children => devices.map( &:as_tree_json )
     }
   end
   
