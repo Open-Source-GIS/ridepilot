@@ -4,6 +4,11 @@ module ApplicationHelper
     current_user && current_user.current_provider && current_user.current_provider.dispatch?
   end
   
+  def new_device_pool_users_options(driver_users, device_pool)
+    # TODO subtract all assigned driver users, not just those for this device pool
+    options_for_select [["",""]] + (driver_users - device_pool.users).map { |u| [u.driver.name, u.id] }
+  end
+  
   def display_trip_result(trip_result)
     TRIP_RESULT_CODES[trip_result] || "Unscheduled"
   end

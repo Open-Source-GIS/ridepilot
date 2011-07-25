@@ -3,7 +3,7 @@ class DevicePoolUser < ActiveRecord::Base
   belongs_to :user
   has_one    :driver, :through => :user
   
-  validates :user, :presence => true, :uniqueness => true
+  validates :user_id, :presence => true, :uniqueness => true
   validates :device_pool, :presence => true
   
   # validate that user is a driver ?

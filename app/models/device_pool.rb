@@ -1,6 +1,7 @@
 class DevicePool < ActiveRecord::Base
   belongs_to  :provider
   has_many    :device_pool_users
+  has_many    :users, :through => :device_pool_users
   
   validates :name, :presence => true
   validates :color, :presence => true

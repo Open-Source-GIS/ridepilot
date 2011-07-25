@@ -124,4 +124,26 @@ $(function() {
       table.append("<tr><td>There was an error searching</td></tr>");
   });
   
+  $(".delete.device_pool_user").bind('ajax:complete', function(event, data, xhr, status){
+    $(this).parents("tr").eq(0).hide("slow").remove();
+  });
+  
+  $("a.add_driver_to_pool").bind("click", function(click){
+    var link = $(this);
+    $.post( link.attr("href"),
+      { device_pool_user : { user_id : link.prev("select").val() } }, 
+      function(data) {
+        if (data.row) {
+          var table = link.parents("td").eq(0).find("table");
+          if (table.length > 0) {
+            table.append(data.row);
+          } else {
+            link.parents("td").eq(0).prepend( $("<table>").append(data.row) );
+          }
+        } else console.log(data);
+      }, "json"
+    );
+    
+    click.preventDefault();
+  });
 });

@@ -95,17 +95,16 @@
             <% else %>
             <table>
               <% for device_pool_user in device_pool.device_pool_users %>
-              <tr>
-                <td><%= device_pool_user.name %></td>
-                <%# if can? :edit, device %>
-                  <td>TODO: Remove driver<%#= link_to "Edit", edit_device_pool_device_path(device_pool, device), :class => "edit" %></td>
-                <%# end %>
-              </tr>
+                <%= render "device_pool_users/device_pool_user_row", :device_pool_user => device_pool_user %>
               <% end %>
             </table>
             <% end %>
             <% if @provider == current_user.current_provider && can?( :create, DevicePoolUser ) %>
-              <p><%= link_to "Add Driver", "#", :class=>'action-bttn' %>
+              <p><%= link_to "Add Driver", "#", :class=>'action-bttn' %></p>
+              <p>
+                <%= select_tag "add_driver_#{device_pool.id}", new_device_pool_users_options(@driver_users, device_pool) %>
+                <%= link_to "Add", device_pool_device_pool_users_path(device_pool), :class => "add_driver_to_pool" %>
+              </p>
             <% end %>
           </td>
         </tr>
