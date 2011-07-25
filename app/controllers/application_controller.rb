@@ -4,6 +4,10 @@ class ApplicationController < ActionController::Base
   before_filter :get_providers
   include Userstamp
 
+  rescue_from CanCan::AccessDenied do |exception|
+    render :file => "#{Rails.root}/public/403.html", :status => 403
+  end
+
   def get_providers
     if !current_user
       return
@@ -18,7 +22,10 @@ class ApplicationController < ActionController::Base
       end
       @provider_map[role.provider_id] = role.provider.name
     end
+  end
 
+  def test_exception_notification
+    raise 'Testing, 1 2 3.'
   end
 
   private

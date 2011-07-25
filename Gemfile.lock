@@ -7,6 +7,12 @@ GIT
       yajl-ruby
 
 GIT
+  remote: git://github.com/rails/exception_notification.git
+  revision: 192a49a02d63d28b23ed41cebadfedd490929cf1
+  specs:
+    exception_notification (1.0.0)
+
+GIT
   remote: git://github.com/zpearce/Schedule-Attributes.git
   revision: babf55d9b5cd8f56456e1e2a33916e809f7c4e28
   specs:
@@ -187,6 +193,7 @@ DEPENDENCIES
   capistrano
   capybara
   devise
+  exception_notification!
   faker
   fixjour
   jquery-rails (>= 0.2.6)
