@@ -47,7 +47,7 @@
   <dd><%= @customer.birth_date %></dd>
 
   <dt>Mobility:</dt>
-  <dd><%= @customer.mobility_id %></dd>
+  <dd><%= @customer.mobility.name if @customer.mobility %></dd>
 
   <dt>Mobility notes:</dt>
   <dd><%= @customer.mobility_notes %></dd>
