@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110725200527) do
+ActiveRecord::Schema.define(:version => 20110727161049) do
 
   create_table "addresses", :force => true do |t|
     t.string   "name"
@@ -60,18 +60,18 @@ ActiveRecord::Schema.define(:version => 20110725200527) do
     t.integer  "lock_version",            :default => 0
   end
 
-  create_table "device_pool_users", :force => true do |t|
+  create_table "device_pool_drivers", :force => true do |t|
     t.string   "status"
     t.float    "lat"
     t.float    "lng"
     t.integer  "device_pool_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "user_id"
+    t.integer  "driver_id"
   end
 
-  add_index "device_pool_users", ["device_pool_id"], :name => "index_devices_on_device_pool_id"
-  add_index "device_pool_users", ["user_id"], :name => "index_device_pool_users_on_user_id"
+  add_index "device_pool_drivers", ["device_pool_id"], :name => "index_devices_on_device_pool_id"
+  add_index "device_pool_drivers", ["driver_id"], :name => "index_device_pool_users_on_user_id"
 
   create_table "device_pools", :force => true do |t|
     t.integer  "provider_id"
@@ -91,6 +91,7 @@ ActiveRecord::Schema.define(:version => 20110725200527) do
     t.integer  "created_by_id"
     t.integer  "updated_by_id"
     t.integer  "lock_version",  :default => 0
+    t.integer  "user_id"
   end
 
   create_table "funding_source_visibilities", :force => true do |t|
@@ -246,10 +247,8 @@ ActiveRecord::Schema.define(:version => 20110725200527) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "current_provider_id"
-    t.integer  "driver_id"
   end
 
-  add_index "users", ["driver_id"], :name => "index_users_on_driver_id"
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 

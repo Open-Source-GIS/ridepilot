@@ -1,12 +1,11 @@
-class DevicePoolUser < ActiveRecord::Base
+class DevicePoolDriver < ActiveRecord::Base
   belongs_to :device_pool
-  belongs_to :user
-  has_one    :driver, :through => :user
+  belongs_to :driver
+  has_one    :user, :through => :driver
   
-  validates :user_id, :presence => true, :uniqueness => true
+  validates :driver_id, :presence => true, :uniqueness => true
   validates :device_pool, :presence => true
   
-  # validate that user is a driver ?
   # validate that the device_pool's provider is the same as the driver's provider ? can this be enforced with authorization ?
       
   def as_tree_json
@@ -22,7 +21,7 @@ class DevicePoolUser < ActiveRecord::Base
       :id             => id, 
       :name           => name,
       :device_pool_id => device_pool_id,
-      :user_id        => user_id,
+      :driver_id      => driver_id,
       :lat            => lat, 
       :lng            => lng, 
       :status         => status 

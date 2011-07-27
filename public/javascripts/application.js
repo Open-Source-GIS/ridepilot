@@ -124,25 +124,41 @@ $(function() {
       table.append("<tr><td>There was an error searching</td></tr>");
   });
   
-  $(".delete.device_pool_user").bind('ajax:complete', function(event, data, xhr, status){
+  $(".delete.device_pool_driver").live('ajax:complete', function(event, data, xhr, status){
     $(this).parents("tr").eq(0).hide("slow").remove();
+        
+    var json = eval('(' + data.responseText + ')');
+    
+    if (json.device_pool_driver) {
+      var option = $("<option>").val(json.device_pool_driver.driver_id).text(json.device_pool_driver.name);
+      $("select.new_device_pool_driver").append(option);
+    }
   });
   
   $("a.add_driver_to_pool").bind("click", function(click){
-    var link = $(this);
+    var link   = $(this);
+    var select = link.prev("select");
+    
     $.post( link.attr("href"),
-      { device_pool_user : { user_id : link.prev("select").val() } }, 
+      { device_pool_driver : { driver_id : select.val() } }, 
       function(data) {
         if (data.row) {
           var table = link.parents("td").eq(0).find("table");
-          if (table.length > 0) {
-            table.append(data.row);
-          } else {
-            link.parents("td").eq(0).prepend( $("<table>").append(data.row) );
-          }
+          table.find("tr.empty").hide();
+          table.append(data.row);
+          $("select.new_device_pool_driver option[value=" + select.val() + "]").remove();
+          
+          link.parent("p").hide().prev("p").show();          
         } else console.log(data);
       }, "json"
     );
+    
+    click.preventDefault();
+  });
+  
+  $("a.add_device_pool_driver").live("click", function(click){
+    var link = $(this);
+    link.parent("p").hide().next("p").show();
     
     click.preventDefault();
   });

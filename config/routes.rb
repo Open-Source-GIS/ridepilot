@@ -50,7 +50,7 @@ Ridepilot::Application.routes.draw do
   end
   
   resources :device_pools, :except => [:index, :destroy] do
-    resources :device_pool_users, :only => [:create, :destroy]
+    resources :device_pool_drivers, :only => [:create, :destroy]
   end
   
   resources :drivers

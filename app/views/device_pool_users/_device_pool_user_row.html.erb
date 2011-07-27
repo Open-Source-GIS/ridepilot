@@ -1,6 +1,0 @@
-<tr>
-  <td><%= device_pool_user.name %></td>
-  <% if can? :edit, device_pool_user %>
-    <td><%= link_to "Remove", device_pool_device_pool_user_path(device_pool_user.device_pool, device_pool_user), :method => "delete", :remote => true, :class => "delete device_pool_user" %></td>
-  <% end %>
-</tr>

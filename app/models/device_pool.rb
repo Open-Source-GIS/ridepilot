@@ -1,7 +1,7 @@
 class DevicePool < ActiveRecord::Base
   belongs_to  :provider
-  has_many    :device_pool_users
-  has_many    :users, :through => :device_pool_users
+  has_many    :device_pool_drivers
+  has_many    :drivers, :through => :device_pool_drivers
   
   validates :name, :presence => true
   validates :color, :presence => true
@@ -13,7 +13,7 @@ class DevicePool < ActiveRecord::Base
       :data     => "#{name} <span class='color' style='background-color: ##{color}'> </span>",
       :metadata => { :id => id },
       :attr     => { :rel => "device_pool", "data-color" => color },
-      :children => device_pool_users.map( &:as_tree_json )
+      :children => device_pool_drivers.map( &:as_tree_json )
     }
   end
   

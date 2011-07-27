@@ -1,16 +1,12 @@
 class User < ActiveRecord::Base
   
   has_many   :roles
-  has_one    :device_pool_user
   belongs_to :current_provider, :class_name=>"Provider", :foreign_key => :current_provider_id
-  belongs_to :driver
+  has_one    :driver
   
   validates :password, :confirmation => true
   validates :email, :uniqueness => true
-  validates :driver_id, :uniqueness => {:allow_nil => true}
   
-  scope :drivers, where("users.driver_id IS NOT NULL")
-
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable and :timeoutable
   devise :database_authenticatable, 
@@ -23,6 +19,10 @@ class User < ActiveRecord::Base
   
   before_create do
     self.email.downcase! if self.email
+  end
+  
+  def self.drivers(provider)
+    Driver.where(:provider_id => provider.id).map(&:user)
   end
   
   def self.find_for_authentication(conditions) 

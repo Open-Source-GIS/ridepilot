@@ -90,20 +90,20 @@
             <td><%= link_to "Edit", edit_device_pool_path(device_pool), :class => "edit" %></td>
           <% end %>
           <td>
-            <% if device_pool.device_pool_users.length == 0 %>
-              <p>No drivers yet.</p>
-            <% else %>
             <table>
-              <% for device_pool_user in device_pool.device_pool_users %>
-                <%= render "device_pool_users/device_pool_user_row", :device_pool_user => device_pool_user %>
+            <% if device_pool.device_pool_drivers.length == 0 %>
+              <tr class="empty"><td>No drivers yet.</td><td></td></tr>
+            <% else %>
+              <% for device_pool_driver in device_pool.device_pool_drivers %>
+                <%= render "device_pool_drivers/device_pool_driver_row", :device_pool_driver => device_pool_driver %>
               <% end %>
-            </table>
             <% end %>
-            <% if @provider == current_user.current_provider && can?( :create, DevicePoolUser ) %>
-              <p><%= link_to "Add Driver", "#", :class=>'action-bttn' %></p>
-              <p>
-                <%= select_tag "add_driver_#{device_pool.id}", new_device_pool_users_options(@driver_users, device_pool) %>
-                <%= link_to "Add", device_pool_device_pool_users_path(device_pool), :class => "add_driver_to_pool" %>
+            </table>
+            <% if @provider == current_user.current_provider && can?( :create, DevicePoolDriver ) %>
+              <p><%= link_to "Add Driver", "#", :class=>'action-bttn add_device_pool_driver' %></p>
+              <p style="display:none;">
+                <%= select_tag "new_device_pool_driver_#{device_pool.id}", new_device_pool_drivers_options(@unassigned_drivers, device_pool), :class => "new_device_pool_driver" %>
+                <%= link_to "Add", device_pool_device_pool_drivers_path(device_pool), :class => "add_driver_to_pool" %>
               </p>
             <% end %>
           </td>

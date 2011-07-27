@@ -13,7 +13,7 @@ class ProvidersController < ApplicationController
   end
   
   def show
-    @driver_users = @provider.users.drivers
+    @unassigned_drivers = Driver.unassigned(@provider)
   end
 
   def delete_role
