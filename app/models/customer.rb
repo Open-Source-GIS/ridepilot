@@ -38,13 +38,18 @@ class Customer < ActiveRecord::Base
   end
   
   def as_autocomplete
+    if address.present?
+      address_text = address.text 
+      address_id = address.id 
+    end
+
     { :label           => name, 
       :id              => id,
       :phone_number_1  => phone_number_1, 
       :phone_number_2  => phone_number_2,
       :mobility_notes  => mobility_notes,
-      :address         => address.text,
-      :address_id      => address.id,
+      :address         => address_text,
+      :address_id      => address_id,
       :private_notes   => private_notes,
       :group           => group
     }
