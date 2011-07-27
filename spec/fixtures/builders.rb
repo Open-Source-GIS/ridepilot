@@ -32,14 +32,24 @@ Fixjour :verify => false do
   
   define_builder(Driver) do |klass, overrides|
     klass.new({
-      :name => Faker::Lorem.words(2), 
+      :name     => Faker::Lorem.words(2), 
+      :provider => new_provider, 
+      :user     => new_user
+    })
+  end
+  
+  define_builder(DevicePool) do |klass, overrides|
+    klass.new({
+      :name     => Faker::Company.name,
+      :color    => ActiveSupport::SecureRandom.hex(3),
       :provider => new_provider
     })
   end
   
-  define_builder(Device) do |klass, overrides|
+  define_builder(DevicePoolDriver) do |klass, overrides|
     klass.new({
-      :android_id => ActiveSupport::SecureRandom.hex(32)
+      :driver      => new_driver, 
+      :device_pool => new_device_pool
     })
   end
 end

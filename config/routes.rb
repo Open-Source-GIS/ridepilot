@@ -62,9 +62,7 @@ Ridepilot::Application.routes.draw do
     get :uncompleted_runs, :on=>:collection
   end
   
-  namespace :v1 do
-    resources :devices, :only => [:create, :update]
-  end
+  match 'v1/device_pool_drivers/:id' => "v1/device_pool_drivers#update", :via => :post, :constraints => { :format => "json" }
 
   match 'reports', :controller=>:reports, :action=>:index
   match 'reports/:action/:id', :controller=>:reports

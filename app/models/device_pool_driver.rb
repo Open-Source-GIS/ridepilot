@@ -1,13 +1,16 @@
 class DevicePoolDriver < ActiveRecord::Base
+  attr_accessible :lat, :lng, :status
+  
   belongs_to :device_pool
   belongs_to :driver
   has_one    :user, :through => :driver
   
+  Statuses = %w{inactive active break}
+  
   validates :driver_id, :presence => true, :uniqueness => true
   validates :device_pool, :presence => true
-  
-  # validate that the device_pool's provider is the same as the driver's provider ? can this be enforced with authorization ?
-      
+  validates :status, :inclusion => { :in => Statuses, :message => "must be in #{Statuses.inspect}", :allow_nil => true }
+        
   def as_tree_json
     {
       :data     => active? ? name : "<span class='inactive'>#{name}</span>",
