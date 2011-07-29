@@ -19,6 +19,9 @@ class Address < ActiveRecord::Base
   
   NewAddressOption = { :label => "New Address", :id => nil }
 
+  scope :for_provider, lambda {|provider| where(:provider_id => provider.id)}
+  scope :search_for_term, lambda {|term| where("LOWER(name) LIKE '%' || :term || '%' OR LOWER(building_name) LIKE '%' || :term || '%' OR LOWER(address) LIKE '%' || :term || '%'",{:term => term})}
+
   def compute_in_trimet_district
     if the_geom and in_district.nil?
       in_district = Region.count(:conditions => ["name='TriMet' and st_contains(the_geom, ?)", the_geom]) > 0
