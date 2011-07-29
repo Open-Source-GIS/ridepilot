@@ -47,9 +47,10 @@ Fixjour :verify => false do
   end
   
   define_builder(DevicePoolDriver) do |klass, overrides|
-    klass.new({
-      :driver      => new_driver, 
-      :device_pool => new_device_pool
-    })
+    dpd             = klass.new({})
+    
+    dpd.driver      = overrides[:driver] || new_driver
+    dpd.device_pool = overrides[:device_pool] || new_device_pool
+    dpd
   end
 end
