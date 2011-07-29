@@ -31,6 +31,14 @@ class DevicePoolDriver < ActiveRecord::Base
     }
   end
   
+  def as_mobile_json
+    {
+      :lat            => lat, 
+      :lng            => lng, 
+      :status         => status
+    }
+  end
+  
   def active?
     status == "active"
   end

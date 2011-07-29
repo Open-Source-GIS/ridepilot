@@ -17,7 +17,7 @@ describe "V1::device_pool_drivers" do
       end
       
       it "returns device as json" do
-        response.body.should == {:device_pool_driver => device_pool_driver.reload.as_json }.to_json
+        response.body.should == {:device_pool_driver => device_pool_driver.reload.as_mobile_json }.to_json
       end
     end
     

@@ -1,7 +1,12 @@
 class V1::DevicePoolDriversController < ApplicationController
   skip_before_filter :authenticate_user! # temporary
   
-  # POST /v1/device_pool_drivers/:id.json ? device_pool_driver[status]=STATUS | device_pool_driver[lat]=LAT | device_pool_driver[lng]=LNG
+  # POST /v1/device_pool_drivers/1.json
+  # options:  device_pool_driver[status]=active|inactive|break 
+  #           device_pool_driver[lat]=40.689060
+  #           device_pool_driver[lng]=-74.044636
+  # returns:  { id : 1, lat : 40.689060, lng : -74.044636, status : "active" }
+  
   def update
     respond_to do |format|
       format.json do
@@ -12,7 +17,7 @@ class V1::DevicePoolDriversController < ApplicationController
         end
         
         if device_pool_driver.update_attributes( params[:device_pool_driver] )
-          render :json => { :device_pool_driver => device_pool_driver.as_json }, :status => 200
+          render :json => { :device_pool_driver => device_pool_driver.as_mobile_json }, :status => 200
         else
           render :json => { :error => device_pool_driver.errors }, :status => 400
         end
