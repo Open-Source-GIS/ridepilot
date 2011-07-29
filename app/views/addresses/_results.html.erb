@@ -2,7 +2,7 @@
   <% for address in @addresses %>
     <tr>
       <td class="name">
-        <%= can?(:edit, Address) ? link_to( address.name, edit_address_path(address) ) : address.name %>
+        <%=  link_to_if can?(:edit, Address), address.name || '' , edit_address_path(address) %>
       </td>
       <td><%= address.building_name %></td>
       <td><%= address.address %></td>
