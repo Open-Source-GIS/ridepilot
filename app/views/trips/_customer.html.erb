@@ -1,5 +1,5 @@
 <%- if @customer.present? -%>
-  <strong><%= @customer.name %></strong>
+  <strong><%= link_to @customer.name, @customer %></strong>
 <%- else -%>
   <%= autocomplete_field_tag 'customer_name', '', autocomplete_customers_path, 
       :size => 30, 
