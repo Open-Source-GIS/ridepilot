@@ -61,6 +61,7 @@ GEM
     activesupport (3.0.9)
     arel (2.0.10)
     attribute_normalizer (0.3.1)
+    bartt-ssl_requirement (1.2.7)
     bcrypt-ruby (2.1.4)
     builder (2.1.2)
     cancan (1.6.5)
@@ -189,6 +190,7 @@ PLATFORMS
 DEPENDENCIES
   GeoRuby
   attribute_normalizer
+  bartt-ssl_requirement
   cancan
   capistrano
   capybara

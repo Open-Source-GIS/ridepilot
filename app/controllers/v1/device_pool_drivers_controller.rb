@@ -1,5 +1,8 @@
 class V1::DevicePoolDriversController < ApplicationController
+  include ::SslRequirement
+
   skip_before_filter :authenticate_user! # temporary
+  ssl_required :update, :index
   
   # POST /v1/device_pool_drivers/1.json
   # options:  device_pool_driver[status]=active|inactive|break 
