@@ -14,7 +14,6 @@ class V1::DevicePoolDriversController < ApplicationController
   # requires: user[email]=jmaki@openpizza.org 
   #           user[password]=password
   # returns:  { id : 1, lat : 40.689060, lng : -74.044636, status : "active" }
-  
   def update
     respond_to do |format|
       format.json do
@@ -29,6 +28,23 @@ class V1::DevicePoolDriversController < ApplicationController
     end
   rescue ActiveRecord::RecordNotFound => rnf
     return render :json => { :error => rnf.message }, :status => 404
+  rescue Exception => e
+    render :json => { :error => e.message }, :status => 500
+  end
+  
+  # POST /v1/device_pool_drivers.json
+  # requires: user[email]=jmaki@openpizza.org 
+  #           user[password]=password
+  # returns:  { device_pool_driver_id : 1, resource_url : 'https://openpizza.org/ridepilot/v1/device_pool_drivers/1.json' }
+  def index
+    respond_to do |format|
+      format.json do
+        render :json => { 
+          :device_pool_driver_id => @device_pool_driver.id, 
+          :resource_url => v1_device_pool_driver_url(:id => @device_pool_driver.id, :secure => true, :format => "json")
+        }, :status => 200
+      end
+    end
   rescue Exception => e
     render :json => { :error => e.message }, :status => 500
   end
