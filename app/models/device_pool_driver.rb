@@ -46,4 +46,8 @@ class DevicePoolDriver < ActiveRecord::Base
   def name
     driver.name
   end
+  
+  def provider_id
+    device_pool.provider_id
+  end
 end

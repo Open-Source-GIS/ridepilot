@@ -46,6 +46,9 @@ class Ability
     can :read, FundingSource, {:providers => {:id => provider.id}}
         
     can action, DevicePool, :provider_id => provider.id if provider.dispatch?
+    
+    can action, DevicePoolDriver, :provider_id 
+    can :manage, DevicePoolDriver, :driver_id => user.driver.id if user.driver
 
     if role.admin
       can :manage, User, {:roles => {:provider_id => provider.id}}

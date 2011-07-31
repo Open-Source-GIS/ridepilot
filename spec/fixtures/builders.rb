@@ -10,7 +10,8 @@ Fixjour :verify => false do
   end
   
   define_builder(Role) do |klass, overrides|
-    user = overrides[:user] || new_user
+    user = overrides[:user] || create_user
+    
     klass.new({
       :user => user,
       :provider => user.current_provider,
