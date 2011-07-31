@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
   has_many   :roles
   belongs_to :current_provider, :class_name=>"Provider", :foreign_key => :current_provider_id
   has_one    :driver
+  has_one    :device_pool_driver, :through => :driver
   
   validates :password, :confirmation => true
   validates :email, :uniqueness => true
