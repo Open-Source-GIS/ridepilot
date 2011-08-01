@@ -7,7 +7,7 @@ class V1::DevicePoolDriversController < ApplicationController
   before_filter :authenticate_driver!
   before_filter :authorize_device_pool_driver_for_user!
   
-  # POST /device_pool_drivers/1.json
+  # POST /v1/device_pool_drivers/1.json
   # options:  device_pool_driver[status]=active|inactive|break 
   #           device_pool_driver[lat]=40.689060
   #           device_pool_driver[lng]=-74.044636
@@ -32,7 +32,7 @@ class V1::DevicePoolDriversController < ApplicationController
     render :json => { :error => e.message }, :status => 500
   end
   
-  # POST /v1/device_pool_drivers.json
+  # POST /device_pool_drivers.json
   # requires: user[email]=jmaki@openpizza.org 
   #           user[password]=password
   # returns:  { device_pool_driver_id : 1, resource_url : 'https://openpizza.org/ridepilot/v1/device_pool_drivers/1.json' }
