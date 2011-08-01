@@ -1109,3 +1109,38 @@ body.trips .wc-cal-event .wc-time {
   background-color: #68A1E5;
   border: 1px solid #68A1E5;
 }
+
+/*
+ *
+ * Dispatch
+ *
+ */
+.dispatch #main {
+ padding: 10px 1% 10px 1%;
+ margin-bottom: 10px;
+}
+
+.dispatch #tree {
+ width: 20%;
+ margin: 0 1% 0 0;
+ float : left;
+}
+
+.dispatch #map-container {
+ width : 79%;
+ min-height : 300px;
+}
+
+.dispatch span.color {
+ display : inline-block;
+ width : 12px;
+ height : 12px;
+ border-radius : 6px;
+ vertical-align : middle;
+ border: 1px solid black;
+}
+
+.dispatch span.inactive {
+ font-style : italic;
+ color : #999;
+}

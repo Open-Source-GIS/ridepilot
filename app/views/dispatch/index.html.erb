@@ -6,156 +6,88 @@
   Tree
 </div>
 
+<form id="edit_device_pool_driver">
+  <h2>Update Device</h2>
+  <fieldset>
+  <ol class="section">
+    <li>
+      <label for="user_email">Login email:</label>
+      <%= text_field :user, :email %>
+    </li>
+    <li>
+      <label for="user_password">Password:</label>
+      <%= password_field :user, :password %>
+    </li>
+    
+    <li>
+      <%= grouped_collection_select :device_pool_driver, :id, current_user.current_provider.device_pools, :device_pool_drivers, :name, :id, :name %>
+    </li>
+    <li>
+      <label for="device_pool_driver_status">Status:</label>
+      <%= select :device_pool_driver, :status, DevicePoolDriver::Statuses %>
+    </li>
+    <li>
+      <label for="device_pool_driver_lat">Lat:</label>
+      <%= text_field :device_pool_driver, :lat %>
+    </li>
+    <li>
+      <label for="device_pool_driver_lng">Long:</label>
+      <%= text_field :device_pool_driver, :lng %>
+    </li>
+    <li>
+      Approx Boundaries: <br>
+      Lat[45.434, 45.622], Lng[-122.935, -122.428]
+    </li>
+  </ol>
+  <div class="actions">
+    <%= submit_tag "Update" %>
+  </div>
+  </fieldset>
+</form>
+
 <div id="map-container">
   
 </div>
 
 <style type="text/css" media="screen">
-
-  .dispatch #main {
-    padding: 10px 1% 10px 1%;
-    margin-bottom: 10px;
-  }
-
-  #tree {
-    width: 20%;
-    margin: 0 1% 0 0;
-    float : left;
+  #edit_device_pool_driver {
+    float:left;
+    clear:left;
+    margin-top: 25px;
   }
   
-  #map-container {
-    width : 79%;
-    min-height : 300px;
-  }
-  
-  span.color {
-    display : inline-block;
-    width : 12px;
-    height : 12px;
-    border-radius : 6px;
-    vertical-align : middle;
-    border: 1px solid black;
-  }
-  
-  span.inactive {
-    font-style : italic;
-    color : #999;
+  #edit_device_pool_driver label {
+    width: 100px;
   }
 </style>
 
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 <%= javascript_include_tag "styledmarker.js" %>
 <%= javascript_include_tag "jquery.jstree.js" %>
+<%= javascript_include_tag "dispatcher.js" %>
 <%= stylesheet_link_tag "jstree-apple/style.css" %>
 
 <script type="text/javascript" charset="utf-8">
-  function Dispatcher (tree_id, map_id) {
-    _d             = this,
-    this.tree      = null,
-    this.map       = null,
-    this.markers   = {},
-    this._data     = null, 
-    this._tree_elem  = $("#" + tree_id),
-    this._map_elem = $("#" + map_id),
-    
-    this.init = function(map_id){
-      $(window).resize(_d.adjustMapHeight).resize();
-      
-      _d.map = new google.maps.Map( document.getElementById(map_id), {
-        zoom      : 11,
-        mapTypeId : google.maps.MapTypeId.ROADMAP, 
-        center    : new google.maps.LatLng(45.5234515, -122.6762071)
-      });
-    },
-    
-    this.adjustMapHeight = function() {
-      _d._map_elem.css("height", function(){
-        return $(window).height() -
-        $("#header").outerHeight() -
-        $("#crossbar").outerHeight() -
-        ( $("#main").outerHeight() - $("#main").height() ) -
-        $("#page-header").outerHeight() - 21 + "px"
-      });
-    },
-    
-    this.setData = function(data){
-      _d._data = data;
-      
-      _d.initTree();
-      _d.initMarkers();
-      _d.createNodeListeners();
-    },
-    
-    this.initTree = function(){
-      _d.tree = _d._tree_elem.jstree({
-        core      : { html_titles : true },
-        plugins   : [ "json_data", "themes", "checkbox", "ui" ],
-        themes    : { theme : "apple" },
-        json_data : { data : tree },
-        checkbox  : { override_ui : true }
-      });
-      
-      // this isnt working without a delay ?
-      window.setTimeout(function(){
-        _d._tree_elem.jstree("open_all", -1);
-        _d._tree_elem.jstree("check_all");
-      }, 1);
-    },
-    
-    this.initMarkers = function(){
-      $.each(_d._data, function(){
-        var provider = this;
-        $.each(provider.children, function(){
-          var device_pool = this;
-          $.each(device_pool.children, function(){
-            var device = this;
-            var marker = new StyledMarker({
-              styleIcon : new StyledIcon( StyledIconTypes.MARKER, { color : device_pool.attr["data-color"] } ),
-              position  : new google.maps.LatLng( device.metadata.lat, device.metadata.lng ),
-              map       : _d.map
-            });
-            _d.markers[device.metadata.id] = marker;
-          })
-        })
-      });
-    }, 
-    
-    this.uncheckNode = function(node){
-      _d._tree_elem.jstree("uncheck_node", node );
-    },
-    
-    this.checkNode = function(node){
-      _d._tree_elem.jstree("check_node", node );
-    },
-    
-    this.createNodeListeners = function(){      
-      _d._tree_elem.delegate("a","click", function(e) { 
-        var node = $(this).parent("li"); 
-        
-        if (node.data().lat) // it's a marker
-          return _d.toggleVisibility( [_d.markers[node.data().id.toString()]] );
-        else {
-          $.each( node.find("[rel=device]"), function(){
-            return _d.toggleVisibility( [_d.markers[$(this).data().id.toString()]] );
-          });
-        }
-      });     
-    },
-    
-    this.toggleVisibility = function(markers){
-      $.each(markers, function(){
-        var marker = this;
-        if (!marker.getMap()) marker.setMap(_d.map);
-        else marker.setMap(null);
-      })
-    };
-    
-    this.init(map_id);
-  }
-  
-  var d = new Dispatcher("tree", "map-container");
-  
+  var d    = new Dispatcher("tree", "map-container");
   var tree = <%= raw @device_tree.to_json %>;
   
   d.setData(tree);
+  
+  $("#edit_device_pool_driver").submit(function(event){
+    var form   = $(this);
+    var dpd_id = form.find("#device_pool_driver_id").val();  
+
+    $.ajax({
+     url : "/dispatch/test_api",
+     type : "POST", 
+     data :  form.serialize(),
+     success : function(data){
+       console.log(data); 
+     }
+    });
+    
+    event.preventDefault();
+    
+    
+  });
 </script>
