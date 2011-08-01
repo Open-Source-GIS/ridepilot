@@ -47,8 +47,13 @@ class Ability
         
     can action, DevicePool, :provider_id => provider.id if provider.dispatch?
     
-    can action, DevicePoolDriver, :provider_id 
-    can :manage, DevicePoolDriver, :driver_id => user.driver.id if user.driver
+    can action, DevicePoolDriver do |device_pool_driver|
+      device_pool_driver.provider_id == provider.id
+    end
+    
+    can :manage, DevicePoolDriver do |device_pool_driver|
+      device_pool_driver.driver_id == user.driver.id if user.driver
+    end
 
     if role.admin
       can :manage, User, {:roles => {:provider_id => provider.id}}
