@@ -7,7 +7,7 @@ class V1::DevicePoolDriversController < ApplicationController
   before_filter :authenticate_driver!
   before_filter :authorize_device_pool_driver_for_user!
   
-  # POST /v1/device_pool_drivers/1.json
+  # POST /device_pool_drivers/1.json
   # options:  device_pool_driver[status]=active|inactive|break 
   #           device_pool_driver[lat]=40.689060
   #           device_pool_driver[lng]=-74.044636

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "V1::device_pool_drivers" do
   
-  describe "POST /v1/device_pool_drivers.json" do
+  describe "POST /device_pool_drivers.json" do
     context "when not using https" do
       attr_reader :device_pool_driver, :user
       
