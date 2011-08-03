@@ -1,6 +1,6 @@
 class DispatchController < ApplicationController
   include HTTParty
-  base_uri "#{APP_CONFIG[:host]}:443"
+  base_uri "https://#{APP_CONFIG[:host]}"
   
   def index
     authorize! :read, DevicePool
