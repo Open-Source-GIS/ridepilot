@@ -11,9 +11,10 @@ class V1::DevicePoolDriversController < ApplicationController
   # options:  device_pool_driver[status]=active|inactive|break 
   #           device_pool_driver[lat]=40.689060
   #           device_pool_driver[lng]=-74.044636
+  #           device_pool_driver[posted_at]=2011-08-03 17:45:54
   # requires: user[email]=jmaki@openpizza.org 
   #           user[password]=password
-  # returns:  { id : 1, lat : 40.689060, lng : -74.044636, status : "active" }
+  # returns:  { id : 1, lat : 40.689060, lng : -74.044636, status : "active", posted_at : "2011-08-03 17:45:54" }
   def update
     respond_to do |format|
       format.json do

@@ -1,5 +1,5 @@
 class DevicePoolDriver < ActiveRecord::Base
-  attr_accessible :lat, :lng, :status
+  attr_accessible :lat, :lng, :status, :posted_at
   
   belongs_to :device_pool
   belongs_to :driver
@@ -27,15 +27,17 @@ class DevicePoolDriver < ActiveRecord::Base
       :driver_id      => driver_id,
       :lat            => lat, 
       :lng            => lng, 
-      :status         => status 
+      :status         => status,
+      :posted_at      => posted_at 
     }
   end
   
   def as_mobile_json
     {
-      :lat            => lat, 
-      :lng            => lng, 
-      :status         => status
+      :lat        => lat, 
+      :lng        => lng, 
+      :status     => status,
+      :posted_at  => posted_at
     }
   end
   
