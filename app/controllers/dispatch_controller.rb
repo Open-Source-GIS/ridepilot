@@ -1,6 +1,6 @@
 class DispatchController < ApplicationController
   include HTTParty
-  base_uri "ridepilot.local:443"
+  base_uri "#{APP_CONFIG[:host]}:443"
   
   def index
     authorize! :read, DevicePool

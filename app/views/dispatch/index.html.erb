@@ -78,7 +78,7 @@
     var dpd_id = form.find("#device_pool_driver_id").val();  
 
     $.ajax({
-     url : "/dispatch/test_api",
+     url : window.location.pathname + "/test_api",
      type : "POST", 
      data :  form.serialize(),
      success : function(data){
