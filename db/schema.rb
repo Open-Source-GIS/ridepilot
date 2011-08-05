@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110803213858) do
+ActiveRecord::Schema.define(:version => 20110805222642) do
 
   create_table "addresses", :force => true do |t|
     t.string   "name"
@@ -130,6 +130,7 @@ ActiveRecord::Schema.define(:version => 20110803213858) do
     t.integer  "logo_file_size"
     t.datetime "logo_updated_at"
     t.boolean  "dispatch"
+    t.boolean  "scheduling"
   end
 
   create_table "regions", :force => true do |t|

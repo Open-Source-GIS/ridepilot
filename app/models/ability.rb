@@ -34,8 +34,8 @@ class Ability
       action = [:read, :search]
     end
 
-    can action, Trip, :provider_id => provider.id
-    can action, Run, :provider_id => provider.id
+    can action, Trip, :provider_id => provider.id if provider.scheduling?
+    can action, Run, :provider_id => provider.id if provider.scheduling?
     can action, Driver, :provider_id => provider.id
     can action, Vehicle, :provider_id => provider.id
     can action, VehicleMaintenanceEvent, :provider_id => provider.id
@@ -46,7 +46,8 @@ class Ability
     can :read, FundingSource, {:providers => {:id => provider.id}}
         
     can action, DevicePool, :provider_id => provider.id if provider.dispatch?
-    
+    can action, DevicePool, :provider_id => provider.id if provider.dispatch?
+        
     can action, DevicePoolDriver do |device_pool_driver|
       device_pool_driver.provider_id == provider.id
     end

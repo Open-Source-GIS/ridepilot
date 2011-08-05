@@ -38,6 +38,7 @@ Ridepilot::Application.routes.draw do
     post :change_role
     member do
       post :change_dispatch
+      post :change_scheduling
     end
   end
 

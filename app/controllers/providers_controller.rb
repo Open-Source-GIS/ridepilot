@@ -41,5 +41,10 @@ class ProvidersController < ApplicationController
     
     redirect_to provider_path(@provider)
   end
+  
+  def change_scheduling
+    @provider.update_attribute :scheduling, params[:scheduling]
+    redirect_to provider_path(@provider)
+  end
 
 end

@@ -69,6 +69,22 @@
   <% end %>
 <% end %>
 
+<hr />
+
+<h2 class="section-header">Scheduling</h2>
+<% if can? :edit, @provider %>
+  <%= form_tag change_scheduling_provider_path(@provider) do %>
+    <fieldset>
+      <ol class="section fourth">
+        <li>
+          <%= label_tag "Enabled?" %>
+          <%= select_tag "scheduling", options_for_select( [["No", false], ["Yes", true]], @provider.scheduling? ), { :onchange => "form.submit();" } %>
+        </li>
+      </ol>
+    </fieldset>
+  <% end %>
+<% end %>
+
 <% if @provider.dispatch? && can?(:edit, DevicePool) %>
   <% if @provider.device_pools.size == 0 %>
     <p>No device pools yet.</p>
