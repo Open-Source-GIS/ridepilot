@@ -6,6 +6,12 @@
   Loading...
 </div>
 
+<form id="refresh">
+  <div class="actions" style="border:0;">
+    <%= submit_tag "Refresh", :onclick => "d.refresh(); return false;" -%>
+  </div>
+</form>
+
 <form id="edit_device_pool_driver">
   <h2>Update Device</h2>
   <fieldset>
@@ -68,7 +74,8 @@
 <%= stylesheet_link_tag "jstree-apple/style.css" %>
 
 <script type="text/javascript" charset="utf-8">
-  var d    = new Dispatcher("tree", "map-container");
+  var d        = new Dispatcher("tree", "map-container");
+  var interval = window.setInterval( d.refresh, 120000 );
   
   $("#edit_device_pool_driver").submit(function(event){
     var form   = $(this);

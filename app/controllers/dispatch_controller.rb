@@ -8,8 +8,7 @@ class DispatchController < ApplicationController
     respond_to do |format|
       format.html
       format.js { 
-        @device_tree = DevicePool::Tree.new( DevicePool.accessible_by(current_ability) ).as_json
-        render :json => @device_tree.to_json 
+        render :json => DevicePool::Tree.new( DevicePool.accessible_by(current_ability) ).as_json
       }
     end
   end

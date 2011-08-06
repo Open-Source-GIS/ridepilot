@@ -40,7 +40,7 @@ function Dispatcher (tree_id, map_id) {
         success : function(data) {
           self._data = data;
           
-          self.initMarkers();
+          self.positionMarkers();
           self.createNodeListeners();
 
           window.setTimeout(function(){
@@ -53,23 +53,52 @@ function Dispatcher (tree_id, map_id) {
     });
   },
   
+  this.positionMarkers = function() {
+    if ( self.markers.length < 1 ) self.initMarkers();
+    else self.updateMarkers();
+  },
+  
   this.initMarkers = function(){
     $.each(self._data, function(){
-      var provider = this;
-      $.each(provider.children, function(){
+      $.each(this.children, function(){
         var device_pool = this;
         $.each(device_pool.children, function(){
-          var device = this;
-          var marker = new StyledMarker({
-            styleIcon : new StyledIcon( StyledIconTypes.MARKER, { color : device_pool.attr["data-color"] } ),
-            position  : new google.maps.LatLng( device.metadata.lat, device.metadata.lng ),
-            map       : self.map
-          });
-          self.markers[device.metadata.id] = marker;
+          self.createMarker(device_pool, this);
         })
       })
     });
   }, 
+  
+  this.updateMarkers = function() {
+    $.each(self._data, function(){
+      $.each(this.children, function(){
+        var device_pool = this;
+        $.each(device_pool.children, function(){
+          var marker = self.markers[this.metadata.id];
+          marker ? 
+            marker.setPosition( new google.maps.LatLng( this.metadata.lat, this.metadata.lng ) ) :
+            self.createMarker(device_pool, this);
+        });
+      });
+    });
+  },
+  
+  this.createMarker = function(device_pool, device) {
+    var marker = new StyledMarker({
+      styleIcon : new StyledIcon( StyledIconTypes.MARKER, { color : device_pool.attr["data-color"] } ),
+      position  : new google.maps.LatLng( device.metadata.lat, device.metadata.lng ),
+      map       : self.map
+    });
+    
+    self.markers[device.metadata.id] = marker;
+    // google.maps.event.addListener(marker,"click",function(){});
+
+    return marker;
+  },
+  
+  this.refresh = function() {
+    self._tree_elem.jstree("refresh");
+  },
   
   this.uncheckNode = function(node){
     self._tree_elem.jstree("uncheck_node", node );

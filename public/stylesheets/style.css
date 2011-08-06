@@ -1144,3 +1144,9 @@ body.trips .wc-cal-event .wc-time {
  font-style : italic;
  color : #999;
 }
+
+.dispatch #refresh {
+  float      : left; 
+  clear      : left; 
+  width      : 20%; 
+}
