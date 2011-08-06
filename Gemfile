@@ -41,8 +41,6 @@ gem 'exception_notification',
     
 gem 'bartt-ssl_requirement', :require => 'ssl_requirement'
 
-gem 'httparty'
-
 # Use unicorn as the web server
 # gem 'unicorn'
 

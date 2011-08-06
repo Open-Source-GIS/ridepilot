@@ -72,7 +72,6 @@ Ridepilot::Application.routes.draw do
   match 'reports/:action/:id', :controller=>:reports
   match 'reports/:action', :controller=>:reports
   match 'dispatch', :controller => :dispatch, :action => :index
-  match 'dispatch/test_api', :controller => :dispatch, :action => :test_api
   
   match "test_exception_notification" => "application#test_exception_notification"
 
