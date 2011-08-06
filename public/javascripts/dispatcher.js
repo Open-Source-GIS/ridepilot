@@ -37,7 +37,7 @@ function Dispatcher (tree_id, map_id) {
   this.initTree = function(){
     self.tree = self._tree_elem.jstree({
       core      : { html_titles : true },
-      plugins   : [ "json_data", "themes", "checkbox", "ui" ],
+      plugins   : [ "json_data", "themes", "checkbox"],
       themes    : { theme : "apple" },
       json_data : { ajax : {
         url : window.location.pathname,
@@ -53,8 +53,7 @@ function Dispatcher (tree_id, map_id) {
             self._tree_elem.jstree("check_all");
           }, 1);
         }        
-      } },
-      checkbox  : { override_ui : true }
+      } }
     });
   },
   
@@ -100,8 +99,7 @@ function Dispatcher (tree_id, map_id) {
     
     self.markers[device.metadata.id] = marker;
     google.maps.event.addListener(marker,"click",function(){
-      self._infoWindow.setContent(marker.html);
-      self._infoWindow.open(self.map, marker);
+      self._open_window_for_marker(marker);
     });
 
     return marker;
@@ -113,6 +111,11 @@ function Dispatcher (tree_id, map_id) {
       <h3>' + device.status + '</h3>\
       <h4>Updated: ' + device.posted_at + '</h4>\
     </div>';
+  },
+  
+  this._open_window_for_marker = function(marker) {
+    self._infoWindow.setContent(marker.html);
+    self._infoWindow.open(self.map, marker);
   },
   
   this.refresh = function() {
@@ -127,11 +130,24 @@ function Dispatcher (tree_id, map_id) {
   this.checkNode = function(node){
     self._tree_elem.jstree("check_node", node );
   },
-  
-  this.createNodeListeners = function(){      
-    self._tree_elem.delegate("a","click", function(e) { 
-      var node = $(this).parent("li"); 
+    
+  this.createNodeListeners = function(){   
+    // Driver name click   
+    self._tree_elem.delegate("a", "click.jstree", function(e) { 
+      var node = $(this).parents("li").first();
       
+      if (node.data().lat) { // it's a marker
+        var marker = self.markers[node.data().id];
+        self.map.setCenter( marker.getPosition() );
+        self._open_window_for_marker( marker );
+      }
+    });
+    
+    // Checkbox click
+    self._tree_elem.delegate("ins", "click.jstree", function(e) { 
+      e.stopImmediatePropagation();
+      
+      var node = $(this).parents("li").first(); 
       if (node.data().lat) // it's a marker
         return self.toggleVisibility( [self.markers[node.data().id.toString()]] );
       else {
@@ -139,7 +155,8 @@ function Dispatcher (tree_id, map_id) {
           return self.toggleVisibility( [self.markers[$(this).data().id.toString()]] );
         });
       }
-    });     
+    });
+    
   },
   
   this.toggleVisibility = function(markers){

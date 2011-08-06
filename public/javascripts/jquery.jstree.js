@@ -2763,7 +2763,7 @@
 						this._prepare_checkboxes();
 					}, this))
 				.delegate( (this.data.ui && this.data.checkbox.noui ? "a" : "ins.jstree-checkbox") , "click.jstree", $.proxy(function (e) {
-						e.preventDefault();
+            e.preventDefault();
 						if(this._get_node(e.target).hasClass("jstree-checked")) { this.uncheck_node(e.target); }
 						else { this.check_node(e.target); }
 						if(this.data.ui && this.data.checkbox.noui) {
@@ -2771,8 +2771,8 @@
 							if(this.data.cookies) { this.save_cookie("select_node"); }
 						}
 						else {
-							e.stopImmediatePropagation();
-							return false;
+              // e.stopImmediatePropagation();
+              // return false;
 						}
 					}, this));
 		},
