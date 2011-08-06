@@ -1120,7 +1120,7 @@ body.trips .wc-cal-event .wc-time {
  margin-bottom: 10px;
 }
 
-.dispatch #tree {
+.dispatch .left_column {
  width: 20%;
  margin: 0 1% 0 0;
  float : left;
@@ -1146,9 +1146,7 @@ body.trips .wc-cal-event .wc-time {
 }
 
 .dispatch #refresh {
-  float      : left; 
   clear      : left; 
-  width      : 20%; 
 }
 
 .dispatch .marker_detail h3 {
