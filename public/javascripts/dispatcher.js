@@ -4,6 +4,7 @@ function Dispatcher (tree_id, map_id) {
   this.map       = null,
   this.markers   = {},
   this._data     = null, 
+  this._infoWindow = new google.maps.InfoWindow({ content : "" }),
   this._tree_elem  = $("#" + tree_id),
   this._map_elem = $("#" + map_id),
   
@@ -14,6 +15,10 @@ function Dispatcher (tree_id, map_id) {
       zoom      : 11,
       mapTypeId : google.maps.MapTypeId.ROADMAP, 
       center    : new google.maps.LatLng(45.5234515, -122.6762071)
+    });
+    
+    google.maps.event.addListener(self.map, "click", function(){
+      self._infoWindow.close();
     });
     
     self.initTree();
@@ -75,9 +80,10 @@ function Dispatcher (tree_id, map_id) {
         var device_pool = this;
         $.each(device_pool.children, function(){
           var marker = self.markers[this.metadata.id];
-          marker ? 
-            marker.setPosition( new google.maps.LatLng( this.metadata.lat, this.metadata.lng ) ) :
-            self.createMarker(device_pool, this);
+          if (marker) {
+            marker.setPosition( new google.maps.LatLng( this.metadata.lat, this.metadata.lng ) );
+            marker.html = self._marker_html(device.metadata);
+          } else self.createMarker(device_pool, this);
         });
       });
     });
@@ -90,10 +96,23 @@ function Dispatcher (tree_id, map_id) {
       map       : self.map
     });
     
+    marker.html = self._marker_html(device.metadata);
+    
     self.markers[device.metadata.id] = marker;
-    // google.maps.event.addListener(marker,"click",function(){});
+    google.maps.event.addListener(marker,"click",function(){
+      self._infoWindow.setContent(marker.html);
+      self._infoWindow.open(self.map, marker);
+    });
 
     return marker;
+  },
+  
+  this._marker_html = function(device) {
+    return '<div class="marker_detail">\
+      <h2>' + device.name + '</h2>\
+      <h3>' + device.status + '</h3>\
+      <h4>Updated: ' + device.posted_at + '</h4>\
+    </div>';
   },
   
   this.refresh = function() {

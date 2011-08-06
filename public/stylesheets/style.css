@@ -1150,3 +1150,11 @@ body.trips .wc-cal-event .wc-time {
   clear      : left; 
   width      : 20%; 
 }
+
+.dispatch .marker_detail h3 {
+  font-style: italic;
+}
+
+.dispatch .marker_detail h4 {
+  font-weight: normal;
+}
