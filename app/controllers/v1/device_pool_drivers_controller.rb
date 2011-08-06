@@ -55,7 +55,7 @@ private
   def authenticate_driver!
     return render_unauthorized if params[:user].blank?      
     
-    user = User.find_by_email( params[:user][:email] )
+    user = User.find_by_email( params[:user][:email].downcase )
     if user && user.valid_password?(params[:user][:password])
       @current_user = user
     else
@@ -71,7 +71,7 @@ private
     @device_pool_driver = params[:id].present? ? DevicePoolDriver.find(params[:id]) : @current_user.device_pool_driver
     render_unauthorized_for_resource if @device_pool_driver.blank? || !authorize!(:update, @device_pool_driver) 
   rescue ActiveRecord::RecordNotFound => rnf
-    return render :json => { :error => rnf.message }, :status => 404
+    render :json => { :error => rnf.message }, :status => 404
   rescue CanCan::AccessDenied => e
     render_unauthorized_for_resource
   rescue Exception => e

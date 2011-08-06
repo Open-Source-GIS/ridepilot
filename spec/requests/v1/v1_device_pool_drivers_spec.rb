@@ -82,6 +82,23 @@ describe "V1::device_pool_drivers" do
       end
     end
     
+    context "when passing capitalized email" do
+      attr_reader :device_pool_driver, :user
+
+      before do
+        @user               = create_user :password => "password", :password_confirmation => "password"
+        create_role :level => 0, :user => user
+        
+        @device_pool_driver = create_device_pool_driver :driver => create_driver(:user => @user), :device_pool => create_device_pool
+
+        post v1_device_pool_drivers_path(:user => { :email => user.email.upcase, :password => "password" }, :secure => true, :format => "json")
+      end
+
+      it "returns 200" do
+        response.status.should be(200)
+      end
+    end
+    
     context "when user has device_pool_driver" do
       attr_reader :device_pool_driver, :user
 
