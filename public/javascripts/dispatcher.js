@@ -82,7 +82,7 @@ function Dispatcher (tree_id, map_id) {
           var marker = self.markers[this.metadata.id];
           if (marker) {
             marker.setPosition( new google.maps.LatLng( this.metadata.lat, this.metadata.lng ) );
-            marker.html = self._marker_html(device.metadata);
+            marker.html = self._marker_html(this.metadata);
           } else self.createMarker(device_pool, this);
         });
       });
@@ -116,6 +116,7 @@ function Dispatcher (tree_id, map_id) {
   },
   
   this.refresh = function() {
+    self._infoWindow.close();
     self._tree_elem.jstree("refresh");
   },
   
