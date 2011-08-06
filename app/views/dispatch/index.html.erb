@@ -3,7 +3,7 @@
 </div>
 
 <div id="tree">
-  Tree
+  Loading...
 </div>
 
 <form id="edit_device_pool_driver">
@@ -69,9 +69,6 @@
 
 <script type="text/javascript" charset="utf-8">
   var d    = new Dispatcher("tree", "map-container");
-  var tree = <%= raw @device_tree.to_json %>;
-  
-  d.setData(tree);
   
   $("#edit_device_pool_driver").submit(function(event){
     var form   = $(this);
@@ -87,7 +84,5 @@
     });
     
     event.preventDefault();
-    
-    
   });
 </script>

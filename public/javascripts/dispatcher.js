@@ -15,6 +15,8 @@ function Dispatcher (tree_id, map_id) {
       mapTypeId : google.maps.MapTypeId.ROADMAP, 
       center    : new google.maps.LatLng(45.5234515, -122.6762071)
     });
+    
+    self.initTree();
   },
   
   this.adjustMapHeight = function() {
@@ -27,28 +29,28 @@ function Dispatcher (tree_id, map_id) {
     });
   },
   
-  this.setData = function(data){
-    self._data = data;
-    
-    self.initTree();
-    self.initMarkers();
-    self.createNodeListeners();
-  },
-  
   this.initTree = function(){
     self.tree = self._tree_elem.jstree({
       core      : { html_titles : true },
       plugins   : [ "json_data", "themes", "checkbox", "ui" ],
       themes    : { theme : "apple" },
-      json_data : { data : tree },
+      json_data : { ajax : {
+        url : window.location.pathname,
+        dataType : "json", 
+        success : function(data) {
+          self._data = data;
+          
+          self.initMarkers();
+          self.createNodeListeners();
+
+          window.setTimeout(function(){
+            self._tree_elem.jstree("open_all", -1);
+            self._tree_elem.jstree("check_all");
+          }, 1);
+        }        
+      } },
       checkbox  : { override_ui : true }
     });
-    
-    // this isnt working without a delay ?
-    window.setTimeout(function(){
-      self._tree_elem.jstree("open_all", -1);
-      self._tree_elem.jstree("check_all");
-    }, 1);
   },
   
   this.initMarkers = function(){

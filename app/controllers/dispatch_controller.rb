@@ -5,7 +5,13 @@ class DispatchController < ApplicationController
   def index
     authorize! :read, DevicePool
     
-    @device_tree = DevicePool::Tree.new( DevicePool.accessible_by(current_ability) ).as_json
+    respond_to do |format|
+      format.html
+      format.js { 
+        @device_tree = DevicePool::Tree.new( DevicePool.accessible_by(current_ability) ).as_json
+        render :json => @device_tree.to_json 
+      }
+    end
   end
   
   def test_api
