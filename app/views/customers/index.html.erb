@@ -4,9 +4,9 @@
 
 <%= form_tag found_customers_path, :class=>'customer-search', :method=>:get do %> 
   <label for="customer_id">Search:</label>
-  <%= autocomplete_field_tag 'customer_name', '', autocomplete_customers_path, :size => 30, :id_element => "#customer_id", "submit-buttons" => "#show_details #new_trip" %>
+  <%= autocomplete_field_tag 'customer_name', params[:term], autocomplete_customers_path, :size => 30, :id_element => "#customer_id", "submit-buttons" => "#show_details #new_trip" %>
   <%= hidden_field_tag 'customer_id' %>
-  <%= submit_tag "Show Details", :id=>:show_details %>
+  <%= submit_tag "Search", :id=>:show_details %>
   <% if can? :create, Trip %>
   <%= submit_tag "New Trip for This Customer", :id=>:new_trip %>
   <% end %>

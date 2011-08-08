@@ -13,11 +13,14 @@ Ridepilot::Application.routes.draw do
   end
 
   resources :customers do
-    post :inactivate, :as=>:inactivate
-    get "search", :on=>:collection
-    get :all, :on=>:collection
-    get :found, :on=>:collection
-    get :autocomplete, :on=>:collection
+    post :inactivate, :as => :inactivate
+    
+    collection do
+      get :search
+      get :all
+      get :found
+      get :autocomplete
+    end
   end
 
   resources :trips do 
