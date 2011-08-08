@@ -147,23 +147,13 @@ regexp_replace(phone_number_2, '[^0-9]', '') = ?
 
   def self.make_customer_name_query(field, value, option=nil)
     value = value.downcase
+    like  = "#{value}%"
     if option == :initial
       return "(LOWER(%s) = ?)" % field, [value]
     elsif option == :complete
-      return "(LOWER(%s) = ? or
-dmetaphone(%s) = dmetaphone(?) or
-dmetaphone(%s) = dmetaphone_alt(?)  or
-dmetaphone_alt(%s) = dmetaphone(?) or
-dmetaphone_alt(%s) = dmetaphone_alt(?))" % [field, field, field, field, field], [value, value, value, value, value]
+      return "(LOWER(%s) = ? or LOWER(%s) LIKE ? )" % [field, field], [value, like]
     else
-      like = value + "%"
-
-      return "(LOWER(%s) like ? or
-dmetaphone(%s) LIKE dmetaphone(?) || '%%' or
-dmetaphone(%s) LIKE dmetaphone_alt(?)  || '%%' or
-dmetaphone_alt(%s) LIKE dmetaphone(?)  || '%%'or
-dmetaphone_alt(%s) LIKE dmetaphone_alt(?) || '%%')" % [field, field, field, field, field], [like, value, value, value, value]
-
+      return "(LOWER(%s) like ?)" % [field], [like]
     end
   end
 
