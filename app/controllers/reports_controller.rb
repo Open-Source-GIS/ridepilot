@@ -11,11 +11,11 @@ class Query
     return Date.new(obj["#{base}(1i)"].to_i,obj["#{base}(2i)"].to_i,(obj["#{base}(3i)"] || 1).to_i)
   end
 
-  def initialize(params = nil)
+  def initialize(params = {})
     now = Date.today
-    @start_date = Date.new(now.year, now.month, 1).prev_month
-    @end_date = start_date.next_month
-    if params
+    @start_date = params[:start_date] || Date.new(now.year, now.month, 1).prev_month
+    @end_date = params[:end_date] || start_date.next_month
+    if params.present?
       if params["start_date(1i)"]
         @start_date = convert_date(params, :start_date)
       end
@@ -44,7 +44,7 @@ end
 class ReportsController < ApplicationController
 
   def index
-    @driver_query = Query.new
+    @driver_query = Query.new :start_date => Date.today, :end_date => Date.today
     cab = Driver.new(:id=>"cab", :name=>"Cab")
     all = Driver.new(:id=>"all", :name=>"All")
     @drivers =  [all, cab] + Driver.accessible_by(current_ability)
@@ -183,7 +183,7 @@ class ReportsController < ApplicationController
   end
 
   def donations
-    query_params = params[:query]
+    query_params = params[:query] || {}
     @query = Query.new(query_params)
 
     @donations_by_customer = {}
@@ -203,14 +203,14 @@ class ReportsController < ApplicationController
   end
 
   def cab
-    query_params = params[:query]
+    query_params = params[:query] || {}
     @query = Query.new(query_params)
 
     @trips = Trip.where(["provider_id = ? and pickup_time between ? and ? and cab = true", current_provider_id, @query.start_date, @query.end_date])
   end
 
   def age_and_ethnicity
-    query_params = params[:query]
+    query_params = params[:query] || {}
     @query = Query.new(query_params)
 
     #we need new riders this month, where new means "first time this fy"
