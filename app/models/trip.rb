@@ -17,8 +17,8 @@ class Trip < ActiveRecord::Base
   before_validation :compute_in_district
   before_validation :compute_run
   
-  validates_presence_of :pickup_address_id
-  validates_presence_of :dropoff_address_id
+  validates_presence_of :pickup_address
+  validates_presence_of :dropoff_address
   validates_presence_of :pickup_time
   validates_presence_of :appointment_time
   validates_presence_of :trip_purpose
@@ -60,7 +60,7 @@ class Trip < ActiveRecord::Base
 
     #when the trip is saved, we need to find or create a run for it.
     #this will depend on the driver and vehicle.  
-    run = Run.find(:first, :conditions=>["scheduled_start_time <= ? and scheduled_end_time >= ? and vehicle_id=? and provider_id=?", pickup_time, appointment_time, vehicle_id, provider_id])
+    self.run = Run.find(:first, :conditions=>["scheduled_start_time <= ? and scheduled_end_time >= ? and vehicle_id=? and provider_id=?", pickup_time, appointment_time, vehicle_id, provider_id])
 
     if run.nil?
       #find the next/previous runs for this vehicle and, if necessary,
@@ -81,9 +81,9 @@ class Trip < ActiveRecord::Base
         else
           #just the previous run
           if previous_run.scheduled_start_time.to_date != pickup_time.to_date
-            run = make_run()
+            self.run = make_run()
           else
-            run = previous_run
+            self.run = previous_run
             previous_run.scheduled_end_time = run.appointment_time
             previous_run.save!
           end
@@ -92,15 +92,15 @@ class Trip < ActiveRecord::Base
         if next_run and next_run.scheduled_start_time < appointment_time
           #just the next run
           if next_run.scheduled_start_time.to_date != pickup_time.to_date
-            run = make_run()
+            self.run = make_run()
           else
-            run = next_run
+            self.run = next_run
             next_run.scheduled_start_time = run.pickup_time
             next_run.save!
           end
         else
           #no overlap, create a new run
-          run = make_run()
+          self.run = make_run()
         end
       end
     end
@@ -111,7 +111,7 @@ class Trip < ActiveRecord::Base
   def handle_overlapping_runs(previous_run, next_run)
     #can we unify the runs?
     if next_run.driver_id == previous_run.driver_id
-      run = unify_runs(previous_run, next_run)
+      self.run = unify_runs(previous_run, next_run)
       return
     end
 
@@ -123,7 +123,7 @@ class Trip < ActiveRecord::Base
       next_run.save!
       previous_run.scheduled_end_time = appointment_time
       previous_run.save!
-      run = previous_run
+      self.run = previous_run
     else
       #no, the second run is fixed.  Can we push the end of the
       #first run earlier?
@@ -134,7 +134,7 @@ class Trip < ActiveRecord::Base
         previous_run.save!
         next_run.scheduled_start_time = appointment_time
         next_run.save!
-        run = next_run
+        self.run = next_run
       else
         return false
       end
