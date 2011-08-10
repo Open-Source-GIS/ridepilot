@@ -10,8 +10,19 @@ module ApplicationHelper
     time.strftime(' %m-%d-%Y')
   end
   
-  def format_date_for_daily_manifests(date)
+  def format_date_for_daily_manifest(date)
     date.strftime('%A, %m-%d-%Y')
+  end
+  
+  def format_trip_for_daily_manifest(trip)
+    <<-HTML
+      #{trip.customer.name}<span class='address_separator'></span>
+      #{trip.customer.phone_number_1}<span class='address_separator'></span>
+      #{trip.customer.phone_number_2}
+      <br/>
+      #{trip.pickup_address.text}<span class='address_separator'></span>
+      #{trip.dropoff_address.text}
+    HTML
   end
   
   def format_newlines(text)

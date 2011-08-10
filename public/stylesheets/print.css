@@ -83,3 +83,7 @@ body.daily-manifest-by-half-hour ul.schedule li {
   border-bottom : 1px solid #bbb;
   padding       : 15px 0;
 }
+
+span.address_separator {
+  margin : 0 .25in;
+}
