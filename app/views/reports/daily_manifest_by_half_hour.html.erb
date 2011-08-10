@@ -8,7 +8,10 @@
   Driver: <%= driver.name %><br/><br/>
 
   <% start_time = @query.start_date.to_datetime.advance :hours=>@start_hour %>
+  
+  <ul class="schedule">
   <% while start_time.hour < @end_hour %>
+    <li>
     <% end_time = start_time.advance :minutes=>30 %>
     <strong><%= start_time.strftime '%H:%M' %></strong><br/>
     <% for trip in trips %>
@@ -21,11 +24,12 @@
         <%= trip.dropoff_address.text %> <br/>
       <% end %>
     <% end %>
-    <hr>
+    </li>
     <%
   start_time = start_time.advance :minutes=>30 
     
   end %>
+  </ul>
   <% if i != @trips.size %>
     <p style="page-break-after:always" />
   <% end %>

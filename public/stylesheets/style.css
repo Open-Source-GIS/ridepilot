@@ -918,6 +918,17 @@ ul.reports li a {
     background: url(images/reports-stack.png) left center no-repeat scroll;
 }
 
+body.daily-manifest-by-half-hour ul.schedule {
+  list-style : none;
+  margin     : 0;
+}
+
+body.daily-manifest-by-half-hour ul.schedule li {
+  min-height    : 90px;
+  border-bottom : 1px solid #bbb;
+  padding       : 15px 0;
+}
+
 /*
  *
  * Funding Sources
