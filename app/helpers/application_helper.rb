@@ -4,6 +4,12 @@ module ApplicationHelper
     TRIP_RESULT_CODES[trip_result] || "Unscheduled"
   end
   
+  def format_time_for_listing(time)
+    time.strftime('%A ') +
+    time.strftime('%I:%M%P').gsub(/^0/,'').gsub(/m$/,'') +
+    time.strftime(' %m-%d-%Y')
+  end
+  
   def format_newlines(text)
     return text.gsub("\n", "<br/>")
   end
