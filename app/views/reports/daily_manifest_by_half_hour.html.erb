@@ -13,7 +13,7 @@
   <% while start_time.hour < @end_hour %>
     <li>
     <% end_time = start_time.advance :minutes=>30 %>
-    <strong><%= start_time.strftime '%H:%M' %></strong><br/>
+    <strong><%= start_time.strftime('%I:%M %P').gsub(/^0/,'') %></strong><br/>
     <% for trip in trips %>
 
       <% if trip.pickup_time >= start_time && trip.pickup_time < end_time %>
