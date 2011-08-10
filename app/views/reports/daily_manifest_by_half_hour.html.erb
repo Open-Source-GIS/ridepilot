@@ -1,5 +1,5 @@
 <h1>Transportation Schedule</h1>
-<h2><%= @date %></h2>
+<h2><%= format_date_for_daily_manifests @date %></h2>
 
 <% i = 0 %>
 <% for driver, trips in @trips %>

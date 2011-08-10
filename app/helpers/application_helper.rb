@@ -10,6 +10,10 @@ module ApplicationHelper
     time.strftime(' %m-%d-%Y')
   end
   
+  def format_date_for_daily_manifests(date)
+    date.strftime('%A, %m-%d-%Y')
+  end
+  
   def format_newlines(text)
     return text.gsub("\n", "<br/>")
   end
