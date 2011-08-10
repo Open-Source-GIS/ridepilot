@@ -117,6 +117,7 @@
           else
             return ($(window).height() * 0.3 + 40);
         },
+        timeFormat: "h:ia",
         textSize: 10,
         defaultEventLength: 3,
         readonly: true,
@@ -151,6 +152,19 @@
               $("tr:odd").addClass("odd");
             }
           );
+        },
+        eventHeader: function(calEvent, calendar) {
+          var options = calendar.weekCalendar('option');
+          var one_hour = 3600000;
+          var displayTitleWithTime = calEvent.end.getTime() - calEvent.start.getTime() <= (one_hour / options.timeslotsPerHour);
+          if (displayTitleWithTime) {
+            return calendar.weekCalendar(
+                        'formatDate', calEvent.start, options.timeFormat) +
+                        ': ' + calEvent.title;
+          } else {
+            return calendar.weekCalendar(
+                        'formatDate', calEvent.start, options.timeFormat);
+          }
         }
     });
     
