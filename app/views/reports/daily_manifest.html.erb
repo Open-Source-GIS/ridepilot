@@ -5,7 +5,7 @@
 <% for driver, trips in @trips %>
   <% i += 1 %>
 
-  Driver: <%= driver.name %>
+  Driver: <%= driver.present? ? driver.name : 'Unspecified driver' %>
 
   <% for trip in trips %>
     <strong><%= trip.pickup_time %></strong><br/>

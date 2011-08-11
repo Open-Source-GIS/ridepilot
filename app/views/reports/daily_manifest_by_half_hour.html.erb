@@ -5,7 +5,7 @@
 <% for driver, trips in @trips %>
   <% i += 1 %>
 
-  Driver: <%= driver.name %><br/><br/>
+  Driver: <%= driver.present? ? driver.name : 'Unspecified driver' %>
 
   <% start_time = @query.start_date.to_datetime.advance :hours=>@start_hour %>
   
