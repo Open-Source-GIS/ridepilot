@@ -43,6 +43,11 @@
       </li>
       
       <li class="selfclear">
+        <%= form.label :default_trip_purpose, "Default Trip Purpose:" %>
+        <%= form.select :default_trip_purpose, TRIP_PURPOSES, :include_blank => true %>
+      </li>
+      
+      <li class="selfclear">
         <%= form.label :inactive, "Inactive:" %>
         <%= form.check_box :inactive %>
       </li>
