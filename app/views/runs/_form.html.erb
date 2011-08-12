@@ -56,6 +56,9 @@
   <table>
     <tr>
       <th>Customer Name</th>
+      <th>Round Trip?</th>
+      <th>Guest Count</th>
+      <th>Attendant Count</th>
       <th>Result</th>
       <th>Notes</th>
     </tr>
@@ -64,6 +67,15 @@
         <tr>
           <td>
             <%= trip.customer.name %>
+          </td>
+          <td>
+            <%= trip_fields.check_box :round_trip %>
+          </td>
+          <td>
+            <%= trip_fields.text_field :guest_count %>
+          </td>
+          <td>
+            <%= trip_fields.text_field :attendant_count %>
           </td>
           <td>
             <%= trip_fields.select :trip_result, @trip_results, :include_blank => true %>
