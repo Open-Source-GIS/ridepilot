@@ -80,7 +80,8 @@ class Address < ActiveRecord::Base
       :in_district => in_district,
       :phone_number => phone_number,
       :lat => latitude,
-      :lon => longitude
+      :lon => longitude,
+      :default_trip_purpose => default_trip_purpose
     }
   end
 
