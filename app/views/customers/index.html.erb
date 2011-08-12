@@ -12,6 +12,16 @@
   <% end %>
 <% end %>
 
+<div class="alpha-pagination pagination">
+  <% ("A".."Z").to_a.each do |letter| %>
+    <% if params[:letter] == letter %>
+      <span class="current"><%= letter %></span>
+    <% else %>
+      <%= link_to letter, customers_path(:letter => letter)%>
+    <% end %>
+  <% end %>
+</div>
+
 <%= render :partial=>"customer_listing", :locals=>{:show_inactivated_date=>@show_inactivated_date} %>
 
 <%= will_paginate @customers %>

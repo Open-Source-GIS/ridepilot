@@ -20,6 +20,8 @@ class CustomersController < ApplicationController
   def index #only active customers
     @show_inactivated_date = false
     @customers = @customers.where(:inactivated_date => nil)
+    @customers = @customers.by_letter(params[:letter]) if params[:letter].present?
+    
     respond_to do |format|
       format.html { @customers = @customers.paginate :page => params[:page], :per_page => PER_PAGE }
       format.xml  { render :xml => @customers }

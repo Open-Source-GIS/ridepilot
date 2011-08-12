@@ -860,6 +860,9 @@ div.pagination {
     text-align: center;
     padding: 20px 0;
 }
+div.alpha-pagination {
+  padding-top : 0;
+}
 a.previous_page {
     float: left;
 }

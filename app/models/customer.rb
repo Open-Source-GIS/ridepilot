@@ -13,6 +13,8 @@ class Customer < ActiveRecord::Base
   normalize_attribute :middle_initial, :with=> [:squish, :upcase]
 
   default_scope :order => 'last_name, first_name, middle_initial'
+  
+  scope :by_letter, lambda { |letter| where("lower(last_name) LIKE ?", "#{letter.downcase}%") }
 
   stampable :creator_attribute => :created_by_id, :updater_attribute => :updated_by_id
 
