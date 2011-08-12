@@ -72,16 +72,16 @@
             <%= trip_fields.check_box :round_trip %>
           </td>
           <td>
-            <%= trip_fields.text_field :guest_count %>
+            <%= trip_fields.text_field :guest_count, :size => 1 %>
           </td>
           <td>
-            <%= trip_fields.text_field :attendant_count %>
+            <%= trip_fields.text_field :attendant_count, :size => 1 %>
           </td>
           <td>
             <%= trip_fields.select :trip_result, @trip_results, :include_blank => true %>
           </td>
           <td>
-            <%= trip_fields.text_area :notes, :rows => 5 %>
+            <%= trip_fields.text_area :notes, :rows => 1 %>
           </td>
         </tr>
       <% end %>
