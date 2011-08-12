@@ -71,4 +71,28 @@
 
 <hr />
 
+<h2 class="section-header">Trips</h2>
+
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th>Pickup Time</th>
+    <th>Result</th>
+  </tr>
+  <% if @trips.present? %>
+    <% for trip in @trips %>
+    <tr>
+      <td><%= link_to trip.pickup_time.strftime('%m-%d-%Y %I:%M%P'), edit_trip_path(trip) %></td>
+      <td><%= TRIP_RESULT_CODES[trip.trip_result] %></td>
+    </tr>
+    <% end %>
+  <% else %>
+    <tr>
+      <td>No trips yet.</td>
+    </tr>
+  <% end %>
+</table>
+
+<%= will_paginate @trips %>
+
+<hr />
 <%= link_to 'Back', customers_path, :class=>'action-bttn' %>

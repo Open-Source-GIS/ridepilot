@@ -45,6 +45,9 @@ class CustomersController < ApplicationController
   def show
     @customer = Customer.find(params[:id])
 
+    # default scope is pickup time ascending, so reverse
+    @trips    = @customer.trips.reverse.paginate :page => params[:page], :per_page => PER_PAGE
+
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @customer }

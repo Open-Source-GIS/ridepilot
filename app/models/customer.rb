@@ -4,6 +4,8 @@ class Customer < ActiveRecord::Base
   belongs_to :mobility
   belongs_to :created_by, :foreign_key => :created_by_id, :class_name=>'User'
   belongs_to :updated_by, :foreign_key => :updated_by_id, :class_name=>'User'
+  has_many   :trips
+
   accepts_nested_attributes_for :address
 
   normalize_attribute :first_name, :with=> [:squish, :titleize]
