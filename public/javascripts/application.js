@@ -24,39 +24,39 @@ function supports_history_api() {
 $(function() {
 
   $("tr:odd").addClass("odd");
-
+  
   $("body.customers.show .profile-actions .delete").click( function(event){
     event.preventDefault();
 
     var link = $(this);
-
+    
     if ( $("#confirm-destroy").length > 0 ) {
       $( "#confirm-destroy" ).dialog({
         resizable: false,
         width: 480,
-	modal: true,
-	title: $("#confirm-destroy").find("legend").text(),
-	buttons: {
-		Confirm: function() {
-			$( this ).find( "form" ).submit();
-		},
-		Cancel: function() {
-			$( this ).dialog( "close" );
-		}
-	}
+      	modal: true,
+      	title: $("#confirm-destroy").find("legend").text(),
+      	buttons: {
+      		Confirm: function() {
+      			$( this ).find( "form" ).submit();
+      		},
+      		Cancel: function() {
+      			$( this ).dialog( "close" );
+      		}
+      	}
       });
     } else {
       $( "<div>" ).text("This customer will be permanently deleted. Are you sure?").dialog({
-	resizable: false,
-	modal: true,
-	buttons: {
-		Confirm: function() {
-		  link.attr("data-method", "delete").click();
-		},
-		Cancel: function() {
-			$( this ).dialog( "close" );
-		}
-	}
+      	resizable: false,
+      	modal: true,
+      	buttons: {
+      		Confirm: function() {
+      		  link.attr("data-method", "delete").click();
+      		},
+      		Cancel: function() {
+      			$( this ).dialog( "close" );
+      		}
+      	}
       });
     }
   });
@@ -77,23 +77,14 @@ $(function() {
   $('#new_monthly #monthly_start_date, #new_monthly #monthly_end_date, input.datepicker').datepicker({
 		dateFormat: 'yy-mm-dd'    		
   });
-  
-  var setAppointmentTime = function() {
-    var pickupTimeDate = ISODateFormatToDateObject($('#trip_pickup_time').attr("value"));
-    var appointmentTimeDate = new Date(pickupTimeDate.getTime() + (1000 * 60 * 30));    
-    $('#trip_appointment_time').attr( "value", appointmentTimeDate.format("yyyy-mm-dd hh:MM TT"));
-    
-    return appointmentTimeDate;
-  };
-  
-  var setWeek = function( dateTime ) {
-    var calendar = $("#calendar");
-    calendar.weekCalendar("gotoWeek", dateTime.getTime());
-  };
 
+  // when trip pickup time is changed, update appointment time and displayed week
   $('#trip_pickup_time').live('change', function() {
-    var appointmentTime = setAppointmentTime();
-    setWeek( appointmentTime );
+    var pickupTimeDate      = ISODateFormatToDateObject( $('#trip_pickup_time').attr("value") );
+    var appointmentTimeDate = new Date(pickupTimeDate.getTime() + (1000 * 60 * 30));    
+
+    $('#trip_appointment_time').attr( "value", appointmentTimeDate.format("yyyy-mm-dd hh:MM TT") );
+    $("#calendar").weekCalendar("gotoWeek", appointmentTimeDate.getTime());
   });
   
   $('#new_trip #customer_name').bind('railsAutocomplete.select', function(e){ 
