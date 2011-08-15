@@ -25,6 +25,42 @@ $(function() {
 
   $("tr:odd").addClass("odd");
 
+  $("body.customers.show .profile-actions .delete").click( function(event){
+    event.preventDefault();
+
+    var link = $(this);
+
+    if ( $("#confirm-destroy").length > 0 ) {
+      $( "#confirm-destroy" ).dialog({
+        resizable: false,
+        width: 480,
+	modal: true,
+	title: $("#confirm-destroy").find("legend").text(),
+	buttons: {
+		Confirm: function() {
+			$( this ).find( "form" ).submit();
+		},
+		Cancel: function() {
+			$( this ).dialog( "close" );
+		}
+	}
+      });
+    } else {
+      $( "<div>" ).text("This customer will be permanently deleted. Are you sure?").dialog({
+	resizable: false,
+	modal: true,
+	buttons: {
+		Confirm: function() {
+		  link.attr("data-method", "delete").click();
+		},
+		Cancel: function() {
+			$( this ).dialog( "close" );
+		}
+	}
+      });
+    }
+  });
+
   // hide middle/last names for group customer
   var updateGroupField = function() {
     if ( $('input#customer_group').is(':checked') ){

@@ -25,6 +25,14 @@ module ApplicationHelper
     HTML
   end
   
+  def delete_customer_link(customer)
+    if current_user.admin?
+      link_to @trips.present? ? 'Duplicate' : 'Delete', @customer, :class => 'delete'
+    elsif current_user.editor?
+      link_to 'Delete', @customer, :class => 'delete' unless @trips.present?
+    end
+  end
+  
   def format_newlines(text)
     return text.gsub("\n", "<br/>")
   end

@@ -2,11 +2,32 @@
   <h1>Customer: <%= @customer.name %></h1>
 </div>
 
-<p class="profile-actions selfclear">
+<div class="profile-actions selfclear">
   <%= link_to 'New Trip', new_trip_path(:customer_id=>@customer.id), :class=>'new-trip'  %>
   <span class="separator">|</span>
-  <%= link_to 'Edit', edit_customer_path(@customer), :class=>'edit' %>
-</p>
+  <div class="manage">
+    <%= link_to 'Edit', edit_customer_path(@customer), :class=>'edit' %>
+    <%= delete_customer_link(@customer) %>
+  </div>
+</div>
+
+<% if @trips.present? && current_user.admin? %>
+  <div id="confirm-destroy" style="display:none;">
+    <%= form_for @customer, :html => { :method => "delete" } do |form| %>
+      <fieldset>
+        <legend>Associate this customer's trips with another customer.</legend>
+        <ol class="section">
+          <li>
+          <%= label_tag "Customer Name:" %>
+          <%= autocomplete_field_tag 'customer_name', '', autocomplete_customers_path, :size => 30, :id_element => "#customer_id", "submit-buttons" => "#show_details #new_trip" %>
+          <%= hidden_field_tag 'customer_id' %>
+          </li>
+        </ol>
+      </fieldset>
+    <% end %>
+  </div>
+  
+<% end %>
 
 <div class="customer-profile selfclear">
 

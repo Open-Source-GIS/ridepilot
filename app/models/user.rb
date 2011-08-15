@@ -31,4 +31,12 @@ class User < ActiveRecord::Base
       false
     end
   end
+  
+  def admin?
+    roles.where(:provider_id => current_provider).first.admin?
+  end
+  
+  def editor?
+    roles.where(:provider_id => current_provider).first.editor?
+  end
 end

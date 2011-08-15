@@ -802,12 +802,27 @@ input.delete:active {
     text-decoration: underline;
 }
 
-p.profile-actions .edit {
+.profile-actions .manage {
     float: right;
+    margin-bottom : 10px;
 }
-p.profile-actions .separator {
+
+.profile-actions .manage .delete {
+  margin-left : 10px;
+}
+
+.profile-actions .separator {
     display: none;
 }
+
+body.customers #confirm-destroy legend {
+  display: none;
+}
+
+body.customers #confirm-destroy fieldset {
+  margin: 0;
+}
+
 p.activation-dates .separator {
     padding: 0 0.4em;
     color: #bbb;

@@ -25,7 +25,7 @@ class Customer < ActiveRecord::Base
     if middle_initial.present?
       return "%s %s. %s" % [first_name, middle_initial, last_name]
     else
-      return "%s %s " % [first_name, last_name]
+      return "%s %s" % [first_name, last_name]
     end
   end
 
@@ -67,6 +67,7 @@ class Customer < ActiveRecord::Base
     end
     
     self.destroy
+    self.class.find other_customer_id
   end
   
   def self.by_term( term, limit = nil )

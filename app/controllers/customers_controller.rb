@@ -154,14 +154,19 @@ first_name, first_name, first_name, first_name,
   end
 
   def destroy
-    @customer = Customer.find(params[:id])
-    @customer.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(customers_url) }
-      format.xml  { head :ok }
+    if @customer.trips.present?
+      if new_customer = @customer.replace_with!(params[:customer_id])
+        redirect_to new_customer, :notice => "#{@customer.name} was successfully deleted."
+      else
+        render :action => :show, :id => @customer.id, :error => "Customer could not be deleted."
+      end
+    else
+      @customer.destroy
+      redirect_to customers_url, :notice => "#{@customer.name} was successfully deleted."
     end
   end
+  
+  private
 
   def name_options
     if params[:customer_name]
