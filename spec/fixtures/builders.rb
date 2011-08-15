@@ -39,7 +39,8 @@ Fixjour :verify => false do
       :dropoff_address  => new_address,
       :pickup_time      => pickup_time,
       :appointment_time => appointment_time,
-      :trip_purpose     => 'Medical'
+      :trip_purpose     => 'Medical',
+      :customer         => create_customer
     })
   end
   
@@ -48,6 +49,14 @@ Fixjour :verify => false do
       :address => Faker::Address.street_address, 
       :city => Faker::Address.city, 
       :state => "OR"
+    })
+  end
+  
+  define_builder(Customer) do |klass, overrides|
+    klass.new({
+      :first_name => Faker::Name.first_name,
+      :last_name  => Faker::Name.last_name,
+      :provider   => create_provider
     })
   end
 end

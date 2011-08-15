@@ -59,6 +59,16 @@ class Customer < ActiveRecord::Base
     }
   end
   
+  def replace_with!(other_customer_id)
+    return false unless other_customer_id.present? && self.class.exists?(other_customer_id)
+    
+    self.trips.each do |trip|
+      trip.update_attribute :customer_id, other_customer_id
+    end
+    
+    self.destroy
+  end
+  
   def self.by_term( term, limit = nil )
     if term[0].match /\d/ #by phone number
       query = term.gsub("-", "")
