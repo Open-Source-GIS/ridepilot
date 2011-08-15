@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110812184549) do
+ActiveRecord::Schema.define(:version => 20110815214441) do
 
   create_table "addresses", :force => true do |t|
     t.string   "name"
@@ -258,12 +258,13 @@ ActiveRecord::Schema.define(:version => 20110812184549) do
     t.string   "vin"
     t.string   "garaged_location"
     t.integer  "provider_id"
-    t.boolean  "active",           :default => true
+    t.boolean  "active",            :default => true
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "created_by_id"
     t.integer  "updated_by_id"
-    t.integer  "lock_version",     :default => 0
+    t.integer  "lock_version",      :default => 0
+    t.integer  "default_driver_id"
   end
 
 end

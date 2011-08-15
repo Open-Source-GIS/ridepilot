@@ -109,6 +109,7 @@
       <th>License Plate</th>
       <th>VIN</th>
       <th>Location</th>
+      <th>Default Driver</th>
       <th></th>
       <% if can? :edit, Vehicle %>
       <th></th>
@@ -130,6 +131,7 @@
       <td><%= vehicle.license_plate %></td>
       <td><%= vehicle.vin %></td>
       <td><%= vehicle.garaged_location %></td>
+      <td><%= vehicle.default_driver.try :name %></td>
       <td><%= vehicle.active ? "Active" : "Inactive" %></td>
       <% if can? :edit, Vehicle %>
       <td><%= link_to "Edit", edit_vehicle_path(vehicle), :class=>'edit edit-vehicle' %></td>

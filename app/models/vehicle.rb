@@ -2,6 +2,8 @@ class Vehicle < ActiveRecord::Base
   belongs_to :provider
   belongs_to :created_by, :foreign_key => :created_by_id, :class_name=>'User'
   belongs_to :updated_by, :foreign_key => :updated_by_id, :class_name=>'User'
+  belongs_to :default_driver, :class_name => "Driver"
+  
   has_many :vehicle_maintenance_events
 
   default_scope :order => 'active, name'
