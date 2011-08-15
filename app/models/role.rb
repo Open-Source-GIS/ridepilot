@@ -3,11 +3,11 @@ class Role < ActiveRecord::Base
   belongs_to :provider
   validates_uniqueness_of :user_id, :scope=>:provider_id
 
-  def admin
+  def admin?
     return level == 100
   end
 
-  def editor
+  def editor?
     return level >= 50
   end
 

@@ -9,13 +9,13 @@ class Ability
 
     for role in user.roles
       if role.provider == ride_connection 
-        if role.admin
+        if role.admin?
           can :manage, :all 
         else
           can :read, :all 
         end
       else
-        if role.editor
+        if role.editor?
           action = :manage
         else
           action = :read
@@ -28,7 +28,7 @@ class Ability
     if not role
       return
     end
-    if role.editor
+    if role.editor?
       action = :manage
     else
       action = [:read, :search]
@@ -45,7 +45,7 @@ class Ability
     can action, RepeatingTrip, :provider_id => provider.id
     can :read, FundingSource, {:providers => {:id => provider.id}}
 
-    if role.admin
+    if role.admin?
       can :manage, User, {:roles => {:provider_id => provider.id}}
     else
       can :read, User, {:roles => {:provider_id => provider.id}}
