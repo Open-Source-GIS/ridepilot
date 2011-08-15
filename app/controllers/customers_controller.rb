@@ -158,7 +158,7 @@ first_name, first_name, first_name, first_name,
       if new_customer = @customer.replace_with!(params[:customer_id])
         redirect_to new_customer, :notice => "#{@customer.name} was successfully deleted."
       else
-        render :action => :show, :id => @customer.id, :error => "Customer could not be deleted."
+        redirect_to @customer, :notice => "#{@customer.name} can't be deleted without associating trips with another customer."
       end
     else
       @customer.destroy
