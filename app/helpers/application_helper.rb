@@ -31,6 +31,10 @@ module ApplicationHelper
     end
   end
   
+  def can_delete?(customer)
+    customer.trips.blank? && can?( :destroy, customer )
+  end
+  
   def format_newlines(text)
     return text.gsub("\n", "<br/>")
   end
