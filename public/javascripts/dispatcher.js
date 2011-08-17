@@ -7,6 +7,7 @@ function Dispatcher (tree_id, map_id) {
   this._infoWindow = new google.maps.InfoWindow({ content : "" }),
   this._tree_elem  = $("#" + tree_id),
   this._map_elem = $("#" + map_id),
+  this._timeout  = null,
   
   this.init = function(map_id){
     $(window).resize(self.adjustMapHeight).resize();
@@ -22,6 +23,8 @@ function Dispatcher (tree_id, map_id) {
     });
     
     self.initTree();
+    
+    self._resetRefreshTimer();
   },
   
   this.adjustMapHeight = function() {
@@ -118,7 +121,14 @@ function Dispatcher (tree_id, map_id) {
     self._infoWindow.open(self.map, marker);
   },
   
+  
+  this._resetRefreshTimer = function() {
+    self._timeout = window.clearTimeout( self._timeout );
+    self._timeout = window.setTimeout( self.refresh, 120000 );
+  },
+  
   this.refresh = function() {
+    self._resetRefreshTimer();
     self._infoWindow.close();
     self._tree_elem.jstree("refresh");
   },
