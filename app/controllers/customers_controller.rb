@@ -20,10 +20,20 @@ class CustomersController < ApplicationController
   def index #only active customers
     @show_inactivated_date = false
     @customers = @customers.where(:inactivated_date => nil)
+    @customers = @customers.by_letter(params[:letter]) if params[:letter].present?
+    
     respond_to do |format|
       format.html { @customers = @customers.paginate :page => params[:page], :per_page => PER_PAGE }
       format.xml  { render :xml => @customers }
     end
+  end
+  
+  def search
+    @customers = Customer.by_term( params[:term].downcase ).
+      accessible_by( current_ability ).
+      paginate( :page => params[:page], :per_page => PER_PAGE )
+      
+    render :action => :index
   end
 
   def search
@@ -44,6 +54,9 @@ class CustomersController < ApplicationController
 
   def show
     @customer = Customer.find(params[:id])
+
+    # default scope is pickup time ascending, so reverse
+    @trips    = @customer.trips.reverse.paginate :page => params[:page], :per_page => PER_PAGE
 
     respond_to do |format|
       format.html # show.html.erb
@@ -149,14 +162,19 @@ first_name, first_name, first_name, first_name,
   end
 
   def destroy
-    @customer = Customer.find(params[:id])
-    @customer.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(customers_url) }
-      format.xml  { head :ok }
+    if @customer.trips.present?
+      if new_customer = @customer.replace_with!(params[:customer_id])
+        redirect_to new_customer, :notice => "#{@customer.name} was successfully deleted."
+      else
+        redirect_to @customer, :notice => "#{@customer.name} can't be deleted without associating trips with another customer."
+      end
+    else
+      @customer.destroy
+      redirect_to customers_url, :notice => "#{@customer.name} was successfully deleted."
     end
   end
+  
+  private
 
   def name_options
     if params[:customer_name]

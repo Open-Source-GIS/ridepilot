@@ -56,6 +56,13 @@
         <%= f.select :active, [["Yes", "true"], ["No", "false"]], {:selected => @vehicle.active.to_s } %>
       </li>
     </ol>
+    
+    <ol class="section third">
+      <li>
+        <%= f.label :default_driver_id %>
+        <%= f.collection_select :default_driver_id, Driver.active.for_provider(current_user.current_provider_id), :id, :name, :include_blank => true %>
+      </li>
+    </ol>
 
     <div class="actions">
       <%= f.submit %>

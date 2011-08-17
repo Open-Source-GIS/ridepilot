@@ -1,19 +1,15 @@
 <h1>Transportation Schedule</h1>
-<h2><%= @date %></h2>
+<h2><%= format_date_for_daily_manifest @date %></h2>
 
 <% i = 0 %>
 <% for driver, trips in @trips %>
   <% i += 1 %>
 
-  Driver: <%= driver.name %>
+  Driver: <%= driver.present? ? driver.name : 'Unspecified driver' %>
 
   <% for trip in trips %>
     <strong><%= trip.pickup_time %></strong><br/>
-    <%= trip.customer.name %> <br/>
-    <%= trip.customer.phone_number_1 %> <br/>
-    <%= trip.customer.phone_number_2 %> <br/>
-    <%= trip.pickup_address.text %> <br/>
-    <%= trip.dropoff_address.text %> <br/>
+    <%= raw format_trip_for_daily_manifest(trip) %>
     <hr>
   <% end %>
 

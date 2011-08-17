@@ -78,7 +78,7 @@ STATE_NAME_TO_POSTAL_ABBREVIATION = {
   "WYOMING" => "WY"
 }
 
-ETHNICITIES = ['Caucasian','African American','Asian','Asian Indian','Chinese','Filipino','Japanese','Korean','Vietnamese','Pacific Islander','American Indian/Alaska Native','Native Hawaiian','Guamanian or Chamorrow','Samoan','Russian','Unknown','Refused','Other']
+ETHNICITIES = ['Caucasian','African American','Asian','Asian Indian','Chinese','Filipino','Hispanic','Japanese','Korean','Vietnamese','Pacific Islander','American Indian/Alaska Native','Native Hawaiian','Guamanian or Chamorrow','Samoan','Russian','Unknown','Refused','Other']
 
 EMAIL_FROM = "apps@rideconnection.com"
 

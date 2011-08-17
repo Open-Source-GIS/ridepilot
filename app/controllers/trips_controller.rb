@@ -223,15 +223,15 @@ class TripsController < ApplicationController
   end
 
   def prep_view
-    @customer = @trip.customer
     authorize! :read, @trip
-    @mobilities = Mobility.order(:name).all
+    @customer        = @trip.customer
+    @mobilities      = Mobility.order(:name).all
     @funding_sources = FundingSource.all
-    @drivers = Driver.where(:provider_id=>@trip.provider_id)
-    cab_vehicle = Vehicle.new(:name=>"cab", :id=>-1)
-    @vehicles = Vehicle.active.where(:provider_id=>@trip.provider_id) + [cab_vehicle]
-    @trip_results = TRIP_RESULT_CODES.map { |k,v| [v,k] }
-    @trip_purposes = TRIP_PURPOSES
+    @drivers         = Driver.where(:provider_id=>@trip.provider_id)
+    @vehicles        = Vehicle.active.for_provider(@trip.provider_id) << Vehicle.new(:name=>"cab", :id=>-1)
+    @trip_results    = TRIP_RESULT_CODES.map { |k,v| [v,k] }
+    @trip_purposes   = TRIP_PURPOSES
+    @drivers         = Driver.active.for_provider @trip.provider_id
   end
   
   def prep_edit

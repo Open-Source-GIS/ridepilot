@@ -65,3 +65,25 @@ dd {
   margin: 0 0 0 32%; 
   padding: 0 0 1em 0; 
 }
+
+
+.daily-manifest-by-half-hour #header,
+.daily-manifest #header {
+  display: none;
+}
+
+body.daily-manifest-by-half-hour ul.schedule {
+  list-style : none;
+  margin     : 0;
+  padding    : 0;
+}
+
+body.daily-manifest-by-half-hour ul.schedule li {
+  min-height    : 90px;
+  border-bottom : 1px solid #bbb;
+  padding       : 15px 0;
+}
+
+span.address_separator {
+  margin : 0 .25in;
+}

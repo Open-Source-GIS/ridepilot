@@ -2113,12 +2113,12 @@
       Y: function(date) { return date.getFullYear(); },
       y: function(date) { return ('' + date.getFullYear()).substr(2); },
       // Time
-      a: function(date) { return date.getHours() < 12 ? 'am' : 'pm'; },
+      a: function(date) { return date.getHours() < 12 ? 'a' : 'p'; }, // juliamae - shorten up the event title
       A: function(date) { return date.getHours() < 12 ? 'AM' : 'PM'; },
       B: function(date) { return Math.floor((((date.getUTCHours() + 1) % 24) + date.getUTCMinutes() / 60 + date.getUTCSeconds() / 3600) * 1000 / 24); }, // Fixed now
       g: function(date) { return date.getHours() % 12 || 12; },
       G: function(date) { return date.getHours(); },
-      h: function(date) { return ((date.getHours() % 12 || 12) < 10 ? '0' : '') + (date.getHours() % 12 || 12); },
+      h: function(date) { return (date.getHours() % 12 || 12); }, // juliamae - shorten up the event title
       H: function(date) { return (date.getHours() < 10 ? '0' : '') + date.getHours(); },
       i: function(date) { return (date.getMinutes() < 10 ? '0' : '') + date.getMinutes(); },
       s: function(date) { return (date.getSeconds() < 10 ? '0' : '') + date.getSeconds(); },

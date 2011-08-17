@@ -14,7 +14,7 @@ Ridepilot::Application.routes.draw do
 
   resources :customers do
     post :inactivate, :as => :inactivate
-
+    
     collection do
       get :search
       get :all

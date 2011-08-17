@@ -16,6 +16,37 @@ module ApplicationHelper
     TRIP_RESULT_CODES[trip_result] || "Unscheduled"
   end
   
+  def format_time_for_listing(time)
+    time.strftime('%A ') +
+    time.strftime('%I:%M%P').gsub(/^0/,'').gsub(/m$/,'') +
+    time.strftime(' %m-%d-%Y')
+  end
+  
+  def format_date_for_daily_manifest(date)
+    date.strftime('%A, %m-%d-%Y')
+  end
+  
+  def format_trip_for_daily_manifest(trip)
+    <<-HTML
+      #{trip.customer.name}<span class='address_separator'></span>
+      #{trip.customer.phone_number_1}<span class='address_separator'></span>
+      #{trip.customer.phone_number_2}
+      <br/>
+      #{trip.pickup_address.text}<span class='address_separator'></span>
+      #{trip.dropoff_address.text}
+    HTML
+  end
+  
+  def delete_customer_link(customer)
+    if can? :destroy, customer
+      link_to @trips.present? ? 'Duplicate' : 'Delete', @customer, :class => 'delete'
+    end
+  end
+  
+  def can_delete?(customer)
+    customer.trips.blank? && can?( :destroy, customer )
+  end
+  
   def format_newlines(text)
     return text.gsub("\n", "<br/>")
   end

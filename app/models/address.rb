@@ -17,7 +17,10 @@ class Address < ActiveRecord::Base
 
   stampable :creator_attribute => :created_by_id, :updater_attribute => :updated_by_id
   
-  NewAddressOption = { :label => "New Address", :id => nil }
+  NewAddressOption = { :label => "New Address", :id => 0 }
+
+  scope :for_provider, lambda {|provider| where(:provider_id => provider.id)}
+  scope :search_for_term, lambda {|term| where("LOWER(name) LIKE '%' || :term || '%' OR LOWER(building_name) LIKE '%' || :term || '%' OR LOWER(address) LIKE '%' || :term || '%'",{:term => term})}
 
   scope :for_provider, lambda {|provider| where(:provider_id => provider.id)}
   scope :search_for_term, lambda {|term| where("LOWER(name) LIKE '%' || :term || '%' OR LOWER(building_name) LIKE '%' || :term || '%' OR LOWER(address) LIKE '%' || :term || '%'",{:term => term})}
@@ -80,7 +83,8 @@ class Address < ActiveRecord::Base
       :in_district => in_district,
       :phone_number => phone_number,
       :lat => latitude,
-      :lon => longitude
+      :lon => longitude,
+      :default_trip_purpose => default_trip_purpose
     }
   end
 

@@ -71,7 +71,15 @@
 
       <li class="selfclear">
         <%= f.label :dropoff_address_label, "Dropoff Address:" %>
-        <%= autocomplete_field_tag "dropoff_search_address", @trip.dropoff_address.try(:text), autocomplete_addresses_path, :size => 30, :id_element => "#trip_dropoff_address_id", :class => "full", "data-original-value" => @trip.dropoff_address.try(:text), "data-original-id" => @trip.dropoff_address.try(:id) %>
+        <%= autocomplete_field_tag "dropoff_search_address", @trip.dropoff_address.try(:text), autocomplete_addresses_path, 
+          :size                => 30, 
+          :update_elements     => {
+            :id                   => '#trip_dropoff_address_id',
+            :default_trip_purpose => '#trip_trip_purpose'
+          },
+          :class                => "full", 
+          "data-original-value" => @trip.dropoff_address.try(:text), 
+          "data-original-id"    => @trip.dropoff_address.try(:id) %>
         <%= f.hidden_field :dropoff_address_id %>
       </li>
 
@@ -119,7 +127,14 @@
 
       <li class="selfclear">
         <%= f.label :vehicle_id, "Vehicle:" %>
-        <%= f.collection_select :vehicle_id, @vehicles, :id, :name %><br/>
+        <%= f.select :vehicle_id,
+            options_for_select( @vehicles.map { |v| [v.name, v.id, {'data-driver-id' => v.try(:default_driver_id) } ] } ),
+            :include_blank => true %>
+      </li>
+
+      <li class="selfclear">
+        <%= f.label :driver_id, "Driver:" %>
+        <%= f.select :driver_id, options_from_collection_for_select( @drivers, :id, :name ), :include_blank => true %>
       </li>
 
       <li class="selfclear">

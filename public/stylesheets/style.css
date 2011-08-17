@@ -802,12 +802,27 @@ input.delete:active {
     text-decoration: underline;
 }
 
-p.profile-actions .edit {
+.profile-actions .manage {
     float: right;
+    margin-bottom : 10px;
 }
-p.profile-actions .separator {
+
+.profile-actions .manage .delete {
+  margin-left : 10px;
+}
+
+.profile-actions .separator {
     display: none;
 }
+
+body.customers #confirm-destroy legend {
+  display: none;
+}
+
+body.customers #confirm-destroy fieldset {
+  margin: 0;
+}
+
 p.activation-dates .separator {
     padding: 0 0.4em;
     color: #bbb;
@@ -859,6 +874,9 @@ div.report dd {
 div.pagination {
     text-align: center;
     padding: 20px 0;
+}
+div.alpha-pagination {
+  padding-top : 0;
 }
 a.previous_page {
     float: left;
@@ -916,6 +934,22 @@ ul.reports li a {
     padding: 5px 0 5px 20px;
     text-decoration: none;
     background: url(images/reports-stack.png) left center no-repeat scroll;
+}
+
+body.daily-manifest-by-half-hour ul.schedule {
+  list-style : none;
+  margin     : 0;
+}
+
+body.daily-manifest-by-half-hour ul.schedule li {
+  min-height    : 90px;
+  border-bottom : 1px solid #bbb;
+  padding       : 15px 0;
+}
+
+body.daily-manifest-by-half-hour span.address_separator,
+body.daily-manifest span.address_separator {
+  margin : 0 25px;
 }
 
 /*

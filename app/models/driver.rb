@@ -15,7 +15,8 @@ class Driver < ActiveRecord::Base
   stampable :creator_attribute => :created_by_id, :updater_attribute => :updated_by_id
   
   scope :users,        where("drivers.user_id IS NOT NULL")
-  scope :for_provider, lambda { |provider| where(:provider_id => provider.id) }
+  scope :active,       where(:active => true)
+  scope :for_provider, lambda { |provider_id| where(:provider_id => provider_id) }
   
   def self.unassigned(provider)
     users.for_provider(provider).reject { |driver| driver.device_pool.present? }

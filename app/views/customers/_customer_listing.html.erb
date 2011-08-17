@@ -31,7 +31,7 @@
       <% end %>
       <td><%= link_to 'New Trip', new_trip_path(:customer_id=>customer.id), :class=>'new-trip' %></td>
       <td><%= link_to 'Edit', edit_customer_path(customer), :class=>'edit' %></td>
-      <td><%= link_to 'Delete', customer, :confirm => 'Are you sure?', :method => :delete, :class=>'delete' %></td>
+      <td><% if can_delete? customer %><%= link_to 'Delete', customer, :confirm => 'Are you sure?', :method => :delete, :class=>'delete' %><% end %></td>
     </tr>
     <% end %>
   </tbody>
