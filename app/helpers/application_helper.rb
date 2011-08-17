@@ -26,10 +26,8 @@ module ApplicationHelper
   end
   
   def delete_customer_link(customer)
-    if current_user.admin?
+    if can? :destroy, customer
       link_to @trips.present? ? 'Duplicate' : 'Delete', @customer, :class => 'delete'
-    elsif current_user.editor?
-      link_to 'Delete', @customer, :class => 'delete' unless @trips.present?
     end
   end
   
