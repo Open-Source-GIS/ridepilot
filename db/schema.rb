@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110815214441) do
+ActiveRecord::Schema.define(:version => 20110817170823) do
 
   create_table "addresses", :force => true do |t|
     t.string   "name"
@@ -20,13 +20,13 @@ ActiveRecord::Schema.define(:version => 20110815214441) do
     t.string   "state"
     t.string   "zip"
     t.boolean  "in_district"
-    t.point    "the_geom",             :limit => nil,                    :srid => 4326
     t.integer  "provider_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "created_by_id"
     t.integer  "updated_by_id"
     t.integer  "lock_version",                        :default => 0
+    t.point    "the_geom",             :limit => nil,                    :srid => 4326
     t.string   "phone_number"
     t.boolean  "inactive",                            :default => false
     t.string   "default_trip_purpose"
@@ -61,6 +61,28 @@ ActiveRecord::Schema.define(:version => 20110815214441) do
     t.integer  "lock_version",            :default => 0
   end
 
+  create_table "device_pool_drivers", :force => true do |t|
+    t.string   "status"
+    t.float    "lat"
+    t.float    "lng"
+    t.integer  "device_pool_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "driver_id"
+    t.datetime "posted_at"
+  end
+
+  add_index "device_pool_drivers", ["device_pool_id"], :name => "index_devices_on_device_pool_id"
+  add_index "device_pool_drivers", ["driver_id"], :name => "index_device_pool_users_on_user_id"
+
+  create_table "device_pools", :force => true do |t|
+    t.integer  "provider_id"
+    t.string   "name"
+    t.string   "color"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "drivers", :force => true do |t|
     t.boolean  "active"
     t.boolean  "paid"
@@ -71,6 +93,7 @@ ActiveRecord::Schema.define(:version => 20110815214441) do
     t.integer  "created_by_id"
     t.integer  "updated_by_id"
     t.integer  "lock_version",  :default => 0
+    t.integer  "user_id"
   end
 
   create_table "funding_source_visibilities", :force => true do |t|
@@ -107,6 +130,7 @@ ActiveRecord::Schema.define(:version => 20110815214441) do
     t.string   "logo_content_type"
     t.integer  "logo_file_size"
     t.datetime "logo_updated_at"
+    t.boolean  "dispatch"
   end
 
   create_table "regions", :force => true do |t|
@@ -136,6 +160,7 @@ ActiveRecord::Schema.define(:version => 20110815214441) do
     t.integer  "created_by_id"
     t.integer  "updated_by_id"
     t.integer  "lock_version",       :default => 0
+    t.boolean  "round_trip"
   end
 
   create_table "roles", :force => true do |t|
