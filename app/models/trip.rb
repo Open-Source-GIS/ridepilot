@@ -1,4 +1,6 @@
 class Trip < ActiveRecord::Base
+  attr_accessor :driver_id
+
   belongs_to :provider
   belongs_to :run
   belongs_to :customer

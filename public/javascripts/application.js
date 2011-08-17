@@ -25,6 +25,7 @@ $(function() {
 
   $("tr:odd").addClass("odd");
   
+  // delete a customer from the show page
   $("body.customers.show .profile-actions .delete").click( function(event){
     event.preventDefault();
 
@@ -59,6 +60,11 @@ $(function() {
       	}
       });
     }
+  });
+
+  // set default driver for trip based on selected vehicle
+  $("#trip_vehicle_id").change( function(event){
+    $("#trip_driver_id").val( $(this).find("option[value=" + $(this).val() + "]").data("driver-id") );
   });
 
   // hide middle/last names for group customer

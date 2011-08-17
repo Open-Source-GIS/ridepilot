@@ -8,6 +8,7 @@ class Vehicle < ActiveRecord::Base
 
   default_scope :order => 'active, name'
   scope :active, :conditions => { :active => true }
+  scope :for_provider, lambda { |provider_id| where(:provider_id => provider_id) }
 
   validates_length_of :vin, :is=>17, :allow_nil => true
   validates_format_of :vin, :with => /^[^ioq]*$/i, :allow_nil => true
