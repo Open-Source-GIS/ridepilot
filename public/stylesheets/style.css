@@ -513,7 +513,7 @@ fieldset ol.section li.passengers input {
     max-width: 3em;
 }
 fieldset ol.section li.timepicker input {
-    width: 10em;
+    max-width: 53%;
 }
 fieldset ol.section li div {
     float: left;

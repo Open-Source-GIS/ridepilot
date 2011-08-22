@@ -45,8 +45,20 @@ class Trip < ActiveRecord::Base
   def driver_id
     @driver_id || run.try(:driver_id)
   end
+  
+  def pickup_time=(datetime)
+    write_attribute :pickup_time, format_datetime( datetime )
+  end
+  
+  def appointment_time=(datetime)
+    write_attribute :appointment_time, format_datetime( datetime )
+  end
 
   private
+  
+  def format_datetime(datetime)
+    datetime.is_a?( String ) && %w{a p}.include?( datetime.last.downcase ) ? "#{datetime}m" : datetime
+  end
 
   def driver_is_valid_for_vehicle
     # This will error if a run was found or extended for this vehicle and time, but the driver for the run is not the driver selected for the trip
