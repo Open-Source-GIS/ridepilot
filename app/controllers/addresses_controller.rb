@@ -101,7 +101,7 @@ class AddressesController < ApplicationController
     prefix         = params['prefix']
     address_params = {}
     
-    for param in ['name', 'building_name', 'address', 'city', 'state', 'zip', 'phone_number', 'in_district']
+    for param in ['name', 'building_name', 'address', 'city', 'state', 'zip', 'phone_number', 'in_district', 'default_trip_purpose']
       address_params[param] = params[prefix + "_" + param]
     end
     
@@ -112,7 +112,7 @@ class AddressesController < ApplicationController
     
     if address.save
       address_json = {'id' => address.id, 'label' => address.text}
-      address_json.merge!( 'phone_number' => address.phone_number ) if prefix == "dropoff"
+      address_json.merge!( 'phone_number' => address.phone_number, 'trip_purpose' => address.default_trip_purpose ) if prefix == "dropoff"
       render :json => address_json
     else
       errors = address.errors.clone

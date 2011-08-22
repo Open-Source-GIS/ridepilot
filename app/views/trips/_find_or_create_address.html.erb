@@ -38,6 +38,11 @@
     <%= label_tag "#{prefix}_phone_number", "Phone Number:" %>
     <%= text_field_tag "#{prefix}_phone_number", address.phone_number %>
   </li>
+  
+  <li class="selfclear">
+    <%= label_tag "#{prefix}_default_trip_purpose", "Default Trip Purpose:" %>
+    <%= select_tag "#{prefix}_default_trip_purpose", options_for_select(TRIP_PURPOSES), :include_blank => true %>
+  </li>
 
   <li class="selfclear">
     <%= label_tag "#{prefix}_in_district", "In TriMet District:" %>
