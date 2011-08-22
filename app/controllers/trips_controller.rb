@@ -280,6 +280,7 @@ class TripsController < ApplicationController
     repeating_trip_params.delete :cab_notified
     repeating_trip_params.delete :trip_result
     repeating_trip_params.delete :vehicle_id
+    repeating_trip_params.delete :driver_id
     repeating_trip_params.delete :donation
     repeating_trip_params.delete :customer_informed
     repeating_trip_params.delete :called_back_at

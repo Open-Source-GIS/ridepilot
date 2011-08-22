@@ -4,10 +4,10 @@ function ISODateFormatToDateObject(str) {
   var parts = str.split(' ');
   if(parts.length < 3) return null;
 
-  var dateParts = parts[0].split('-'),
-  timeSubParts = parts[1].split(':'),
+  var dateParts = parts[1].split('-'),
+  timeSubParts = parts[2].split(':'),
   timeHours = Number(timeSubParts[0]),
-  amPm = parts[2].toUpperCase();
+  amPm = parts[3].toUpperCase();
 
   _date = new Date();
   _date.setFullYear( Number(dateParts[0]), (Number(dateParts[1])-1), Number(dateParts[2]) );
@@ -26,7 +26,7 @@ $(function() {
   $("tr:odd").addClass("odd");
   
   // delete a customer from the show page
-  $("body.customers.show .profile-actions .delete").click( function(event){
+  $("body.customers.show .profile-actions .delete, body.addresses.edit .profile-actions .delete").click( function(event){
     event.preventDefault();
 
     var link = $(this);
@@ -47,7 +47,7 @@ $(function() {
       	}
       });
     } else {
-      $( "<div>" ).text("This customer will be permanently deleted. Are you sure?").dialog({
+      $( "<div>" ).text("This will be permanently deleted. Are you sure?").dialog({
       	resizable: false,
       	modal: true,
       	buttons: {
@@ -89,7 +89,7 @@ $(function() {
     var pickupTimeDate      = ISODateFormatToDateObject( $('#trip_pickup_time').attr("value") );
     var appointmentTimeDate = new Date(pickupTimeDate.getTime() + (1000 * 60 * 30));    
 
-    $('#trip_appointment_time').attr( "value", appointmentTimeDate.format("yyyy-mm-dd hh:MM TT") );
+    $('#trip_appointment_time').attr( "value", appointmentTimeDate.format("ddd yyyy-mm-dd hh:MM t") );
     $("#calendar").weekCalendar("gotoWeek", appointmentTimeDate.getTime());
   });
   

@@ -77,7 +77,8 @@
         $( $(this).attr('data-label-element') ).val(data.label);
         
         if (data.phone_number) $("#dropoff_phone").val(data.phone_number);
-
+        if (data.trip_purpose) $("#trip_trip_purpose").val(data.trip_purpose);
+        
         $( $(this)[0].parentNode ).dialog( "close" );
       } else {
         //failed to create an address

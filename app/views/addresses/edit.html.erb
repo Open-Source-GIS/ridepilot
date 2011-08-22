@@ -2,6 +2,12 @@
   <h1>Editing Address</h1>
 </div>
 
+<div class="profile-actions selfclear">
+  <div class="manage">
+    <%= delete_trippable_link(@address) %>
+  </div>
+</div>
+
 <% form_for @address do |form| %>
   <% if @address.errors.any? %>
     <div id="error_explanation">
@@ -22,5 +28,22 @@
   
   <div class="actions">
     <%= form.submit %>
+  </div>
+<% end %>
+
+<% if @address.trips.present? && can?(:destroy, @address) %>
+  <div id="confirm-destroy" style="display:none;">
+    <%= form_for @address, :html => { :method => "delete" } do |form| %>
+      <fieldset>
+        <legend>Associate this addresses's trips with another address.</legend>
+        <ol class="section">
+          <li>
+          <%= label_tag "Address Search:" %>
+          <%= autocomplete_field_tag 'address_term', '', autocomplete_addresses_path, :size => 30, :id_element => "#address_id" %>
+          <%= hidden_field_tag 'address_id' %>
+          </li>
+        </ol>
+      </fieldset>
+    <% end %>
   </div>
 <% end %>

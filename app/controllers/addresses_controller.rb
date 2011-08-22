@@ -3,7 +3,7 @@ require 'open-uri'
 class AddressesController < ApplicationController
   load_and_authorize_resource
     
-  def autocomplete
+  def autocomplete    
     term = params['term'].downcase.strip
 
     #clean up address
@@ -44,7 +44,11 @@ class AddressesController < ApplicationController
 
     if addresses.size > 0
       #there are some existing addresses
-      render :json => addresses.map { |address| address.json } << Address::NewAddressOption
+      address_json = addresses.map { |address| address.json }
+      
+      address_json << Address::NewAddressOption unless request.env["HTTP_REFERER"].match(/addresses\/[0-9]+\/edit/)
+            
+      render :json => address_json
     else
       #no existing addresses, try geocoding
 
@@ -67,7 +71,7 @@ class AddressesController < ApplicationController
       }
       
       #now, convert addresses to local json format
-      render :json => addresses.map { |address| 
+      address_json = addresses.map { |address| 
         #todo: apt numbers
         address = address['address']
         street_address = '%s %s' % [address['house_number'], address['road']]
@@ -82,11 +86,12 @@ class AddressesController < ApplicationController
                     )
         address_obj.json
 
-      } << Address::NewAddressOption
+      }
+      
+      address_json << Address::NewAddressOption unless request.env["HTTP_REFERER"].match(/addresses\/[0-9]+\/edit/)
+            
+      render :json => address_json
     end
-  end
-
-  def find_or_create
   end
 
   def create
@@ -96,7 +101,7 @@ class AddressesController < ApplicationController
     prefix         = params['prefix']
     address_params = {}
     
-    for param in ['name', 'building_name', 'address', 'city', 'state', 'zip', 'phone_number', 'in_district']
+    for param in ['name', 'building_name', 'address', 'city', 'state', 'zip', 'phone_number', 'in_district', 'default_trip_purpose']
       address_params[param] = params[prefix + "_" + param]
     end
     
@@ -107,7 +112,7 @@ class AddressesController < ApplicationController
     
     if address.save
       address_json = {'id' => address.id, 'label' => address.text}
-      address_json.merge!( 'phone_number' => address.phone_number ) if prefix == "dropoff"
+      address_json.merge!( 'phone_number' => address.phone_number, 'trip_purpose' => address.default_trip_purpose ) if prefix == "dropoff"
       render :json => address_json
     else
       errors = address.errors.clone
@@ -132,6 +137,19 @@ class AddressesController < ApplicationController
       redirect_to provider_path(@address.provider)
     else
       render :action => :edit
+    end
+  end
+  
+  def destroy
+    if @address.trips.present?
+      if new_address = @address.replace_with!(params[:address_id])
+        redirect_to new_address.provider, :notice => "#Address was successfully replaced with #{new_address.name}."
+      else
+        redirect_to edit_address_path(@address), :notice => "#{@address.name} can't be deleted without associating trips with another address."
+      end
+    else
+      @address.destroy
+      redirect_to current_provider, :notice => "#{@address.name} was successfully deleted."
     end
   end
 

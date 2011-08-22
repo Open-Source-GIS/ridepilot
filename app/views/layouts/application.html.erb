@@ -50,7 +50,7 @@
         <li class="customers"><%= link_to "Customers", customers_path %></li>
         <% if show_scheduling? %><li class="reports"><%= link_to "Reports", reports_path %></li><% end %>
         <% if current_user && can?(:read, Provider) %>
-        <li class="vehicles-drivers-users"><%= link_to "Users, Drivers & Vehicles", provider_path(current_user.current_provider) %></li>
+        <li class="vehicles-drivers-users"><%= link_to "Admin", provider_path(current_user.current_provider) %></li>
         <% end %>
         <% if show_dispatch? %><li class="dispatch"><%= link_to "Dispatch", dispatch_path %></li><% end %>
       </ul>
