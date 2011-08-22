@@ -49,7 +49,7 @@
         <li class="customers"><%= link_to "Customers", customers_path %></li>
         <li class="reports"><%= link_to "Reports", reports_path %></li>
         <% if current_user && can?(:edit, Provider) %>
-        <li class="vehicles-drivers-users"><%= link_to "Users, Drivers & Vehicles", provider_path(current_user.current_provider) %></li>
+        <li class="vehicles-drivers-users"><%= link_to "Admin", provider_path(current_user.current_provider) %></li>
         <% end %>
       </ul>
       <ul id="secondary-nav" class="selfclear">
