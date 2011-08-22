@@ -2,6 +2,9 @@ class Address < ActiveRecord::Base
   belongs_to :provider
   belongs_to :created_by, :foreign_key => :created_by_id, :class_name=>'User'
   belongs_to :updated_by, :foreign_key => :updated_by_id, :class_name=>'User'
+  
+  has_many :trips_from, :class_name => "Trip", :foreign_key => :pickup_address_id
+  has_many :trips_to, :class_name => "Trip", :foreign_key => :dropoff_address_id
 
   normalize_attribute :name, :with=> [:squish, :titleize]
   normalize_attribute :building_name, :with=> [:squish, :titleize]
@@ -22,6 +25,25 @@ class Address < ActiveRecord::Base
   scope :for_provider, lambda {|provider| where(:provider_id => provider.id)}
   scope :search_for_term, lambda {|term| where("LOWER(name) LIKE '%' || :term || '%' OR LOWER(building_name) LIKE '%' || :term || '%' OR LOWER(address) LIKE '%' || :term || '%'",{:term => term})}
 
+  def trips
+    trips_from + trips_to
+  end
+  
+  def replace_with!(address_id)
+    return false unless address_id.present? && self.class.exists?(address_id)
+    
+    self.trips_from.each do |trip|
+      trip.update_attribute :pickup_address_id, address_id
+    end
+    
+    self.trips_to.each do |trip|
+      trip.update_attribute :dropoff_address_id, address_id
+    end
+    
+    self.destroy
+    self.class.find address_id
+  end
+  
   def compute_in_trimet_district
     if the_geom and in_district.nil?
       in_district = Region.count(:conditions => ["name='TriMet' and st_contains(the_geom, ?)", the_geom]) > 0
