@@ -26,7 +26,7 @@ $(function() {
   $("tr:odd").addClass("odd");
   
   // delete a customer from the show page
-  $("body.customers.show .profile-actions .delete").click( function(event){
+  $("body.customers.show .profile-actions .delete, body.addresses.edit .profile-actions .delete").click( function(event){
     event.preventDefault();
 
     var link = $(this);
@@ -47,7 +47,7 @@ $(function() {
       	}
       });
     } else {
-      $( "<div>" ).text("This customer will be permanently deleted. Are you sure?").dialog({
+      $( "<div>" ).text("This will be permanently deleted. Are you sure?").dialog({
       	resizable: false,
       	modal: true,
       	buttons: {

@@ -43,7 +43,6 @@ Ridepilot::Application.routes.draw do
 
   resources :addresses do
     collection do
-      get :find_or_create
       get :autocomplete
       get :search
     end

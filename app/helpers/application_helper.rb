@@ -25,14 +25,14 @@ module ApplicationHelper
     HTML
   end
   
-  def delete_customer_link(customer)
-    if can? :destroy, customer
-      link_to @trips.present? ? 'Duplicate' : 'Delete', @customer, :class => 'delete'
+  def delete_trippable_link(trippable)
+    if can? :destroy, trippable
+      link_to trippable.trips.present? ? 'Duplicate' : 'Delete', trippable, :class => 'delete'
     end
   end
   
-  def can_delete?(customer)
-    customer.trips.blank? && can?( :destroy, customer )
+  def can_delete?(trippable)
+    trippable.trips.blank? && can?( :destroy, trippable )
   end
   
   def format_newlines(text)
