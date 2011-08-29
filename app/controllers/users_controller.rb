@@ -23,8 +23,9 @@ class UsersController < Devise::SessionsController
     #provider, in which case we ought to just set up the role
     @user = User.where(:email=>params[:user][:email]).first
     if not @user
-      @user = User.new(params[:user])
-      @user.password = @user.password_confirmation = Devise.friendly_token[0..8]
+      @user = User.new params[:user] 
+      @user.password = User.reset_password_token
+      @user.reset_password_token = User.reset_password_token
       @user.current_provider_id = current_provider_id
       @user.save!
       NewUserMailer.new_user_email(@user, @user.password).deliver
