@@ -35,6 +35,7 @@ class RepeatingTrip < ActiveRecord::Base
         attributes.delete "schedule_yaml"
         attributes["pickup_time"] = this_trip_pickup_time
         attributes["appointment_time"] = this_trip_pickup_time + (appointment_time - pickup_time)
+        attributes["via_repeating_trip"] = true
         Trip.new(attributes).save!
       end
     end

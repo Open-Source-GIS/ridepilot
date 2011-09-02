@@ -1,5 +1,5 @@
 class Trip < ActiveRecord::Base
-  attr_accessor :driver_id, :vehicle_id
+  attr_accessor :driver_id, :vehicle_id, :via_repeating_trip
 
   belongs_to :provider
   belongs_to :run
@@ -74,9 +74,7 @@ class Trip < ActiveRecord::Base
   end
 
   def compute_run
-    if run or cab
-      return
-    end
+    return if run || cab || via_repeating_trip
 
     if !pickup_time or !appointment_time 
       return #we'll error out in validation
