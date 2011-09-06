@@ -39,6 +39,10 @@ Ridepilot::Application.routes.draw do
   resources :providers do
     post :delete_role
     post :change_role
+    member do
+      post :change_dispatch
+      post :change_scheduling
+    end
   end
 
   resources :addresses do
@@ -47,7 +51,11 @@ Ridepilot::Application.routes.draw do
       get :search
     end
   end
-
+  
+  resources :device_pools, :except => [:index, :destroy] do
+    resources :device_pool_drivers, :only => [:create, :destroy]
+  end
+  
   resources :drivers
   resources :vehicles
   resources :vehicle_maintenance_events
@@ -56,11 +64,17 @@ Ridepilot::Application.routes.draw do
   resources :runs do
     get :uncompleted_runs, :on=>:collection
   end
-
+  
+  scope :via => :post, :constraints => { :format => "json" , :protocol => "https" } do
+    match 'device_pool_drivers/' => "v1/device_pool_drivers#index", :as => "v1_device_pool_drivers"
+    match 'v1/device_pool_drivers/:id' => "v1/device_pool_drivers#update", :as => "v1_device_pool_driver"
+  end
+  
   match 'reports', :controller=>:reports, :action=>:index
   match 'reports/:action/:id', :controller=>:reports
   match 'reports/:action', :controller=>:reports
-
+  match 'dispatch', :controller => :dispatch, :action => :index
+  
   match "test_exception_notification" => "application#test_exception_notification"
 
   root :to => "home#index"

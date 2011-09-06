@@ -13,6 +13,7 @@ class ProvidersController < ApplicationController
   end
   
   def show
+    @unassigned_drivers = Driver.unassigned(@provider)
   end
 
   def delete_role
@@ -33,6 +34,17 @@ class ProvidersController < ApplicationController
     role.level = params[:role][:level]
     role.save!
     redirect_to provider_path(params[:provider_id])
+  end
+  
+  def change_dispatch    
+    @provider.update_attribute :dispatch, params[:dispatch]
+    
+    redirect_to provider_path(@provider)
+  end
+  
+  def change_scheduling
+    @provider.update_attribute :scheduling, params[:scheduling]
+    redirect_to provider_path(@provider)
   end
 
 end

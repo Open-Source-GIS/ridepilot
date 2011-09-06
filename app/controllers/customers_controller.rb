@@ -36,6 +36,14 @@ class CustomersController < ApplicationController
     render :action => :index
   end
 
+  def search
+    @customers = Customer.by_term( params[:term].downcase ).
+      accessible_by( current_ability ).
+      paginate( :page => params[:page], :per_page => PER_PAGE )
+
+    render :action => :index
+  end
+
   def all
     @show_inactivated_date = true
     @customers = Customer.accessible_by(current_ability)

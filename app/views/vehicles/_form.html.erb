@@ -60,7 +60,7 @@
     <ol class="section third">
       <li>
         <%= f.label :default_driver_id %>
-        <%= f.collection_select :default_driver_id, Driver.active.for_provider(current_user.current_provider), :id, :name, :include_blank => true %>
+        <%= f.collection_select :default_driver_id, Driver.active.for_provider(current_user.current_provider_id), :id, :name, :include_blank => true %>
       </li>
     </ol>
 

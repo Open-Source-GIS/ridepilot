@@ -11,6 +11,7 @@
   <%= javascript_include_tag "jquery.weekcalendar.js" %>
   <%= javascript_include_tag "jquery-ui-timepicker-addon.js" %>
   <%= javascript_include_tag "dateFormat.js" %>
+  <%= javascript_include_tag "jquery.colorPicker.js" %>
 
   <%= csrf_meta_tag %>
 
@@ -44,13 +45,14 @@
   <div id="crossbar">
     <div class="wrap selfclear">
       <ul id="primary-nav" class="selfclear">
-        <li class="trips"><%= link_to "Trips", trips_path %></li>
-        <li class="runs"><%= link_to "Runs", runs_path %></li>
+        <% if show_scheduling? %><li class="trips"><%= link_to "Trips", trips_path %></li><% end %>
+        <% if show_scheduling? %><li class="runs"><%= link_to "Runs", runs_path %></li><% end %>
         <li class="customers"><%= link_to "Customers", customers_path %></li>
-        <li class="reports"><%= link_to "Reports", reports_path %></li>
-        <% if current_user && can?(:edit, Provider) %>
+        <% if show_scheduling? %><li class="reports"><%= link_to "Reports", reports_path %></li><% end %>
+        <% if current_user && can?(:read, Provider) %>
         <li class="vehicles-drivers-users"><%= link_to "Admin", provider_path(current_user.current_provider) %></li>
         <% end %>
+        <% if show_dispatch? %><li class="dispatch"><%= link_to "Dispatch", dispatch_path %></li><% end %>
       </ul>
       <ul id="secondary-nav" class="selfclear">
         <% if current_user && can?(:edit, Provider) %>

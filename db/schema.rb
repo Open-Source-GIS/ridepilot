@@ -20,13 +20,13 @@ ActiveRecord::Schema.define(:version => 20110817170823) do
     t.string   "state"
     t.string   "zip"
     t.boolean  "in_district"
+    t.point    "the_geom",             :limit => nil,                    :srid => 4326
     t.integer  "provider_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "created_by_id"
     t.integer  "updated_by_id"
     t.integer  "lock_version",                        :default => 0
-    t.point    "the_geom",             :limit => nil,                    :srid => 4326
     t.string   "phone_number"
     t.boolean  "inactive",                            :default => false
     t.string   "default_trip_purpose"
@@ -131,6 +131,7 @@ ActiveRecord::Schema.define(:version => 20110817170823) do
     t.integer  "logo_file_size"
     t.datetime "logo_updated_at"
     t.boolean  "dispatch"
+    t.boolean  "scheduling"
   end
 
   create_table "regions", :force => true do |t|
@@ -239,7 +240,6 @@ ActiveRecord::Schema.define(:version => 20110817170823) do
   create_table "users", :force => true do |t|
     t.string   "email",                               :default => "", :null => false
     t.string   "encrypted_password",   :limit => 128, :default => "", :null => false
-    t.string   "password_salt",                       :default => "", :null => false
     t.string   "reset_password_token"
     t.string   "remember_token"
     t.datetime "remember_created_at"

@@ -34,8 +34,8 @@ class Ability
       action = [:read, :search]
     end
 
-    can action, Trip, :provider_id => provider.id
-    can action, Run, :provider_id => provider.id
+    can action, Trip, :provider_id => provider.id if provider.scheduling?
+    can action, Run, :provider_id => provider.id if provider.scheduling?
     can action, Driver, :provider_id => provider.id
     can action, Vehicle, :provider_id => provider.id
     can action, VehicleMaintenanceEvent, :provider_id => provider.id
@@ -44,6 +44,17 @@ class Ability
     can action, Customer, :provider_id => provider.id
     can action, RepeatingTrip, :provider_id => provider.id
     can :read, FundingSource, {:providers => {:id => provider.id}}
+        
+    can action, DevicePool, :provider_id => provider.id if provider.dispatch?
+    can action, DevicePool, :provider_id => provider.id if provider.dispatch?
+        
+    can action, DevicePoolDriver do |device_pool_driver|
+      device_pool_driver.provider_id == provider.id
+    end
+    
+    can :manage, DevicePoolDriver do |device_pool_driver|
+      device_pool_driver.driver_id == user.driver.id if user.driver
+    end
 
     if role.admin?
       can :manage, User, {:roles => {:provider_id => provider.id}}

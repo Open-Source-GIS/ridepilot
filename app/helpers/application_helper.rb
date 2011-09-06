@@ -1,5 +1,17 @@
 module ApplicationHelper
   
+  def show_dispatch?
+    current_user && current_user.current_provider && current_user.current_provider.dispatch?
+  end
+  
+  def show_scheduling?
+    current_user && current_user.current_provider.scheduling?
+  end
+  
+  def new_device_pool_drivers_options(drivers, device_pool)
+    options_for_select [["",""]] + drivers.map { |d| [d.name, d.id] }
+  end
+  
   def display_trip_result(trip_result)
     TRIP_RESULT_CODES[trip_result] || "Unscheduled"
   end

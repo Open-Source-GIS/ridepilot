@@ -1,0 +1,33 @@
+<div id="page-header">
+  <h1>Dispatcher</h1>
+</div>
+
+<div id="tree" class="left_column">
+  Loading...
+</div>
+
+<form id="refresh" class="left_column">
+  <div class="actions" style="border:0;">
+    <%= submit_tag "Refresh", :onclick => "d.refresh(); return false;" -%>
+  </div>
+</form>
+
+<div id="map-container">
+  
+</div>
+
+<script type="text/javascript" charset="utf-8">
+  if ( window.location.protocol == "https:" )
+    document.write('<scr' + 'ipt type="text/javascript" src="https://maps-api-ssl.google.com/maps/api/js?sensor=false"></scr' + 'ipt>');
+  else
+    document.write('<scr' + 'ipt type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></scr' + 'ipt>');
+</script>
+
+<%= javascript_include_tag "styledmarker.js" %>
+<%= javascript_include_tag "jquery.jstree.js" %>
+<%= javascript_include_tag "dispatcher.js" %>
+<%= stylesheet_link_tag "jstree-apple/style.css" %>
+
+<script type="text/javascript" charset="utf-8">
+  var d = new Dispatcher("tree", "map-container");
+</script>

@@ -55,6 +55,91 @@
 
 <hr />
 
+<h2 class="section-header">Dispatch</h2>
+<% if can? :edit, @provider %>
+  <%= form_tag change_dispatch_provider_path(@provider) do %>
+    <fieldset>
+      <ol class="section fourth">
+        <li>
+          <%= label_tag "Enabled?" %>
+          <%= select_tag "dispatch", options_for_select( [["No", false], ["Yes", true]], @provider.dispatch? ), { :onchange => "form.submit();" } %>
+        </li>
+      </ol>
+    </fieldset>
+  <% end %>
+<% end %>
+
+<hr />
+
+<h2 class="section-header">Scheduling</h2>
+<% if can? :edit, @provider %>
+  <%= form_tag change_scheduling_provider_path(@provider) do %>
+    <fieldset>
+      <ol class="section fourth">
+        <li>
+          <%= label_tag "Enabled?" %>
+          <%= select_tag "scheduling", options_for_select( [["No", false], ["Yes", true]], @provider.scheduling? ), { :onchange => "form.submit();" } %>
+        </li>
+      </ol>
+    </fieldset>
+  <% end %>
+<% end %>
+
+<% if @provider.dispatch? && can?(:edit, DevicePool) %>
+  <% if @provider.device_pools.size == 0 %>
+    <p>No device pools yet.</p>
+  <% else %>
+    <table>
+      <tr>
+        <th>Name</th>
+        <th></th>
+        <% if can? :edit, DevicePool %>
+        <th></th>
+        <% end %>
+        <th>Drivers</th>
+      </tr>
+      <% for device_pool in @provider.device_pools %>
+        <tr>
+          <td><%= device_pool.name %></td>
+          <td><span class="device-pool-color" style="background-color:#<%= device_pool.color %>;"> </span></td>
+          <% if can? :edit, device_pool %>
+            <td><%= link_to "Edit", edit_device_pool_path(device_pool), :class => "edit" %></td>
+          <% end %>
+          <td>
+            <table>
+            <% if device_pool.device_pool_drivers.length == 0 %>
+              <tr class="empty"><td>No drivers yet.</td><td></td></tr>
+            <% else %>
+              <% for device_pool_driver in device_pool.device_pool_drivers %>
+                <%= render "device_pool_drivers/device_pool_driver_row", :device_pool_driver => device_pool_driver %>
+              <% end %>
+            <% end %>
+            </table>
+            <% if @provider == current_user.current_provider && can?( :create, DevicePoolDriver ) %>
+              <p><%= link_to "Add Driver", "#", :class=>'action-bttn add_device_pool_driver' %></p>
+              <p style="display:none;">
+                <%= select_tag "new_device_pool_driver_#{device_pool.id}", new_device_pool_drivers_options(@unassigned_drivers, device_pool), :class => "new_device_pool_driver" %>
+                <%= link_to "Add", device_pool_device_pool_drivers_path(device_pool), :class => "add_driver_to_pool" %>
+              </p>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+  
+  <% if @provider == current_user.current_provider %>
+    <p><%= link_to "Create Device Pool", new_device_pool_path, :class=>'action-bttn' %>
+  <% else %>
+    <p>You are currently logged in to
+    <%= current_user.current_provider.name %>.  To create a device pool for
+    <%= @provider.name %>, please switch providers by using the dropdown
+    menu at the top of this page.</p>
+  <% end %>
+<% end %>
+
+<hr />
+
 <h2 class="section-header">Drivers</h2>
 
 <% if @provider.drivers.size == 0 %>

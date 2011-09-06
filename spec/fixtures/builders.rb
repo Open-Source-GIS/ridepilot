@@ -10,7 +10,8 @@ Fixjour :verify => false do
   end
   
   define_builder(Role) do |klass, overrides|
-    user = overrides[:user] || new_user
+    user = overrides[:user] || create_user
+    
     klass.new({
       :user     => user,
       :provider => user.current_provider,
@@ -30,6 +31,30 @@ Fixjour :verify => false do
     user
   end  
   
+  define_builder(Driver) do |klass, overrides|
+    klass.new({
+      :name     => Faker::Lorem.words(2), 
+      :provider => new_provider, 
+      :user     => new_user
+    })
+  end
+  
+  define_builder(DevicePool) do |klass, overrides|
+    klass.new({
+      :name     => Faker::Company.name,
+      :color    => ActiveSupport::SecureRandom.hex(3),
+      :provider => new_provider
+    })
+  end
+  
+  define_builder(DevicePoolDriver) do |klass, overrides|
+    dpd             = klass.new({})
+    
+    dpd.driver      = overrides[:driver] || new_driver
+    dpd.device_pool = overrides[:device_pool] || new_device_pool
+    dpd
+  end
+
   define_builder(Trip) do |klass, overrides|
     pickup_time      = overrides[:pickup_time]      || Time.now + 1.week
     appointment_time = overrides[:appointment_time] || pickup_time + 30.minutes

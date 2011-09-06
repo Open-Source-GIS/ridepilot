@@ -172,4 +172,106 @@ regexp_replace(phone_number_2, '[^0-9]', '') = ?
     end
   end
 
+  def self.by_term( term, limit = nil )
+    if term[0].match /\d/ #by phone number
+      query = term.gsub("-", "")
+      query = query[1..-1] if query.start_with? "1"
+      return Customer.where([
+"regexp_replace(phone_number_1, '[^0-9]', '') = ? or
+regexp_replace(phone_number_2, '[^0-9]', '') = ?
+", query, query])
+    else
+      if term.match /^[a-z]+$/i
+        #a single word, either a first or a last name
+        query, args = make_customer_name_query("first_name", term)
+        lnquery, lnargs = make_customer_name_query("last_name", term)
+        query += " or " + lnquery
+        args += lnargs
+      elsif term.match /^[a-z]+[ ,]\s*$/i
+        comma = term.index(",")
+        #a single word, either a first or a last name, complete
+        term.gsub!(",", "")
+        term = term.strip
+        if comma
+          query, args = make_customer_name_query("last_name", term, :complete)
+        else
+          query, args = make_customer_name_query("first_name", term, :complete)
+        end
+      elsif term.match /^[a-z]+\s+[a-z]$/i
+        #a first name followed by either a middle initial or the first
+        #letter of a last name
+
+        first_name, last_name = term.split(" ").map(&:strip)
+
+        query, args = make_customer_name_query("first_name", first_name, :complete)
+        lnquery, lnargs = make_customer_name_query("last_name", last_name)
+        miquery, miargs = make_customer_name_query("middle_initial", last_name, :initial)
+
+        query += " and (" + lnquery +  " or " + miquery + ")"
+        args += lnargs + miargs
+
+      elsif term.match /^[a-z]+\s+[a-z]{2,}$/i
+        #a first name followed by two or more letters of a last name
+
+        first_name, last_name = term.split(" ").map(&:strip)
+
+        query, args = make_customer_name_query("first_name", first_name, :complete)
+        lnquery, lnargs = make_customer_name_query("last_name", last_name)
+        query += " and " + lnquery
+        args += lnargs
+      elsif term.match /^[a-z]+\s*,\s*[a-z]+$/i
+        #a last name, a comma, some or all of a first name
+
+        last_name, first_name = term.split(",").map(&:strip)
+
+        query, args = make_customer_name_query("last_name", last_name, :complete)
+        fnquery, fnargs = make_customer_name_query("first_name", first_name)
+        query += " and " + fnquery
+        args += fnargs
+      elsif term.match /^[a-z]+\s+[a-z][.]?\s+[a-z]+$/i
+        #a first name, middle initial, some or all of a last name
+
+        first_name, middle_initial, last_name = term.split(" ").map(&:strip)
+
+        middle_initial = middle_initial[0]
+
+        query, args = make_customer_name_query("first_name", first_name, :complete)
+        miquery, miargs = make_customer_name_query("middle_initial", middle_initial, :initial)
+
+        lnquery, lnargs = make_customer_name_query("last_name", last_name)
+        query += " and " + miquery + " and " + lnquery
+        args += miargs + lnargs
+      elsif term.match /^[a-z]+\s*,\s*[a-z]+\s+[a-z][.]?$/i
+        #a last name, a comma, a first name, a middle initial
+
+        last_name, first_and_middle = term.split(",").map(&:strip)
+        first_name, middle_initial = first_and_middle.split(" ").map(&:strip)
+        middle_initial = middle_initial[0]
+
+        query, args = make_customer_name_query("first_name", first_name, :complete)
+        miquery, miargs = make_customer_name_query("middle_initial", middle_initial, :initial)
+        lnquery, lnargs = make_customer_name_query("last_name", last_name, :complete)
+        query += " and " + miquery + " and " + lnquery
+        args += miargs + lnargs
+      end
+
+      conditions = [query] + args
+      customers  = where(conditions)
+
+      limit ? customers.limit(limit) : customers
+    end
+  end
+
+  def self.make_customer_name_query(field, value, option=nil)
+    value = value.downcase
+    like  = "#{value}%"
+    if option == :initial
+      return "(LOWER(%s) = ?)" % field, [value]
+    elsif option == :complete
+      return "(LOWER(%s) = ? or LOWER(%s) LIKE ? )" % [field, field], [value, like]
+    else
+      return "(LOWER(%s) like ?)" % [field], [like]
+    end
+  end
+
 end
