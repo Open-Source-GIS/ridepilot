@@ -107,15 +107,15 @@ $(function() {
     window.location = $(this).attr("data-path") + "?customer_name=" + $("#customer_name").val();
   });
     
-  $("body.runs .wc-nav").click(function(e){
+  $("body.runs .wc-nav button").click(function(e){
     var current_start, new_start, new_end;
-    var target        = $(e.target);
-    var week_nav      = $(this);
+    var target    = $(this);
+    var week_nav  = target.parent(".wc-nav");
     
     if (target.hasClass("wc-today")){
-      current_start   = new Date(parseInt(week_nav.attr("data-current-week-start")));
-      new_start       = new Date(current_start.getTime());
-      new_end         = new Date(current_start.getTime());
+      current_start = new Date(parseInt(week_nav.attr("data-current-week-start")));
+      new_start     = new Date(current_start.getTime());
+      new_end       = new Date(current_start.getTime());
       new_end.setDate(new_end.getDate() + 7);
     } else {
       current_start = new Date(parseInt(week_nav.attr("data-start-time")));
