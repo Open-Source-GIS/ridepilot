@@ -21,6 +21,29 @@ function supports_history_api() {
   return !!(window.history && history.pushState);
 }
 
+MS_in_a_minute = 60000;
+MS_in_a_day    = 86400000;
+MS_in_an_hour  = 3600000;
+MS_in_a_week   = 604800000;
+
+// does time fall within the current week ? 
+function week_differs (time) {
+  var current_start = $("#calendar").data("start-time");
+  return !(current_start <= time && time < current_start + MS_in_a_week);
+}
+
+// finds start of monday for week of given time, sets calendar start_time
+function set_calendar_time(time) {
+  var date       = new Date(time);
+  var start_time = time - (date.getDay() - 1) * MS_in_a_day - 
+    date.getHours() * MS_in_an_hour - 
+    date.getMinutes() * MS_in_a_minute - 
+    date.getSeconds() * 1000 - 
+    date.getMilliseconds() ;
+  
+  $("#calendar").data("start-time", start_time)
+}
+
 $(function() {
 
   $("tr:odd").addClass("odd");
@@ -83,14 +106,18 @@ $(function() {
   $('#new_monthly #monthly_start_date, #new_monthly #monthly_end_date, input.datepicker').datepicker({
 		dateFormat: 'yy-mm-dd'    		
   });
-
+  
   // when trip pickup time is changed, update appointment time and displayed week
   $('#trip_pickup_time').live('change', function() {
     var pickupTimeDate      = ISODateFormatToDateObject( $('#trip_pickup_time').attr("value") );
     var appointmentTimeDate = new Date(pickupTimeDate.getTime() + (1000 * 60 * 30));    
 
     $('#trip_appointment_time').attr( "value", appointmentTimeDate.format("ddd yyyy-mm-dd hh:MM t") );
-    $("#calendar").weekCalendar("gotoWeek", appointmentTimeDate.getTime());
+    
+    if ( week_differs(appointmentTimeDate.getTime()) ) {
+      $("#calendar").weekCalendar("gotoWeek", appointmentTimeDate.getTime());
+      set_calendar_time(appointmentTimeDate.getTime());
+    }
   });
   
   $('#new_trip #customer_name').bind('railsAutocomplete.select', function(e){ 

@@ -1,5 +1,7 @@
 class TripsController < ApplicationController
   load_and_authorize_resource
+  
+  before_filter :set_calendar_week_start, :only => [:index, :new, :edit]
 
   def index
     respond_to do |format|
@@ -204,6 +206,16 @@ class TripsController < ApplicationController
   end
 
   private
+  
+  def set_calendar_week_start
+    @week_start = if params[:start].present?
+      Time.at params[:start].to_i/1000
+    elsif @trip.try :pickup_time
+      @trip.pickup_time.beginning_of_week
+    else
+      Time.now.beginning_of_week
+    end
+  end
   
   def trips_json
     filter_trips

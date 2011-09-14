@@ -2,7 +2,7 @@
   <h1>View Trips</h1>
 </div>
 
-<div id="calendar"></div>
+<div id="calendar" data-start-time="<%= @week_start.to_i * 1000 %>"></div>
 
 <div id="expand_calendar" style="display:none;">
   <button class="ui-button ui-widget ui-state-default ui-button-text-icon-primary ui-button-icon-only ui-corner-left ui-corner-right" title="Expand">

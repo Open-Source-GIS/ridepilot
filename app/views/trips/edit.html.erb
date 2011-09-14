@@ -2,7 +2,7 @@
   <h1>Editing Trip</h1>
 </div>
 
-<div id="calendar"></div>
+<div id="calendar" data-start-time="<%= @week_start.to_i * 1000 %>"></div>
 
 <%= render 'form' %>
 
