@@ -10,7 +10,15 @@ class DevicePoolDriver < ActiveRecord::Base
   validates :driver_id, :presence => true, :uniqueness => true
   validates :device_pool, :presence => true
   validates :status, :inclusion => { :in => Statuses, :message => "must be in #{Statuses.inspect}", :allow_nil => true }
-        
+  
+  def lat=(coord)
+    write_attribute(:lat, coord) if coord.present?
+  end
+  
+  def lng=(coord)
+    write_attribute(:lng, coord) if coord.present?
+  end
+  
   def as_tree_json
     {
       :data     => active? ? name : "<span class='inactive'>#{name}</span>",

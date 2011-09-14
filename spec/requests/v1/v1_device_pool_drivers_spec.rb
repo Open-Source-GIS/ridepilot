@@ -208,7 +208,7 @@ describe "V1::device_pool_drivers" do
         create_role :level => 0, :user => user
         @device_pool_driver = create_device_pool_driver :driver => create_driver(:user => @user), :device_pool => create_device_pool
         
-        post v1_device_pool_driver_path(:id => device_pool_driver.id, :user => { :email => user.email, :password => "password" }, :secure => true, :format => "json")
+        post v1_device_pool_driver_path(:id => device_pool_driver.id, :user => { :email => user.email, :password => "password" }, :device_pool_driver => { :status => "break", :lat => "45.5", :lng => "-122.6" }, :secure => true, :format => "json")
       end
       
       it "returns 200" do
@@ -217,6 +217,27 @@ describe "V1::device_pool_drivers" do
       
       it "returns device as json" do
         response.body.should == {:device_pool_driver => device_pool_driver.reload.as_mobile_json }.to_json
+      end
+    end
+    
+    context "when lacking coordinates" do
+      attr_reader :device_pool_driver, :user
+      
+      before do
+        @user = create_user :password => "password", :password_confirmation => "password"
+        create_role :level => 0, :user => user
+        @device_pool_driver = create_device_pool_driver :driver => create_driver(:user => @user), :device_pool => create_device_pool, :lat => 45.5, :lng => -122.6
+        
+        post v1_device_pool_driver_path(:id => device_pool_driver.id, :user => { :email => user.email, :password => "password" }, :device_pool_driver => { :status => "break", :lat => "", :lng => "" }, :secure => true, :format => "json")
+      end
+      
+      it "returns 200" do
+        response.status.should be(200)
+      end
+      
+      it "does not update the coordinates" do
+        device_pool_driver.reload
+        [device_pool_driver.lat, device_pool_driver.lng].should == [45.5, -122.6]
       end
     end
     
