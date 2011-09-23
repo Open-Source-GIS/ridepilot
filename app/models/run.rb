@@ -12,6 +12,8 @@ class Run < ActiveRecord::Base
   stampable :creator_attribute => :created_by_id, :updater_attribute => :updated_by_id
   
   accepts_nested_attributes_for :trips
+  
+  scope :incomplete_on, lambda{ |date| where(:complete => false, :date => date) }
 
   def set_complete
     if scheduled_end_time
@@ -23,6 +25,10 @@ class Run < ActiveRecord::Base
 
   def vehicle_name
     vehicle.name if vehicle.present?
+  end
+  
+  def label
+    "#{vehicle_name}: #{driver.try :name} #{scheduled_start_time.try :strftime, "%I:%M%P"}".gsub( /m$/, "" )
   end
 
 end

@@ -248,6 +248,8 @@ class TripsController < ApplicationController
   
   def prep_edit
     prep_view
+    
+    @runs = Run.incomplete_on @trip.pickup_time.to_date
     if @trip.repeating_trip
       repeating_trip = @trip.repeating_trip
     else
@@ -297,6 +299,7 @@ class TripsController < ApplicationController
     repeating_trip_params.delete :customer_informed
     repeating_trip_params.delete :called_back_at
     repeating_trip_params.delete :called_back_by
+    repeating_trip_params.delete :run_id
     repeating_trip_params[:schedule_attributes] = { 
       :repeat => 1,
       :interval_unit => "week", 
