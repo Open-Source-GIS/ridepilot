@@ -1,4 +1,15 @@
-<%= form_for @run do |f| %>
+<% if @run.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@run.errors.count, "error") %> prohibited this run from being saved:</h2>
+
+    <ul>
+    <% @run.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+
 <fieldset>
   <ol class="section first">
     <li>
@@ -51,45 +62,3 @@
     </li>
   </ol>
 </fieldset>
-
-<fieldset>
-  <table>
-    <tr>
-      <th>Customer Name</th>
-      <th>Round Trip?</th>
-      <th>Guest Count</th>
-      <th>Attendant Count</th>
-      <th>Result</th>
-      <th>Notes</th>
-    </tr>
-    <% @run.trips.each do |trip| %>
-      <% f.fields_for :trips, trip do |trip_fields| %>
-        <tr>
-          <td>
-            <%= trip.customer.name %>
-          </td>
-          <td>
-            <%= trip_fields.check_box :round_trip %>
-          </td>
-          <td>
-            <%= trip_fields.text_field :guest_count, :size => 1 %>
-          </td>
-          <td>
-            <%= trip_fields.text_field :attendant_count, :size => 1 %>
-          </td>
-          <td>
-            <%= trip_fields.select :trip_result, @trip_results, :include_blank => true %>
-          </td>
-          <td>
-            <%= trip_fields.text_area :notes, :rows => 1 %>
-          </td>
-        </tr>
-      <% end %>
-    <% end %>
-  </table>
-</fieldset>
-
-<div class="actions">
-  <%= f.submit %>
-</div>
-<% end %>
