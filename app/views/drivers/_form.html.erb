@@ -30,7 +30,7 @@
       
       <li>
         <%= f.label :user_id, "Associated User" %>
-        <%= f.select :user_id, options_from_collection_for_select( (@driver.provider.users - User.drivers(@driver.provider)), :id, :email ), :include_blank => true %>
+        <%= f.collection_select :user_id, @available_users, :id, :email, :include_blank => true %>
       </li>
     </ol>
 
