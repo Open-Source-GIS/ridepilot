@@ -33,6 +33,8 @@ class Trip < ActiveRecord::Base
   accepts_nested_attributes_for :customer
 
   stampable :creator_attribute => :created_by_id, :updater_attribute => :updated_by_id
+  
+  scope :for_provider, lambda { |provider_id| where( :provider_id => provider_id ) }
 
   def complete
     trip_result == 'COMP'
