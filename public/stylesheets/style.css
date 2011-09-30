@@ -1123,6 +1123,12 @@ body.trips div.wc-toolbar {
   position : relative;
 }
 
+body.trips div.wc-toolbar div#vehicle_filter {
+  position : absolute;
+  right    : 50px;
+  top      : 8px;
+}
+
 body.trips div.wc-toolbar div#expand_calendar {
   position : absolute;
   right    : 5px;

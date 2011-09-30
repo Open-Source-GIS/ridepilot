@@ -7,7 +7,12 @@ class TripsController < ApplicationController
     @trips = @trips.for_provider current_provider_id
     
     respond_to do |format|
-      format.html { @start = params[:start].to_i; @trips = [] } # let js handle grabbing the trips
+      format.html do
+        @start = params[:start].to_i
+        # let js handle grabbing the trips
+        @trips = [] 
+        @vehicles = Vehicle.accessible_by(current_ability).where(:provider_id => current_provider_id)
+      end
       format.xml  { render :xml => @trips }
       format.json { render :json => trips_json }
     end
@@ -335,5 +340,9 @@ class TripsController < ApplicationController
     @trips = @trips.
       where("pickup_time >= '#{t_start.strftime "%Y-%m-%d %H:%M:%S"}'").
       where("pickup_time <= '#{t_end.strftime "%Y-%m-%d %H:%M:%S"}'")
+      
+    if params[:vehicle_id].present?  
+      @trips = @trips.select {|t| t.vehicle_id == params[:vehicle_id].to_i } 
+    end
   end
 end

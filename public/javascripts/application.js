@@ -129,8 +129,23 @@ $(function() {
   });
   
   $("#trip_vehicle_id, #trip_driver_id").live("change", function(){
-    console.log("hi")
     $("#trip_run_id").val("");
+  });
+  
+  $("#vehicle_filter #vehicle_id").live("change", function(){
+    var form = $(this).parents("form");
+    $.get(form.attr("action"), form.serialize() + "&" + window.location.search.replace(/^\?/,""), function(data) {
+      $("#calendar").weekCalendar("clear");
+      $.each( data.events, function(i, e){
+        $("#calendar").weekCalendar("updateEvent", e);
+      } );
+      var table = $("#calendar").next("table");
+      table.find("tr.trip").remove();
+      $.each(data.rows, function(i, row){
+        table.append(row);
+      })
+      $("tr:odd").addClass("odd");
+    }, "json");
   });
   
   $('#new_trip #customer_name').bind('railsAutocomplete.select', function(e){ 

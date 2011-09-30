@@ -109,7 +109,8 @@
         headerSeparator: ", ",
         timeslotHeight: 15,
         calendarBeforeLoad: function($calendar){
-          // Add the calendar expander
+          // Add the calendar expander & vehicle filter
+          $("#vehicle_filter").remove().appendTo("div.wc-toolbar").show();
           $("#expand_calendar").remove().appendTo("div.wc-toolbar").show();
         },
         height: function($calendar){
@@ -135,6 +136,7 @@
           }, "json");
         },
         data: function(start, end, callback){
+          $("#vehicle_filter #vehicle_id").val("");
           calendar_range = { start:start.getTime()/1000, end:end.getTime()/1000 };
           
           $.getJSON('<%= trips_path :json %>',
