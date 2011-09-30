@@ -13,7 +13,7 @@ class Run < ActiveRecord::Base
   
   accepts_nested_attributes_for :trips
   
-  scope :incomplete_on, lambda{ |date| where(:complete => false, :date => date) }
+  scope :incomplete_on, lambda{ |date| where("complete is not true").where(:date => date) }
 
   def set_complete
     if scheduled_end_time
@@ -29,6 +29,10 @@ class Run < ActiveRecord::Base
   
   def label
     "#{vehicle_name}: #{driver.try :name} #{scheduled_start_time.try :strftime, "%I:%M%P"}".gsub( /m$/, "" )
+  end
+  
+  def as_json(options)
+    { :id => id, :label => label }
   end
 
 end

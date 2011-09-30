@@ -125,24 +125,28 @@
         <% end %>
       </li>
       
-      <% if @trip.run.present? %>
-        <li class="selfclear">
-          <%= f.label :run_id, "Run:" %>
-          <%= f.collection_select :run_id, @runs, :id, :label %>
-        </li>
-      <% else %>
-        <li class="selfclear">
-          <%= f.label :vehicle_id, "Vehicle:" %>
-          <%= f.select :vehicle_id,
-              options_for_select( @vehicles.map { |v| [v.name, v.id, {'data-driver-id' => v.try(:default_driver_id) } ] }, @trip.vehicle_id ),
-              :include_blank => true %>
-        </li>
+      <li class="selfclear">
+        <%= f.label :run_id, "Run:" %>
+        <% if @runs.present? %>
+          <%= f.collection_select :run_id, @runs, :id, :label, :include_blank => true %>
+        <% else %>
+          <%= f.select :run_id, [], :include_blank => true %>
+        <% end %>
+        <strong>OR</strong>
+      </li>
 
-        <li class="selfclear">
-          <%= f.label :driver_id, "Driver:" %>
-          <%= f.select :driver_id, options_from_collection_for_select( @drivers, :id, :name, @trip.driver_id ), :include_blank => true %>
-        </li>
-      <% end %>
+      <li class="selfclear">
+        <%= f.label :vehicle_id, "Vehicle:" %>
+        <%= f.select :vehicle_id,
+            options_for_select( @vehicles.map { |v| [v.name, v.id, {'data-driver-id' => v.try(:default_driver_id) } ] }, @trip.run.present? ? nil : @trip.vehicle_id ),
+            :include_blank => true %>
+      </li>
+
+      <li class="selfclear">
+        <%= f.label :driver_id, "Driver:" %>
+        <%= f.select :driver_id, options_from_collection_for_select( @drivers, :id, :name, @trip.run.present? ? nil : @trip.driver_id ), :include_blank => true %>
+      </li>
+
       <li class="selfclear">
         <label for="customer_private_notes">Customer Private Notes:</label>
         <textarea rows="20" name="customer_private_notes" id="customer_private_notes" cols="40" readonly="readonly"><%= @customer.try :private_notes %></textarea>

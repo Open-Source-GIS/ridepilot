@@ -255,6 +255,7 @@ class TripsController < ApplicationController
     prep_view
     
     @runs = Run.incomplete_on @trip.pickup_time.to_date
+
     if @trip.repeating_trip
       repeating_trip = @trip.repeating_trip
     else
@@ -266,7 +267,7 @@ class TripsController < ApplicationController
   end
 
   def handle_trip_params(trip_params)
-    if trip_params[:vehicle_id] == '-1' or trip_params[:vehicle_id] == ''
+    if trip_params[:vehicle_id] == '-1' or (trip_params[:run_id].blank? && trip_params[:vehicle_id].blank? )
       #cab trip
       trip_params[:vehicle_id] = 0
       trip_params[:cab] = true

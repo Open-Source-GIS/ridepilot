@@ -244,6 +244,19 @@
         load_index_trips(calendar_range.start * 1000);
       }
     })
+    
+    $('#trip_pickup_time').live('change', function() {
+      var date = ISODateFormatToDateObject( $(this).val() );
+      var date_formatted = date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate();
+      $.getJSON("<%= for_date_runs_path %>", { date : date_formatted }, function(data){
+        $("#trip_run_id option").remove();
+        $("#trip_run_id").append( $("<option>") );
+        $.each( data, function(i, run){
+          var option = $("<option>").val(run.id).text(run.label);
+          $("#trip_run_id").append( option );
+        })
+      })
+    });
   });
 
 </script>

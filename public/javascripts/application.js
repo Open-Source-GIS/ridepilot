@@ -86,7 +86,7 @@ $(function() {
   });
 
   // set default driver for trip based on selected vehicle
-  $("#trip_vehicle_id").change( function(event){
+  $("#trip_vehicle_id").live("change", function(event){
     $("#trip_driver_id").val( $(this).find("option[value=" + $(this).val() + "]").data("driver-id") );
   });
 
@@ -117,7 +117,20 @@ $(function() {
     if ( week_differs(appointmentTimeDate.getTime()) ) {
       $("#calendar").weekCalendar("gotoWeek", appointmentTimeDate.getTime());
       set_calendar_time(appointmentTimeDate.getTime());
-    }
+    }    
+  });
+  
+  // needs to be -1 for field nulling
+  $("#trip_vehicle_id option:contains(cab)").attr("value", "-1")
+  
+  $("#trip_run_id").live('change', function(){
+    $("#trip_vehicle_id").val("");
+    $("#trip_driver_id").val("");
+  });
+  
+  $("#trip_vehicle_id, #trip_driver_id").live("change", function(){
+    console.log("hi")
+    $("#trip_run_id").val("");
   });
   
   $('#new_trip #customer_name').bind('railsAutocomplete.select', function(e){ 

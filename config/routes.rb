@@ -62,7 +62,10 @@ Ridepilot::Application.routes.draw do
   resources :monthlies
   resources :funding_sources
   resources :runs do
-    get :uncompleted_runs, :on=>:collection
+    collection do
+      get :uncompleted_runs
+      get :for_date
+    end
   end
   
   scope :via => :post, :constraints => { :format => "json" , :protocol => "https" } do
