@@ -12,7 +12,7 @@ function ISODateFormatToDateObject(str) {
   _date = new Date();
   _date.setFullYear( Number(dateParts[0]), (Number(dateParts[1])-1), Number(dateParts[2]) );
   
-  _date.setHours(Number( amPm == "PM" && timeHours != 12 ? timeHours + 12 : timeHours), Number(timeSubParts[1]), 0, 0);
+  _date.setHours(Number( amPm.slice(0,1) == "P" && timeHours != 12 ? timeHours + 12 : timeHours), Number(timeSubParts[1]), 0, 0);
 
   return _date;
 }
