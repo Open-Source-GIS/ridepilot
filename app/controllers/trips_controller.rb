@@ -94,6 +94,7 @@ class TripsController < ApplicationController
 
   def new
     @trip = Trip.new(:provider_id=>current_provider_id, :customer_id=>params[:customer_id])
+    @trip.mobility_id = Customer.find(params[:customer_id]).mobility_id if params[:customer_id]
     prep_view
 
     #we only use this to get access to the schedule attributes
