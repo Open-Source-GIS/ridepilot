@@ -33,6 +33,8 @@ class Trip < ActiveRecord::Base
   accepts_nested_attributes_for :customer
 
   stampable :creator_attribute => :created_by_id, :updater_attribute => :updated_by_id
+  
+  scope :for_provider, lambda { |provider_id| where( :provider_id => provider_id ) }
 
   def complete
     trip_result == 'COMP'
@@ -73,8 +75,8 @@ class Trip < ActiveRecord::Base
     self.in_district = pickup_address.in_district && dropoff_address.in_district
   end
 
-  def compute_run
-    return if run || cab || via_repeating_trip
+  def compute_run    
+    return if run_id || cab || via_repeating_trip
 
     if !pickup_time or !appointment_time 
       return #we'll error out in validation

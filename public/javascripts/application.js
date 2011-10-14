@@ -86,7 +86,7 @@ $(function() {
   });
 
   // set default driver for trip based on selected vehicle
-  $("#trip_vehicle_id").change( function(event){
+  $("#trip_vehicle_id").live("change", function(event){
     $("#trip_driver_id").val( $(this).find("option[value=" + $(this).val() + "]").data("driver-id") );
   });
 
@@ -117,7 +117,35 @@ $(function() {
     if ( week_differs(appointmentTimeDate.getTime()) ) {
       $("#calendar").weekCalendar("gotoWeek", appointmentTimeDate.getTime());
       set_calendar_time(appointmentTimeDate.getTime());
-    }
+    }    
+  });
+  
+  // needs to be -1 for field nulling
+  $("#trip_vehicle_id option:contains(cab)").attr("value", "-1")
+  
+  $("#trip_run_id").live('change', function(){
+    $("#trip_vehicle_id").val("");
+    $("#trip_driver_id").val("");
+  });
+  
+  $("#trip_vehicle_id, #trip_driver_id").live("change", function(){
+    $("#trip_run_id").val("");
+  });
+  
+  $("#vehicle_filter #vehicle_id").live("change", function(){
+    var form = $(this).parents("form");
+    $.get(form.attr("action"), form.serialize() + "&" + window.location.search.replace(/^\?/,""), function(data) {
+      $("#calendar").weekCalendar("clear");
+      $.each( data.events, function(i, e){
+        $("#calendar").weekCalendar("updateEvent", e);
+      } );
+      var table = $("#calendar").next("table");
+      table.find("tr.trip").remove();
+      $.each(data.rows, function(i, row){
+        table.append(row);
+      })
+      $("tr:odd").addClass("odd");
+    }, "json");
   });
   
   $('#new_trip #customer_name').bind('railsAutocomplete.select', function(e){ 

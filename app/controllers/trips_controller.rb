@@ -4,8 +4,15 @@ class TripsController < ApplicationController
   before_filter :set_calendar_week_start, :only => [:index, :new, :edit]
 
   def index
+    @trips = @trips.for_provider current_provider_id
+    
     respond_to do |format|
-      format.html { @start = params[:start].to_i; @trips = [] } # let js handle grabbing the trips
+      format.html do
+        @start = params[:start].to_i
+        # let js handle grabbing the trips
+        @trips = [] 
+        @vehicles = Vehicle.accessible_by(current_ability).where(:provider_id => current_provider_id)
+      end
       format.xml  { render :xml => @trips }
       format.json { render :json => trips_json }
     end
@@ -18,7 +25,8 @@ class TripsController < ApplicationController
     #not been marked as informed, ordered by when they were last
     #called.
 
-    @trips = Trip.accessible_by(current_ability).where(["customer_informed = false and pickup_time >= ? ", Date.today]).order("called_back_at")
+    @trips = Trip.accessible_by(current_ability).for_provider(current_provider_id).where(
+      ["customer_informed = false and pickup_time >= ? ", Date.today]).order("called_back_at")
 
     respond_to do |format|
       format.html
@@ -31,14 +39,16 @@ class TripsController < ApplicationController
     #trips.  This is a list of all trips that haven't been decided
     #on yet.
 
-    @trips = Trip.accessible_by(current_ability).where(["trip_result = '' and pickup_time >= ? ", Date.today]).order("pickup_time")
+    @trips = Trip.accessible_by(current_ability).for_provider(current_provider_id).where(
+      ["trip_result = '' and pickup_time >= ? ", Date.today]).order("pickup_time")
   end
 
   def reconcile_cab
     #the cab company has sent a log of all trips in the past [time period]
     #we want to mark some trips as no-shows.  This will be a paginated
     #list of trips
-    @trips = Trip.accessible_by(current_ability).where("cab = true and (trip_result = 'COMP' or trip_result = 'NS')").reorder("pickup_time desc").paginate :page=>params[:page], :per_page=>50
+    @trips = Trip.accessible_by(current_ability).for_provider(current_provider_id).where(
+      "cab = true and (trip_result = 'COMP' or trip_result = 'NS')").reorder("pickup_time desc").paginate :page=>params[:page], :per_page=>50
   end
 
   def no_show
@@ -251,6 +261,7 @@ class TripsController < ApplicationController
     prep_view
     
     @runs = Run.incomplete_on @trip.pickup_time.to_date
+
     if @trip.repeating_trip
       repeating_trip = @trip.repeating_trip
     else
@@ -262,7 +273,7 @@ class TripsController < ApplicationController
   end
 
   def handle_trip_params(trip_params)
-    if trip_params[:vehicle_id] == '-1' or trip_params[:vehicle_id] == ''
+    if trip_params[:vehicle_id] == '-1' or (trip_params[:run_id].blank? && trip_params[:vehicle_id].blank? )
       #cab trip
       trip_params[:vehicle_id] = 0
       trip_params[:cab] = true
@@ -330,5 +341,9 @@ class TripsController < ApplicationController
     @trips = @trips.
       where("pickup_time >= '#{t_start.strftime "%Y-%m-%d %H:%M:%S"}'").
       where("pickup_time <= '#{t_end.strftime "%Y-%m-%d %H:%M:%S"}'")
+      
+    if params[:vehicle_id].present?  
+      @trips = @trips.select {|t| t.vehicle_id == params[:vehicle_id].to_i } 
+    end
   end
 end

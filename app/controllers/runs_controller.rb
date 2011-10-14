@@ -95,6 +95,14 @@ class RunsController < ApplicationController
     end
   end
   
+  def for_date
+    date = Date.parse params[:date]
+    @runs = @runs.incomplete_on date
+    render :json =>  @runs.to_json 
+  end
+  
+  private
+  
   def filter_runs
     if params[:end].present? && params[:start].present?
       @week_start = Time.at params[:start].to_i/1000
