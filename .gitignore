@@ -4,6 +4,7 @@ log/*.log
 tmp/**/*
 tmp/*
 *~
+config/database.yml
 config/app_config.yml
 public/system
 *.swp
