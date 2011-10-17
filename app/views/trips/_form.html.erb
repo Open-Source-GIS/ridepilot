@@ -129,6 +129,7 @@
         <%= f.label :run_id, "Run:" %>
         <% if @runs.present? %>
           <%= f.collection_select :run_id, @runs, :id, :label, :include_blank => true %>
+          <%= link_to_if @trip.run.present?, "", [:edit, @trip.run], :class => :details  %>
         <% else %>
           <%= f.select :run_id, [], :include_blank => true %>
         <% end %>

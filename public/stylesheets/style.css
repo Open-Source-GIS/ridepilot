@@ -737,7 +737,8 @@ a.delete,
 a.new-maintenance,
 a.edit-maintenance,
 a.edit-driver,
-a.edit-vehicle {
+a.edit-vehicle,
+a.details {
     padding: 5px 0 5px 20px;
     text-decoration: none;
     font-size: 11px;
@@ -764,6 +765,9 @@ a.edit-driver {
 }
 a.edit-vehicle {
     background: url(images/pencil.png) left center no-repeat scroll;
+}
+a.details {
+    background: url(images/magnifier-zoom.png) left center no-repeat scroll;
 }
 a.delete:hover,
 a.delete:active {
