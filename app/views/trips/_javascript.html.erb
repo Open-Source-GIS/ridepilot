@@ -37,6 +37,7 @@
     }
 
     function load_edit_trip(form) {
+      $("form.edit_trip").remove();
       $('table.trips').after(form).hide();    
       $('a.new').hide(); $('a.new').prev("hr").hide();
       makeDialogs();
