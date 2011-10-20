@@ -13,6 +13,7 @@ class Run < ActiveRecord::Base
   
   accepts_nested_attributes_for :trips
   
+  default_scope order(:date)
   scope :incomplete_on, lambda{ |date| where("complete is not true").where(:date => date) }
 
   def set_complete
