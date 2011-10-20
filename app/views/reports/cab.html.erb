@@ -25,8 +25,8 @@
 <td><%= trip.pickup_time.to_date %></td>
 <td><%= trip.customer.name %></td>
 <td><%= trip.trip_purpose %></td>
-<td><%= trip.pickup_address.text %></td>
-<td><%= trip.dropoff_address.text %></td>
+<td><%= trip.pickup_address.try(:text) || '(Unspecified Address)' %></td>
+<td><%= trip.dropoff_address.try(:text) || '(Unspecified Address)' %></td>
 <td><%= trip.pickup_time.time %></td>
 </tr>
 
