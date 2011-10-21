@@ -738,6 +738,7 @@ a.new-maintenance,
 a.edit-maintenance,
 a.edit-driver,
 a.edit-vehicle,
+a.view-customer,
 a.details {
     padding: 5px 0 5px 20px;
     text-decoration: none;
@@ -764,7 +765,10 @@ a.edit-driver {
     background: url(images/pencil.png) left center no-repeat scroll;
 }
 a.edit-vehicle {
-    background: url(images/pencil.png) left center no-repeat scroll;
+    background: url(images/car--pencil.png) left center no-repeat scroll;
+}
+a.view-customer {
+    background: url(images/user-business-gray-boss.png) left center no-repeat scroll;
 }
 a.details {
     background: url(images/magnifier-zoom.png) left center no-repeat scroll;

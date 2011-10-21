@@ -21,9 +21,10 @@
 <table class="trips">
   <tr>
     <th>Customer</th>
+    <% if can? :edit, Trip %><th></th><% end %>
+    <th></th>
     <th>Pickup Time</th>
     <th>Result</th>
-<% if can? :edit, Trip %><th></th><% end %>
     <th></th>
   </tr>
 
