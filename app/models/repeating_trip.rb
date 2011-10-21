@@ -22,13 +22,21 @@ class RepeatingTrip < ActiveRecord::Base
     end
   end
 
+  def pickup_time=(datetime)
+    write_attribute :pickup_time, format_datetime( datetime )
+  end
+  
+  def appointment_time=(datetime)
+    write_attribute :appointment_time, format_datetime( datetime )
+  end
+
   def instantiate
     now = Time.now
     later = now.advance(:days=>21)
     for date in schedule.occurrences_between(now, later)
       this_trip_pickup_time = Time.gm(date.year, date.month, date.day, pickup_time.hour, pickup_time.min, pickup_time.sec)
 
-      if Trip.where("pickup_time = ? and repeating_trip_id=?", this_trip_pickup_time, id).count == 0
+      if this_trip_pickup_time != pickup_time && Trip.where("pickup_time = ? and repeating_trip_id=?", this_trip_pickup_time, id).count == 0
         attributes = self.attributes
         attributes["repeating_trip_id"] = id
         attributes.delete "recurrence"
@@ -41,4 +49,9 @@ class RepeatingTrip < ActiveRecord::Base
     end
   end
 
+  private
+  
+  def format_datetime(datetime)
+    datetime.is_a?( String ) && %w{a p}.include?( datetime.last.downcase ) ? "#{datetime}m" : datetime
+  end
 end
