@@ -248,6 +248,11 @@
       }
     })
     
+    $("#trip_delete").live('ajax:success', function(e, data, status, xhr){
+      push_index_state();
+      load_index_trips(calendar_range.start * 1000);
+    })
+    
     $('#trip_pickup_time').live('change', function() {
       var date = ISODateFormatToDateObject( $(this).val() );
       var date_formatted = date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate();

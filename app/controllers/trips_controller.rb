@@ -213,6 +213,7 @@ class TripsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(trips_url) }
       format.xml  { head :ok }
+      format.js   { render :json => {:status => "success"}, :content_type => "text/json" }
     end
   end
 
