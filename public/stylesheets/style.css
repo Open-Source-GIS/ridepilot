@@ -550,6 +550,10 @@ fieldset div.group {
 fieldset div.group label {
     font-weight: bold;
 }
+fieldset #trip_delete {
+    float: right;
+    margin-top: -37px;
+}
 
 form div.actions {
     border-top: 1px solid #bbb;
