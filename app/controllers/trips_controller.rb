@@ -4,7 +4,7 @@ class TripsController < ApplicationController
   before_filter :set_calendar_week_start, :only => [:index, :new, :edit]
 
   def index
-    @trips = @trips.for_provider current_provider_id
+    @trips = @trips.for_provider(current_provider_id).includes(:customer)
     
     respond_to do |format|
       format.html do
