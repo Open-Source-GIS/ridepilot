@@ -128,7 +128,7 @@
       <li class="selfclear">
         <%= f.label :run_id, "Run:" %>
         <%= f.collection_select :run_id, @runs, :id, :label, :include_blank => true %>
-        <%= link_to_if @trip.run.present?, "", [:edit, @trip.run], :class => :details  %>
+        <%= link_to_if @trip.run.present?, "", [:edit, @trip.run], :class => :details, :onclick => "window.open(this.href); return false;"  %>
         <strong>OR</strong>
       </li>
 
