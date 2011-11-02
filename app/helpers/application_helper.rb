@@ -34,6 +34,7 @@ module ApplicationHelper
       <br/>
       #{trip.pickup_address.try(:text) || '(Pickup Unspecified)'}<span class='address_separator'></span>
       #{trip.dropoff_address.try(:text) || '(Dropoff Unspecified)'}
+      <br/>
     HTML
   end
   

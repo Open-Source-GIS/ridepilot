@@ -12,10 +12,20 @@
     <% while start_time.hour < @end_hour %>
       <li>
         <% end_time = start_time.advance :minutes=>30 %>
-        <strong><%= start_time.strftime('%I:%M %P').gsub(/^0/,'') %></strong><br/>
+        <% this_time = start_time %>
+        <h3><%= start_time.strftime('%I:%M %P').gsub(/^0/,'') %></h3>
         <% for trip in trips %>
-          <% if trip.pickup_time >= start_time && trip.pickup_time < end_time %>
-            <%= raw format_trip_for_daily_manifest(trip) %>
+          <% if trip.pickup_time == start_time %>
+            <%= render 'manifest_trip', :trip => trip %>
+          <% end %>
+        <% end %>
+        <% for trip in trips %>
+          <% if trip.pickup_time > start_time && trip.pickup_time < end_time %>
+            <% if this_time != trip.pickup_time %>
+              <% this_time = trip.pickup_time %>
+              <h3><%= this_time.strftime('%I:%M %P').gsub(/^0/,'') %></h3>
+            <% end %>
+            <%= render 'manifest_trip', :trip => trip %>
           <% end %>
         <% end %>
       </li>

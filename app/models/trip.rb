@@ -34,7 +34,13 @@ class Trip < ActiveRecord::Base
 
   stampable :creator_attribute => :created_by_id, :updater_attribute => :updated_by_id
   
+  default_scope order(:pickup_time)
+  scope :for_cab, where(:cab => true)
+  scope :not_for_cab, where(:cab => false)
   scope :for_provider, lambda { |provider_id| where( :provider_id => provider_id ) }
+  scope :for_date, lambda{|date| where('CAST(pickup_time AS date) = ?', date) }
+  scope :for_driver, lambda{|driver_id| not_for_cab.where(:runs => {:driver_id => driver_id}).joins(:run) }
+  scope :scheduled, where("trip_result = '' OR trip_result = 'COMP'")
 
   def complete
     trip_result == 'COMP'

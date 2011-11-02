@@ -45,8 +45,10 @@ class ReportsController < ApplicationController
 
   def index
     @driver_query = Query.new :start_date => Date.today, :end_date => Date.today
-    cab = Driver.new(:id=>"cab", :name=>"Cab")
-    all = Driver.new(:id=>"all", :name=>"All")
+    cab = Driver.new(:name=>"Cab")
+    cab.id = -1
+    all = Driver.new(:name=>"All")
+    all.id = -2
     @drivers =  [all, cab] + Driver.accessible_by(current_ability)
   end
 
@@ -303,22 +305,15 @@ class ReportsController < ApplicationController
 
     cab = Driver.new(:name=>'Cab') #dummy driver for cab trips
 
-    if @query.driver_id == 'cab'
-
-      @trips = {cab =>
-        Trip.where(["(trip_result = '' or trip_result = 'COMP') and cab = true and provider_id=? and cast(pickup_time as date) = ? ", @query.driver_id, current_provider_id, @date])}
-
-    elsif @query.driver_id == ''
-
-      @trips = Trip.where(["(trip_result = '' or trip_result = 'COMP') and provider_id=? and cast(pickup_time as date) = ? ", current_provider_id, @date]).group_by {|trip| trip.run ? trip.run.driver : cab }
-
+    trips = Trip.scheduled.for_provider(current_provider_id).for_date(@date).includes(:pickup_address,:dropoff_address,:customer,{:run => :driver})
+    if @query.driver_id == '-2' # All
+      # No additional filtering
+    elsif @query.driver_id == '-1' # Cab
+      trips = trips.for_cab
     else
-
-      driver = Driver.find(@query.driver_id)
-      authorize! :read, driver
-      @trips = {driver =>
-        Trip.find(:all, :joins=>:run, :conditions=> ["(trip_result = '' or trip_result = 'COMP') and cab = false and driver_id = ? and trips.provider_id=? and cast(pickup_time as date) = ? ", @query.driver_id, current_provider_id, @date])}
+      trips = trips.for_driver(@query.driver_id)
     end
+    @trips = trips.group_by {|trip| trip.run ? trip.run.driver : cab }
   end
 
   def daily_manifest_by_half_hour
