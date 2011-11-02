@@ -301,7 +301,7 @@ class ReportsController < ApplicationController
     @query = Query.new(query_params)
     @date = @query.start_date
 
-    cab = Driver.new(name='cab') #dummy driver for cab trips
+    cab = Driver.new(:name=>'Cab') #dummy driver for cab trips
 
     if @query.driver_id == 'cab'
 

@@ -1,11 +1,9 @@
-<h1>Transportation Schedule</h1>
-<h2><%= format_date_for_daily_manifest @date %></h2>
-
 <% i = 0 %>
 <% for driver, trips in @trips %>
   <% i += 1 %>
 
-  Driver: <%= driver.present? ? driver.name : 'Unspecified driver' %>
+  <h1>Transportation Manifest</h1>
+  <h2><%= format_date_for_daily_manifest @date %> &mdash; <%= driver.present? ? driver.name : 'Unspecified driver' %></h2>
 
   <% for trip in trips %>
     <strong><%= trip.pickup_time %></strong><br/>
@@ -14,6 +12,6 @@
   <% end %>
 
   <% if i != @trips.size %>
-    <p style="page-break-after:always" />
+    <br style="page-break-after:always" /> 
   <% end %>
 <% end %>

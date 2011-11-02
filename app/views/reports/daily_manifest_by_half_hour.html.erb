@@ -1,32 +1,28 @@
-<h1>Transportation Schedule</h1>
-<h2><%= format_date_for_daily_manifest @date %></h2>
 
 <% i = 0 %>
 <% for driver, trips in @trips %>
   <% i += 1 %>
 
-  Driver: <%= driver.present? ? driver.name : 'Unspecified driver' %>
+  <h1>Transportation Manifest</h1>
+  <h2><%= format_date_for_daily_manifest @date %> &mdash; <%= driver.present? ? driver.name : 'Unspecified driver' %></h2>
 
   <% start_time = @query.start_date.to_datetime.advance :hours=>@start_hour %>
   
   <ul class="schedule">
-  <% while start_time.hour < @end_hour %>
-    <li>
-    <% end_time = start_time.advance :minutes=>30 %>
-    <strong><%= start_time.strftime('%I:%M %P').gsub(/^0/,'') %></strong><br/>
-    <% for trip in trips %>
-
-      <% if trip.pickup_time >= start_time && trip.pickup_time < end_time %>
-      <%= raw format_trip_for_daily_manifest(trip) %>
-      <% end %>
+    <% while start_time.hour < @end_hour %>
+      <li>
+        <% end_time = start_time.advance :minutes=>30 %>
+        <strong><%= start_time.strftime('%I:%M %P').gsub(/^0/,'') %></strong><br/>
+        <% for trip in trips %>
+          <% if trip.pickup_time >= start_time && trip.pickup_time < end_time %>
+            <%= raw format_trip_for_daily_manifest(trip) %>
+          <% end %>
+        <% end %>
+      </li>
+      <% start_time = start_time.advance :minutes=>30 %>
     <% end %>
-    </li>
-    <%
-  start_time = start_time.advance :minutes=>30 
-    
-  end %>
   </ul>
   <% if i != @trips.size %>
-    <p style="page-break-after:always" />
+    <br style="page-break-after:always" /> 
   <% end %>
 <% end %>
