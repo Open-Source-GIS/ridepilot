@@ -254,6 +254,12 @@ regexp_replace(phone_number_2, '[^0-9]', '') = ?
         lnquery, lnargs = make_customer_name_query("last_name", last_name, :complete)
         query += " and " + miquery + " and " + lnquery
         args += miargs + lnargs
+      else
+        # the final catch-all 
+        query, args = make_customer_name_query("first_name", term)
+        lnquery, lnargs = make_customer_name_query("last_name", term)
+        query += " or " + lnquery
+        args += lnargs
       end
 
       conditions = [query] + args
