@@ -76,7 +76,7 @@ class Trip < ActiveRecord::Base
   end
 
   def compute_run    
-    return if run_id || cab || via_repeating_trip
+    return if run_id || cab || via_repeating_trip || vehicle_id.blank? || provider_id.blank?
 
     if !pickup_time or !appointment_time 
       return #we'll error out in validation
