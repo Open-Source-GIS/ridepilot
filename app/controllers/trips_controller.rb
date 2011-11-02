@@ -106,6 +106,7 @@ class TripsController < ApplicationController
     @trip = Trip.new(:provider_id=>current_provider_id, :customer_id=>params[:customer_id])
     @trip.mobility_id = Customer.find(params[:customer_id]).mobility_id if params[:customer_id]
     prep_view
+    @trips = []
 
     #we only use this to get access to the schedule attributes
     repeating_trip = RepeatingTrip.new
