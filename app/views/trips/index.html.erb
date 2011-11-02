@@ -18,19 +18,7 @@
   </button>
 </div>
 
-<table class="trips">
-  <tr>
-    <th>Customer</th>
-    <% if can? :edit, Trip %><th></th><% end %>
-    <th></th>
-    <th>Pickup Time</th>
-    <th>Result</th>
-  </tr>
-
-<% @trips.each do |trip| %>
-  <%= render "trip_row", :trip => trip %>
-<% end %>
-</table>
+<%= render :partial => 'list' %>
 
 <hr />
 

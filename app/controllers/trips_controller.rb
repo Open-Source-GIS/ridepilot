@@ -120,6 +120,7 @@ class TripsController < ApplicationController
 
   def edit
     prep_edit
+    @trips = []
     
     respond_to do |format|
       format.html 
