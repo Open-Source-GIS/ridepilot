@@ -30,16 +30,21 @@
   $(function() {
     
     function load_index_trips(start_time) {
-      $("form.edit_trip").remove(); $("table.trips").show();
-      $('a.new').show(); $('a.new').prev("hr").show();
+      $("form.edit_trip").remove();
+      $("form.new_trip").remove();
+      $("table.trips").show();
+      $('a.new').show(); 
+      $('a.new').prev("hr").show();
       if (start_time) $("#calendar").weekCalendar("gotoWeek", start_time );
       $("#page-header h1").html("View Trips");
     }
 
     function load_edit_trip(form) {
+      $("form.new_trip").remove();
       $("form.edit_trip").remove();
       $('table.trips').after(form).hide();    
-      $('a.new').hide(); $('a.new').prev("hr").hide();
+      $('a.new').hide(); 
+      $('a.new').prev("hr").hide();
       makeDialogs();
       makeDatePickers();
 
