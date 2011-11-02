@@ -252,7 +252,7 @@ class TripsController < ApplicationController
     @mobilities      = Mobility.order(:name).all
     @funding_sources = FundingSource.all
     @drivers         = Driver.where(:provider_id=>@trip.provider_id)
-    @vehicles        = Vehicle.active.for_provider(@trip.provider_id) << Vehicle.new(:name=>"cab", :id=>-1)
+    @vehicles        = Vehicle.active.for_provider(@trip.provider_id) 
     @trip_results    = TRIP_RESULT_CODES.map { |k,v| [v,k] }
     @trip_purposes   = TRIP_PURPOSES
     @drivers         = Driver.active.for_provider @trip.provider_id
@@ -260,8 +260,11 @@ class TripsController < ApplicationController
   
   def prep_edit
     prep_view
-    
-    @runs = Run.incomplete_on @trip.pickup_time.to_date
+
+    @trip.run_id = -1 if @trip.cab
+    cab_run = Run.new :cab => true
+    cab_run.id = -1
+    @runs = Run.incomplete_on(@trip.pickup_time.to_date) << cab_run
 
     if @trip.repeating_trip
       repeating_trip = @trip.repeating_trip
@@ -274,9 +277,9 @@ class TripsController < ApplicationController
   end
 
   def handle_trip_params(trip_params)
-    if trip_params[:vehicle_id] == '-1' or (trip_params[:run_id].blank? && trip_params[:vehicle_id].blank? )
+    if trip_params[:run_id] == '-1' 
       #cab trip
-      trip_params[:vehicle_id] = 0
+      trip_params[:run_id] = nil
       trip_params[:cab] = true
     end
 

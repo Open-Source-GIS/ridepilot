@@ -16,6 +16,10 @@ class Run < ActiveRecord::Base
   default_scope order(:date)
   scope :incomplete_on, lambda{ |date| where("complete is not true").where(:date => date) }
 
+  def cab=(value)
+    @cab = value
+  end
+
   def set_complete
     if scheduled_end_time
       date = scheduled_end_time.to_date
@@ -29,7 +33,11 @@ class Run < ActiveRecord::Base
   end
   
   def label
-    "#{vehicle_name}: #{driver.try :name} #{scheduled_start_time.try :strftime, "%I:%M%P"}".gsub( /m$/, "" )
+    if @cab
+      "Cab"
+    else
+      "#{vehicle_name}: #{driver.try :name} #{scheduled_start_time.try :strftime, "%I:%M%P"}".gsub( /m$/, "" )
+    end
   end
   
   def as_json(options)
