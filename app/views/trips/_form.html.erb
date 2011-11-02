@@ -195,7 +195,7 @@
     <div class="actions">
       <%= f.submit %>
     </div>
-    <%= link_to 'Delete Trip', @trip, :confirm => 'Are you sure?', :method => :delete, :remote => true, :id => 'trip_delete', :class=>'delete' %>
+    <%= link_to('Delete Trip', @trip, :confirm => 'Are you sure?', :method => :delete, :remote => true, :id => 'trip_delete', :class=>'delete') if !@trip.new_record? && can?(:destroy, @trip) %>
   </fieldset>
   <hr />
   <% if @remote %>
