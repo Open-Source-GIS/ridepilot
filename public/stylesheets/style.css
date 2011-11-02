@@ -630,8 +630,7 @@ table th {
  * Calendar
  *
  */
-#calendar { margin: 0; }
-body.index #calendar { margin: 0 0 20px; border-bottom: 1px solid #bbb; }
+#calendar { margin: 0 0 20px; border-bottom: 1px solid #bbb; }
 
 /* buttons */
 .ui-button-text-icon-primary .ui-icon-seek-prev, .ui-button-text-icons .ui-icon-seek-prev, .ui-button-icons-only .ui-icon-seek-prev { left: 50% !important; }
