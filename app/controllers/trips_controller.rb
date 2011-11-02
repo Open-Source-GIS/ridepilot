@@ -281,6 +281,8 @@ class TripsController < ApplicationController
       #cab trip
       trip_params[:run_id] = nil
       trip_params[:cab] = true
+    else
+      trip_params[:cab] = false
     end
 
     if trip_params[:customer_informed] and not @trip.customer_informed
