@@ -959,8 +959,21 @@ body.daily-manifest-by-half-hour ul.schedule li {
 }
 
 body.daily-manifest-by-half-hour span.address_separator,
-body.daily-manifest span.address_separator {
+body.daily-manifest span.address_separator,
+body.daily-trips span.address_separator {
   margin : 0 25px;
+}
+
+body.reports h3 {
+  text-decoration: underline;
+}
+
+body.reports div.trip {
+  margin: 0 0 .5em .5em;
+}
+
+body.reports div.customer {
+  font-weight: bold;
 }
 
 /*

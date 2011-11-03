@@ -1,7 +1,36 @@
-<%= trip.customer.name %><span class='address_separator'></span>
-<%= trip.customer.phone_number_1 %><span class='address_separator'></span>
-<%= trip.customer.phone_number_2 %>
-<br/>
-<%= trip.pickup_address.try(:text) || '(Pickup Unspecified)' %><span class='address_separator'></span>
-<%= trip.dropoff_address.try(:text) || '(Dropoff Unspecified)' %>
-<br/>
+<div class="trip">
+  <div class="customer">
+    <span class="name">
+      <%= trip.customer.name %><span class='address_separator'></span>
+    </span>
+    <span class="phone">
+      <%= trip.customer.phone_number_1 %><span class='address_separator'></span>
+      <%= trip.customer.phone_number_2 %><span class='address_separator'></span>
+    </span>
+    <span class="mobility">
+      <%= trip.mobility.try(:name) %>
+      <% if trip.customer.mobility_notes.present? %>
+        &mdash; <%= trip.customer.mobility_notes %>
+      <% end %>
+    </span>
+  </div>
+  <div class="addresses">
+    <span class="pickup">
+      <%= trip.pickup_address.try(:text) || '(Pickup Unspecified)' %><span class='address_separator'></span>
+    </span>
+    <span class="dropoff">
+      <%= trip.dropoff_address.try(:text) || '(Dropoff Unspecified)' %>
+    </span>
+  </div>
+  <% if trip.notes.present? %>
+    <div class="notes">
+      Trip notes: <%= trip.notes %>
+    </div>
+  <% end %>
+  <% if show_status %>
+    <div class="status">
+      Run: <%= trip.run_text %><span class='address_separator'></span>
+      Result: <%= trip.trip_result.present? ? trip.trip_result : "Pending" %>
+    </div>
+  <% end %>
+</div>

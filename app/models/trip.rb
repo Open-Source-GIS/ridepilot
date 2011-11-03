@@ -62,6 +62,16 @@ class Trip < ActiveRecord::Base
     write_attribute :appointment_time, format_datetime( datetime )
   end
 
+  def run_text
+    if cab
+      "Cab"
+    elsif run
+      run.label
+    else
+      "(No run specified)"
+    end
+  end
+
   private
   
   def format_datetime(datetime)

@@ -13,6 +13,17 @@
 
 <hr />
 
+<h2 class="section-header">Day's Trips Report</h2>
+
+<%= form_for @driver_query, :url=>url_for(:action=>:daily_trips), :html=>{:method=>:get} do |f| %>
+  <fieldset>
+    <%= f.date_select  :start_date %>
+    <%= f.submit "Show" %>
+  </fieldset>
+<% end %>
+
+<hr />
+
 <h2 class="section-header">Driver Manifests</h2>
 
 <%= form_for @driver_query, :url=>url_for(:action=>:daily_manifest), :html=>{:method=>:get} do |f| %>

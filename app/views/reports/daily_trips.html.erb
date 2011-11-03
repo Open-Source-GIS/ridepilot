@@ -1,0 +1,10 @@
+  <h1>Day's Trips</h1>
+  <h2><%= format_date_for_daily_manifest @date %></h2>
+
+  <% @trips.group_by(&:pickup_time).each do |time, trips| %>
+    <h3><%= time.strftime('%l:%M %P') %></h3>
+    <% for trip in trips %>
+      <%= render 'manifest_trip', :trip => trip, :show_status => true %>
+    <% end %>
+    <hr>
+  <% end %>

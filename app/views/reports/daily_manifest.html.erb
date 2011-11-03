@@ -5,9 +5,11 @@
   <h1>Transportation Manifest</h1>
   <h2><%= format_date_for_daily_manifest @date %> &mdash; <%= driver.present? ? driver.name : 'Unspecified driver' %></h2>
 
-  <% for trip in trips %>
-    <strong><%= trip.pickup_time %></strong><br/>
-    <%= render 'manifest_trip', :trip => trip %>
+  <% trips.group_by(&:pickup_time).each do |time, these_trips| %>
+    <h3><%= time.strftime('%l:%M %P') %></h3>
+    <% for trip in these_trips %>
+      <%= render 'manifest_trip', :trip => trip, :show_status => false %>
+    <% end %>
     <hr>
   <% end %>
 

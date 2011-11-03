@@ -66,9 +66,9 @@ dd {
   padding: 0 0 1em 0; 
 }
 
-
 .daily-manifest-by-half-hour #header,
-.daily-manifest #header {
+.daily-manifest #header,
+.daily-trips #header {
   display: none;
 }
 
@@ -86,4 +86,17 @@ body.daily-manifest-by-half-hour ul.schedule li {
 
 span.address_separator {
   margin : 0 .25in;
+}
+
+body.reports h3 {
+  text-decoration: underline;
+  margin-bottom: 0;
+}
+
+body.reports div.trip {
+  margin: 0 0 .5em .5em;
+}
+
+body.reports div.customer {
+  font-weight: bold;
 }
