@@ -1,4 +1,4 @@
-
+<% content_for(:title){"Manifest #{@date.strftime('%v')}"} %>
 <% i = 0 %>
 <% for driver, trips in @trips %>
   <% i += 1 %>

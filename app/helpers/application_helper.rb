@@ -13,29 +13,17 @@ module ApplicationHelper
   end
   
   def display_trip_result(trip_result)
-    TRIP_RESULT_CODES[trip_result] || "Unscheduled"
+    TRIP_RESULT_CODES[trip_result] || "Pending"
   end
   
   def format_time_for_listing(time)
     time.strftime('%A ') +
-    time.strftime('%I:%M%P').gsub(/^0/,'').gsub(/m$/,'') +
+    time.strftime('%l:%M%P').gsub(/m$/,'') +
     time.strftime(' %m-%d-%Y')
   end
   
   def format_date_for_daily_manifest(date)
-    date.strftime('%A, %m-%d-%Y')
-  end
-  
-  def format_trip_for_daily_manifest(trip)
-    <<-HTML
-      #{trip.customer.name}<span class='address_separator'></span>
-      #{trip.customer.phone_number_1}<span class='address_separator'></span>
-      #{trip.customer.phone_number_2}
-      <br/>
-      #{trip.pickup_address.try(:text) || '(Pickup Unspecified)'}<span class='address_separator'></span>
-      #{trip.dropoff_address.try(:text) || '(Dropoff Unspecified)'}
-      <br/>
-    HTML
+    date.strftime('%A, %v')
   end
   
   def delete_trippable_link(trippable)
