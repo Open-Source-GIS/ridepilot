@@ -19,7 +19,7 @@
 <body class="<%= bodytag_class %>">
   <div id="header">
     <div class="wrap selfclear">
-      <a id="logo" href="/">Ride Pilot</a>
+      <%= link_to "RidePilot", root_path, :id => "logo" %>
       <div id="login-area">
         <% if current_user %>
           <a href="#"><%= current_user.email %></a> 
