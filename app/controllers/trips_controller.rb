@@ -191,6 +191,20 @@ class TripsController < ApplicationController
       repeating_trip = @trip.repeating_trip.update_attributes(repeating_trip_params)
       @trip.repeating_trip.instantiate
       trip_params.delete :schedule_attributes
+    elsif !is_repeating_trip params and @trip.repeating_trip
+      #This is a trip that was repeating, but the repetition needs to be cleared.
+      #We want to detach this trip and all past trips from the repeating trip record,
+      #delete all future instances that have been created, and delete the repeating trip
+      rt = @trip.repeating_trip
+      if @trip.pickup_time < Time.now #Be sure not delete trips that have already happened.
+        Trip.repeating_based_on(rt).today_and_prior.update_all 'repeating_trip_id = NULL'
+        Trip.repeating_based_on(rt).after_today.destroy_all
+      else 
+        Trip.repeating_based_on(rt).prior_to(@trip.pickup_time).update_all 'repeating_trip_id = NULL'
+        Trip.repeating_based_on(rt).after(@trip.pickup_time).destroy_all
+      end
+      @trip.repeating_trip_id = nil
+      rt.destroy 
     end
     
     respond_to do |format|
