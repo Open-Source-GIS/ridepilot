@@ -33,17 +33,19 @@ class RepeatingTrip < ActiveRecord::Base
   def instantiate
     now = Time.now
     later = now.advance(:days=>21)
+    attributes_to_remove = %w(id recurrence schedule_yaml created_at updated_at created_by_id updated_by_id)
     for date in schedule.occurrences_between(now, later)
       this_trip_pickup_time = Time.gm(date.year, date.month, date.day, pickup_time.hour, pickup_time.min, pickup_time.sec)
 
-      if this_trip_pickup_time != pickup_time && Trip.where("pickup_time = ? and repeating_trip_id=?", this_trip_pickup_time, id).count == 0
+      if this_trip_pickup_time != pickup_time 
         attributes = self.attributes
+        attributes_to_remove.each {|attr| attributes.delete(attr)}
         attributes["repeating_trip_id"] = id
-        attributes.delete "recurrence"
-        attributes.delete "schedule_yaml"
         attributes["pickup_time"] = this_trip_pickup_time
         attributes["appointment_time"] = this_trip_pickup_time + (appointment_time - pickup_time)
         attributes["via_repeating_trip"] = true
+
+        Trip.repeating_based_on(self).for_date(this_trip_pickup_time).each {|t| t.destroy } 
         Trip.new(attributes).save!
       end
     end

@@ -38,7 +38,7 @@ class Trip < ActiveRecord::Base
   scope :for_cab, where(:cab => true)
   scope :not_for_cab, where(:cab => false)
   scope :for_provider, lambda { |provider_id| where( :provider_id => provider_id ) }
-  scope :for_date, lambda{|date| where('CAST(trips.pickup_time AS date) = ?', date) }
+  scope :for_date, lambda{|date| where('CAST(trips.pickup_time AS date) = CAST(? AS date)', date) }
   scope :for_driver, lambda{|driver_id| not_for_cab.where(:runs => {:driver_id => driver_id}).joins(:run) }
   scope :scheduled, where("trips.trip_result = '' OR trips.trip_result = 'COMP'")
   scope :today_and_prior, where('CAST(trips.pickup_time AS date) <= ?', Date.today)
