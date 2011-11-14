@@ -2,8 +2,45 @@
   <h1>Provider: <%= @provider.name %></h1>
 </div>
 
-<h2 class="section-header">Users</h2>
+<h2 class="section-header">Addresses</h2>
 
+<% form_tag search_addresses_path, :method => :get, :remote => true, :id => "search_addresses" do %>
+  <%= hidden_field_tag :provider_id, @provider.id %>
+  <fieldset>
+    <ol class="section fourth">
+      <li>
+        <%= label_tag "Search addresses:" %>
+        <%= text_field_tag :name %>
+        <%= submit_tag "Search" %>
+      </li>
+    </ol>
+  </fieldset>
+<% end %>
+
+<table id="address_results">
+  <tr>
+    <th>Name</th>
+    <th>Building Name</th>
+    <th>Address</th>
+    <th>City</th>
+    <th>State</th>
+    <th>Phone Number</th>
+    <th></th>
+    <% if can? :edit, Vehicle %>
+    <th></th>
+    <!-- <th></th> -->
+    <% end %>
+  </tr>
+  <% if @provider.addresses.size == 0 %>
+    <tr><td >No addresses yet.</td></tr>
+  <% else %>
+    <tr><td >Search for an address above.</td></tr>
+  <% end %>
+</table>
+
+<hr />
+
+<h2 class="section-header">Users</h2>
 
 <% if @provider.roles.size == 0 %>
   <p>No users yet.</p>
@@ -238,38 +275,3 @@
 
 <hr />
 
-<h2 class="section-header">Addresses</h2>
-
-<% form_tag search_addresses_path, :method => :get, :remote => true, :id => "search_addresses" do %>
-  <%= hidden_field_tag :provider_id, @provider.id %>
-  <fieldset>
-    <ol class="section fourth">
-      <li>
-        <%= label_tag "Search addresses:" %>
-        <%= text_field_tag :name %>
-        <%= submit_tag "Search" %>
-      </li>
-    </ol>
-  </fieldset>
-<% end %>
-
-<table id="address_results">
-  <tr>
-    <th>Name</th>
-    <th>Building Name</th>
-    <th>Address</th>
-    <th>City</th>
-    <th>State</th>
-    <th>Phone Number</th>
-    <th></th>
-    <% if can? :edit, Vehicle %>
-    <th></th>
-    <!-- <th></th> -->
-    <% end %>
-  </tr>
-  <% if @provider.addresses.size == 0 %>
-    <tr><td >No addresses yet.</td></tr>
-  <% else %>
-    <tr><td >Search for an address above.</td></tr>
-  <% end %>
-</table>
