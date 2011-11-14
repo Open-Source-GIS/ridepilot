@@ -28,16 +28,36 @@
 
 <%= form_for @driver_query, :url=>url_for(:action=>:daily_manifest), :html=>{:method=>:get} do |f| %>
   <fieldset>
+    <h3>Daily Manifest</h3>
+    <%= f.date_select  :start_date %>
+    <%= f.collection_select :driver_id, @drivers_with_cab, :id, :name %>
+    <%= f.submit "Show" %>
+  </fieldset>
+<% end %>
+
+<%= form_for @driver_query, :url=>url_for(:action=>:daily_manifest_with_cab), :html=>{:method=>:get} do |f| %>
+  <fieldset>
+    <h3>Daily Manifest with Cab Summary</h3>
     <%= f.date_select  :start_date %>
     <%= f.collection_select :driver_id, @drivers, :id, :name %>
-    <%= f.submit "Daily Manifest" %>
+    <%= f.submit "Show" %>
   </fieldset>
 <% end %>
 
 <%= form_for @driver_query, :url=>url_for(:action=>:daily_manifest_by_half_hour), :html=>{:method=>:get} do |f| %>
   <fieldset>
+    <h3>Daily Manifest By Half Hour</h3>
+    <%= f.date_select  :start_date %>
+    <%= f.collection_select :driver_id, @drivers_with_cab, :id, :name %>
+    <%= f.submit "Show" %>
+  </fieldset>
+<% end %>
+
+<%= form_for @driver_query, :url=>url_for(:action=>:daily_manifest_by_half_hour_with_cab), :html=>{:method=>:get} do |f| %>
+  <fieldset>
+    <h3>Daily Manifest By Half Hour with Cab Summary</h3>
     <%= f.date_select  :start_date %>
     <%= f.collection_select :driver_id, @drivers, :id, :name %>
-    <%= f.submit "Daily Manifest By Half Hour" %>
+    <%= f.submit "Show" %>
   </fieldset>
 <% end %>

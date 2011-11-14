@@ -49,7 +49,8 @@ class ReportsController < ApplicationController
     cab.id = -1
     all = Driver.new(:name=>"All")
     all.id = -2
-    @drivers =  [all, cab] + Driver.accessible_by(current_ability)
+    @drivers =  [all] + Driver.accessible_by(current_ability)
+    @drivers_with_cab =  [all, cab] + Driver.accessible_by(current_ability)
   end
 
   def vehicles
@@ -317,10 +318,22 @@ class ReportsController < ApplicationController
     @trips = trips.group_by {|trip| trip.run ? trip.run.driver : cab }
   end
 
+  def daily_manifest_with_cab
+    prep_with_cab
+    render "daily_manifest"
+  end
+
   def daily_manifest_by_half_hour
     daily_manifest #same data, operated on differently in the view
     @start_hour = 7
     @end_hour = 17
+  end
+
+  def daily_manifest_by_half_hour_with_cab
+    prep_with_cab
+    @start_hour = 7
+    @end_hour = 17
+    render "daily_manifest_by_half_hour"
   end
 
   def daily_trips
@@ -330,10 +343,29 @@ class ReportsController < ApplicationController
     @query = Query.new(query_params)
     @date = @query.start_date
 
-    @trips = Trip.scheduled.for_provider(current_provider_id).for_date(@date).includes(:pickup_address,:dropoff_address,:customer,:mobility,{:run => :driver})
+    @trips = Trip.for_provider(current_provider_id).for_date(@date).includes(:pickup_address,:dropoff_address,:customer,:mobility,{:run => :driver})
   end
 
   private
+
+  def prep_with_cab
+    authorize! :read, Trip
+
+    query_params = params[:query]
+    @query = Query.new(query_params)
+    @date = @query.start_date
+
+    trips = Trip.scheduled.for_provider(current_provider_id).for_date(@date).includes(:pickup_address,:dropoff_address,:customer,:mobility,{:run => :driver})
+    @cab_trips = Trip.for_cab.scheduled.for_provider(current_provider_id).for_date(@date).includes(:pickup_address,:dropoff_address,:customer,:mobility,{:run => :driver})
+
+    if @query.driver_id == '-2' # All
+      trips = trips.not_for_cab
+    else
+      authorize! :read, Driver.find(@query.driver_id)
+      trips = trips.for_driver(@query.driver_id)
+    end
+    @trips = trips.group_by {|trip| trip.run.try(:driver) }
+  end
 
   def hms_to_hours(hms)
     #argumen is  a string of the form hours:minutes:seconds.  We would like

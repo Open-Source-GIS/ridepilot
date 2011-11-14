@@ -1,0 +1,10 @@
+<div class="driver-group">
+  <% trips.group_by(&:pickup_time).each do |time, these_trips| %>
+    <div class="time-group">
+      <h3><%= time.strftime('%l:%M %P') %></h3>
+      <% for trip in these_trips %>
+        <%= render 'manifest_trip', :trip => trip, :show_status => false %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

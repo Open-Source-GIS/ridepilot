@@ -5,6 +5,13 @@
 
   <h1>Transportation Manifest</h1>
   <h2><%= format_date_for_daily_manifest @date %> &mdash; <%= driver.present? ? driver.name : 'Unspecified driver' %></h2>
+  
+  <% if @cab_trips %>
+    <div class="cab-summary">
+      <h2>Cab Trips</h2>
+      <%= render 'manifest_trips', :trips => @cab_trips %>
+    </div>
+  <% end %>
 
   <% start_time = @query.start_date.to_datetime.advance :hours=>@start_hour %>
   

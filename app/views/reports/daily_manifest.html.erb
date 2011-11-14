@@ -5,14 +5,15 @@
 
   <h1>Transportation Manifest</h1>
   <h2><%= format_date_for_daily_manifest @date %> &mdash; <%= driver.present? ? driver.name : 'Unspecified driver' %></h2>
-
-  <% trips.group_by(&:pickup_time).each do |time, these_trips| %>
-    <h3><%= time.strftime('%l:%M %P') %></h3>
-    <% for trip in these_trips %>
-      <%= render 'manifest_trip', :trip => trip, :show_status => false %>
-    <% end %>
-    <hr>
+  
+  <% if @cab_trips %>
+    <div class="cab-summary">
+      <h2>Cab Trips</h2>
+      <%= render 'manifest_trips', :trips => @cab_trips %>
+    </div>
   <% end %>
+
+  <%= render 'manifest_trips', :trips => trips %>
 
   <% if i != @trips.size %>
     <br style="page-break-after:always" /> 
