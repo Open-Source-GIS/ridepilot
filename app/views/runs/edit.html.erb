@@ -7,16 +7,20 @@
   <fieldset>
     <table>
       <tr>
+        <th>Pickup Time</th>
         <th>Customer Name</th>
         <th>Round Trip?</th>
         <th>Guest Count</th>
         <th>Attendant Count</th>
         <th>Result</th>
-        <th>Notes</th>
+        <th></th>
       </tr>
       <% @run.trips.each do |trip| %>
         <% f.fields_for :trips, trip do |trip_fields| %>
           <tr>
+            <td>
+              <%= trip.pickup_time.strftime("%l:%M %p") %>
+            </td>
             <td>
               <%= trip.customer.name %>
             </td>
@@ -33,7 +37,7 @@
               <%= trip_fields.select :trip_result, @trip_results, :include_blank => true %>
             </td>
             <td>
-              <%= trip_fields.text_area :notes, :rows => 1 %>
+              <%= link_to "Edit Trip", trip, :class => "edit" %>
             </td>
           </tr>
         <% end %>
