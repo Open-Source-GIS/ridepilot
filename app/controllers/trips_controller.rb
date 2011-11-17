@@ -267,7 +267,6 @@ class TripsController < ApplicationController
     @customer        = @trip.customer
     @mobilities      = Mobility.order(:name).all
     @funding_sources = FundingSource.all
-    @drivers         = Driver.where(:provider_id=>@trip.provider_id)
     @vehicles        = Vehicle.active.for_provider(@trip.provider_id) 
     @trip_results    = TRIP_RESULT_CODES.map { |k,v| [v,k] }
     @trip_purposes   = TRIP_PURPOSES
@@ -276,7 +275,7 @@ class TripsController < ApplicationController
     @trip.run_id = -1 if @trip.cab
     cab_run = Run.new :cab => true
     cab_run.id = -1
-    @runs = Run.incomplete_on(@trip.pickup_time.try(:to_date)) << cab_run
+    @runs = Run.for_provider(@trip.provider_id).incomplete_on(@trip.pickup_time.try(:to_date)) << cab_run
   end
   
   def prep_edit

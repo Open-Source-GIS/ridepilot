@@ -14,6 +14,7 @@ class Run < ActiveRecord::Base
   accepts_nested_attributes_for :trips
   
   default_scope order(:date)
+  scope :for_provider, lambda{ |provider_id| where( :provider_id => provider_id ) }
   scope :incomplete_on, lambda{ |date| where("complete is not true").where(:date => date) }
 
   def cab=(value)
