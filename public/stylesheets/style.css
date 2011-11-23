@@ -999,6 +999,29 @@ body.reports div.time-group:last-child {
   margin-bottom: 0;
 }
 
+body.reports table.trip {
+  table-layout: fixed;
+  width: 95%;
+  margin-bottom: 0;
+  border-width: 0;
+  border-color: #fff;
+  margin: 0 0 5px 10px;
+}
+
+body.reports table.trip td {
+  border-style: hidden;
+  width: 50%;
+  padding: 0;
+  vertical-align: top;
+}
+
+body.reports table.trip td.name {
+  font-weight: bold;
+}
+
+body.reports table.trip td.mobility {
+  font-style: italic;
+}
 
 
 /*

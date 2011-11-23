@@ -116,12 +116,47 @@ body.reports div.cab-summary {
 }
 body.reports div.time-group {
   border-bottom: 1px solid black;
-  padding-bottom: 5px;
+  padding-bottom: 10px;
   margin-bottom: 10px;
 }
 body.reports div.time-group:last-child {
   border-bottom-style: none;
   padding-bottom: 0;
   margin-bottom: 0;
+}
+
+body.reports div.addresses div.pickup {
+  float: left;
+  width: 50%;
+  margin-right: 5px;
+}
+
+body.reports div.addresses div.dropoff {
+  float: right;
+  width: 50%;
+}
+
+body.reports table.trip {
+  table-layout: fixed;
+  width: 95%;
+  margin-bottom: 0;
+  border-width: 0;
+  border-color: #fff;
+  margin: 0 0 5px 10px;
+}
+
+body.reports table.trip td {
+  border-style: hidden;
+  width: 50%;
+  padding: 0;
+  vertical-align: top;
+}
+
+body.reports table.trip td.name {
+  font-weight: bold;
+}
+
+body.reports table.trip td.mobility {
+  font-style: italic;
 }
 
