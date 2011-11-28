@@ -472,15 +472,15 @@ fieldset ol.first,
 fieldset ol.second,
 fieldset ol.third {
     float: left;
-    width: 30%;
-    margin: 0 5% 0 0;
+    width: 32%;
+    margin: 0 2% 0 0;
 }
 fieldset ol.third {
     margin: 0;
 }
 fieldset ol.fourth {
     float: left;
-    width: 65%;
+    width: 66%;
 }
 fieldset ol.section li label {
     float: left;
@@ -499,11 +499,11 @@ fieldset ol.section li textarea {
     resize: none;
 }
 fieldset ol.fourth li label {
-    width: 15%;
+    width: 15.9%;
 }
 fieldset ol.fourth li textarea {
-    width: 81.5%;
-    max-width: 81.5%;
+    width: 80.6%;
+    max-width: 80.6%;
     height: 5em;
 }
 fieldset ol.section li input.full {
