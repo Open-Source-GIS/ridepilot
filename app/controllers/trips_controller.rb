@@ -255,6 +255,7 @@ class TripsController < ApplicationController
       }
     }
 
+    days = @trips.group_by(&:date)
     rows = @trips.map do |t|
       render_to_string :partial => "trip_row.html", :locals => { :trip => t }
     end

@@ -47,6 +47,10 @@ class Trip < ActiveRecord::Base
   scope :after, lambda{|pickup_time| where('trips.pickup_time > ?', pickup_time)}
   scope :repeating_based_on, lambda{|repeating_trip| where(:repeating_trip_id => repeating_trip.id)}
 
+  def date
+    pickup_time.to_date
+  end
+
   def complete
     trip_result == 'COMP'
   end
