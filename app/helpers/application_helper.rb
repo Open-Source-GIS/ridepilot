@@ -17,7 +17,7 @@ module ApplicationHelper
   end
   
   def format_time_for_listing(time)
-    time.strftime('%l:%M%P').gsub(/m$/,'') 
+    time.strftime('%l:%M%P')
   end
 
   def format_time_for_listing_day(time)
