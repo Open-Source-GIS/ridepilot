@@ -13,15 +13,17 @@
 </div>
 
 <table class="trips" <% if display %>style="display:<%= display %>;" <% end %>>
-<tr>
-  <th>Customer</th>
-  <% if can? :edit, Trip %><th></th><% end %>
-  <th></th>
-  <th>Pickup Time</th>
-  <th>Result</th>
-</tr>
+  <tr>
+    <th>Customer</th>
+    <% if can? :edit, Trip %>
+      <th></th>
+    <% end %>
+    <th></th>
+    <th>Pickup Time</th>
+    <th>Result</th>
+  </tr>
 
-<% @trips.each do |trip| %>
-<%= render "trip_row", :trip => trip %>
-<% end %>
+  <% @trips.each do |trip| %>
+    <%= render "trip_row", :trip => trip %>
+  <% end %>
 </table>

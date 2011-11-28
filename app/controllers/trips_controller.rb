@@ -271,6 +271,7 @@ class TripsController < ApplicationController
     @trip_results    = TRIP_RESULT_CODES.map { |k,v| [v,k] }
     @trip_purposes   = TRIP_PURPOSES
     @drivers         = Driver.active.for_provider @trip.provider_id
+    @trips           = [] if @trips.nil?
 
     @trip.run_id = -1 if @trip.cab
     cab_run = Run.new :cab => true
