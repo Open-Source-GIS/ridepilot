@@ -49,8 +49,8 @@ class ReportsController < ApplicationController
     cab.id = -1
     all = Driver.new(:name=>"All")
     all.id = -2
-    @drivers =  [all] + Driver.accessible_by(current_ability)
-    @drivers_with_cab =  [all, cab] + Driver.accessible_by(current_ability)
+    @drivers =  [all] + Driver.for_provider(current_provider).accessible_by(current_ability)
+    @drivers_with_cab =  [all, cab] + Driver.for_provider(current_provider).accessible_by(current_ability)
   end
 
   def vehicles
