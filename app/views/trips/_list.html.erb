@@ -14,13 +14,12 @@
 
 <table class="trips" <% if display %>style="display:<%= display %>;" <% end %>>
   <tr>
-    <th>Customer</th>
-    <% if can? :edit, Trip %>
-      <th></th>
-    <% end %>
-    <th></th>
     <th>Pickup Time</th>
+    <th>Customer</th>
+    <th>Run</th>
     <th>Result</th>
+    <% if can? :edit, Trip %><th></th><% end %>
+    <th></th>
   </tr>
 
   <% @trips.each do |trip| %>

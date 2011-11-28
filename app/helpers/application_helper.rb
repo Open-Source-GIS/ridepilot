@@ -17,9 +17,11 @@ module ApplicationHelper
   end
   
   def format_time_for_listing(time)
-    time.strftime('%A ') +
-    time.strftime('%l:%M%P').gsub(/m$/,'') +
-    time.strftime(' %m-%d-%Y')
+    time.strftime('%l:%M%P')
+  end
+
+  def format_time_for_listing_day(time)
+    time.strftime('%A, %v') 
   end
   
   def format_date_for_daily_manifest(date)
