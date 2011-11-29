@@ -617,12 +617,16 @@ tr.odd {
 }
 table td,
 table th {
-    padding: 5px 10px 10px;
+    padding: 4px 10px;
 }
 table th {
     text-align: left;
     background: #2e6399;
     color: #ddd;
+}
+table tr.day th {
+    background: #86B4EA;
+    color: #000;
 }
 
 /*
