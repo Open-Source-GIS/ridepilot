@@ -1,8 +1,21 @@
 <tr class="trip">
-  <td><%= format_time_for_listing trip.pickup_time %></td>
-  <td><%= trip.customer.name %></td>
-  <td><%= trip.run_text %></td>
-  <td><%= display_trip_result(trip.trip_result) %></td>
-  <td><%= link_to('Edit Trip', edit_trip_path(trip), "data-remote"=>true, :class=>'edit') if can? :edit, trip %></td>
-  <td><%= link_to 'View Customer', trip.customer, :class => "view-customer" %></td>
+  <td>
+    <% if can? :edit, trip %>
+      <%= link_to(format_time_for_listing(trip.pickup_time), edit_trip_path(trip), "data-remote"=>true, :title=>"Click to edit trip", :class => "trip") %>
+    <% else %>
+      <%= format_time_for_listing trip.pickup_time %>
+    <% end %>
+  </td>
+  <td>
+    <%= link_to trip.customer.name, trip.customer, :class => "view-customer", :title => "Click to view customer record" %>
+  </td>
+  <td>
+    <%= image_tag("tick-circle.png") if trip.customer_informed %>
+  </td>
+  <td>
+    <%= trip.run_text %>
+  </td>
+  <td>
+    <%= display_trip_result(trip.trip_result) %>
+  </td>
 </tr>

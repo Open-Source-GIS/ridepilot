@@ -745,18 +745,28 @@ a.new-maintenance,
 a.edit-maintenance,
 a.edit-driver,
 a.edit-vehicle,
-a.view-customer,
 a.details {
     padding: 5px 0 5px 20px;
     text-decoration: none;
     font-size: 11px;
     line-height: 16px;
 }
+a.view-customer,
+a.trip {
+    padding: 5px 0 5px 20px;
+    text-decoration: none;
+    font-size: 13px;
+    line-height: 16px;
+}
+
 a.edit {
     background: url(images/card--pencil.png) left center no-repeat scroll;
 }
 a.new-trip {
     background: url(images/plus-button.png) left center no-repeat scroll;
+}
+a.trip {
+    background: url(images/car--arrow.png) left center no-repeat scroll;
 }
 a.delete {
     background: url(images/cross-button.png) left center no-repeat scroll;
