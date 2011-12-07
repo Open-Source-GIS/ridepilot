@@ -54,7 +54,7 @@ class DevicePoolDriver < ActiveRecord::Base
   end
   
   def name
-    driver.name
+    driver.try :name
   end
   
   def provider_id
