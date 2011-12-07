@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title><%= content_for?(:title) ? yield(:title) : "RidePilot" %></title>
+  <title>
+    <%= content_for?(:title) ? yield(:title) : "RidePilot" %>
+  </title>
   <%= stylesheet_link_tag "style.css" %>
   <%= stylesheet_link_tag "print.css", :media=>'print' %>
   <%= stylesheet_link_tag "jquery-ui-1.8.9.custom.css" %>
@@ -12,11 +14,10 @@
   <%= javascript_include_tag "jquery-ui-timepicker-addon.js" %>
   <%= javascript_include_tag "dateFormat.js" %>
   <%= javascript_include_tag "jquery.colorPicker.js" %>
-
   <%= csrf_meta_tag %>
-
 </head>
 <body class="<%= bodytag_class %>">
+
   <div id="header">
     <div class="wrap selfclear">
       <%= link_to "RidePilot", root_path, :id => "logo" %>
@@ -37,47 +38,43 @@
           <% else %>
             <%= current_user.current_provider.name %>
           <% end %>
-
         <% end %>
       </div>
     </div><!-- /.wrap -->
   </div><!-- /#header -->
+
   <div id="crossbar">
     <div class="wrap selfclear">
       <ul id="primary-nav" class="selfclear">
         <% if show_scheduling? %><li class="trips"><%= link_to "Trips", trips_path %></li><% end %>
         <% if show_scheduling? %><li class="runs"><%= link_to "Runs", runs_path %></li><% end %>
-        <li class="customers"><%= link_to "Customers", customers_path %></li>
+        <% if show_scheduling? %><li class="customers"><%= link_to "Customers", customers_path %></li><% end %>
         <% if show_scheduling? %><li class="reports"><%= link_to "Reports", reports_path %></li><% end %>
-        <% if current_user && can?(:read, Provider) %>
-        <li class="vehicles-drivers-users"><%= link_to "Admin", provider_path(current_user.current_provider) %></li>
-        <% end %>
-        <% if show_dispatch? %><li class="dispatch"><%= link_to "Dispatch", dispatch_path %></li><% end %>
+        <% if show_dispatch?   %><li class="dispatch"><%= link_to "Dispatch", dispatch_path %></li><% end %>
       </ul>
       <ul id="secondary-nav" class="selfclear">
-        <% if current_user && can?(:edit, Provider) %>
-        <li class="providers"><%= link_to "Providers", providers_path %></li>
+        <% if current_user && can?(:read, Provider) %>
+          <li class="vehicles-drivers-users"><%= link_to "Admin", provider_path(current_user.current_provider) %></li>
         <% end %>
-        <% if current_user && can?(:edit, FundingSource) %>
-        <li class="funding-sources"><%= link_to "Funding Sources", funding_sources_path %></li>
+        <% if current_user && can?(:edit, Provider) %>
+          <li class="providers"><%= link_to "Providers", providers_path %></li>
+        <% end %>
+        <% if show_scheduling? && current_user && can?(:edit, FundingSource) %>
+          <li class="funding-sources"><%= link_to "Funding Sources", funding_sources_path %></li>
         <% end %>
       </ul>
     </div><!-- /.wrap -->
   </div><!-- /#crossbar -->
 
   <div id="main">
-
     <% if notice %>
       <p class="notice"><%= notice %></p>
     <% end %>
     <% if alert %>
       <p class="alert"><%= alert %></p>
     <% end %>
-
     <%= content_for?(:menu_bar) ? yield(:menu_bar) : '' %>
-
-<%= yield %>
-
+    <%= yield %>
   </div>
 
 </body>

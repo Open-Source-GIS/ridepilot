@@ -311,18 +311,32 @@ button {width: auto; overflow: visible;}
     background: #fff;
     color: #009FFB;
 }
-body.trips #primary-nav li.trips a:link, body.trips #primary-nav li.trips a:visited,
-body.runs #primary-nav li.runs a:link, body.runs #primary-nav li.runs a:visited,
-body.customers #primary-nav li.customers a:link, body.customers #primary-nav li.customers a:visited,
-body.repeating-trips #primary-nav li.repeating-trips a:link, body.repeating-trips #primary-nav li.repeating-trips a:visited,
-body.reports #primary-nav li.reports a:link, body.reports #primary-nav li.reports a:visited,
-body.monthlies #primary-nav li.reports a:link, body.monthlies #primary-nav li.reports a:visited,
-body.providers.show #primary-nav li.vehicles-drivers-users a:link, body.providers.show #primary-nav li.vehicles-drivers-users a:visited,
-    body.new-user #primary-nav li.vehicles-drivers-users a:link, body.new-user #primary-nav li.vehicles-drivers-users a:visited,
-    body.drivers #primary-nav li.vehicles-drivers-users a:link, body.drivers #primary-nav li.vehicles-drivers-users a:visited,
-    body.vehicles #primary-nav li.vehicles-drivers-users a:link, body.vehicles #primary-nav li.vehicles-drivers-users a:visited,
-body.providers.index #secondary-nav li.providers a:link, body.providers.index #secondary-nav li.providers a:visited,
-body.funding-sources #secondary-nav li.funding-sources a:link, body.funding-sources #secondary-nav li.funding-sources a:visited {
+body.trips #primary-nav li.trips a:link, 
+body.trips #primary-nav li.trips a:visited,
+body.runs #primary-nav li.runs a:link, 
+body.runs #primary-nav li.runs a:visited,
+body.customers #primary-nav li.customers a:link, 
+body.customers #primary-nav li.customers a:visited,
+body.repeating-trips #primary-nav li.repeating-trips a:link, 
+body.repeating-trips #primary-nav li.repeating-trips a:visited,
+body.reports #primary-nav li.reports a:link, 
+body.reports #primary-nav li.reports a:visited,
+body.monthlies #primary-nav li.reports a:link, 
+body.monthlies #primary-nav li.reports a:visited,
+body.dispatch #primary-nav li.dispatch a:link, 
+body.dispatch #primary-nav li.dispatch a:visited,
+body.providers.show #secondary-nav li.vehicles-drivers-users a:link, 
+body.providers.show #secondary-nav li.vehicles-drivers-users a:visited,
+body.new-user #secondary-nav li.vehicles-drivers-users a:link, 
+body.new-user #secondary-nav li.vehicles-drivers-users a:visited,
+body.drivers #secondary-nav li.vehicles-drivers-users a:link, 
+body.drivers #secondary-nav li.vehicles-drivers-users a:visited,
+body.vehicles #secondary-nav li.vehicles-drivers-users a:link, 
+body.vehicles #secondary-nav li.vehicles-drivers-users a:visited,
+body.providers.index #secondary-nav li.providers a:link, 
+body.providers.index #secondary-nav li.providers a:visited,
+body.funding-sources #secondary-nav li.funding-sources a:link, 
+body.funding-sources #secondary-nav li.funding-sources a:visited {
     background: #fff;
     color: #009FFB;
 }
