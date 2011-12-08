@@ -38,27 +38,6 @@
       </li>
 
       <li class="selfclear">
-        <!-- we need some complexity, because this form handles 
-             both trips and repeating trips.
-             So, we'll just put all the repeating stuff into
-             plain params and handle it in the controller
-          -->
-        <label for="repeats_id">Repeats:</label>
-        <ul>
-          <li>
-            <input type="checkbox" name="monday" value="Monday" <%= @schedule.monday ? 'checked="checked"' : '' %>/> M&nbsp;
-            <input type="checkbox" name="tuesday" value="Tuesday" <%= @schedule.tuesday ? 'checked="checked"' : '' %>/> T&nbsp;
-            <input type="checkbox" name="wednesday" value="Wednesday" <%= @schedule.wednesday ? 'checked="checked"' : '' %>/> W&nbsp;
-            <input type="checkbox" name="thursday" value="Thursday" <%= @schedule.thursday ? 'checked="checked"' : '' %>/> R&nbsp;
-            <input type="checkbox" name="friday" value="Friday" <%= @schedule.friday ? 'checked="checked"' : '' %>/> F&nbsp;
-          </li>
-          <li>
-            every <input type="text" size="2" name="interval" id="interval" value="<%= @schedule.interval %>"/> week(s)
-          </li>
-        </ul>
-      </li>
-
-      <li class="selfclear">
         <%= f.label :pickup_address_label, "Pickup Address:" %>
         <%= autocomplete_field_tag "pickup_search_address", @trip.pickup_address.try(:text), autocomplete_addresses_path, :size => 30, :id_element => "#trip_pickup_address_id", :class => "full", "data-original-value" => @trip.pickup_address.try(:text), "data-original-id" => @trip.pickup_address.try(:id) %>
         <%= f.hidden_field :pickup_address_id %>
@@ -87,6 +66,30 @@
         <label for="dropoff_phone">Dropoff Phone:</label>
         <input type="text" size="30" name="dropoff_phone" id="dropoff_phone" value="<%= @trip.dropoff_address.try(:phone_number) %>" readonly="readonly" class="full"/>
       </li>
+
+      <div class="repeats">
+        <li class="selfclear">
+          <!-- we need some complexity, because this form handles 
+               both trips and repeating trips.
+               So, we'll just put all the repeating stuff into
+               plain params and handle it in the controller
+            -->
+          <label for="repeats_id">Repeats:</label>
+          <ul>
+            <li>
+              <input type="checkbox" name="monday" value="Monday" <%= @schedule.monday ? 'checked="checked"' : '' %>/> M&nbsp;
+              <input type="checkbox" name="tuesday" value="Tuesday" <%= @schedule.tuesday ? 'checked="checked"' : '' %>/> T&nbsp;
+              <input type="checkbox" name="wednesday" value="Wednesday" <%= @schedule.wednesday ? 'checked="checked"' : '' %>/> W&nbsp;
+              <input type="checkbox" name="thursday" value="Thursday" <%= @schedule.thursday ? 'checked="checked"' : '' %>/> R&nbsp;
+              <input type="checkbox" name="friday" value="Friday" <%= @schedule.friday ? 'checked="checked"' : '' %>/> F&nbsp;
+            </li>
+            <li>
+              every <input type="text" size="2" name="interval" id="interval" value="<%= @schedule.interval %>"/> week(s)
+            </li>
+          </ul>
+        </li>
+      </div>
+
     </ol>
     
     <ol class="section second">

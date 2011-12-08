@@ -1250,6 +1250,12 @@ body.trips .wc-cal-event .wc-time {
   border: 1px solid #68A1E5;
 }
 
+body.trips div.repeats {
+  padding: 5px;
+  border: 1px solid #BBBBBB;
+  border-radius: 5px;
+}
+
 /*
  *
  * Dispatch
