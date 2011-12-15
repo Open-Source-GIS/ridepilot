@@ -86,6 +86,17 @@
             <li>
               every <input type="text" size="2" name="interval" id="interval" value="<%= @schedule.interval %>"/> week(s)
             </li>
+            <li class="selfclear">
+              <%= f.label :vehicle_id, "Vehicle:" %>
+              <%= f.select :vehicle_id,
+                  options_for_select( @vehicles.map { |v| [v.name, v.id, {'data-driver-id' => v.try(:default_driver_id) } ] }, @trip.run.present? ? nil : @trip.vehicle_id ),
+                  :include_blank => true %>
+            </li>
+            <li class="selfclear">
+              <%= f.label :repeating_driver_id, "Driver:" %>
+              <%= f.select :repeating_driver_id, options_from_collection_for_select( @drivers, :id, :name, @trip.run.present? ? nil : @trip.driver_id ), :include_blank => true %>
+            </li>
+
           </ul>
         </li>
       </div>

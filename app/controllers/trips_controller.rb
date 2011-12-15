@@ -288,11 +288,11 @@ class TripsController < ApplicationController
     prep_view
 
     if @trip.repeating_trip
-      repeating_trip = @trip.repeating_trip
+      @repeating_trip = @trip.repeating_trip
     else
       #we only use this to get access to the schedule attributes
-      repeating_trip = RepeatingTrip.new
-      repeating_trip.schedule_attributes = {:repeat => 1, :interval => 1, :start_date => Time.now.to_s, :interval_unit=>"week"}
+      @repeating_trip = RepeatingTrip.new
+      @repeating_trip.schedule_attributes = {:repeat => 1, :interval => 1, :start_date => Time.now.to_s, :interval_unit=>"week"}
     end
     @schedule = repeating_trip.schedule_attributes
   end

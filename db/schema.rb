@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111020231842) do
+ActiveRecord::Schema.define(:version => 20111215002917) do
 
   create_table "addresses", :force => true do |t|
     t.string   "name"
@@ -26,10 +26,10 @@ ActiveRecord::Schema.define(:version => 20111020231842) do
     t.integer  "created_by_id"
     t.integer  "updated_by_id"
     t.integer  "lock_version",                        :default => 0
+    t.point    "the_geom",             :limit => nil,                    :srid => 4326
     t.string   "phone_number"
     t.boolean  "inactive",                            :default => false
     t.string   "default_trip_purpose"
-    t.point    "the_geom",             :limit => nil,                    :srid => 4326
   end
 
   add_index "addresses", ["the_geom"], :name => "index_addresses_on_the_geom", :spatial => true
@@ -162,6 +162,8 @@ ActiveRecord::Schema.define(:version => 20111020231842) do
     t.integer  "updated_by_id"
     t.integer  "lock_version",       :default => 0
     t.boolean  "round_trip"
+    t.integer  "driver_id"
+    t.integer  "vehicle_id"
   end
 
   create_table "roles", :force => true do |t|
