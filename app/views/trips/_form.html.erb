@@ -74,7 +74,7 @@
                So, we'll just put all the repeating stuff into
                plain params and handle it in the controller
             -->
-          <label for="repeats_id">Repeats:</label>
+          <label for="repeats_id">Repetition:</label>
           <ul>
             <li>
               <input type="checkbox" name="monday" value="Monday" <%= @schedule.monday ? 'checked="checked"' : '' %>/> M&nbsp;
@@ -86,16 +86,18 @@
             <li>
               every <input type="text" size="2" name="interval" id="interval" value="<%= @schedule.interval %>"/> week(s)
             </li>
-            <li class="selfclear">
-              <%= f.label :vehicle_id, "Vehicle:" %>
-              <%= f.select :vehicle_id,
-                  options_for_select( @vehicles.map { |v| [v.name, v.id, {'data-driver-id' => v.try(:default_driver_id) } ] }, @trip.run.present? ? nil : @trip.vehicle_id ),
-                  :include_blank => true %>
-            </li>
-            <li class="selfclear">
-              <%= f.label :repeating_driver_id, "Driver:" %>
-              <%= f.select :repeating_driver_id, options_from_collection_for_select( @drivers, :id, :name, @trip.run.present? ? nil : @trip.driver_id ), :include_blank => true %>
-            </li>
+
+            <%= fields_for @repeating_trip do |r| %>
+              <% debugger if false %>
+              <li class="selfclear">
+                <%= r.label :vehicle_id, "Vehicle:" %>
+                <%= r.collection_select :vehicle_id, @vehicles, :id, :name, :include_blank => true %>
+              </li>
+              <li class="selfclear">
+                <%= r.label :driver_id, "Driver:" %>
+                <%= r.collection_select :driver_id, @drivers, :id, :name, :include_blank => true %>
+              </li>
+            <% end %>
 
           </ul>
         </li>
