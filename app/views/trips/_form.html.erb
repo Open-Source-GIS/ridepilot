@@ -91,7 +91,7 @@
               <% debugger if false %>
               <li class="selfclear">
                 <%= r.label :vehicle_id, "Vehicle:" %>
-                <%= r.collection_select :vehicle_id, @vehicles, :id, :name, :include_blank => true %>
+                <%= r.collection_select :vehicle_id, @repeating_vehicles, :id, :name, :include_blank => true %>
               </li>
               <li class="selfclear">
                 <%= r.label :driver_id, "Driver:" %>
