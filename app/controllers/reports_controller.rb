@@ -146,30 +146,20 @@ class ReportsController < ApplicationController
     end
     
     #compute monthly totals
-    month_runs = Run.where(["provider_id = ? and date BETWEEN ? and ? and start_odometer is not null and end_odometer is not null", current_provider_id, @start_date, @end_date])
+    runs = Run.for_provider(current_provider_id).for_date_range(@start_date, @end_date)
 
-    first_run = month_runs.order("date").first
-    if first_run
-      start_odometer = first_run.start_odometer
-      end_odometer = month_runs.order("date").last.start_odometer
-      @total_miles_driven = end_odometer - start_odometer 
-    end
+    mileage_runs = runs.select("vehicle_id, min(start_odometer) as min_odometer, max(end_odometer) as max_odometer").group("vehicle_id").with_odometer_readings
+    @total_miles_driven = 0
+    mileage_runs.each {|run| @total_miles_driven += (max_odometer.to_i - min_odometer.to_i) }
 
-    @turndowns = Trip.where(["provider_id =? and trip_result = 'TD' and pickup_time BETWEEN ? and ? ", current_provider_id, @start_date, @end_date]).count
-    
-    @volunteer_driver_hours = hms_to_hours(month_runs.where("paid = true").sum("actual_end_time - actual_start_time") || "0:00:00")
-    @paid_driver_hours = hms_to_hours(month_runs.where("paid = false").sum("actual_end_time - actual_start_time")  || "0:00:00")
+    @turndowns = Trip.turned_down.for_date_range(@start_date, @end_date).for_provider(current_provider_id).count
+    @volunteer_driver_hours = hms_to_hours(runs.for_volunteer_driver.sum("actual_end_time - actual_start_time") || "0:00:00")
+    @paid_driver_hours = hms_to_hours(runs.for_paid_driver.sum("actual_end_time - actual_start_time")  || "0:00:00")
 
-
-    undup_riders_sql = "select count(*) as undup_riders from (select customer_id, fiscal_year(pickup_time) as year, min(fiscal_month(pickup_time)) as month from trips where provider_id=? and trip_result = 'COMP' group by customer_id, year) as  morx where date (year || '-' || month || '-' || 1)  between ? and ? "
-
-    year_start_date = Date.new(@start_date.year, 1, 1)
-    year_end_date = year_start_date.next_year
-
-    row = ActiveRecord::Base.connection.select_one(bind([undup_riders_sql, current_provider_id, year_start_date, year_end_date]))
-
-    @undup_riders = row['undup_riders'].to_i
-
+    trip_customers = Trip.select("DISTINCT customer_id").for_provider(current_provider_id).completed
+    prior_customers_in_fiscal_year = trip_customers.for_date_range(fiscal_year_start_date(@start_date), @start_date).map {|x| x.customer_id}
+    customers_this_period = trip_customers.for_date_range(@start_date, @end_date).map {|x| x.customer_id}
+    @undup_riders = (customers_this_period - prior_customers_in_fiscal_year).size
   end
 
   def update_monthly
@@ -179,7 +169,6 @@ class ReportsController < ApplicationController
       @monthly.update_attributes(params[:monthly])
     end
     redirect_to :action=>:service_summary, :id => @monthly.id
-
   end
 
   def donations
@@ -365,7 +354,7 @@ class ReportsController < ApplicationController
   end
 
   def hms_to_hours(hms)
-    #argumen is  a string of the form hours:minutes:seconds.  We would like
+    #argument is a string of the form hours:minutes:seconds.  We would like
     #a float of hours
     if !hms or hms.empty?
       return 0
@@ -377,4 +366,8 @@ class ReportsController < ApplicationController
     return hours + minutes / 60.0 + seconds / 3600.0
   end
 
+  def fiscal_year_start_date(date)
+    year = (date.month < 7 ? date.year - 1 : date.year)
+    Date.new(year, 7, 1)
+  end
 end

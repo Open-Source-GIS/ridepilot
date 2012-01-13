@@ -13,9 +13,12 @@ class Run < ActiveRecord::Base
   
   accepts_nested_attributes_for :trips
   
-  default_scope order(:date)
-  scope :for_provider, lambda{ |provider_id| where( :provider_id => provider_id ) }
-  scope :incomplete_on, lambda{ |date| where("complete is not true").where(:date => date) }
+  scope :for_provider, lambda{|provider_id| where( :provider_id => provider_id ) }
+  scope :for_paid_driver, where(:paid => true)
+  scope :for_volunteer_driver, where(:paid => false)
+  scope :incomplete_on, lambda{|date| where(:complete => false, :date => date) }
+  scope :for_date_range, lambda{|start_date, end_date| where("runs.date >= ? and runs.date < ?", start_date, end_date) }
+  scope :with_odometer_readings, where("start_odometer IS NOT NULL and end_odometer IS NOT NULL")
 
   def cab=(value)
     @cab = value

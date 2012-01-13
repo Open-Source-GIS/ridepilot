@@ -41,6 +41,7 @@ class Trip < ActiveRecord::Base
   scope :for_driver, lambda{|driver_id| not_for_cab.where(:runs => {:driver_id => driver_id}).joins(:run) }
   scope :scheduled, where("trips.trip_result = '' OR trips.trip_result = 'COMP'")
   scope :completed, where(:trip_result => 'COMP')
+  scope :turned_down, where(:trip_result => 'TD')
   scope :today_and_prior, where('CAST(trips.pickup_time AS date) <= ?', Date.today)
   scope :after_today, where('CAST(trips.pickup_time AS date) > ?', Date.today)
   scope :prior_to, lambda{|pickup_time| where('trips.pickup_time < ?', pickup_time)}
