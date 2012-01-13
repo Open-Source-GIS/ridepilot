@@ -4,7 +4,7 @@ class TripsController < ApplicationController
   before_filter :set_calendar_week_start, :only => [:index, :new, :edit]
 
   def index
-    @trips = @trips.for_provider(current_provider_id).includes(:customer,{:run => [:driver,:vehicle]})
+    @trips = @trips.for_provider(current_provider_id).includes(:customer,{:run => [:driver,:vehicle]}).order(:pickup_time)
     
     respond_to do |format|
       format.html do
@@ -367,7 +367,7 @@ class TripsController < ApplicationController
 
     @trips = @trips.
       where("pickup_time >= '#{t_start.strftime "%Y-%m-%d %H:%M:%S"}'").
-      where("pickup_time <= '#{t_end.strftime "%Y-%m-%d %H:%M:%S"}'")
+      where("pickup_time <= '#{t_end.strftime "%Y-%m-%d %H:%M:%S"}'").order(:pickup_time)
       
     if params[:vehicle_id].present?  
       @trips = @trips.select {|t| t.vehicle_id == params[:vehicle_id].to_i } 

@@ -94,7 +94,7 @@ class ReportsController < ApplicationController
       query_params = params[:query]
       @query = Query.new(query_params)
       @start_date = @query.start_date
-      @monthly = Monthly.where(["start_date = ? and end_date = ?", @start_date, @start_date.next_month]).first
+      @monthly = Monthly.where(:start_date => @start_date, :end_date => @start_date.next_month).first
     elsif params[:id]
       @monthly = Monthly.find(params[:id])      
       @start_date = @monthly.start_date
@@ -116,11 +116,8 @@ class ReportsController < ApplicationController
     end
 
     #computes number of trips in and out of district by purpose
-
-    sql = "select trip_purpose, in_district, round_trip, count(*) as ct from trips where provider_id = ? and pickup_time between ? and ? group by trip_purpose, in_district, round_trip"
-
-    counts_by_purpose = ActiveRecord::Base.connection.select_all(bind(
-        [sql, current_provider_id, @start_date, @end_date]))
+    x = Trip.select("trip_purpose, in_district, round_trip, COUNT(*) + SUM(guest_count) + SUM(attendant_count) + SUM(group_size) as ct").group("trip_purpose, in_district, round_trip")
+    counts_by_purpose = x.for_provider(current_provider_id).for_date_range(@start_date, @end_date).completed
     
     by_purpose = {}
     for purpose in TRIP_PURPOSES
@@ -129,12 +126,12 @@ class ReportsController < ApplicationController
     @total = {'in_district' => 0, 'out_of_district' => 0}
 
     for row in counts_by_purpose
-      purpose = row["trip_purpose"]
+      purpose = row.trip_purpose
       next unless by_purpose.member?( purpose )
 
-      multiplier = row["round_trip"] == "t" ? 2 : 1
+      multiplier = row.round_trip ? 2 : 1
            
-      if row["in_district"] == "t"
+      if row.in_district 
         by_purpose[purpose]['in_district'] += row["ct"].to_i * multiplier
         @total['in_district'] += row["ct"].to_i * multiplier
       else

@@ -12,7 +12,6 @@ class Trip < ActiveRecord::Base
   belongs_to :repeating_trip
   belongs_to :created_by, :foreign_key => :created_by_id, :class_name=>'User'
   belongs_to :updated_by, :foreign_key => :updated_by_id, :class_name=>'User'
-  default_scope :order => 'pickup_time'
 
   serialize :guests
 
@@ -34,13 +33,14 @@ class Trip < ActiveRecord::Base
 
   stampable :creator_attribute => :created_by_id, :updater_attribute => :updated_by_id
   
-  default_scope order(:pickup_time)
   scope :for_cab, where(:cab => true)
   scope :not_for_cab, where(:cab => false)
   scope :for_provider, lambda { |provider_id| where( :provider_id => provider_id ) }
   scope :for_date, lambda{|date| where('CAST(trips.pickup_time AS date) = CAST(? AS date)', date) }
+  scope :for_date_range, lambda{|start_date, end_date| where('trips.pickup_time >= ? AND trips.pickup_time < ?', start_date, end_date) }
   scope :for_driver, lambda{|driver_id| not_for_cab.where(:runs => {:driver_id => driver_id}).joins(:run) }
   scope :scheduled, where("trips.trip_result = '' OR trips.trip_result = 'COMP'")
+  scope :completed, where(:trip_result => 'COMP')
   scope :today_and_prior, where('CAST(trips.pickup_time AS date) <= ?', Date.today)
   scope :after_today, where('CAST(trips.pickup_time AS date) > ?', Date.today)
   scope :prior_to, lambda{|pickup_time| where('trips.pickup_time < ?', pickup_time)}
