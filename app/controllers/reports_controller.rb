@@ -94,7 +94,7 @@ class ReportsController < ApplicationController
       query_params = params[:query]
       @query = Query.new(query_params)
       @start_date = @query.start_date
-      @monthly = Monthly.where(:start_date => @start_date, :end_date => @start_date.next_month).first
+      @monthly = Monthly.where(:start_date => @start_date, :end_date => @start_date.next_month, :provider_id=>current_provider_id).first
     elsif params[:id]
       @monthly = Monthly.find(params[:id])      
       @start_date = @monthly.start_date
@@ -167,6 +167,7 @@ class ReportsController < ApplicationController
     params[:monthly][:provider_id] = current_provider_id
     if can? :edit, @monthly
       @monthly.update_attributes(params[:monthly])
+      flash[:notice] = "Report successfully updated." 
     end
     redirect_to :action=>:service_summary, :id => @monthly.id
   end
@@ -177,7 +178,7 @@ class ReportsController < ApplicationController
 
     @donations_by_customer = {}
     @total = 0
-    for trip in Trip.where(["provider_id = ? and pickup_time between ? and ? and donation > 0", current_provider_id, @query.start_date, @query.end_date])
+    for trip in Trip.for_provider(current_provider_id).for_date_range(@query.start_date, @query.end_date).where(["donation > 0"])
       customer = trip.customer
       if ! @donations_by_customer.member? customer
         @donations_by_customer[customer] = trip.donation
@@ -186,16 +187,14 @@ class ReportsController < ApplicationController
       end
       @total += trip.donation
     end
-
     @customers = @donations_by_customer.keys.sort_by {|customer| [customer.last_name, customer.first_name] }
-
   end
 
   def cab
     query_params = params[:query] || {}
     @query = Query.new(query_params)
 
-    @trips = Trip.where(["provider_id = ? and pickup_time between ? and ? and cab = true", current_provider_id, @query.start_date, @query.end_date])
+    @trips = Trip.for_provider(current_provider_id).for_date_range(@query.start_date, @query.end_date).for_cab
   end
 
   def age_and_ethnicity
@@ -203,32 +202,15 @@ class ReportsController < ApplicationController
     @query = Query.new(query_params)
 
     #we need new riders this month, where new means "first time this fy"
-
     #so, for each trip this month, find the customer, then find out whether 
     # there was a previous trip for this customer this fy
 
-
-    sql = "select distinct customer_id from trips where provider_id = ? and pickup_time between ? and ?"
-
-    customer_rows = ActiveRecord::Base.connection.select_all(bind(
-        [sql, current_provider_id, @query.start_date, @query.end_date]))
-
-    customer_ids = customer_rows.map {|x| x[0]}
-    customers = Customer.where(:id => customer_ids)
-
-    fy = @query.start_date.year
-    if @query.start_date.month <= 6
-      fy -= 1
-    end
-    fy_start_date = Date.new(fy, 7, 1)
-
-    sql = "select distinct customer_id from trips where provider_id = ? and pickup_time between ? and ?"
-    earlier_customer_rows = ActiveRecord::Base.connection.select_all(bind(
-        [sql, current_provider_id, fy_start_date, @query.start_date]))
-
-    earlier_customer_ids = earlier_customer_rows.map {|x| x[0]}
-    earlier_customers = Customer.where(:id => earlier_customer_ids)
-    earlier_customer_ids = Set.new(earlier_customer_ids)
+    trip_customers = Trip.select("DISTINCT customer_id").for_provider(current_provider_id).completed
+    prior_customers_in_fiscal_year = trip_customers.for_date_range(fiscal_year_start_date(@query.start_date), @query.start_date).map {|x| x.customer_id}
+    customers_this_period = trip_customers.for_date_range(@query.start_date, @query.end_date).map {|x| x.customer_id}
+    
+    new_customers = Customer.where(:id => (customers_this_period - prior_customers_in_fiscal_year))
+    earlier_customers = Customer.where(:id => prior_customers_in_fiscal_year)
 
     @this_month_unknown_age = 0
     @this_month_sixty_plus = 0
@@ -241,11 +223,7 @@ class ReportsController < ApplicationController
     @counts_by_ethnicity = {}
 
     #first, handle the customers from this month
-    for customer in customers
-      if earlier_customer_ids.member? customer.id
-        #not this customer's first visit
-        next
-      end
+    for customer in new_customers
       age = customer.age_in_years
       if age.nil?
         @this_month_unknown_age += 1
@@ -257,11 +235,12 @@ class ReportsController < ApplicationController
         @this_month_less_than_sixty += 1
         @this_year_less_than_sixty += 1
       end
-
-      if ! @counts_by_ethnicity.member? customer.ethnicity
-        @counts_by_ethnicity[customer.ethnicity] = {'month' => 0, 'year' => 0}
+      
+      ethnicity = customer.ethnicity || "Unspecified"
+      if ! @counts_by_ethnicity.member? ethnicity
+        @counts_by_ethnicity[ethnicity] = {'month' => 0, 'year' => 0}
       end
-      @counts_by_ethnicity[customer.ethnicity]['month'] += 1
+      @counts_by_ethnicity[ethnicity]['month'] += 1
     end
 
     #now the customers who appear earlier in the year 
@@ -275,10 +254,11 @@ class ReportsController < ApplicationController
         @this_year_less_than_sixty += 1
       end
 
-      if ! @counts_by_ethnicity.member? customer.ethnicity
-        @counts_by_ethnicity[customer.ethnicity] = {'month' => 0, 'year' => 0}
+      ethnicity = customer.ethnicity || "Unspecified"
+      if ! @counts_by_ethnicity.member? ethnicity
+        @counts_by_ethnicity[ethnicity] = {'month' => 0, 'year' => 0}
       end
-      @counts_by_ethnicity[customer.ethnicity]['year'] += 1
+      @counts_by_ethnicity[ethnicity]['year'] += 1
     end
 
   end

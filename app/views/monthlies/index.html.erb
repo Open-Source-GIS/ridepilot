@@ -7,8 +7,7 @@
 <% else %>
   <table>
     <tr>
-      <th>Start</th>
-      <th>End</th>
+      <th>Month</th>
       <th>Volunteer escort hours</th>
       <th>Volunteer admin hours</th>
       <th>Complaints</th>
@@ -20,8 +19,7 @@
     
     <% for monthly in @monthlies %>
     <tr>
-      <td><%= monthly.start_date %></td>
-      <td><%= monthly.end_date %></td>
+      <td><%= monthly.start_date.strftime("%B %Y") %></td>
       <td><%= monthly.volunteer_escort_hours %></td>
       <td><%= monthly.volunteer_admin_hours %></td>
       <td><%= monthly.complaints %></td>
