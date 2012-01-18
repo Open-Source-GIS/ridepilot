@@ -7,11 +7,11 @@ describe Trip do
         Run.count.should == 0
       end
       
-      it "creates an associated run" do
+      it "does not create an associated run" do
         lambda {
           trip = create_trip
-          trip.run.should == Run.first
-        }.should change(Run, :count).by(1)
+          trip.run.should be_nil
+        }.should_not change(Run, :count).by(1)
       end
     end
   end
