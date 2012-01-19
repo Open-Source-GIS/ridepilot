@@ -22,5 +22,7 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = true
   
   config.include Fixjour
+
+  config.include Devise::TestHelpers, :type => :controller
   
 end
