@@ -56,7 +56,7 @@
         <% if current_user && can?(:read, Provider) %>
           <li class="vehicles-drivers-users"><%= link_to "Admin", provider_path(current_user.current_provider) %></li>
         <% end %>
-        <% if current_user && can?(:edit, Provider) %>
+        <% if current_user && can?(:create, Provider) %>
           <li class="providers"><%= link_to "Providers", providers_path %></li>
         <% end %>
         <% if show_scheduling? && current_user && can?(:edit, FundingSource) %>

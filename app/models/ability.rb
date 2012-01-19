@@ -21,6 +21,7 @@ class Ability
           action = :read
         end
         can action, Provider, :id => role.provider.id
+        cannot :create, Provider
       end
     end
     provider = user.current_provider
