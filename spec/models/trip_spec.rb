@@ -15,23 +15,25 @@ describe Trip do
       end
     end
   end
-  describe "after validation" do
+
+  describe "after validation for trips with repetition" do
+    attr_accessor :trip
+    before do
+      @trip = new_trip(
+        :repeats_mondays => true, 
+        :repeats_tuesdays => false,
+        :repeats_wednesdays => false,
+        :repeats_thursdays => false,
+        :repeats_fridays => false,
+        :repeats_saturdays => false,
+        :repeats_sundays => false,
+        :repetition_vehicle_id => -1,
+        :repetition_driver_id => 1,
+        :repetition_interval => 1)
+      RepeatingTrip.count.should == 0
+    end
+
     context "when creating a trip with repeating trip data" do
-      attr_accessor :trip
-      before do
-        @trip = new_trip(
-          :repeats_mondays => true, 
-          :repeats_tuesdays => false,
-          :repeats_wednesdays => false,
-          :repeats_thursdays => false,
-          :repeats_fridays => false,
-          :repeats_saturdays => false,
-          :repeats_sundays => false,
-          :repetition_vehicle_id => -1,
-          :repetition_driver_id => 1,
-          :repetition_interval => 1)
-        RepeatingTrip.count.should == 0
-      end
 
       it "should accept repeating trip values" do
         trip.repeats_mondays.should == true
@@ -59,6 +61,33 @@ describe Trip do
         r_id = trip.repeating_trip_id
         # The trip we just created, which is next week, plus 2 more
         Trip.where(:repeating_trip_id => r_id).count.should == 3
+      end
+    end
+
+    context "when updating a trip with repeating trip data" do
+      before do
+        trip.save
+        trip.repeats_mondays = false
+        trip.repeats_tuesdays = true
+        trip.save
+      end
+
+      it "should the repeating trip attributes" do
+        trip.repeating_trip.schedule_attributes.monday.should be_nil
+        trip.repeating_trip.schedule_attributes.tuesday.should == 1
+      end
+
+      it "should have new child trips on the correct day" do
+        t = Trip.where(:repeating_trip_id => trip.repeating_trip_id).where("id <> ?",trip.id).last
+        t.pickup_time.strftime("%u").should == "2"
+      end
+
+      it "should have no child trips on the old day" do
+        count = 0
+        Trip.where(:repeating_trip_id => trip.repeating_trip_id).where("id <> ?",trip.id).each do |t|
+          count += 1 if t.pickup_time.strftime("%u") == "1"
+        end
+        count.should == 0
       end
     end
   end

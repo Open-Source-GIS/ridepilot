@@ -16,8 +16,7 @@ class Trip < ActiveRecord::Base
   belongs_to :updated_by, :foreign_key => :updated_by_id, :class_name=>'User'
 
   before_create :create_repeating_trip
-  # before_update :update_repeating_trip
-  #accepts_nested_attributes_for :repeating_trip
+  before_update :update_repeating_trip
 
   serialize :guests
 
@@ -144,28 +143,59 @@ class Trip < ActiveRecord::Base
   
   def create_repeating_trip
     if is_repeating_trip?
-      attrs = {}
-      RepeatingTrip.trip_attributes.each {|attr| attrs[attr] = self.send(attr) }
-      attrs['driver_id'] = repetition_driver_id
-      attrs['vehicle_id'] = repetition_vehicle_id
-      attrs['schedule_attributes'] = {
-        :repeat        => 1,
-        :interval_unit => "week", 
-        :start_date    => pickup_time.to_date.to_s,
-        :interval      => repetition_interval, 
-        :monday        => repeats_mondays    ? 1 : 0,
-        :tuesday       => repeats_tuesdays   ? 1 : 0,
-        :wednesday     => repeats_wednesdays ? 1 : 0,
-        :thursday      => repeats_thursdays  ? 1 : 0,
-        :friday        => repeats_fridays    ? 1 : 0,
-        :saturday      => repeats_saturdays  ? 1 : 0,
-        :sunday        => repeats_sundays    ? 1 : 0
-      }
-      
-      rt = RepeatingTrip.create!(attrs)
+      rt = RepeatingTrip.create!(repeating_trip_attributes)
       self.repeating_trip = rt
       rt.instantiate 
     end
+  end
+
+  def update_repeating_trip
+    if is_repeating_trip? 
+      #this is a repeating trip, so we need to edit both
+      #the repeating trip, and the instance for today
+      if self.repeating_trip.blank?
+        create_repeating_trip
+      else
+        repeating_trip.update_attributes!(repeating_trip_attributes)
+        repeating_trip.instantiate
+      end
+    end
+    #elsif !is_repeating_trip params and @trip.repeating_trip
+    #  #This is a trip that was repeating, but the repetition needs to be cleared.
+    #  #We want to detach this trip and all past trips from the repeating trip record,
+    #  #delete all future instances that have been created, and delete the repeating trip
+    #  rt = @trip.repeating_trip
+    #  if @trip.pickup_time < Time.now #Be sure not delete trips that have already happened.
+    #    Trip.repeating_based_on(rt).today_and_prior.update_all 'repeating_trip_id = NULL'
+    #    Trip.repeating_based_on(rt).after_today.destroy_all
+    #  else 
+    #    Trip.repeating_based_on(rt).prior_to(@trip.pickup_time).update_all 'repeating_trip_id = NULL'
+    #    Trip.repeating_based_on(rt).after(@trip.pickup_time).destroy_all
+    #  end
+    #  @trip.repeating_trip_id = nil
+    #  rt.destroy 
+    #end
+  end
+
+  def repeating_trip_attributes
+    attrs = {}
+    RepeatingTrip.trip_attributes.each {|attr| attrs[attr] = self.send(attr) }
+    attrs['driver_id'] = repetition_driver_id
+    attrs['vehicle_id'] = repetition_vehicle_id
+    attrs['schedule_attributes'] = {
+      :repeat        => 1,
+      :interval_unit => "week", 
+      :start_date    => pickup_time.to_date.to_s,
+      :interval      => repetition_interval, 
+      :monday        => repeats_mondays    ? 1 : 0,
+      :tuesday       => repeats_tuesdays   ? 1 : 0,
+      :wednesday     => repeats_wednesdays ? 1 : 0,
+      :thursday      => repeats_thursdays  ? 1 : 0,
+      :friday        => repeats_fridays    ? 1 : 0,
+      :saturday      => repeats_saturdays  ? 1 : 0,
+      :sunday        => repeats_sundays    ? 1 : 0
+    }
+    attrs
   end
 
   def format_datetime(datetime)
