@@ -14,6 +14,12 @@ class RepeatingTrip < ActiveRecord::Base
 
   stampable :creator_attribute => :created_by_id, :updater_attribute => :updated_by_id
 
+  NON_TRIP_ATTRIBUTES = %w(id recurrence schedule_yaml created_at updated_at created_by_id updated_by_id lock_version)
+
+  def self.trip_attributes  
+    self.new.attributes.keys - NON_TRIP_ATTRIBUTES
+  end
+
   #Create concrete trips from all repeating trips.  This method
   #is idempotent.
   def self.create_trips
@@ -33,13 +39,12 @@ class RepeatingTrip < ActiveRecord::Base
   def instantiate
     now = Time.now
     later = now.advance(:days=>21)
-    attributes_to_remove = %w(id recurrence schedule_yaml created_at updated_at created_by_id updated_by_id)
     for date in schedule.occurrences_between(now, later)
       this_trip_pickup_time = Time.gm(date.year, date.month, date.day, pickup_time.hour, pickup_time.min, pickup_time.sec)
 
       if this_trip_pickup_time != pickup_time 
         attributes = self.attributes
-        attributes_to_remove.each {|attr| attributes.delete(attr)}
+        NON_TRIP_ATTRIBUTES.each {|attr| attributes.delete(attr)}
         attributes["repeating_trip_id"] = id
         attributes["pickup_time"] = this_trip_pickup_time
         attributes["appointment_time"] = this_trip_pickup_time + (appointment_time - pickup_time)

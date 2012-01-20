@@ -1,5 +1,7 @@
 class Trip < ActiveRecord::Base
   attr_accessor :driver_id, :vehicle_id, :via_repeating_trip
+  attr_writer :repetition_interval, :repetition_vehicle_id, :repetition_driver_id
+  attr_writer :repeats_mondays, :repeats_tuesdays, :repeats_wednesdays, :repeats_thursdays, :repeats_fridays, :repeats_saturdays, :repeats_sundays
 
   belongs_to :provider
   belongs_to :run
@@ -12,6 +14,10 @@ class Trip < ActiveRecord::Base
   belongs_to :repeating_trip
   belongs_to :created_by, :foreign_key => :created_by_id, :class_name=>'User'
   belongs_to :updated_by, :foreign_key => :updated_by_id, :class_name=>'User'
+
+  before_create :create_repeating_trip
+  # before_update :update_repeating_trip
+  #accepts_nested_attributes_for :repeating_trip
 
   serialize :guests
 
@@ -82,8 +88,86 @@ class Trip < ActiveRecord::Base
     end
   end
 
+  def repeats_mondays
+    @repeats_mondays || false
+  end
+
+  def repeats_tuesdays
+    @repeats_tuesdays || false
+  end
+
+  def repeats_wednesdays
+    @repeats_wednesdays || false
+  end
+
+  def repeats_thursdays
+    @repeats_thursdays || false
+  end
+
+  def repeats_fridays
+    @repeats_fridays || false
+  end
+
+  def repeats_saturdays
+    @repeats_saturdays || false
+  end
+
+  def repeats_sundays
+    @repeats_sundays || false
+  end
+
+  def repetition_driver_id
+    @repetition_driver_id
+  end
+
+  def repetition_vehicle_id
+    @repetition_vehicle_id
+  end
+
+  def repetition_interval
+    @repetition_interval
+  end
+
+  def is_repeating_trip?
+    ((repetition_interval || 0) > 0 and (
+      repeats_mondays or 
+      repeats_tuesdays or 
+      repeats_wednesdays or 
+      repeats_thursdays or 
+      repeats_fridays or 
+      repeats_saturdays or 
+      repeats_sundays
+      ))
+  end
+  
   private
   
+  def create_repeating_trip
+    if is_repeating_trip?
+      attrs = {}
+      RepeatingTrip.trip_attributes.each {|attr| attrs[attr] = self.send(attr) }
+      attrs['driver_id'] = repetition_driver_id
+      attrs['vehicle_id'] = repetition_vehicle_id
+      attrs['schedule_attributes'] = {
+        :repeat        => 1,
+        :interval_unit => "week", 
+        :start_date    => pickup_time.to_date.to_s,
+        :interval      => repetition_interval, 
+        :monday        => repeats_mondays    ? 1 : 0,
+        :tuesday       => repeats_tuesdays   ? 1 : 0,
+        :wednesday     => repeats_wednesdays ? 1 : 0,
+        :thursday      => repeats_thursdays  ? 1 : 0,
+        :friday        => repeats_fridays    ? 1 : 0,
+        :saturday      => repeats_saturdays  ? 1 : 0,
+        :sunday        => repeats_sundays    ? 1 : 0
+      }
+      
+      rt = RepeatingTrip.create!(attrs)
+      self.repeating_trip = rt
+      rt.instantiate 
+    end
+  end
+
   def format_datetime(datetime)
     datetime.is_a?( String ) && %w{a p}.include?( datetime.last.downcase ) ? "#{datetime}m" : datetime
   end
