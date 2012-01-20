@@ -156,25 +156,29 @@ class Trip < ActiveRecord::Base
       if self.repeating_trip.blank?
         create_repeating_trip
       else
-        repeating_trip.update_attributes!(repeating_trip_attributes)
-        repeating_trip.instantiate
+        repeating_trip.attributes = repeating_trip_attributes
+        if repeating_trip.changed?
+          repeating_trip.save!
+          destroy_obsolete_trips
+          repeating_trip.instantiate
+        end
       end
+    elsif !is_repeating_trip? && repeating_trip.present?
+      destroy_obsolete_trips
+      rt = self.repeating_trip
+      self.repeating_trip_id = nil
+      rt.destroy
     end
-    #elsif !is_repeating_trip params and @trip.repeating_trip
-    #  #This is a trip that was repeating, but the repetition needs to be cleared.
-    #  #We want to detach this trip and all past trips from the repeating trip record,
-    #  #delete all future instances that have been created, and delete the repeating trip
-    #  rt = @trip.repeating_trip
-    #  if @trip.pickup_time < Time.now #Be sure not delete trips that have already happened.
-    #    Trip.repeating_based_on(rt).today_and_prior.update_all 'repeating_trip_id = NULL'
-    #    Trip.repeating_based_on(rt).after_today.destroy_all
-    #  else 
-    #    Trip.repeating_based_on(rt).prior_to(@trip.pickup_time).update_all 'repeating_trip_id = NULL'
-    #    Trip.repeating_based_on(rt).after(@trip.pickup_time).destroy_all
-    #  end
-    #  @trip.repeating_trip_id = nil
-    #  rt.destroy 
-    #end
+  end
+
+  def destroy_obsolete_trips
+    if pickup_time < Time.now #Be sure not delete trips that have already happened.
+      Trip.repeating_based_on(repeating_trip).today_and_prior.update_all 'repeating_trip_id = NULL'
+      Trip.repeating_based_on(repeating_trip).after_today.destroy_all
+    else 
+      Trip.repeating_based_on(repeating_trip).prior_to(pickup_time).update_all 'repeating_trip_id = NULL'
+      Trip.repeating_based_on(repeating_trip).after(pickup_time).destroy_all
+    end
   end
 
   def repeating_trip_attributes

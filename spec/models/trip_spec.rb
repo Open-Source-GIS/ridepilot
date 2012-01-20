@@ -78,8 +78,11 @@ describe Trip do
       end
 
       it "should have new child trips on the correct day" do
-        t = Trip.where(:repeating_trip_id => trip.repeating_trip_id).where("id <> ?",trip.id).last
-        t.pickup_time.strftime("%u").should == "2"
+        count = 0
+        Trip.where(:repeating_trip_id => trip.repeating_trip_id).where("id <> ?",trip.id).each do |t|
+          count += 1 if t.pickup_time.strftime("%u") == "2"
+        end
+        count.should == 2
       end
 
       it "should have no child trips on the old day" do
@@ -88,6 +91,20 @@ describe Trip do
           count += 1 if t.pickup_time.strftime("%u") == "1"
         end
         count.should == 0
+      end
+    end
+    
+    context "when I clear out th repetition data" do
+      before do
+        trip.save
+        trip.repeats_mondays = false
+        @repeating_trip_id = trip.repeating_trip_id
+        trip.save
+      end
+
+      it "should remove all future trips after the trip and delete the repeating trip record" do 
+        Trip.where(:repeating_trip_id => @repeating_trip_id).count.should == 0
+        RepeatingTrip.find_by_id(@repeating_trip_id).should be_nil
       end
     end
   end
