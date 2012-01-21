@@ -69,10 +69,12 @@ describe Trip do
         trip.save
         trip.repeats_mondays = false
         trip.repeats_tuesdays = true
+        trip.repetition_vehicle_id = 2
+        trip.repetition_driver_id = 2
         trip.save
       end
 
-      it "should the repeating trip attributes" do
+      it "should have the correct repeating trip attributes" do
         trip.repeating_trip.schedule_attributes.monday.should be_nil
         trip.repeating_trip.schedule_attributes.tuesday.should == 1
       end
@@ -92,9 +94,18 @@ describe Trip do
         end
         count.should == 0
       end
+
+      it "should tell me the correct repeating trip data when reloading the trip" do
+        id = trip.id
+        trip = Trip.find(id)
+        trip.repeats_mondays.should == false
+        trip.repeats_tuesdays.should == true
+        trip.repetition_vehicle_id.should == 2
+        trip.repetition_driver_id.should == 2
+      end
     end
     
-    context "when I clear out th repetition data" do
+    context "when I clear out the repetition data" do
       before do
         trip.save
         trip.repeats_mondays = false

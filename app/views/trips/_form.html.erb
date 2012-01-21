@@ -77,27 +77,24 @@
           <label for="repeats_id">Repetition:</label>
           <ul>
             <li>
-              <input type="checkbox" name="monday" value="Monday" <%= @schedule.monday ? 'checked="checked"' : '' %>/> M&nbsp;
-              <input type="checkbox" name="tuesday" value="Tuesday" <%= @schedule.tuesday ? 'checked="checked"' : '' %>/> T&nbsp;
-              <input type="checkbox" name="wednesday" value="Wednesday" <%= @schedule.wednesday ? 'checked="checked"' : '' %>/> W&nbsp;
-              <input type="checkbox" name="thursday" value="Thursday" <%= @schedule.thursday ? 'checked="checked"' : '' %>/> R&nbsp;
-              <input type="checkbox" name="friday" value="Friday" <%= @schedule.friday ? 'checked="checked"' : '' %>/> F&nbsp;
+              <%= f.check_box :repeats_mondays %> M&nbsp;
+              <%= f.check_box :repeats_tuesdays %> T&nbsp;
+              <%= f.check_box :repeats_wednesdays %> W&nbsp;
+              <%= f.check_box :repeats_thursdays %> R&nbsp;
+              <%= f.check_box :repeats_fridays %> F&nbsp;
             </li>
             <li>
-              every <input type="text" size="2" name="interval" id="interval" value="<%= @schedule.interval %>"/> week(s)
+              every <%= f.text_field :repetition_interval, :size => 2 %> week(s)
             </li>
 
-            <%= fields_for @repeating_trip do |r| %>
-              <% debugger if false %>
-              <li class="selfclear">
-                <%= r.label :vehicle_id, "Vehicle:" %>
-                <%= r.collection_select :vehicle_id, @repeating_vehicles, :id, :name, :include_blank => true %>
-              </li>
-              <li class="selfclear">
-                <%= r.label :driver_id, "Driver:" %>
-                <%= r.collection_select :driver_id, @drivers, :id, :name, :include_blank => true %>
-              </li>
-            <% end %>
+            <li class="selfclear">
+              <%= f.label :repetition_vehicle_id, "Vehicle:" %>
+              <%= f.collection_select :repetition_vehicle_id, @repeating_vehicles, :id, :name, :include_blank => true %>
+            </li>
+            <li class="selfclear">
+              <%= f.label :repetition_driver_id, "Driver:" %>
+              <%= f.collection_select :repetition_driver_id, @drivers, :id, :name, :include_blank => true %>
+            </li>
 
           </ul>
         </li>

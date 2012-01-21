@@ -136,30 +136,12 @@ class TripsController < ApplicationController
 
     authorize! :manage, Trip.new(trip_params)
 
-    if is_repeating_trip params
-      #this is a repeating trip, so we need to create both
-      #the repeating trip, and the instance for today
-      repeating_trip_params = extract_repeating_trip_params params
-      @repeating_trip = RepeatingTrip.create(repeating_trip_params)
-      @repeating_trip.instantiate
-      trip_params[:repeating_trip_id] = @repeating_trip.id
-      @schedule = @repeating_trip.schedule_attributes
-
-      @trip = Trip.new(trip_params)
-      if @trip.save
-        redirect_to(trips_path(:start => @trip.pickup_time.to_i), :notice => 'Trip was successfully created.') 
-      else
-        prep_view
-        render :action => "new" 
-      end
+    @trip = Trip.new(trip_params)
+    if @trip.save
+      redirect_to(trips_path(:start => @trip.pickup_time.to_i), :notice => 'Trip was successfully created.') 
     else
-      @trip = Trip.new(trip_params)
-      if @trip.save
-        redirect_to(trips_path(:start => @trip.pickup_time.to_i), :notice => 'Trip was successfully created.') 
-      else
-        prep_view
-        render :action => "new" 
-      end
+      prep_view
+      render :action => "new" 
     end
   end
 
@@ -173,32 +155,6 @@ class TripsController < ApplicationController
 
     respond_to do |format|
       if @trip.update_attributes(trip_params)
-        if is_repeating_trip params
-          #this is a repeating trip, so we need to edit both
-          #the repeating trip, and the instance for today
-          repeating_trip_params = extract_repeating_trip_params params
-          if not @trip.repeating_trip
-            @trip.repeating_trip = RepeatingTrip.new
-          end
-
-          @repeating_trip = @trip.repeating_trip.update_attributes(repeating_trip_params)
-          @trip.repeating_trip.instantiate
-        elsif !is_repeating_trip params and @trip.repeating_trip
-          #This is a trip that was repeating, but the repetition needs to be cleared.
-          #We want to detach this trip and all past trips from the repeating trip record,
-          #delete all future instances that have been created, and delete the repeating trip
-          rt = @trip.repeating_trip
-          if @trip.pickup_time < Time.now #Be sure not delete trips that have already happened.
-            Trip.repeating_based_on(rt).today_and_prior.update_all 'repeating_trip_id = NULL'
-            Trip.repeating_based_on(rt).after_today.destroy_all
-          else 
-            Trip.repeating_based_on(rt).prior_to(@trip.pickup_time).update_all 'repeating_trip_id = NULL'
-            Trip.repeating_based_on(rt).after(@trip.pickup_time).destroy_all
-          end
-          @trip.repeating_trip_id = nil
-          rt.destroy 
-        end
-        
         format.html { redirect_to(trips_path, :notice => 'Trip was successfully updated.')  }
         format.js { 
           render :json => {:status => "success"}, :content_type => "text/json"
@@ -209,7 +165,6 @@ class TripsController < ApplicationController
         format.js   { @remote = true; render :json => {:form => render_to_string(:partial => 'form') }, :content_type => "text/json" }
       end
     end
-
   end
 
   def destroy
@@ -276,18 +231,6 @@ class TripsController < ApplicationController
     cab_vehicle = Vehicle.new :name => "Cab"
     cab_vehicle.id = -1
     @repeating_vehicles = [cab_vehicle] + @vehicles 
-
-    unless @repeating_trip
-      if @trip.repeating_trip
-        @repeating_trip = @trip.repeating_trip
-        @repeating_trip.vehicle_id = -1 if @repeating_trip.cab 
-      else
-        #we only use this to get access to the schedule attributes
-        @repeating_trip = RepeatingTrip.new
-        @repeating_trip.schedule_attributes = {:repeat => 1, :interval => 1, :start_date => Time.now.to_s, :interval_unit=>"week"}
-      end
-      @schedule = @repeating_trip.schedule_attributes
-    end
   end
   
   def handle_trip_params(trip_params)
@@ -303,56 +246,6 @@ class TripsController < ApplicationController
       trip_params[:called_back_by] = current_user
       trip_params[:called_back_at] = DateTime.now.to_s
     end
-  end
-
-  def is_repeating_trip(params)
-
-    return (params[:interval].size > 0 and (params[:monday] or 
-                                           params[:tuesday] or 
-                                           params[:wednesday] or 
-                                           params[:thursday] or 
-                                           params[:friday] or 
-                                           params[:saturday] or 
-                                           params[:sunday]))
-  end
-
-  def extract_repeating_trip_params(these_params)
-
-    repeating_trip_params = these_params[:trip].clone
-    repeating_trip_params.delete :in_district
-    repeating_trip_params.delete :called_back_by
-    repeating_trip_params.delete :called_back_at
-    repeating_trip_params.delete :cab_notified
-    repeating_trip_params.delete :trip_result
-    repeating_trip_params.delete :donation
-    repeating_trip_params.delete :customer_informed
-    repeating_trip_params.delete :called_back_at
-    repeating_trip_params.delete :called_back_by
-    repeating_trip_params.delete :run_id
-    repeating_trip_params[:schedule_attributes] = { 
-      :repeat        => 1,
-      :interval_unit => "week", 
-      :start_date    => DateTime.parse(these_params[:trip][:pickup_time]).to_date.to_s,
-      :interval      => these_params[:interval], 
-      :monday        => these_params[:monday]    ? 1 : 0,
-      :tuesday       => these_params[:tuesday]   ? 1 : 0,
-      :wednesday     => these_params[:wednesday] ? 1 : 0,
-      :thursday      => these_params[:thursday]  ? 1 : 0,
-      :friday        => these_params[:friday]    ? 1 : 0,
-      :saturday      => these_params[:saturday]  ? 1 : 0,
-      :sunday        => these_params[:sunday]    ? 1 : 0
-    }
-    if these_params[:repeating_trip][:vehicle_id] == "-1"
-      repeating_trip_params[:cab] = true
-      repeating_trip_params[:vehicle_id] = nil
-      repeating_trip_params[:driver_id]  = nil
-    else
-      repeating_trip_params[:cab] = false
-      repeating_trip_params[:vehicle_id] = these_params[:repeating_trip][:vehicle_id]
-      repeating_trip_params[:driver_id]  = these_params[:repeating_trip][:driver_id]
-    end
-    
-    repeating_trip_params
   end
 
   def filter_trips

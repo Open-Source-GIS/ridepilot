@@ -1,7 +1,5 @@
 class Trip < ActiveRecord::Base
   attr_accessor :driver_id, :vehicle_id, :via_repeating_trip
-  attr_writer :repetition_interval, :repetition_vehicle_id, :repetition_driver_id
-  attr_writer :repeats_mondays, :repeats_tuesdays, :repeats_wednesdays, :repeats_thursdays, :repeats_fridays, :repeats_saturdays, :repeats_sundays
 
   belongs_to :provider
   belongs_to :run
@@ -87,44 +85,156 @@ class Trip < ActiveRecord::Base
     end
   end
 
+  def repeats_mondays=(value)
+    @repeats_mondays = (value == "1" || value == true)
+  end
+
   def repeats_mondays
-    @repeats_mondays || false
+    if @repeats_mondays.nil? 
+      if repeating_trip.present?
+        @repeats_mondays = (repeating_trip.schedule_attributes.monday == 1)
+      else
+        @repeats_mondays = false
+      end
+    else
+      @repeats_mondays
+    end
+  end
+
+  def repeats_tuesdays=(value)
+    @repeats_tuesdays = (value == "1" || value == true)
   end
 
   def repeats_tuesdays
-    @repeats_tuesdays || false
+    if @repeats_tuesdays.nil? 
+      if repeating_trip.present?
+        @repeats_tuesdays = (repeating_trip.schedule_attributes.tuesday == 1)
+      else
+        @repeats_tuesdays = false
+      end
+    else
+      @repeats_tuesdays
+    end
+  end
+
+  def repeats_wednesdays=(value)
+    @repeats_wednesdays = (value == "1" || value == true)
   end
 
   def repeats_wednesdays
-    @repeats_wednesdays || false
+    if @repeats_wednesdays.nil? 
+      if repeating_trip.present?
+        @repeats_wednesdays = (repeating_trip.schedule_attributes.wednesday == 1)
+      else
+        @repeats_wednesdays = false
+      end
+    else
+      @repeats_wednesdays
+    end
+  end
+
+  def repeats_thursdays=(value)
+    @repeats_thursdays = (value == "1" || value == true)
   end
 
   def repeats_thursdays
-    @repeats_thursdays || false
+    if @repeats_thursdays.nil? 
+      if repeating_trip.present?
+        @repeats_thursdays = (repeating_trip.schedule_attributes.thursday == 1)
+      else
+        @repeats_thursdays = false
+      end
+    else
+      @repeats_thursdays
+    end
+  end
+
+  def repeats_fridays=(value)
+    @repeats_fridays = (value == "1" || value == true)
   end
 
   def repeats_fridays
-    @repeats_fridays || false
+    if @repeats_fridays.nil? 
+      if repeating_trip.present?
+        @repeats_fridays = (repeating_trip.schedule_attributes.friday == 1)
+      else
+        @repeats_fridays = false
+      end
+    else
+      @repeats_fridays
+    end
+  end
+
+  def repeats_saturdays=(value)
+    @repeats_saturdays = (value == "1" || value == true)
   end
 
   def repeats_saturdays
-    @repeats_saturdays || false
+    if @repeats_saturdays.nil? 
+      if repeating_trip.present?
+        @repeats_saturdays = (repeating_trip.schedule_attributes.saturday == 1)
+      else
+        @repeats_saturdays = false
+      end
+    else
+      @repeats_saturdays
+    end
+  end
+
+  def repeats_sundays=(value)
+    @repeats_sundays = (value == "1" || value == true)
   end
 
   def repeats_sundays
-    @repeats_sundays || false
+    if @repeats_sundays.nil? 
+      if repeating_trip.present?
+        @repeats_sundays = (repeating_trip.schedule_attributes.sunday == 1)
+      else
+        @repeats_sundays = false
+      end
+    else
+      @repeats_sundays
+    end
+  end
+
+  def repetition_driver_id=(value)
+    @repetition_driver_id = value.to_i
   end
 
   def repetition_driver_id
-    @repetition_driver_id
+    if @repetition_driver_id.nil?
+      @repetition_driver_id = repeating_trip.try :driver_id
+    else
+      @repetition_driver_id
+    end
+  end
+
+  def repetition_vehicle_id=(value)
+    @repetition_vehicle_id = value.to_i
   end
 
   def repetition_vehicle_id
-    @repetition_vehicle_id
+    if @repetition_vehicle_id.nil?
+      @repetition_vehicle_id = repeating_trip.try :vehicle_id
+    else
+      @repetition_vehicle_id
+    end
+  end
+
+  def repetition_interval=(value)
+    @repetition_interval = value.to_i
   end
 
   def repetition_interval
-    @repetition_interval
+    if @repetition_interval.nil?
+      if repeating_trip.present?
+        @repetition_interval = repeating_trip.schedule_attributes.interval 
+      else
+        1
+      end
+    else
+      @repetition_interval
+    end
   end
 
   def is_repeating_trip?
@@ -142,7 +252,7 @@ class Trip < ActiveRecord::Base
   private
   
   def create_repeating_trip
-    if is_repeating_trip?
+    if is_repeating_trip? && !via_repeating_trip
       rt = RepeatingTrip.create!(repeating_trip_attributes)
       self.repeating_trip = rt
       rt.instantiate 
@@ -150,6 +260,7 @@ class Trip < ActiveRecord::Base
   end
 
   def update_repeating_trip
+    debugger
     if is_repeating_trip? 
       #this is a repeating trip, so we need to edit both
       #the repeating trip, and the instance for today
