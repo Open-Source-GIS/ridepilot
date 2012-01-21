@@ -260,7 +260,6 @@ class Trip < ActiveRecord::Base
   end
 
   def update_repeating_trip
-    debugger
     if is_repeating_trip? 
       #this is a repeating trip, so we need to edit both
       #the repeating trip, and the instance for today
@@ -270,25 +269,32 @@ class Trip < ActiveRecord::Base
         repeating_trip.attributes = repeating_trip_attributes
         if repeating_trip.changed?
           repeating_trip.save!
-          destroy_obsolete_trips
+          destroy_future_repeating_trips
           repeating_trip.instantiate
         end
       end
     elsif !is_repeating_trip? && repeating_trip.present?
-      destroy_obsolete_trips
+      destroy_future_repeating_trips
+      unlink_past_trips
       rt = self.repeating_trip
       self.repeating_trip_id = nil
       rt.destroy
     end
   end
 
-  def destroy_obsolete_trips
+  def destroy_future_repeating_trips
     if pickup_time < Time.now #Be sure not delete trips that have already happened.
-      Trip.repeating_based_on(repeating_trip).today_and_prior.update_all 'repeating_trip_id = NULL'
       Trip.repeating_based_on(repeating_trip).after_today.destroy_all
     else 
-      Trip.repeating_based_on(repeating_trip).prior_to(pickup_time).update_all 'repeating_trip_id = NULL'
       Trip.repeating_based_on(repeating_trip).after(pickup_time).destroy_all
+    end
+  end
+
+  def unlink_past_trips
+    if pickup_time < Time.now 
+      Trip.repeating_based_on(repeating_trip).today_and_prior.update_all 'repeating_trip_id = NULL'
+    else 
+      Trip.repeating_based_on(repeating_trip).prior_to(pickup_time).update_all 'repeating_trip_id = NULL'
     end
   end
 

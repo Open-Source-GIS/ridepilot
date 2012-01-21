@@ -64,7 +64,7 @@ describe Trip do
       end
     end
 
-    context "when updating a trip with repeating trip data" do
+    context "when updating a future trip with repeating trip data" do
       before do
         trip.save
         trip.repeats_mondays = false
@@ -72,6 +72,7 @@ describe Trip do
         trip.repetition_vehicle_id = 2
         trip.repetition_driver_id = 2
         trip.save
+        trip.reload
       end
 
       it "should have the correct repeating trip attributes" do
@@ -96,15 +97,57 @@ describe Trip do
       end
 
       it "should tell me the correct repeating trip data when reloading the trip" do
-        id = trip.id
-        trip = Trip.find(id)
+        trip.reload
         trip.repeats_mondays.should == false
         trip.repeats_tuesdays.should == true
         trip.repetition_vehicle_id.should == 2
         trip.repetition_driver_id.should == 2
       end
     end
-    
+   
+    context "when updating a past trip with repeating trip data" do
+      before do
+        trip.pickup_time = Time.now - 1.week
+        trip.appointment_time = trip.pickup_time + 30.minutes
+        trip.save
+        trip.repeats_mondays = false
+        trip.repeats_tuesdays = true
+        trip.repetition_vehicle_id = 2
+        trip.repetition_driver_id = 2
+        trip.save
+        trip.reload
+      end
+
+      it "should have the correct repeating trip attributes" do
+        trip.repeating_trip.schedule_attributes.monday.should be_nil
+        trip.repeating_trip.schedule_attributes.tuesday.should == 1
+      end
+
+      it "should have new child trips on the correct day" do
+        count = 0
+        Trip.where(:repeating_trip_id => trip.repeating_trip_id).where("id <> ?",trip.id).each do |t|
+          count += 1 if t.pickup_time.strftime("%u") == "2"
+        end
+        count.should == 3
+      end
+
+      it "should have no child trips on the old day" do
+        count = 0
+        Trip.where(:repeating_trip_id => trip.repeating_trip_id).where("id <> ?",trip.id).each do |t|
+          count += 1 if t.pickup_time.strftime("%u") == "1"
+        end
+        count.should == 0
+      end
+
+      it "should tell me the correct repeating trip data when reloading the trip" do
+        trip.reload
+        trip.repeats_mondays.should == false
+        trip.repeats_tuesdays.should == true
+        trip.repetition_vehicle_id.should == 2
+        trip.repetition_driver_id.should == 2
+      end
+    end
+
     context "when I clear out the repetition data" do
       before do
         trip.save
