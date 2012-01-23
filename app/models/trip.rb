@@ -13,22 +13,20 @@ class Trip < ActiveRecord::Base
   belongs_to :created_by, :foreign_key => :created_by_id, :class_name=>'User'
   belongs_to :updated_by, :foreign_key => :updated_by_id, :class_name=>'User'
 
-  before_create :create_repeating_trip
-  before_update :update_repeating_trip
-
-  serialize :guests
-
   before_validation :compute_in_district
   before_validation :compute_run
+  before_create :create_repeating_trip
+  before_update :update_repeating_trip
+  after_save    :instantiate_repeating_trips
   
+  serialize :guests
+
   validates_presence_of :pickup_address
   validates_presence_of :dropoff_address
   validates_presence_of :pickup_time
   validates_presence_of :appointment_time
   validates_presence_of :trip_purpose
-
   validate :driver_is_valid_for_vehicle
-
   validates_associated :pickup_address
   validates_associated :dropoff_address
 
@@ -50,6 +48,26 @@ class Trip < ActiveRecord::Base
   scope :prior_to, lambda{|pickup_time| where('trips.pickup_time < ?', pickup_time)}
   scope :after, lambda{|pickup_time| where('trips.pickup_time > ?', pickup_time)}
   scope :repeating_based_on, lambda{|repeating_trip| where(:repeating_trip_id => repeating_trip.id)}
+
+  DAYS_OF_WEEK = %w{monday tuesday wednesday thursday friday saturday sunday}
+  
+  DAYS_OF_WEEK.each do |day|
+    define_method "repeats_#{day}s=" do |value|
+      instance_variable_set "@repeats_#{day}s", (value == "1" || value == true)
+    end
+
+    define_method "repeats_#{day}s" do
+      if instance_variable_get("@repeats_#{day}s").nil?
+        if repeating_trip.present?
+          instance_variable_set "@repeats_#{day}s", repeating_trip.schedule_attributes.send(day) == 1
+        else
+          instance_variable_set "@repeats_#{day}s", false 
+        end
+      else
+        instance_variable_get("@repeats_#{day}s")
+      end
+    end
+  end
 
   def date
     pickup_time.to_date
@@ -82,118 +100,6 @@ class Trip < ActiveRecord::Base
       run.label
     else
       "(No run specified)"
-    end
-  end
-
-  def repeats_mondays=(value)
-    @repeats_mondays = (value == "1" || value == true)
-  end
-
-  def repeats_mondays
-    if @repeats_mondays.nil? 
-      if repeating_trip.present?
-        @repeats_mondays = (repeating_trip.schedule_attributes.monday == 1)
-      else
-        @repeats_mondays = false
-      end
-    else
-      @repeats_mondays
-    end
-  end
-
-  def repeats_tuesdays=(value)
-    @repeats_tuesdays = (value == "1" || value == true)
-  end
-
-  def repeats_tuesdays
-    if @repeats_tuesdays.nil? 
-      if repeating_trip.present?
-        @repeats_tuesdays = (repeating_trip.schedule_attributes.tuesday == 1)
-      else
-        @repeats_tuesdays = false
-      end
-    else
-      @repeats_tuesdays
-    end
-  end
-
-  def repeats_wednesdays=(value)
-    @repeats_wednesdays = (value == "1" || value == true)
-  end
-
-  def repeats_wednesdays
-    if @repeats_wednesdays.nil? 
-      if repeating_trip.present?
-        @repeats_wednesdays = (repeating_trip.schedule_attributes.wednesday == 1)
-      else
-        @repeats_wednesdays = false
-      end
-    else
-      @repeats_wednesdays
-    end
-  end
-
-  def repeats_thursdays=(value)
-    @repeats_thursdays = (value == "1" || value == true)
-  end
-
-  def repeats_thursdays
-    if @repeats_thursdays.nil? 
-      if repeating_trip.present?
-        @repeats_thursdays = (repeating_trip.schedule_attributes.thursday == 1)
-      else
-        @repeats_thursdays = false
-      end
-    else
-      @repeats_thursdays
-    end
-  end
-
-  def repeats_fridays=(value)
-    @repeats_fridays = (value == "1" || value == true)
-  end
-
-  def repeats_fridays
-    if @repeats_fridays.nil? 
-      if repeating_trip.present?
-        @repeats_fridays = (repeating_trip.schedule_attributes.friday == 1)
-      else
-        @repeats_fridays = false
-      end
-    else
-      @repeats_fridays
-    end
-  end
-
-  def repeats_saturdays=(value)
-    @repeats_saturdays = (value == "1" || value == true)
-  end
-
-  def repeats_saturdays
-    if @repeats_saturdays.nil? 
-      if repeating_trip.present?
-        @repeats_saturdays = (repeating_trip.schedule_attributes.saturday == 1)
-      else
-        @repeats_saturdays = false
-      end
-    else
-      @repeats_saturdays
-    end
-  end
-
-  def repeats_sundays=(value)
-    @repeats_sundays = (value == "1" || value == true)
-  end
-
-  def repeats_sundays
-    if @repeats_sundays.nil? 
-      if repeating_trip.present?
-        @repeats_sundays = (repeating_trip.schedule_attributes.sunday == 1)
-      else
-        @repeats_sundays = false
-      end
-    else
-      @repeats_sundays
     end
   end
 
@@ -253,9 +159,7 @@ class Trip < ActiveRecord::Base
   
   def create_repeating_trip
     if is_repeating_trip? && !via_repeating_trip
-      rt = RepeatingTrip.create!(repeating_trip_attributes)
-      self.repeating_trip = rt
-      rt.instantiate 
+      self.repeating_trip = RepeatingTrip.create!(repeating_trip_attributes)
     end
   end
 
@@ -263,23 +167,26 @@ class Trip < ActiveRecord::Base
     if is_repeating_trip? 
       #this is a repeating trip, so we need to edit both
       #the repeating trip, and the instance for today
-      if self.repeating_trip.blank?
+      if repeating_trip.blank?
         create_repeating_trip
       else
         repeating_trip.attributes = repeating_trip_attributes
         if repeating_trip.changed?
           repeating_trip.save!
           destroy_future_repeating_trips
-          repeating_trip.instantiate
         end
       end
     elsif !is_repeating_trip? && repeating_trip.present?
       destroy_future_repeating_trips
       unlink_past_trips
-      rt = self.repeating_trip
+      rt = repeating_trip
       self.repeating_trip_id = nil
       rt.destroy
     end
+  end
+
+  def instantiate_repeating_trips
+    repeating_trip.instantiate if !repeating_trip_id.nil? && !via_repeating_trip
   end
 
   def destroy_future_repeating_trips

@@ -16,7 +16,7 @@ describe Trip do
     end
   end
 
-  describe "after validation for trips with repetition" do
+  describe "after validation for trips with repetition:" do
     attr_accessor :trip
     before do
       @trip = new_trip(
@@ -64,7 +64,7 @@ describe Trip do
       end
     end
 
-    context "when updating a future trip with repeating trip data" do
+    context "when updating a future trip with repeating trip data," do
       before do
         trip.save
         trip.repeats_mondays = false
@@ -105,7 +105,7 @@ describe Trip do
       end
     end
    
-    context "when updating a past trip with repeating trip data" do
+    context "when updating a past trip with repeating trip data," do
       before do
         trip.pickup_time = Time.now - 1.week
         trip.appointment_time = trip.pickup_time + 30.minutes

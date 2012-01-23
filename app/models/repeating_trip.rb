@@ -37,20 +37,18 @@ class RepeatingTrip < ActiveRecord::Base
   end
 
   def instantiate
-    now = Time.now
-    later = now.advance(:days=>21)
+    now = Date.today + 1.day
+    later = now.advance(:days=>20) 
     for date in schedule.occurrences_between(now, later)
       this_trip_pickup_time = Time.gm(date.year, date.month, date.day, pickup_time.hour, pickup_time.min, pickup_time.sec)
 
-      if this_trip_pickup_time != pickup_time 
+      unless Trip.repeating_based_on(self).for_date(date).exists?
         attributes = self.attributes
         NON_TRIP_ATTRIBUTES.each {|attr| attributes.delete(attr)}
         attributes["repeating_trip_id"] = id
         attributes["pickup_time"] = this_trip_pickup_time
         attributes["appointment_time"] = this_trip_pickup_time + (appointment_time - pickup_time)
         attributes["via_repeating_trip"] = true
-
-        Trip.repeating_based_on(self).for_date(this_trip_pickup_time).each {|t| t.destroy } 
         Trip.new(attributes).save!
       end
     end
