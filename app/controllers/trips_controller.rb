@@ -126,14 +126,10 @@ class TripsController < ApplicationController
 
   def create
     trip_params = params[:trip]
-
     @customer = Customer.find(trip_params[:customer_id])
     authorize! :read, @customer
-
-    provider = @customer.provider
     trip_params[:provider_id] = @customer.provider.id if @customer.provider.present?
     handle_trip_params trip_params
-
     authorize! :manage, Trip.new(trip_params)
 
     @trip = Trip.new(trip_params)
@@ -148,7 +144,6 @@ class TripsController < ApplicationController
   def update
     trip_params = params[:trip]
     @customer = Customer.find(trip_params[:customer_id])
-    provider = @customer.provider
     trip_params[:provider_id] = @customer.provider.id if @customer.provider.present?
     handle_trip_params trip_params
     authorize! :manage, @trip
