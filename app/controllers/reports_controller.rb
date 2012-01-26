@@ -178,7 +178,7 @@ class ReportsController < ApplicationController
 
     @donations_by_customer = {}
     @total = 0
-    for trip in Trip.for_provider(current_provider_id).for_date_range(@query.start_date, @query.end_date).where(["donation > 0"])
+    for trip in Trip.for_provider(current_provider_id).for_date_range(@query.start_date, @query.end_date).where(["donation > 0"]).order(:pickup_time)
       customer = trip.customer
       if ! @donations_by_customer.member? customer
         @donations_by_customer[customer] = trip.donation
@@ -194,7 +194,7 @@ class ReportsController < ApplicationController
     query_params = params[:query] || {}
     @query = Query.new(query_params)
 
-    @trips = Trip.for_provider(current_provider_id).for_date_range(@query.start_date, @query.end_date).for_cab
+    @trips = Trip.for_provider(current_provider_id).for_date_range(@query.start_date, @query.end_date).for_cab.order(:pickup_time)
   end
 
   def age_and_ethnicity
@@ -272,7 +272,7 @@ class ReportsController < ApplicationController
 
     cab = Driver.new(:name=>'Cab') #dummy driver for cab trips
 
-    trips = Trip.scheduled.for_provider(current_provider_id).for_date(@date).includes(:pickup_address,:dropoff_address,:customer,:mobility,{:run => :driver})
+    trips = Trip.scheduled.for_provider(current_provider_id).for_date(@date).includes(:pickup_address,:dropoff_address,:customer,:mobility,{:run => :driver}).order(:pickup_time)
     if @query.driver_id == '-2' # All
       # No additional filtering
     elsif @query.driver_id == '-1' # Cab
@@ -309,7 +309,7 @@ class ReportsController < ApplicationController
     @query = Query.new(query_params)
     @date = @query.start_date
 
-    @trips = Trip.for_provider(current_provider_id).for_date(@date).includes(:pickup_address,:dropoff_address,:customer,:mobility,{:run => :driver})
+    @trips = Trip.for_provider(current_provider_id).for_date(@date).includes(:pickup_address,:dropoff_address,:customer,:mobility,{:run => :driver}).order(:pickup_time)
   end
 
   private
@@ -321,8 +321,8 @@ class ReportsController < ApplicationController
     @query = Query.new(query_params)
     @date = @query.start_date
 
-    trips = Trip.scheduled.for_provider(current_provider_id).for_date(@date).includes(:pickup_address,:dropoff_address,:customer,:mobility,{:run => :driver})
-    @cab_trips = Trip.for_cab.scheduled.for_provider(current_provider_id).for_date(@date).includes(:pickup_address,:dropoff_address,:customer,:mobility,{:run => :driver})
+    trips = Trip.scheduled.for_provider(current_provider_id).for_date(@date).includes(:pickup_address,:dropoff_address,:customer,:mobility,{:run => :driver}).order(:pickup_time)
+    @cab_trips = Trip.for_cab.scheduled.for_provider(current_provider_id).for_date(@date).includes(:pickup_address,:dropoff_address,:customer,:mobility,{:run => :driver}).order(:pickup_time)
 
     if @query.driver_id == '-2' # All
       trips = trips.not_for_cab
