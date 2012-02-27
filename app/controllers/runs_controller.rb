@@ -11,6 +11,7 @@ class RunsController < ApplicationController
   before_filter :filter_runs, :only => :index
 
   def index
+    @runs = @runs.for_provider(current_provider_id)
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @trips }
@@ -36,7 +37,7 @@ class RunsController < ApplicationController
   end
 
   def uncompleted_runs
-    @runs = Run.where("complete = false").order("date desc")
+    @runs = Run.for_provider(current_provider_id).where("complete = false").order("date desc")
     render "index"
   end
 
@@ -97,7 +98,7 @@ class RunsController < ApplicationController
   
   def for_date
     date = Date.parse params[:date]
-    @runs = @runs.incomplete_on date
+    @runs = @runs.for_provider(current_provider_id).incomplete_on date
     render :json =>  @runs.to_json 
   end
   

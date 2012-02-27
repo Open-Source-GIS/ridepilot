@@ -2,7 +2,7 @@ class CustomersController < ApplicationController
   load_and_authorize_resource :except=>[:autocomplete, :found]
 
   def autocomplete
-    customers = Customer.by_term( params['term'].downcase, 10 ).accessible_by(current_ability)
+    customers = Customer.for_provider(current_provider_id).by_term( params['term'].downcase, 10 ).accessible_by(current_ability)
     
     render :json => customers.map { |customer| customer.as_autocomplete }
   end
@@ -19,7 +19,7 @@ class CustomersController < ApplicationController
 
   def index #only active customers
     @show_inactivated_date = false
-    @customers = @customers.where(:inactivated_date => nil)
+    @customers = @customers.for_provider(current_provider_id).where(:inactivated_date => nil)
     @customers = @customers.by_letter(params[:letter]) if params[:letter].present?
     
     respond_to do |format|
@@ -29,7 +29,7 @@ class CustomersController < ApplicationController
   end
   
   def search
-    @customers = Customer.by_term( params[:term].downcase ).
+    @customers = Customer.for_provider(current_provider_id).by_term( params[:term].downcase ).
       accessible_by( current_ability ).
       paginate( :page => params[:page], :per_page => PER_PAGE )
       
@@ -37,7 +37,7 @@ class CustomersController < ApplicationController
   end
 
   def search
-    @customers = Customer.by_term( params[:term].downcase ).
+    @customers = Customer.for_provider(current_provider_id).by_term( params[:term].downcase ).
       accessible_by( current_ability ).
       paginate( :page => params[:page], :per_page => PER_PAGE )
 
@@ -46,7 +46,7 @@ class CustomersController < ApplicationController
 
   def all
     @show_inactivated_date = true
-    @customers = Customer.accessible_by(current_ability)
+    @customers = Customer.for_provider(current_provider_id).accessible_by(current_ability)
     @customers = @customers.paginate :page => params[:page], :per_page => PER_PAGE
     render :action=>"index"
   end
@@ -56,7 +56,7 @@ class CustomersController < ApplicationController
     @customer = Customer.find(params[:id])
 
     # default scope is pickup time ascending, so reverse
-    @trips    = @customer.trips.reverse.paginate :page => params[:page], :per_page => PER_PAGE
+    @trips    = @customer.trips.order(:pickup_time).reverse.paginate :page => params[:page], :per_page => PER_PAGE
 
     respond_to do |format|
       format.html # show.html.erb
