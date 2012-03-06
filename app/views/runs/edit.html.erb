@@ -37,7 +37,7 @@
               <%= trip_fields.select :trip_result, @trip_results, :include_blank => true %>
             </td>
             <td>
-              <%= link_to "Edit Trip", trip, :class => "edit" %>
+              <%= link_to "Edit Trip", [:edit,trip], :class => "edit" %>
             </td>
           </tr>
         <% end %>
