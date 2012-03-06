@@ -48,6 +48,8 @@ class Trip < ActiveRecord::Base
   scope :prior_to, lambda{|pickup_time| where('trips.pickup_time < ?', pickup_time)}
   scope :after, lambda{|pickup_time| where('trips.pickup_time > ?', pickup_time)}
   scope :repeating_based_on, lambda{|repeating_trip| where(:repeating_trip_id => repeating_trip.id)}
+  scope :called_back, where('called_back_at IS NOT NULL')
+  scope :not_called_back, where('called_back_at IS NULL')
 
   DAYS_OF_WEEK = %w{monday tuesday wednesday thursday friday saturday sunday}
   
@@ -191,9 +193,9 @@ class Trip < ActiveRecord::Base
 
   def destroy_future_repeating_trips
     if pickup_time < Time.now #Be sure not delete trips that have already happened.
-      Trip.repeating_based_on(repeating_trip).after_today.destroy_all
+      Trip.repeating_based_on(repeating_trip).after_today.not_called_back.destroy_all
     else 
-      Trip.repeating_based_on(repeating_trip).after(pickup_time).destroy_all
+      Trip.repeating_based_on(repeating_trip).after(pickup_time).not_called_back.destroy_all
     end
   end
 
