@@ -22,6 +22,7 @@ gem 'exception_notification',
     :require => "exception_notifier"
 gem 'bartt-ssl_requirement', :require => 'ssl_requirement'
 gem 'capistrano'
+gem 'capistrano-ext'
 gem "escape_utils"    
 
 group :test, :development do
