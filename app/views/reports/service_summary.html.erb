@@ -11,6 +11,27 @@
   </fieldset>
 <% end %>
 
+<div id="rc-address">
+  Ride Connection
+  <br />
+  847 NE 19th Ave #200
+  <br />
+  Portland, OR 97232
+  <br />
+  503.528.1720
+</div>
+
+<div id="submit-information">
+  <strong>Please submit report by the 5th of each month:</strong>
+  <br />
+  Kirsten Huckfeldt, Fiscal Specialist
+  <br />
+  Phone: 503.528.1742
+  <br />
+  Fax: 503.528.1755
+  <br />
+  Email: Khuckfeldt@rideconnection.org
+</div>
 
 <%= form_for @monthly, :url=> {:action=>:update_monthly} do |f| %>
   <%= f.hidden_field :id %>
@@ -19,22 +40,53 @@
 
     <table>
       <tr>
-        <th>Section 1 - Ride Data</th>
-        <th>In-district trips</th>
-        <th>Out-of-district trips</th>
-        <th>Total</th>
+        <th colspan="5" class="table-header">
+          Service Summary Section 1 - Trip Data
+        </th>
       </tr>
-    
-      <% for row in @trips_by_purpose %>
       <tr>
-        <td><%= row['purpose'] %></td>
-        <td><%= row['in_district'] %></td>
-        <td><%= row['out_of_district'] %></td>
-        <td><%= row['in_district'] + row['out_of_district'] %></td>
+        <th colspan="2">
+        </th>
+        <th colspan="3" class="service-header">
+          STF Service
+        </th>
       </tr>
+      <tr>
+        <th>
+          Line #
+        </th>
+        <th>
+        </th>
+        <th>
+          In District
+        </th>
+        <th>
+          Out of District
+        </th>
+        <th>
+          Total
+        </th>
+      </tr>
+
+      <tr>
+        <th></th>
+        <th>Trips</th>
+        <th colspan=3 class="greyed-out"></th>
+      </tr>
+
+      <% i = 0 %>
+      <% for row in @trips_by_purpose %>
+        <tr>
+          <th><%= i += 1 %></th>
+          <td><%= row['purpose'] %></td>
+          <td><%= row['in_district'] %></td>
+          <td><%= row['out_of_district'] %></td>
+          <td><%= row['in_district'] + row['out_of_district'] %></td>
+        </tr>
       <% end %>
     
       <tr>
+        <th><%= i += 1 %></th>
         <td>Total</td>
         <td><%= @total['in_district'] %></td>
         <td><%= @total['out_of_district'] %></td>
@@ -42,97 +94,89 @@
       </tr>
     
       <tr>
-        <tD>Total miles driven</td>
+        <th><%= i += 1 %></th>
+        <td>Total miles driven</td>
+        <td colspan="2" class="greyed-out"></td>
         <td><%= @total_miles_driven %></td>
-        <td></td>
-        <td></td>
       </tr>
     
       <tr>
+        <th><%= i += 1 %></th>
         <td>Turndowns</td>
+        <td colspan="2" class="greyed-out"></td>
         <td><%= @turndowns %></td>
-        <td></td>
-        <td></td>
       </tr>
     
       <tr>
+        <th></th>
+        <th>Drivers</th>
+        <th colspan="3" class="greyed-out"></th>
+      </tr>
+
+      <tr>
+        <th><%= i += 1 %></th>
         <td>Driver hours: Volunteer</td>
+        <td colspan="2" class="greyed-out"></td>
         <td><%= @volunteer_driver_hours %></td>
-        <td></td>
-        <td></td>
       </tr>
     
       <tr>
+        <th><%= i += 1 %></th>
         <td>Driver hours: Paid</td>
+        <td colspan="2" class="greyed-out"></td>
         <td><%= @paid_driver_hours %></td>
-        <td></td>
-        <td></td>
       </tr>
     
       <tr>
+        <th><%= i += 1 %></th>
         <td>Total Driver hours</td>
+        <td colspan="2" class="greyed-out"></td>
         <td><%= @paid_driver_hours + @volunteer_driver_hours %></td>
-        <td></td>
-        <td></td>
       </tr>
     
       <tr>
+        <th></th>
+        <th>Volunteer Hours</th>
+        <th colspan=3 class="greyed-out"></th>
+      </tr>
+
+      <tr>
+        <th><%= i += 1 %></th>
         <td>Volunteer hours: Escort</td>
+        <td colspan="2" class="greyed-out"></td>
         <td>
           <% if can? :edit, @monthly %>
-          <%= f.text_field :volunteer_escort_hours %>
+            <%= f.text_field :volunteer_escort_hours %>
           <% else %>
-          <%= @monthly.volunteer_escort_hours %>
+            <%= @monthly.volunteer_escort_hours %>
           <% end %>
         </td>
-        <td></td>
-        <td></td>
       </tr>
     
       <tr>
+        <th><%= i += 1 %></th>
         <td>Volunteer hours: Administrative</td>
+        <td colspan="2" class="greyed-out"></td>
         <td>
           <% if can? :edit, @monthly %>
-          <%= f.text_field :volunteer_admin_hours %>
+            <%= f.text_field :volunteer_admin_hours %>
           <% else %>
-          <%= @monthly.volunteer_admin_hours %>
+            <%= @monthly.volunteer_admin_hours %>
           <% end %>
         </td>
-        <td></td>
-        <td></td>
       </tr>
     
       <tr>
-        <td>Unduplicated riders</td>
+        <th></th>
+        <th>Ride Information</th>
+        <th colspan=3 class="greyed-out"></th>
+      </tr>
+
+      <tr>
+        <th><%= i += 1 %></th>
+        <td>Unduplicated riders (First ride this fiscal year)</td>
+        <td colspan="2" class="greyed-out"></td>
         <td><%= @undup_riders %></td>
-        <td></td>
-        <td></td>
-      </tr>
-    
-      <tr>
-        <td>Compliments</td>
-        <td>
-          <% if can? :edit, @monthly %>
-          <%= f.text_field :compliments %>
-          <% else %>
-          <%= @monthly.compliments %>
-          <% end %>
-        </td>
-        <td></td>
-        <td></td>
-      </tr>
-    
-      <tr>
-        <td>Complaints</td>
-        <td>
-          <% if can? :edit, @monthly %>
-          <%= f.text_field :complaints %>
-          <% else %>
-          <%= @monthly.complaints %>
-          <% end %>
-        </td>
-        <td></td>
-        <td></td>
       </tr>
     
     </table>
