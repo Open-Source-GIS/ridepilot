@@ -1,16 +1,13 @@
+<%= render "shared/error_messages", :target => @monthly %> 
+
 <%= form_for @monthly do |f| %>
 
   <fieldset>
 
     <ol class="section first">
       <li>
-        <%= f.label :start_date %>
-        <%= f.text_field :start_date %>    
-      </li>
-
-      <li>
-        <%= f.label :end_date %>
-        <%= f.text_field :end_date %>
+        <%= f.label :start_date, "Month" %>
+        <%= f.date_select :start_date, :order => [:month, :year] %>    
       </li>
     </ol>
 
@@ -26,18 +23,6 @@
       </li>
     </ol>
 
-    <ol class="section third">
-      <li>
-        <%= f.label :complaints %>
-        <%= f.text_field :complaints %>
-      </li>
-
-      <li>
-        <%= f.label :compliments %>
-        <%= f.text_field :compliments %>
-      </li>
-    </ol>
-    
     <div class="actions">    
       <%= f.submit %>
     </div>

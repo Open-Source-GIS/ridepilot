@@ -1,5 +1,5 @@
 <div id="page-header">
-  <h1>Reports: Monthly</h1>
+  <h1>Reports: Monthly Miscellaneous Data</h1>
 </div>
 
 <% if @monthlies.size == 0 %>
@@ -10,29 +10,25 @@
       <th>Month</th>
       <th>Volunteer escort hours</th>
       <th>Volunteer admin hours</th>
-      <th>Complaints</th>
-      <th>Compliments</th>
       <% if can? :edit, Monthly %>
-      <th></th>
+        <th></th>
       <% end %>
     </tr>
     
     <% for monthly in @monthlies %>
-    <tr>
-      <td><%= monthly.start_date.strftime("%B %Y") %></td>
-      <td><%= monthly.volunteer_escort_hours %></td>
-      <td><%= monthly.volunteer_admin_hours %></td>
-      <td><%= monthly.complaints %></td>
-      <td><%= monthly.compliments %></td>
-      <% if can? :edit, monthly %>
-      <td><%= link_to "Edit", edit_monthly_path(monthly) %></td>
-      <% end %>
-    </tr>
+      <tr>
+        <td><%= monthly.start_date.strftime("%B %Y") %></td>
+        <td><%= monthly.volunteer_escort_hours %></td>
+        <td><%= monthly.volunteer_admin_hours %></td>
+        <% if can? :edit, monthly %>
+          <td><%= link_to "Edit", edit_monthly_path(monthly) %></td>
+        <% end %>
+      </tr>
     <% end %>
   </table>
 <% end %>
 
 <% if can? :edit, Monthly %>
-<hr />
-<p><%= link_to "Create Monthly Report", new_monthly_path, :class=>'action-bttn new-report' %></p>
+  <hr />
+  <p><%= link_to "Add New Monthly Data", new_monthly_path, :class=>'action-bttn new-report' %></p>
 <% end %>

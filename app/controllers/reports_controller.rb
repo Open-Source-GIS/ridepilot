@@ -94,25 +94,17 @@ class ReportsController < ApplicationController
       query_params = params[:query]
       @query = Query.new(query_params)
       @start_date = @query.start_date
-      @monthly = Monthly.where(:start_date => @start_date, :end_date => @start_date.next_month, :provider_id=>current_provider_id).first
-    elsif params[:id]
-      @monthly = Monthly.find(params[:id])      
-      @start_date = @monthly.start_date
-      @end_date = @monthly.end_date
     else
       now = Date.today
       @start_date = Date.new(now.year, now.month, 1).prev_month
+      @query = Query.new
+      @query.start_date = @start_date
     end
-
-    @query = Query.new
-    @query.start_date = @start_date
-    @end_date = @start_date.next_month
-    if @monthly.nil?
-      @monthly = Monthly.create(:start_date=>@start_date, :end_date=>@end_date, :provider_id=>current_provider_id)
-    end
+    @monthly = Monthly.where(:start_date => @start_date, :provider_id=>current_provider_id).first
+    @monthly = Monthly.new(:start_date=>@start_date, :provider_id=>current_provider_id) if @monthly.nil?
 
     if !can? :read, @monthly
-      return redirect_to "/"
+      return redirect_to reports_path
     end
 
     #computes number of trips in and out of district by purpose
@@ -160,16 +152,6 @@ class ReportsController < ApplicationController
     prior_customers_in_fiscal_year = trip_customers.for_date_range(fiscal_year_start_date(@start_date), @start_date).map {|x| x.customer_id}
     customers_this_period = trip_customers.for_date_range(@start_date, @end_date).map {|x| x.customer_id}
     @undup_riders = (customers_this_period - prior_customers_in_fiscal_year).size
-  end
-
-  def update_monthly
-    @monthly = Monthly.find(params[:monthly][:id])
-    params[:monthly][:provider_id] = current_provider_id
-    if can? :edit, @monthly
-      @monthly.update_attributes(params[:monthly])
-      flash[:notice] = "Report successfully updated." 
-    end
-    redirect_to :action=>:service_summary, :id => @monthly.id
   end
 
   def donations
