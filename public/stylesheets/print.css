@@ -190,6 +190,7 @@ body.service-summary table {
 
 body.service-summary table td, body.service-summary table th {
   border: 1px solid black;
+  padding: .25em;
 }
 
 body.service-summary table th.table-header {
@@ -216,20 +217,22 @@ body.service-summary table td.total {
   font-weight: bold;
 }
 
-body.service-summary dl { } 
+body.service-summary dl { 
+  font-weight: bold; 
+} 
 
 body.service-summary dt { 
   float: left; 
   clear: left; 
-  width: 2in; 
+  width: 2.5in; 
   text-align: left; 
-  font-weight: bold; 
   white-space: nowrap;
-  } 
+} 
   
 body.service-summary dd { 
-  font-weight: bold; 
-}
+  padding: 5pt;
+  margin-left: 2.5in;
+} 
 
 body.service-summary dt.hand-completed, body.service-summary dd.hand-completed { 
   margin-top: 0.4in

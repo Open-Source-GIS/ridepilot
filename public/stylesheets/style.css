@@ -1051,6 +1051,36 @@ body.reports table.trip td.mobility {
   font-style: italic;
 }
 
+body.service-summary #instructions, 
+body.service-summary #address, 
+body.service-summary #logo,
+body.service-summary #report-footer,
+body.service-summary th.table-header {
+  display: none;
+}
+
+body.service-summary table th {
+  background-color: inherit;
+  color: black;
+}
+
+body.service-summary table th.data, body.service-summary table th.line-number {
+  width: 10%;
+}
+
+body.service-summary table td.greyed-out {
+  background-color: #C0C0C0;
+}
+
+body.service-summary table td.numeric {
+  text-align: right;
+}
+
+body.service-summary table td.total {
+  font-weight: bold;
+}
+
+
 
 /*
  *
