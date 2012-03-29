@@ -102,6 +102,7 @@ class ReportsController < ApplicationController
     end
     @monthly = Monthly.where(:start_date => @start_date, :provider_id=>current_provider_id).first
     @monthly = Monthly.new(:start_date=>@start_date, :provider_id=>current_provider_id) if @monthly.nil?
+    @provider = current_provider
 
     if !can? :read, @monthly
       return redirect_to reports_path

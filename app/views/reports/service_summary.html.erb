@@ -11,7 +11,9 @@
   </fieldset>
 <% end %>
 
-<div id="rc-address">
+<%= image_tag("rc-grayscale-logo.jpg", :size => "100x65", :id => "logo") %>
+
+<div id="address">
   Ride Connection
   <br />
   847 NE 19th Ave #200
@@ -21,8 +23,8 @@
   503.528.1720
 </div>
 
-<div id="submit-information">
-  <strong>Please submit report by the 5th of each month:</strong>
+<div id="instructions">
+  <strong>Please submit report by the 5th of each month to:</strong>
   <br />
   Kirsten Huckfeldt, Fiscal Specialist
   <br />
@@ -47,26 +49,26 @@
     </th>
   </tr>
   <tr>
-    <th>
+    <th class="line-number">
       Line #
     </th>
     <th>
     </th>
-    <th>
+    <th class="data">
       In District
     </th>
-    <th>
+    <th class="data">
       Out of District
     </th>
-    <th>
+    <th class="data">
       Total
     </th>
   </tr>
 
   <tr>
     <th></th>
-    <th>Trips</th>
-    <th colspan=3 class="greyed-out"></th>
+    <th class="section-header">Trips</th>
+    <td colspan="3" class="greyed-out"></td>
   </tr>
 
   <% i = 0 %>
@@ -74,72 +76,72 @@
     <tr>
       <th><%= i += 1 %></th>
       <td><%= row['purpose'] %></td>
-      <td><%= row['in_district'] %></td>
-      <td><%= row['out_of_district'] %></td>
-      <td><%= row['in_district'] + row['out_of_district'] %></td>
+      <td class="numeric"><%= row['in_district'] %></td>
+      <td class="numeric"><%= row['out_of_district'] %></td>
+      <td class="numeric total"><%= row['in_district'] + row['out_of_district'] %></td>
     </tr>
   <% end %>
 
   <tr>
     <th><%= i += 1 %></th>
     <td>Total</td>
-    <td><%= @total['in_district'] %></td>
-    <td><%= @total['out_of_district'] %></td>
-    <td><%= @total['in_district'] + @total['out_of_district'] %></td>
+    <td class="numeric total"><%= @total['in_district'] %></td>
+    <td class="numeric total"><%= @total['out_of_district'] %></td>
+    <td class="numeric total"><%= @total['in_district'] + @total['out_of_district'] %></td>
   </tr>
 
   <tr>
     <th><%= i += 1 %></th>
     <td>Total miles driven</td>
     <td colspan="2" class="greyed-out"></td>
-    <td><%= @total_miles_driven %></td>
+    <td class="numeric"><%= @total_miles_driven %></td>
   </tr>
 
   <tr>
     <th><%= i += 1 %></th>
     <td>Turndowns</td>
     <td colspan="2" class="greyed-out"></td>
-    <td><%= @turndowns %></td>
+    <td class="numeric"><%= @turndowns %></td>
   </tr>
 
   <tr>
     <th></th>
-    <th>Drivers</th>
-    <th colspan="3" class="greyed-out"></th>
+    <th class="section-header">Drivers</th>
+    <td colspan="3" class="greyed-out"></td>
   </tr>
 
   <tr>
     <th><%= i += 1 %></th>
     <td>Driver hours: Volunteer</td>
     <td colspan="2" class="greyed-out"></td>
-    <td><%= @volunteer_driver_hours %></td>
+    <td class="numeric"><%= @volunteer_driver_hours %></td>
   </tr>
 
   <tr>
     <th><%= i += 1 %></th>
     <td>Driver hours: Paid</td>
     <td colspan="2" class="greyed-out"></td>
-    <td><%= @paid_driver_hours %></td>
+    <td class="numeric"><%= @paid_driver_hours %></td>
   </tr>
 
   <tr>
     <th><%= i += 1 %></th>
     <td>Total Driver hours</td>
     <td colspan="2" class="greyed-out"></td>
-    <td><%= @paid_driver_hours + @volunteer_driver_hours %></td>
+    <td class="numeric total"><%= @paid_driver_hours + @volunteer_driver_hours %></td>
   </tr>
 
   <tr>
     <th></th>
-    <th>Volunteer Hours</th>
-    <th colspan=3 class="greyed-out"></th>
+    <th class="section-header">Volunteer Hours</th>
+    <td colspan="3" class="greyed-out"></td>
   </tr>
 
   <tr>
     <th><%= i += 1 %></th>
     <td>Volunteer hours: Escort</td>
     <td colspan="2" class="greyed-out"></td>
-    <td>
+    <td class="numeric">
       <%= @monthly.volunteer_escort_hours %>
     </td>
   </tr>
@@ -148,22 +150,38 @@
     <th><%= i += 1 %></th>
     <td>Volunteer hours: Administrative</td>
     <td colspan="2" class="greyed-out"></td>
-    <td>
+    <td class="numeric">
       <%= @monthly.volunteer_admin_hours %>
     </td>
   </tr>
 
   <tr>
     <th></th>
-    <th>Ride Information</th>
-    <th colspan=3 class="greyed-out"></th>
+    <th class="section-header">Ride Information</th>
+    <td colspan=3 class="greyed-out"></td>
   </tr>
 
   <tr>
     <th><%= i += 1 %></th>
     <td>Unduplicated riders (First ride this fiscal year)</td>
     <td colspan="2" class="greyed-out"></td>
-    <td><%= @undup_riders %></td>
+    <td class="numeric"><%= @undup_riders %></td>
   </tr>
 
 </table>
+
+
+<dl id="report-footer">
+  <dt>Provider/Agency:</dt>
+  <dd><%= @provider.name %></dd>
+
+  <dt>Report month:</dt>
+  <dd><%= @start_date.strftime("%B %Y") %></dd>
+
+  <dt class="hand-completed">Person preparing report (please print):</dt>
+  <dd class="hand-completed"></dd>
+
+  <dt class="hand-completed">Signature of person preparing report:</dt>
+  <dd class="hand-completed"></dt>
+</dl>
+  

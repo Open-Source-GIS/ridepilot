@@ -160,3 +160,83 @@ body.reports table.trip td.mobility {
   font-style: italic;
 }
 
+body.service-summary div#page-header {
+  display: none;
+}
+
+body.service-summary fieldset.select-month {
+  display: none;
+}
+
+body.service-summary img#logo {
+  float: left;
+  margin: 0 25px 25px 0;
+}
+
+body.service-summary div#address {
+  float: left;
+}
+
+body.service-summary div#instructions {
+  float: right;
+}
+
+body.service-summary table {
+  border: 2px solid black;
+  width: 100%;
+  clear: both;
+  margin-top: 25px;
+}
+
+body.service-summary table td, body.service-summary table th {
+  border: 1px solid black;
+}
+
+body.service-summary table th.table-header {
+  font-size: 18px;
+}
+
+body.service-summary table th.section-header {
+  text-align: left;
+}
+
+body.service-summary table th.data, body.service-summary table th.line-number {
+  width: 10%;
+}
+
+body.service-summary table td.greyed-out {
+  background-color: #C0C0C0 !important;
+}
+
+body.service-summary table td.numeric {
+  text-align: right;
+}
+
+body.service-summary table td.total {
+  font-weight: bold;
+}
+
+body.service-summary dl { } 
+
+body.service-summary dt { 
+  float: left; 
+  clear: left; 
+  width: 2in; 
+  text-align: left; 
+  font-weight: bold; 
+  white-space: nowrap;
+  } 
+  
+body.service-summary dd { 
+  font-weight: bold; 
+}
+
+body.service-summary dt.hand-completed, body.service-summary dd.hand-completed { 
+  margin-top: 0.4in
+}
+
+body.service-summary dd.hand-completed { 
+  width: 4in;
+  border-bottom: 2px solid black;
+}
+
