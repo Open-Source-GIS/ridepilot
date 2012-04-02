@@ -144,7 +144,7 @@ class ReportsController < ApplicationController
 
     mileage_runs = runs.select("vehicle_id, min(start_odometer) as min_odometer, max(end_odometer) as max_odometer").group("vehicle_id").with_odometer_readings
     @total_miles_driven = 0
-    mileage_runs.each {|run| @total_miles_driven += (max_odometer.to_i - min_odometer.to_i) }
+    mileage_runs.each {|run| @total_miles_driven += (run.max_odometer.to_i - run.min_odometer.to_i) }
 
     @turndowns = Trip.turned_down.for_date_range(@start_date, @end_date).for_provider(current_provider_id).count
     @volunteer_driver_hours = hms_to_hours(runs.for_volunteer_driver.sum("actual_end_time - actual_start_time") || "0:00:00")
