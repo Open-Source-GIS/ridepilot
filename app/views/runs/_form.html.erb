@@ -28,19 +28,23 @@
   <ol class="section second">
     <li>
       <%= f.label :scheduled_start_time %>
-      <%= f.text_field :scheduled_start_time, "data-behavior" => "date-time-picker" %>
+      <%= f.text_field :scheduled_start_time, 
+          :value => @run.scheduled_start_time.try(:to_s), "data-behavior" => "date-time-picker" %>
     </li>
     <li>
       <%= f.label :scheduled_end_time %>
-      <%= f.text_field :scheduled_end_time, "data-behavior" => "date-time-picker" %>
+      <%= f.text_field :scheduled_end_time, 
+          :value => @run.scheduled_end_time.try(:to_s), "data-behavior" => "date-time-picker" %>
     </li>
     <li>
       <%= f.label :actual_start_time %>
-      <%= f.text_field :actual_start_time, "data-behavior" => "date-time-picker" %>
+      <%= f.text_field :actual_start_time, 
+          :value => @run.actual_start_time.try(:to_s), "data-behavior" => "date-time-picker" %>
     </li>
     <li>
       <%= f.label :actual_end_time %>
-      <%= f.text_field :actual_end_time, "data-behavior" => "date-time-picker" %>
+      <%= f.text_field :actual_end_time, 
+          :value => @run.actual_end_time.try(:to_s), "data-behavior" => "date-time-picker" %>
     </li>
   </ol>
   <ol class="section third">

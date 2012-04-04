@@ -250,4 +250,20 @@ $(function() {
     
     click.preventDefault();
   });
+
+  $('[data-behavior=date-time-picker]').datetimepicker({
+    ampm: true,
+    stepMinute: 15,
+    stepHour: 1,
+    hourMin: 7,
+    hourMax: 18,
+    hourGrid: 2,
+    minuteGrid: 15,
+    showOn: "button",
+    timeFormat: 'hh:mm TT',
+    dateFormat: 'yy-mm-dd',
+    buttonImage: "../../images/calendar-clock.png",
+    buttonImageOnly: true,
+    constrainInput: false
+  });
 });
