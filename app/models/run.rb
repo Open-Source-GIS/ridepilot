@@ -13,8 +13,8 @@ class Run < ActiveRecord::Base
   
   accepts_nested_attributes_for :trips
   
-  validates_date :scheduled_end_time, :after => :scheduled_start_time, :allow_nil => true
-  validates_date :actual_end_time, :after => :actual_start_time, :allow_nil => true
+  validates_datetime :scheduled_end_time, :after => :scheduled_start_time, :allow_nil => true
+  validates_datetime :actual_end_time, :after => :actual_start_time, :allow_nil => true
   
   scope :for_provider, lambda{|provider_id| where( :provider_id => provider_id ) }
   scope :for_paid_driver, where(:paid => true)
