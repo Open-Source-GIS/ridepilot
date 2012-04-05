@@ -79,6 +79,10 @@ class Trip < ActiveRecord::Base
     trip_result == 'COMP'
   end
 
+  def pending
+    trip_result.blank?
+  end
+
   def vehicle_id
     run ? run.vehicle_id : @vehicle_id
   end

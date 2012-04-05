@@ -112,7 +112,7 @@ class RunsController < ApplicationController
     else
       time     = Time.now
       @week_start = time.beginning_of_week
-      @week_end   = @week_start + 7.days
+      @week_end   = @week_start + 6.days
     end
     
     @runs = @runs.
