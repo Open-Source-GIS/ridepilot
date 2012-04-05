@@ -16,6 +16,15 @@ class Run < ActiveRecord::Base
   validates_datetime :scheduled_end_time, :after => :scheduled_start_time, :allow_nil => true
   validates_datetime :actual_end_time, :after => :actual_start_time, :allow_nil => true
   validates_date :date
+  validates_numericality_of :start_odometer, :allow_nil => true
+  validates_numericality_of :end_odometer, :allow_nil => true
+  validates_numericality_of :end_odometer, :allow_nil => true, 
+    :greater_than => Proc.new {|run| run.start_odometer }, 
+    :if => Proc.new {|run| run.start_odometer.present? }  
+  validates_numericality_of :end_odometer, :allow_nil => true, 
+    :less_than => Proc.new {|run| run.start_odometer + 500 }, 
+    :if => Proc.new {|run| run.start_odometer.present? }  
+  validates_numericality_of :unpaid_driver_break_time, :allow_nil => true
   
   scope :for_provider, lambda{|provider_id| where( :provider_id => provider_id ) }
   scope :for_paid_driver, where(:paid => true)
@@ -47,17 +56,29 @@ class Run < ActiveRecord::Base
   private
 
   def set_complete
-    self.complete = (!actual_start_time.nil?) and (!actual_end_time.nil?) and actual_end_time < DateTime.now and vehicle_id and driver_id and trips.none? &:pending
+    self.complete = ((!actual_start_time.nil?) && (!actual_end_time.nil?) && actual_end_time < DateTime.now && vehicle_id && driver_id && (trips.none? &:pending))
     true
   end
 
   def fix_dates 
     d = self.date
     unless d.nil?
-      self.scheduled_start_time = DateTime.new(d.year,d.month,d.day,scheduled_start_time.hour,scheduled_start_time.min,0) unless scheduled_start_time.nil?
-      self.scheduled_end_time = DateTime.new(d.year,d.month,d.day,scheduled_end_time.hour,scheduled_end_time.min,0) unless scheduled_end_time.nil?
-      self.actual_start_time = DateTime.new(d.year,d.month,d.day,actual_start_time.hour,actual_start_time.min,0) unless actual_start_time.nil?
-      self.actual_end_time = DateTime.new(d.year,d.month,d.day,actual_end_time.hour,actual_end_time.min,0) unless actual_end_time.nil?
+      unless scheduled_start_time.nil?
+        s = scheduled_start_time 
+        self.scheduled_start_time = DateTime.new(d.year, d.month, d.day, s.hour, s.min, 0) 
+      end
+      unless scheduled_end_time.nil?
+        s = scheduled_end_time
+        self.scheduled_end_time = DateTime.new(d.year, d.month, d.day, s.hour, s.min, 0) 
+      end
+      unless actual_start_time.nil?
+        a = actual_start_time
+        self.actual_start_time = DateTime.new(d.year, d.month, d.day, a.hour, a.min, 0) 
+      end
+      unless actual_end_time.nil?
+        a = actual_end_time
+        self.actual_end_time = DateTime.new(d.year, d.month, d.day, a.hour, a.min, 0)
+      end
     end
     true
   end
