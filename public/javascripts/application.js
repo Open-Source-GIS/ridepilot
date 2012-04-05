@@ -251,7 +251,7 @@ $(function() {
     click.preventDefault();
   });
 
-  $('[data-behavior=date-time-picker]').datetimepicker({
+  $('[data-behavior=time-picker]').timepicker({
     ampm: true,
     stepMinute: 15,
     stepHour: 1,
@@ -261,7 +261,6 @@ $(function() {
     minuteGrid: 15,
     showOn: "button",
     timeFormat: 'hh:mm TT',
-    dateFormat: 'yy-mm-dd',
     buttonImage: "../../images/calendar-clock.png",
     buttonImageOnly: true,
     constrainInput: false

@@ -7,11 +7,14 @@ class Run < ActiveRecord::Base
 
   has_many :trips, :order=>"pickup_time"
 
-  before_validation :set_complete
+  before_validation :set_complete, :fix_dates
 
   stampable :creator_attribute => :created_by_id, :updater_attribute => :updated_by_id
   
   accepts_nested_attributes_for :trips
+  
+  validates_date :scheduled_end_time, :after => :scheduled_start_time, :allow_nil => true
+  validates_date :actual_end_time, :after => :actual_start_time, :allow_nil => true
   
   scope :for_provider, lambda{|provider_id| where( :provider_id => provider_id ) }
   scope :for_paid_driver, where(:paid => true)
@@ -22,14 +25,6 @@ class Run < ActiveRecord::Base
 
   def cab=(value)
     @cab = value
-  end
-
-  def set_complete
-    if scheduled_end_time
-      date = scheduled_end_time.to_date
-    end
-    complete = (!actual_start_time.nil?) and (!actual_end_time.nil?) and actual_end_time < DateTime.now and vehicle_id and driver_id and trips.all? &:complete
-    true
   end
 
   def vehicle_name
@@ -48,4 +43,21 @@ class Run < ActiveRecord::Base
     { :id => id, :label => label }
   end
 
+  private
+
+  def set_complete
+    if scheduled_end_time
+      date = scheduled_end_time.to_date
+    end
+    complete = (!actual_start_time.nil?) and (!actual_end_time.nil?) and actual_end_time < DateTime.now and vehicle_id and driver_id and trips.all? &:complete
+    true
+  end
+
+  def fix_dates 
+    d = self.date
+    self.scheduled_start_time = DateTime.new(d.year,d.month,d.day,scheduled_start_time.hour,scheduled_start_time.min,0) unless scheduled_start_time.nil?
+    self.scheduled_end_time = DateTime.new(d.year,d.month,d.day,scheduled_end_time.hour,scheduled_end_time.min,0) unless scheduled_end_time.nil?
+    self.actual_start_time = DateTime.new(d.year,d.month,d.day,actual_start_time.hour,actual_start_time.min,0) unless actual_start_time.nil?
+    self.actual_end_time = DateTime.new(d.year,d.month,d.day,actual_end_time.hour,actual_end_time.min,0) unless actual_end_time.nil?
+  end
 end
