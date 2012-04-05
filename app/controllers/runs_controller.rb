@@ -115,11 +115,8 @@ class RunsController < ApplicationController
       @week_end   = @week_start + 7.days
     end
     
-    Rails.logger.debug("WEEK START: #{@week_start}")
-    Rails.logger.debug("WEEK END: #{@week_end}")
-    
     @runs = @runs.
-      where("scheduled_start_time >= '#{@week_start.strftime "%Y-%m-%d %H:%M:%S"}'").
-      where("scheduled_start_time <= '#{@week_end.strftime "%Y-%m-%d %H:%M:%S"}'")
+      where("date >= '#{@week_start.to_s(:db)}'").
+      where("date <= '#{@week_end.to_s(:db)}'")
   end
 end

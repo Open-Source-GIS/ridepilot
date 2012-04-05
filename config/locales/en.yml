@@ -11,3 +11,5 @@ en:
               after: "must be after the scheduled start time"
             actual_end_time:
               after: "must be after the actual start time"
+            date:
+              invalid_date: "must be a valid date"

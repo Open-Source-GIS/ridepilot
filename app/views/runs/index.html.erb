@@ -29,13 +29,13 @@
 </h2>
 <table id="runs">
   <tr class="head">
+    <th>Date</th>
     <th>Scheduled Start time</th>
     <th>Scheduled End time</th>
     <th>Vehicle</th>
     <th>Driver</th>
     <th>Complete</th>
 <% if can? :edit, Run %><th></th><% end %>
-    <th></th>
   </tr>
   <% if @runs.size > 0 %>
     <% @runs.each do |run| %>

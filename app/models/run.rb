@@ -15,6 +15,7 @@ class Run < ActiveRecord::Base
   
   validates_datetime :scheduled_end_time, :after => :scheduled_start_time, :allow_nil => true
   validates_datetime :actual_end_time, :after => :actual_start_time, :allow_nil => true
+  validates_date :date
   
   scope :for_provider, lambda{|provider_id| where( :provider_id => provider_id ) }
   scope :for_paid_driver, where(:paid => true)
@@ -55,9 +56,11 @@ class Run < ActiveRecord::Base
 
   def fix_dates 
     d = self.date
-    self.scheduled_start_time = DateTime.new(d.year,d.month,d.day,scheduled_start_time.hour,scheduled_start_time.min,0) unless scheduled_start_time.nil?
-    self.scheduled_end_time = DateTime.new(d.year,d.month,d.day,scheduled_end_time.hour,scheduled_end_time.min,0) unless scheduled_end_time.nil?
-    self.actual_start_time = DateTime.new(d.year,d.month,d.day,actual_start_time.hour,actual_start_time.min,0) unless actual_start_time.nil?
-    self.actual_end_time = DateTime.new(d.year,d.month,d.day,actual_end_time.hour,actual_end_time.min,0) unless actual_end_time.nil?
+    unless d.nil?
+      self.scheduled_start_time = DateTime.new(d.year,d.month,d.day,scheduled_start_time.hour,scheduled_start_time.min,0) unless scheduled_start_time.nil?
+      self.scheduled_end_time = DateTime.new(d.year,d.month,d.day,scheduled_end_time.hour,scheduled_end_time.min,0) unless scheduled_end_time.nil?
+      self.actual_start_time = DateTime.new(d.year,d.month,d.day,actual_start_time.hour,actual_start_time.min,0) unless actual_start_time.nil?
+      self.actual_end_time = DateTime.new(d.year,d.month,d.day,actual_end_time.hour,actual_end_time.min,0) unless actual_end_time.nil?
+    end
   end
 end

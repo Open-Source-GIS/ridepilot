@@ -12,6 +12,12 @@
 
 <fieldset>
   <ol class="section first">
+    <% if @run.new_record? %>
+      <li>
+        <%= f.label :date %>
+        <%= f.text_field :date, :size => 10, :class => "datepicker" %>
+      </li>
+    <% end %>
     <li>
       <%= f.label :vehicle %>
       <%= f.collection_select :vehicle_id, @vehicles, :id, :name %>
