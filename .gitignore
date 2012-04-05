@@ -10,3 +10,4 @@ public/system
 *.swp
 db/legacy
 .DS_Store
+tags
