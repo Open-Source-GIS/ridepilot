@@ -90,17 +90,10 @@ class ReportsController < ApplicationController
   end
 
   def service_summary
-    if params[:query]
-      query_params = params[:query]
-      @query = Query.new(query_params)
-      @start_date = @query.start_date
-    else
-      now = Date.today
-      @start_date = Date.new(now.year, now.month, 1).prev_month
-      @query = Query.new
-      @query.start_date = @start_date
-    end
-    @end_date = @start_date + 1.month
+    query_params = params[:query] || {}
+    @query = Query.new(query_params)
+    @start_date = @query.start_date
+    @end_date = @query.end_date
     @monthly = Monthly.where(:start_date => @start_date, :provider_id=>current_provider_id).first
     @monthly = Monthly.new(:start_date=>@start_date, :provider_id=>current_provider_id) if @monthly.nil?
     @provider = current_provider
@@ -184,14 +177,16 @@ class ReportsController < ApplicationController
   def age_and_ethnicity
     query_params = params[:query] || {}
     @query = Query.new(query_params)
+    @start_date = @query.start_date
+    @end_date = @query.end_date
 
     #we need new riders this month, where new means "first time this fy"
     #so, for each trip this month, find the customer, then find out whether 
     # there was a previous trip for this customer this fy
 
     trip_customers = Trip.select("DISTINCT customer_id").for_provider(current_provider_id).completed
-    prior_customers_in_fiscal_year = trip_customers.for_date_range(fiscal_year_start_date(@query.start_date), @query.start_date).map {|x| x.customer_id}
-    customers_this_period = trip_customers.for_date_range(@query.start_date, @query.end_date).map {|x| x.customer_id}
+    prior_customers_in_fiscal_year = trip_customers.for_date_range(fiscal_year_start_date(@start_date), @start_date).map {|x| x.customer_id}
+    customers_this_period = trip_customers.for_date_range(@start_date, @end_date).map {|x| x.customer_id}
     
     new_customers = Customer.where(:id => (customers_this_period - prior_customers_in_fiscal_year))
     earlier_customers = Customer.where(:id => prior_customers_in_fiscal_year)
@@ -205,6 +200,7 @@ class ReportsController < ApplicationController
     @this_year_less_than_sixty = 0
 
     @counts_by_ethnicity = {}
+    @provider = current_provider
 
     #first, handle the customers from this month
     for customer in new_customers

@@ -1055,6 +1055,10 @@ body.service-summary #instructions,
 body.service-summary #address, 
 body.service-summary #logo,
 body.service-summary #report-footer,
+body.age-and-ethnicity #instructions, 
+body.age-and-ethnicity #address, 
+body.age-and-ethnicity #logo,
+body.age-and-ethnicity #report-footer,
 body.service-summary th.table-header {
   display: none;
 }
