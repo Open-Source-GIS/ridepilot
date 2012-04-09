@@ -40,6 +40,7 @@ class Trip < ActiveRecord::Base
   scope :for_date, lambda{|date| where('CAST(trips.pickup_time AS date) = CAST(? AS date)', date) }
   scope :for_date_range, lambda{|start_date, end_date| where('trips.pickup_time >= ? AND trips.pickup_time < ?', start_date, end_date) }
   scope :for_driver, lambda{|driver_id| not_for_cab.where(:runs => {:driver_id => driver_id}).joins(:run) }
+  scope :for_vehicle, lambda{|vehicle_id| not_for_cab.where(:runs => {:vehicle_id => vehicle_id}).joins(:run) }
   scope :scheduled, where("trips.trip_result = '' OR trips.trip_result = 'COMP'")
   scope :completed, where(:trip_result => 'COMP')
   scope :turned_down, where(:trip_result => 'TD')

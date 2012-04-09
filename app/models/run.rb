@@ -26,11 +26,12 @@ class Run < ActiveRecord::Base
     :if => Proc.new {|run| run.start_odometer.present? }  
   validates_numericality_of :unpaid_driver_break_time, :allow_nil => true
   
-  scope :for_provider, lambda{|provider_id| where( :provider_id => provider_id ) }
+  scope :for_provider, lambda {|provider_id| where( :provider_id => provider_id ) }
+  scope :for_vehicle, lambda {|vehicle_id| where(:vehicle_id => vehicle_id )}
   scope :for_paid_driver, where(:paid => true)
   scope :for_volunteer_driver, where(:paid => false)
-  scope :incomplete_on, lambda{|date| where(:complete => false, :date => date) }
-  scope :for_date_range, lambda{|start_date, end_date| where("runs.date >= ? and runs.date < ?", start_date, end_date) }
+  scope :incomplete_on, lambda {|date| where(:complete => false, :date => date) }
+  scope :for_date_range, lambda {|start_date, end_date| where("runs.date >= ? and runs.date < ?", start_date, end_date) }
   scope :with_odometer_readings, where("start_odometer IS NOT NULL and end_odometer IS NOT NULL")
 
   def cab=(value)

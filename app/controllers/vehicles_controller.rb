@@ -2,6 +2,7 @@ class VehiclesController < ApplicationController
   load_and_authorize_resource
 
   def new
+
   end
 
   def show
@@ -13,10 +14,11 @@ class VehiclesController < ApplicationController
   end
 
   def edit
+  
   end
 
   def update
-    params[:vehicle][:provider_id] = current_provider
+    @vehicle.provider = current_provider
     if @vehicle.update_attributes(params[:vehicle])
       flash[:notice] = "Vehicle updated"
       redirect_to provider_path(current_provider)

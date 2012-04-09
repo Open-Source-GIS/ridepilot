@@ -54,39 +54,31 @@ class ReportsController < ApplicationController
   end
 
   def vehicles
-    @vehicles = Vehicle.accessible_by(current_ability)
     @query = Query.new
   end
 
   def vehicle
     query_params = params[:query]
     @query = Query.new(query_params)
-    @vehicles = Vehicle.accessible_by(current_ability)
-
-    @vehicle = Vehicle.accessible_by(current_ability).find @query.vehicle_id
     @start_date = @query.start_date
-    @end_date = @start_date.next_month
+    @end_date = @query.end_date
+    @vehicles = Vehicle.active.for_provider(current_provider).accessible_by(current_ability)
 
-    @covered_events = @vehicle.vehicle_maintenance_events.where(["service_date BETWEEN ? and ? and reimbursable=true", @start_date, @end_date])
+    @total_hours = {}
+    @total_rides = {}
+    @beginning_odometer = {}
+    @ending_odometer = {}
 
-    @noncovered_events = @vehicle.vehicle_maintenance_events.where(["service_date BETWEEN ? and ? and reimbursable=false", @start_date, @end_date])
+    @vehicles.each do |vehicle|
+      month_runs = Run.for_vehicle(vehicle.id).for_date_range(@start_date, @end_date)
+      month_trips = Trip.for_vehicle(vehicle.id).for_date_range(@start_date, @end_date).completed
 
-    month_runs = Run.where(["vehicle_id = ? and date BETWEEN ? and ? and complete=true", @vehicle.id, @start_date, @end_date])
+      @total_hours[vehicle] = month_runs.sum("actual_end_time - actual_start_time").to_i 
+      @total_rides[vehicle] = month_trips.sum("(CASE WHEN round_trip THEN 2 ELSE 1 END) * (1 + guest_count + attendant_count + group_size)").to_i
 
-    @total_hours = month_runs.sum("actual_start_time - actual_end_time").to_i 
-    @total_rides = Trip.find(:all, :joins => :run, :conditions=>{:runs => {:vehicle_id=>@vehicle.id }}).count.to_i #fixme: does not consider guests and attendants -- should it?
-
-
-    first_run = month_runs.order("date").first
-    if first_run
-      @beginning_odometer = first_run.start_odometer
-      @ending_odometer = month_runs.order("date").last.start_odometer
-    else
-      #no runs this month
-      @beginning_odometer = -1
-      @ending_odometer = -1
+      @beginning_odometer[vehicle] = month_runs.minimum(:start_odometer) || -1
+      @ending_odometer[vehicle] = month_runs.maximum(:end_odometer) || -1
     end
-
   end
 
   def service_summary

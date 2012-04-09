@@ -1,13 +1,8 @@
 <%= form_for @query, :url=>url_for(:action=>:vehicle), :html=>{:method=>:get} do |f| %>
-
   <fieldset>
-
     <p>
       <%= f.date_select  :start_date, :discard_day=>true %>
-      <%= f.collection_select :vehicle_id, @vehicles, :id, :name %>
       <%= f.submit "Report" %>
     </p>
-
   </fieldset>
-
 <% end %>

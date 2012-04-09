@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -20,6 +21,7 @@ ActiveRecord::Schema.define(:version => 20111223183142) do
     t.string   "state"
     t.string   "zip"
     t.boolean  "in_district"
+    t.point    "the_geom",             :limit => nil,                    :srid => 4326
     t.integer  "provider_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -29,7 +31,6 @@ ActiveRecord::Schema.define(:version => 20111223183142) do
     t.string   "phone_number"
     t.boolean  "inactive",                            :default => false
     t.string   "default_trip_purpose"
-    t.point    "the_geom",             :limit => nil,                    :srid => 4326
   end
 
   add_index "addresses", ["the_geom"], :name => "index_addresses_on_the_geom", :spatial => true
