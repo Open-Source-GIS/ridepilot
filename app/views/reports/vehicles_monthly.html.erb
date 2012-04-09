@@ -2,7 +2,7 @@
   <h1>Vehicle Operations Report</h1>
 </div>
 
-<%= form_for @query, :url=>url_for(:action=>:vehicles), :html=>{:method=>:get} do |f| %>
+<%= form_for @query, :url=>url_for(:action=>:vehicles_monthly), :html=>{:method=>:get} do |f| %>
   <fieldset class="select-month">
     <p>
       <%= f.date_select  :start_date, :order => [:month,:year] %>
@@ -46,22 +46,22 @@
       <th colspan="2">
         Vehicle Year/Make/Model (Internal Name)
       </th>
-      <th>
+      <th class="data">
         Total Trips
       </th>
-      <th>
+      <th class="data">
         Hours in Operation
       </th>
-      <th>
-        Avg Rides/Hours
+      <th class="data">
+        Avg Rides per Hour
       </th>
-      <th>
+      <th class="data">
         Start Odometer
       </th>
-      <th>
+      <th class="data">
         End Odometer
       </th>
-      <th>
+      <th class="data">
         Mileage
       </th>
     </tr>

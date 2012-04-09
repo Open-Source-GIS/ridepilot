@@ -161,7 +161,7 @@ body.reports table.trip td.mobility {
 }
 
 body.service-summary div#page-header, 
-body.vehicle div#page-header, 
+body.vehicles-monthly div#page-header, 
 body.age-and-ethnicity div#page-header {
   display: none;
 }
@@ -171,26 +171,26 @@ fieldset.select-month {
 }
 
 body.service-summary img#logo,
-body.vehicle img#logo,
+body.vehicles-monthly img#logo,
 body.age-and-ethnicity img#logo {
   float: left;
   margin: 0 25px 25px 0;
 }
 
 body.service-summary div#address, 
-body.vehicle div#address, 
+body.vehicles-monthly div#address, 
 body.age-and-ethnicity div#address {
   float: left;
 }
 
 body.service-summary div#instructions, 
-body.vehicle div#instructions, 
+body.vehicles-monthly div#instructions, 
 body.age-and-ethnicity div#instructions {
   float: right;
 }
 
 body.service-summary table,
-body.vehicle table,
+body.vehicles-monthly table,
 body.age-and-ethnicity table {
   border: 2px solid black;
   width: 100%;
@@ -200,8 +200,8 @@ body.age-and-ethnicity table {
 
 body.service-summary table td, 
 body.service-summary table th,
-body.vehicle table td, 
-body.vehicle table th,
+body.vehicles-monthly table td, 
+body.vehicles-monthly table th,
 body.age-and-ethnicity table td, 
 body.age-and-ethnicity table th {
   border: 1px solid black;
@@ -209,7 +209,7 @@ body.age-and-ethnicity table th {
 }
 
 body.service-summary table th.table-header, 
-body.vehicle table th.table-header, 
+body.vehicles-monthly table th.table-header, 
 body.age-and-ethnicity table th.table-header {
   font-size: 18px;
 }
@@ -220,6 +220,7 @@ body.service-summary table th.section-header {
 
 body.service-summary table th.data, 
 body.service-summary table th.line-number,
+body.vehicles-monthly table th.data, 
 body.age-and-ethnicity table th.data {
   width: 10%;
 }

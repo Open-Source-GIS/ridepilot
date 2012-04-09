@@ -53,7 +53,7 @@ class ReportsController < ApplicationController
     @drivers_with_cab =  [all, cab] + Driver.for_provider(current_provider).accessible_by(current_ability)
   end
 
-  def vehicles
+  def vehicles_monthly
     query_params = params[:query] || {}
     @query = Query.new(query_params)
     @start_date = @query.start_date
