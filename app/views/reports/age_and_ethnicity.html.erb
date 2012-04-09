@@ -6,7 +6,7 @@
 <%= form_for @query, :url=>url_for(:action=>:age_and_ethnicity), :html=>{:method=>:get} do |f| %>
   <fieldset class="select-month">
     <p>
-      <%= f.date_select :start_date, :discard_day=>true %>
+      <%= f.date_select  :start_date, :order => [:month,:year] %>
       <%= f.submit "Report" %>
     </p>
   </fieldset>
@@ -98,3 +98,5 @@
   <dt class="hand-completed">Signature of person preparing report:</dt>
   <dd class="hand-completed"></dt>
 </dl>
+
+<%= link_to 'Back to Reports', reports_path, :class=>'action-bttn' %>

@@ -1,5 +1,118 @@
 <div id="page-header">
-  <h1>Reports: Vehicles</h1>
+  <h1>Vehicle Operations Report</h1>
 </div>
 
-<%= render :partial=>"vehicle_select" %>
+<%= form_for @query, :url=>url_for(:action=>:vehicles), :html=>{:method=>:get} do |f| %>
+  <fieldset class="select-month">
+    <p>
+      <%= f.date_select  :start_date, :order => [:month,:year] %>
+      <%= f.submit "Report" %>
+    </p>
+  </fieldset>
+<% end %>
+
+<%= image_tag("rc-grayscale-logo.jpg", :size => "100x65", :id => "logo") %>
+
+<div id="address">
+  Ride Connection
+  <br />
+  847 NE 19th Ave #200
+  <br />
+  Portland, OR 97232
+  <br />
+  503.528.1720
+</div>
+
+<div id="instructions">
+  <strong>Please submit report by the 5th of each month to:</strong>
+  <br />
+  Kirsten Huckfeldt, Fiscal Specialist
+  <br />
+  Phone: 503.528.1742
+  <br />
+  Fax: 503.528.1755
+  <br />
+  Email: Khuckfeldt@rideconnection.org
+</div>
+
+<div class="report selfclear">
+  <table>
+    <tr>
+      <th colspan="8" class="table-header print-only">
+        Vehicle Operations Report
+      </th>
+    </tr>
+    <tr>
+      <th colspan="2">
+        Vehicle Year/Make/Model (Internal Name)
+      </th>
+      <th>
+        Total Trips
+      </th>
+      <th>
+        Hours in Operation
+      </th>
+      <th>
+        Avg Rides/Hours
+      </th>
+      <th>
+        Start Odometer
+      </th>
+      <th>
+        End Odometer
+      </th>
+      <th>
+        Mileage
+      </th>
+    </tr>
+
+    <% @vehicles.each do |vehicle| %>
+      <tr>
+        <th colspan="2"><%= "#{vehicle.year}/#{vehicle.make}/#{vehicle.model} (#{vehicle.name})" %></th>
+        <td class="numeric"><%= @total_rides[vehicle] %></td>
+        <td class="numeric"><%= @total_hours[vehicle] %></td>
+        <td class="numeric">
+          <% if @total_hours[vehicle] == 0 %>
+           0
+          <% else %>
+           <%= @total_rides[vehicle] / @total_hours[vehicle]  %>
+          <% end %>
+        </td>
+        <td class="numeric"><%= @beginning_odometer[vehicle] == -1 ? 'N/A' : @beginning_odometer[vehicle] %></td>
+        <td class="numeric"><%= @ending_odometer[vehicle] == -1 ? 'N/A' : @ending_odometer[vehicle] %></td>
+        <td class="numeric"><%= @ending_odometer[vehicle] == -1 || @beginning_odometer[vehicle] == -1 ? 'N/A' : @ending_odometer[vehicle] - @beginning_odometer[vehicle] %></td>
+      </tr>
+      <tr>
+        <th>VIN:</th>
+        <td><%= vehicle.vin %></td>
+        <td colspan="6" rowspan="3"></td>
+      </tr>
+      <tr>
+        <th>License Plate:</th>
+        <td><%= vehicle.license_plate %></td>
+      </tr>
+      <tr>
+        <th>Garaged Address:</th>
+        <td><%= vehicle.garaged_location %></td>
+      </tr>
+    <% end %>
+
+  </table>
+</div>
+
+
+<dl id="report-footer">
+  <dt>Provider/Agency:</dt>
+  <dd><%= @provider.name %></dd>
+
+  <dt>Report month:</dt>
+  <dd><%= @start_date.strftime("%B %Y") %></dd>
+
+  <dt class="hand-completed">Person preparing report (please print):</dt>
+  <dd class="hand-completed"></dd>
+
+  <dt class="hand-completed">Signature of person preparing report:</dt>
+  <dd class="hand-completed"></dt>
+</dl>
+
+<%= link_to 'Back to Reports', reports_path, :class=>'action-bttn' %>

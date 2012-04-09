@@ -1051,15 +1051,11 @@ body.reports table.trip td.mobility {
   font-style: italic;
 }
 
-body.service-summary #instructions, 
-body.service-summary #address, 
-body.service-summary #logo,
-body.service-summary #report-footer,
-body.age-and-ethnicity #instructions, 
-body.age-and-ethnicity #address, 
-body.age-and-ethnicity #logo,
-body.age-and-ethnicity #report-footer,
-body.service-summary th.table-header {
+body.reports #instructions, 
+body.reports #address, 
+body.reports #logo,
+body.reports #report-footer,
+body.reports th.table-header.print-only {
   display: none;
 }
 
@@ -1068,7 +1064,8 @@ body.service-summary table th {
   color: black;
 }
 
-body.service-summary table th.data, body.service-summary table th.line-number {
+body.service-summary table th.data, 
+body.service-summary table th.line-number {
   width: 10%;
 }
 

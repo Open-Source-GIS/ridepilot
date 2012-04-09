@@ -161,32 +161,36 @@ body.reports table.trip td.mobility {
 }
 
 body.service-summary div#page-header, 
+body.vehicle div#page-header, 
 body.age-and-ethnicity div#page-header {
   display: none;
 }
 
-body.service-summary fieldset.select-month,
-body.age-and-ethnicity fieldset.select-month {
+fieldset.select-month {
   display: none;
 }
 
 body.service-summary img#logo,
+body.vehicle img#logo,
 body.age-and-ethnicity img#logo {
   float: left;
   margin: 0 25px 25px 0;
 }
 
 body.service-summary div#address, 
+body.vehicle div#address, 
 body.age-and-ethnicity div#address {
   float: left;
 }
 
 body.service-summary div#instructions, 
+body.vehicle div#instructions, 
 body.age-and-ethnicity div#instructions {
   float: right;
 }
 
 body.service-summary table,
+body.vehicle table,
 body.age-and-ethnicity table {
   border: 2px solid black;
   width: 100%;
@@ -196,6 +200,8 @@ body.age-and-ethnicity table {
 
 body.service-summary table td, 
 body.service-summary table th,
+body.vehicle table td, 
+body.vehicle table th,
 body.age-and-ethnicity table td, 
 body.age-and-ethnicity table th {
   border: 1px solid black;
@@ -203,6 +209,7 @@ body.age-and-ethnicity table th {
 }
 
 body.service-summary table th.table-header, 
+body.vehicle table th.table-header, 
 body.age-and-ethnicity table th.table-header {
   font-size: 18px;
 }
@@ -221,8 +228,7 @@ body.service-summary table td.greyed-out {
   background-color: #C0C0C0 !important;
 }
 
-body.service-summary table td.numeric,
-body.age-and-ethnicity table td.numeric {
+table td.numeric {
   text-align: right;
 }
 
@@ -247,15 +253,12 @@ body.service-summary dd {
   margin-left: 2.5in;
 } 
 
-body.service-summary dt.hand-completed, 
-body.service-summary dd.hand-completed, 
-body.age-and-ethnicity dt.hand-completed, 
-body.age-and-ethnicity dd.hand-completed { 
+dt.hand-completed, 
+dd.hand-completed { 
   margin-top: 0.4in
 }
 
-body.service-summary dd.hand-completed, 
-body.age-and-ethnicity dd.hand-completed { 
+dd.hand-completed { 
   width: 4in;
   border-bottom: 2px solid black;
 }

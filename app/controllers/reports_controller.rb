@@ -54,15 +54,12 @@ class ReportsController < ApplicationController
   end
 
   def vehicles
-    @query = Query.new
-  end
-
-  def vehicle
-    query_params = params[:query]
+    query_params = params[:query] || {}
     @query = Query.new(query_params)
     @start_date = @query.start_date
     @end_date = @query.end_date
     @vehicles = Vehicle.active.for_provider(current_provider).accessible_by(current_ability)
+    @provider = current_provider
 
     @total_hours = {}
     @total_rides = {}
