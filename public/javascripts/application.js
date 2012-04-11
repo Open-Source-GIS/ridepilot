@@ -171,7 +171,7 @@ $(function() {
       current_start = new Date(parseInt(week_nav.attr("data-current-week-start")));
       new_start     = new Date(current_start.getTime());
       new_end       = new Date(current_start.getTime());
-      new_end.setDate(new_end.getDate() + 7);
+      new_end.setDate(new_end.getDate() + 6);
     } else {
       current_start = new Date(parseInt(week_nav.attr("data-start-time")));
       new_start     = new Date(current_start.getTime());
@@ -179,10 +179,10 @@ $(function() {
       
       if (target.hasClass("wc-prev")) {
         new_start.setDate(new_start.getDate() - 7); 
-        new_end = current_start;
+        new_end.setDate(new_end.getDate() - 1);
       } else {
         new_start.setDate(new_start.getDate() + 7); 
-        new_end.setDate(new_end.getDate() + 14);
+        new_end.setDate(new_end.getDate() + 13);
       }
     }
 
