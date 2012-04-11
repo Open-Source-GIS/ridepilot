@@ -117,6 +117,6 @@ class RunsController < ApplicationController
     
     @runs = @runs.
       where("date >= '#{@week_start.to_s(:db)}'").
-      where("date <= '#{@week_end.to_s(:db)}'")
+      where("date < '#{@week_end.to_s(:db)}'")
   end
 end
