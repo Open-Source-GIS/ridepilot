@@ -93,7 +93,7 @@ class Trip < ActiveRecord::Base
   end
   
   def pickup_time=(datetime)
-    write_attribute :pickup_time, format_datetime( datetime )
+    write_attribute :pickup_time, format_datetime( datetime ) 
   end
   
   def appointment_time=(datetime)
@@ -234,7 +234,15 @@ class Trip < ActiveRecord::Base
   end
 
   def format_datetime(datetime)
-    datetime.is_a?( String ) && %w{a p}.include?( datetime.last.downcase ) ? "#{datetime}m" : datetime
+    if datetime.is_a?( String ) 
+      if %w{a p}.include?( datetime.last.downcase ) 
+        Time.parse("#{datetime}m")
+      else
+        Time.parse(datetime)
+      end
+    else
+      datetime
+    end
   end
 
   def driver_is_valid_for_vehicle
@@ -346,8 +354,8 @@ class Trip < ActiveRecord::Base
     Run.create({
       :provider_id          => provider_id,
       :date                 => pickup_time.to_date,
-      :scheduled_start_time => DateTime.new( pickup_time.year, pickup_time.month, pickup_time.day, DEFAULT_RUN_START_HOUR, 0, 0),
-      :scheduled_end_time   => DateTime.new( pickup_time.year, pickup_time.month, pickup_time.day, DEFAULT_RUN_END_HOUR, 0, 0),
+      :scheduled_start_time => Time.zone.local( pickup_time.year, pickup_time.month, pickup_time.day, DEFAULT_RUN_START_HOUR, 0, 0),
+      :scheduled_end_time   => Time.zone.local( pickup_time.year, pickup_time.month, pickup_time.day, DEFAULT_RUN_END_HOUR, 0, 0),
       :vehicle_id           => vehicle_id,
       :driver_id            => driver_id,
       :complete             => false,

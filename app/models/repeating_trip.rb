@@ -40,8 +40,8 @@ class RepeatingTrip < ActiveRecord::Base
     now = Date.today + 1.day
     later = now.advance(:days=>20) 
     for date in schedule.occurrences_between(now, later)
-      this_trip_pickup_time = Time.gm(date.year, date.month, date.day, pickup_time.hour, pickup_time.min, pickup_time.sec)
-
+      this_trip_pickup_time = Time.zone.local(date.year, date.month, date.day, pickup_time.hour, pickup_time.min, pickup_time.sec)
+      
       unless Trip.repeating_based_on(self).for_date(date).exists?
         attributes = self.attributes
         NON_TRIP_ATTRIBUTES.each {|attr| attributes.delete(attr)}
@@ -57,6 +57,14 @@ class RepeatingTrip < ActiveRecord::Base
   private
   
   def format_datetime(datetime)
-    datetime.is_a?( String ) && %w{a p}.include?( datetime.last.downcase ) ? "#{datetime}m" : datetime
+    if datetime.is_a?( String ) 
+      if %w{a p}.include?( datetime.last.downcase ) 
+        Time.parse("#{datetime}m")
+      else
+        Time.parse(datetime)
+      end
+    else
+      datetime
+    end
   end
 end

@@ -189,8 +189,8 @@ class TripsController < ApplicationController
     filter_trips
     trips = @trips.map { |trip| 
       { :id    => trip.id,
-        :start => trip.pickup_time.to_s(:no_tz),
-        :end   => trip.appointment_time.to_s(:no_tz),
+        :start => trip.pickup_time.to_s(:js),
+        :end   => trip.appointment_time.to_s(:js),
         :title => trip.customer.name
       }
     }
