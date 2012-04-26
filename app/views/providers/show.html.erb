@@ -131,11 +131,11 @@
         <th>Name</th>
         <th></th>
         <% if can? :edit, DevicePool %>
-        <th></th>
+          <th></th>
         <% end %>
         <th>Drivers</th>
       </tr>
-      <% for device_pool in @provider.device_pools %>
+      <% for device_pool in @provider.device_pools.sort {|a,b| a.name <=> b.name} %>
         <tr>
           <td><%= device_pool.name %></td>
           <td><span class="device-pool-color" style="background-color:#<%= device_pool.color %>;"> </span></td>
@@ -147,7 +147,7 @@
             <% if device_pool.device_pool_drivers.length == 0 %>
               <tr class="empty"><td>No drivers yet.</td><td></td></tr>
             <% else %>
-              <% for device_pool_driver in device_pool.device_pool_drivers %>
+              <% for device_pool_driver in device_pool.device_pool_drivers.sort {|a,b| a.name <=> b.name} %>
                 <%= render "device_pool_drivers/device_pool_driver_row", :device_pool_driver => device_pool_driver %>
               <% end %>
             <% end %>
@@ -155,8 +155,13 @@
             <% if @provider == current_user.current_provider && can?( :create, DevicePoolDriver ) %>
               <p><%= link_to "Add Driver", "#", :class=>'action-bttn add_device_pool_driver' %></p>
               <p style="display:none;">
-                <%= select_tag "new_device_pool_driver_#{device_pool.id}", new_device_pool_drivers_options(@unassigned_drivers, device_pool), :class => "new_device_pool_driver" %>
+                <%= select_tag "new_device_pool_driver_#{device_pool.id}", new_device_pool_members_options(@unassigned_drivers), :class => "new_device_pool_driver" %>
                 <%= link_to "Add", device_pool_device_pool_drivers_path(device_pool), :class => "add_driver_to_pool" %>
+              </p>
+              <p><%= link_to "Add Vehicle", "#", :class=>'action-bttn add_device_pool_vehicle' %></p>
+              <p style="display:none;">
+                <%= select_tag "new_device_pool_driver_#{device_pool.id}", new_device_pool_members_options(@unassigned_vehicles), :class => "new_device_pool_vehicle" %>
+                <%= link_to "Add", device_pool_device_pool_drivers_path(device_pool), :class => "add_vehicle_to_pool" %>
               </p>
             <% end %>
           </td>

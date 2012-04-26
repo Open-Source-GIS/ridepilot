@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111223183142) do
+ActiveRecord::Schema.define(:version => 20120425220752) do
 
   create_table "addresses", :force => true do |t|
     t.string   "name"
@@ -21,7 +21,6 @@ ActiveRecord::Schema.define(:version => 20111223183142) do
     t.string   "state"
     t.string   "zip"
     t.boolean  "in_district"
-    t.point    "the_geom",             :limit => nil,                    :srid => 4326
     t.integer  "provider_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -31,6 +30,7 @@ ActiveRecord::Schema.define(:version => 20111223183142) do
     t.string   "phone_number"
     t.boolean  "inactive",                            :default => false
     t.string   "default_trip_purpose"
+    t.point    "the_geom",             :limit => nil,                    :srid => 4326
   end
 
   add_index "addresses", ["the_geom"], :name => "index_addresses_on_the_geom", :spatial => true
@@ -71,6 +71,7 @@ ActiveRecord::Schema.define(:version => 20111223183142) do
     t.datetime "updated_at"
     t.integer  "driver_id"
     t.datetime "posted_at"
+    t.integer  "vehicle_id"
   end
 
   add_index "device_pool_drivers", ["device_pool_id"], :name => "index_devices_on_device_pool_id"
