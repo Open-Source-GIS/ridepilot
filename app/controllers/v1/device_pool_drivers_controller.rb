@@ -74,10 +74,10 @@ private
   end
   
   def authorize_device_pool_driver_for_user!
-    if user.present?
+    if @current_user.present?
       @device_pool_driver = params[:id].present? ? DevicePoolDriver.find(params[:id]) : @current_user.device_pool_driver
       render_unauthorized_for_resource if @device_pool_driver.blank? || !authorize!(:update, @device_pool_driver) 
-    elsif vehicle.present?
+    elsif @current_vehicle.present?
       @device_pool_driver = params[:id].present? ? DevicePoolDriver.find(params[:id]) : @current_vehicle.device_pool_driver
       render_unauthorized_for_resource if @device_pool_driver.blank? || !authorize!(:update, @device_pool_driver) 
     end
