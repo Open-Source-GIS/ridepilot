@@ -79,7 +79,7 @@ private
       render_unauthorized_for_resource if @device_pool_driver.blank? || !authorize!(:update, @device_pool_driver) 
     elsif @current_vehicle.present?
       @device_pool_driver = params[:id].present? ? DevicePoolDriver.find(params[:id]) : @current_vehicle.device_pool_driver
-      render_unauthorized_for_resource if @device_pool_driver.blank? || !authorize!(:update, @device_pool_driver) 
+      render_unauthorized_for_resource if @device_pool_driver.blank? 
     end
   rescue ActiveRecord::RecordNotFound => rnf
     render :json => { :error => rnf.message }, :status => 404
