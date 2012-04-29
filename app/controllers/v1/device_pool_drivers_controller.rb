@@ -58,7 +58,7 @@ private
     if params[:user][:email] =~ /@/
       user = User.find_by_email(params[:user][:email].downcase)
     else
-      vehicle = Vehicle.find_by_license_plate(params[:user][:email].downcase)
+      vehicle = Vehicle.where('LOWER(license_plate) = ?',params[:user][:email].downcase).first
     end
     if user && user.valid_password?(params[:user][:password])
       @current_user = user
