@@ -3,6 +3,7 @@ class Ability
 
   def initialize(user)
     ride_connection = Provider.find_by_name("Ride Connection")
+    can_manage_all = false
 
     can :read, Mobility
     can :read, Region
@@ -10,7 +11,7 @@ class Ability
     for role in user.roles
       if role.provider == ride_connection 
         if role.admin?
-          can :manage, :all 
+          can_manage_all = true
         else
           can :read, :all 
         end
@@ -24,6 +25,8 @@ class Ability
         cannot :create, Provider
       end
     end
+    can :manage, :all if can_manage_all
+
     provider = user.current_provider
     role = Role.find(:first, :conditions=>["provider_id=? and user_id=?", provider.id, user.id])
     if not role
