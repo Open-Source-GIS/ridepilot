@@ -8,8 +8,8 @@ module ApplicationHelper
     current_user && current_user.current_provider.scheduling?
   end
   
-  def new_device_pool_drivers_options(drivers, device_pool)
-    options_for_select [["",""]] + drivers.map { |d| [d.name, d.id] }
+  def new_device_pool_members_options(members)
+    options_for_select [["",""]] + members.map { |d| [d.name, d.id] }
   end
   
   def display_trip_result(trip_result)
