@@ -17,29 +17,7 @@
       </tr>
       <% @run.trips.each do |trip| %>
         <% f.fields_for :trips, trip do |trip_fields| %>
-          <tr>
-            <td>
-              <%= trip.pickup_time.strftime("%l:%M %p") %>
-            </td>
-            <td>
-              <%= trip.customer.name %>
-            </td>
-            <td>
-              <%= trip_fields.check_box :round_trip %>
-            </td>
-            <td>
-              <%= trip_fields.text_field :guest_count, :size => 1 %>
-            </td>
-            <td>
-              <%= trip_fields.text_field :attendant_count, :size => 1 %>
-            </td>
-            <td>
-              <%= trip_fields.select :trip_result, @trip_results, :include_blank => true %>
-            </td>
-            <td>
-              <%= link_to "Edit Trip", [:edit,trip], :class => "edit" %>
-            </td>
-          </tr>
+          <%= render :partial => 'trips/trip_form', :locals => {:trip_fields => trip_fields, :trip => trip, :show_edit_run_link => false} %>
         <% end %>
       <% end %>
     </table>

@@ -138,6 +138,16 @@ class ReportsController < ApplicationController
     @undup_riders = (customers_this_period - prior_customers_in_fiscal_year).size
   end
 
+  def trips_verification
+    query_params = params[:query] || {}
+    @query = Query.new(query_params)
+    @start_date = @query.start_date
+    @end_date = @query.end_date
+    @trip_results = TRIP_RESULT_CODES.map { |k,v| [v,k] }
+    
+    @trips = Trip.for_provider(current_provider_id).for_date_range(@start_date,@end_date)
+  end
+
   def donations
     query_params = params[:query] || {}
     @query = Query.new(query_params)
