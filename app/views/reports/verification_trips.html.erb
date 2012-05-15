@@ -1,0 +1,37 @@
+<%= form_tag :action => "update_verification_trips" do |f| %>
+  <table>
+    <tr>
+      <th>Pickup Time</th>
+      <th>Customer Name</th>
+      <th>Round Trip?</th>
+      <th>Guest Count</th>
+      <th>Attendant Count</th>
+      <th>Result</th>
+      <th></th>
+      <th></th>
+    </tr>
+    
+    <% @trips.group_by {|trip| trip.pickup_time.to_date}.each do |day, trips| %>
+      <tr>
+        <th colspan="8">
+          <%=format_time_for_listing_day day %>
+        </th>
+      <tr>
+      <% trips.each do |trip| %>
+        <% if trip.errors.any? %>
+          <tr>
+            <td colspan="8">
+              <%= render "shared/error_messages", :target => trip %>
+            </td>
+          <tr>
+        <% end %>
+        <%= fields_for "trips[]", trip do |trip_fields| %>
+          <%= render :partial => "trips/trip_form", :locals => {:trip => trip, :trip_fields => trip_fields, :show_edit_run_link => true} %> 
+        <% end %>
+      <% end %>
+    <% end %>
+  </table>
+  <div class="actions">
+    <%= submit_tag "Update Trips" %>
+  </div>
+<% end %>

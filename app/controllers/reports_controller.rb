@@ -138,14 +138,24 @@ class ReportsController < ApplicationController
     @undup_riders = (customers_this_period - prior_customers_in_fiscal_year).size
   end
 
-  def trips_verification
+  def verification_trips
     query_params = params[:query] || {}
     @query = Query.new(query_params)
     @start_date = @query.start_date
     @end_date = @query.end_date
     @trip_results = TRIP_RESULT_CODES.map { |k,v| [v,k] }
     
-    @trips = Trip.for_provider(current_provider_id).for_date_range(@start_date,@end_date)
+    @trips = Trip.for_provider(current_provider_id).for_date_range(@start_date,@end_date) unless @trips.present?
+  end
+
+  def update_verification_trips
+    @trips = Trip.update(params[:trips].keys, params[:trips].values).reject {|t| t.errors.empty?}
+    if @trips.empty?
+      redirect_to({:action => :verification_trips}, :notice => "Trips updated successfully" )
+    else
+      @trip_results = TRIP_RESULT_CODES.map { |k,v| [v,k] }
+      render :action => :verification_trips
+    end
   end
 
   def donations
