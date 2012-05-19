@@ -29,7 +29,8 @@ class Trip < ActiveRecord::Base
   validate :driver_is_valid_for_vehicle
   validates_associated :pickup_address
   validates_associated :dropoff_address
-
+  validates_numericality_of :guest_count, :greater_than_or_equal_to => 0
+  validates_numericality_of :attendant_count, :greater_than_or_equal_to => 0
   accepts_nested_attributes_for :customer
 
   stampable :creator_attribute => :created_by_id, :updater_attribute => :updated_by_id
