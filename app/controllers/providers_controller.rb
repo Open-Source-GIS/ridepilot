@@ -14,6 +14,7 @@ class ProvidersController < ApplicationController
   
   def show
     @unassigned_drivers = Driver.unassigned(@provider)
+    @unassigned_vehicles = Vehicle.unassigned(@provider)
   end
 
   def delete_role

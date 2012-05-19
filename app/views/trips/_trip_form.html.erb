@@ -1,0 +1,28 @@
+<tr>
+  <td>
+    <%= trip.pickup_time.strftime("%l:%M %p") %>
+  </td>
+  <td>
+    <%= trip.customer.name %>
+  </td>
+  <td>
+    <%= trip_fields.check_box :round_trip %>
+  </td>
+  <td>
+    <%= trip_fields.text_field :guest_count, :size => 1 %>
+  </td>
+  <td>
+    <%= trip_fields.text_field :attendant_count, :size => 1 %>
+  </td>
+  <td>
+    <%= trip_fields.select :trip_result, @trip_results, :include_blank => true %>
+  </td>
+  <td>
+    <%= link_to "Edit Trip", [:edit,trip], :class => "edit" %>
+  </td>
+  <% if show_edit_run_link %>
+    <td>
+      <%= link_to("Edit Run", [:edit,trip.run], :class => "edit") if trip.run.present? %>
+    </td>
+  <% end %>
+</tr>

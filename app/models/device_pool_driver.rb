@@ -3,13 +3,16 @@ class DevicePoolDriver < ActiveRecord::Base
   
   belongs_to :device_pool
   belongs_to :driver
+  belongs_to :vehicle
   has_one    :user, :through => :driver
   
   Statuses = %w{inactive active break}
   
-  validates :driver_id, :presence => true, :uniqueness => true
+  validates :driver_id, :uniqueness => true, :allow_nil => true
+  validates :vehicle_id, :uniqueness => true, :allow_nil => true
   validates :device_pool, :presence => true
   validates :status, :inclusion => { :in => Statuses, :message => "must be in #{Statuses.inspect}", :allow_nil => true }
+  validate  :require_driver_or_vehicle
   
   def lat=(coord)
     write_attribute(:lat, coord) if coord.present?
@@ -33,6 +36,7 @@ class DevicePoolDriver < ActiveRecord::Base
       :name           => name,
       :device_pool_id => device_pool_id,
       :driver_id      => driver_id,
+      :vehicle_id     => vehicle_id,
       :lat            => lat, 
       :lng            => lng, 
       :status         => status,
@@ -54,10 +58,23 @@ class DevicePoolDriver < ActiveRecord::Base
   end
   
   def name
-    driver.try :name
+    if driver.present?
+      "Driver: #{driver.name}" 
+    elsif vehicle.present?
+      "Vehicle: #{vehicle.name}"
+    end
   end
   
   def provider_id
     device_pool.provider_id
   end
+
+private
+  
+  def require_driver_or_vehicle
+    unless (vehicle_id.present? || driver_id.present?) && !(vehicle_id.present? && driver_id.present?)
+      errors.add(:base, "Record must have either an associated driver or an associated vehicle") 
+    end
+  end
+
 end

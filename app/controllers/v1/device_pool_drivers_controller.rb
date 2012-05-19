@@ -55,9 +55,15 @@ private
   def authenticate_driver!
     return render_unauthorized if params[:user].blank?      
     
-    user = User.find_by_email( params[:user][:email].downcase )
+    if params[:user][:email] =~ /@/
+      user = User.find_by_email(params[:user][:email].downcase)
+    else
+      vehicle = Vehicle.where('LOWER(license_plate) = ?',params[:user][:email].downcase).first
+    end
     if user && user.valid_password?(params[:user][:password])
       @current_user = user
+    elsif vehicle
+      @current_vehicle = vehicle 
     else
       render_unauthorized
     end
@@ -68,8 +74,13 @@ private
   end
   
   def authorize_device_pool_driver_for_user!
-    @device_pool_driver = params[:id].present? ? DevicePoolDriver.find(params[:id]) : @current_user.device_pool_driver
-    render_unauthorized_for_resource if @device_pool_driver.blank? || !authorize!(:update, @device_pool_driver) 
+    if @current_user.present?
+      @device_pool_driver = params[:id].present? ? DevicePoolDriver.find(params[:id]) : @current_user.device_pool_driver
+      render_unauthorized_for_resource if @device_pool_driver.blank? || !authorize!(:update, @device_pool_driver) 
+    elsif @current_vehicle.present?
+      @device_pool_driver = params[:id].present? ? DevicePoolDriver.find(params[:id]) : @current_vehicle.device_pool_driver
+      render_unauthorized_for_resource if @device_pool_driver.blank? 
+    end
   rescue ActiveRecord::RecordNotFound => rnf
     render :json => { :error => rnf.message }, :status => 404
   rescue CanCan::AccessDenied => e

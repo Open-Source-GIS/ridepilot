@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111223183142) do
+ActiveRecord::Schema.define(:version => 20120425220752) do
 
   create_table "addresses", :force => true do |t|
     t.string   "name"
@@ -71,6 +71,7 @@ ActiveRecord::Schema.define(:version => 20111223183142) do
     t.datetime "updated_at"
     t.integer  "driver_id"
     t.datetime "posted_at"
+    t.integer  "vehicle_id"
   end
 
   add_index "device_pool_drivers", ["device_pool_id"], :name => "index_devices_on_device_pool_id"

@@ -1,0 +1,19 @@
+<%= form_tag :action => "update_verification_trips" do |f| %>
+  <table>
+    <tr>
+      <th>Pickup Time</th>
+      <th>Customer Name</th>
+      <th>Round Trip?</th>
+      <th>Guest Count</th>
+      <th>Attendant Count</th>
+      <th>Result</th>
+      <th></th>
+      <th></th>
+    </tr>
+    <% @trips.each do |trip| %>
+      <%= fields_for "trips[]", trip do |trip_fields| %>
+        <%= render :partial => "trips/trip_form", :locals => {:trip => trip, :trip_fields => trip_fields, :show_edit_run_link => true} %> 
+      <% end %>
+    <% end %>
+  </table>
+<% end %>
