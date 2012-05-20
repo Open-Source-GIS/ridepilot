@@ -158,22 +158,34 @@ function Dispatcher (tree_id, map_id) {
       e.stopImmediatePropagation();
       
       var node = $(this).parents("li").first(); 
-      if (node.data().lat) // it's a marker
-        return self.toggleVisibility( [self.markers[node.data().id.toString()]] );
-      else {
+      if (node.data().lat) { // it's a marker
+        if (node.hasClass("jstree-checked"))
+          return self.showMarkers( [self.markers[node.data().id.toString()]] );
+        else
+          return self.hideMarkers( [self.markers[node.data().id.toString()]] );
+      } else {
         $.each( node.find("[rel=device]"), function(){
-          return self.toggleVisibility( [self.markers[$(this).data().id.toString()]] );
+          if (node.hasClass("jstree-checked"))
+            return self.showMarkers( [self.markers[$(this).data().id.toString()]] );
+          else
+            return self.hideMarkers( [self.markers[$(this).data().id.toString()]] );
         });
       }
     });
     
   },
   
-  this.toggleVisibility = function(markers){
+  this.hideMarkers = function(markers){
     $.each(markers, function(){
       var marker = this;
-      if (!marker.getMap()) marker.setMap(self.map);
-      else marker.setMap(null);
+      marker.setMap(null);
+    })
+  };
+  
+  this.showMarkers = function(markers){
+    $.each(markers, function(){
+      var marker = this;
+      marker.setMap(self.map);
     })
   };
   
