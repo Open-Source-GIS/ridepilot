@@ -1,3 +1,9 @@
+<form id="refresh" class="">
+  <div class="actions" style="border:0;">
+    <%= submit_tag "Refresh", :onclick => "d.refresh(); return false;" -%>
+  </div>
+</form>
+
 <div id="page-header">
   <h1>Dispatcher</h1>
 </div>
@@ -5,12 +11,6 @@
 <div id="tree" class="left_column">
   Loading...
 </div>
-
-<form id="refresh" class="left_column">
-  <div class="actions" style="border:0;">
-    <%= submit_tag "Refresh", :onclick => "d.refresh(); return false;" -%>
-  </div>
-</form>
 
 <div id="map-container">
   

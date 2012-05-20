@@ -1333,3 +1333,8 @@ body.trips div.repeats {
 .dispatch .marker_detail h4 {
   font-weight: normal;
 }
+
+.dispatch #refresh {
+  float: right;
+  margin-top: -0.6em;
+}
