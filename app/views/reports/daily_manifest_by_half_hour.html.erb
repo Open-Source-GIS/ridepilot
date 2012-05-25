@@ -13,8 +13,8 @@
     </div>
   <% end %>
 
-  <% start_time = @query.start_date.to_datetime.advance :hours=>@start_hour %>
-  
+  <% start_time = Time.zone.parse(@query.start_date.to_s).advance :hours=>@start_hour %>
+
   <ul class="schedule">
     <% while start_time.hour < @end_hour %>
       <li>
