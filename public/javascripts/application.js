@@ -141,6 +141,7 @@ $(function() {
       } );
       var table = $("#calendar").next("table");
       table.find("tr.trip").remove();
+      table.find("tr.day").remove();
       $.each(data.rows, function(i, row){
         table.append(row);
       })
