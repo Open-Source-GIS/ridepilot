@@ -1,0 +1,90 @@
+<%= content_for :title, "Verify Runs#{@query.try(:start_date).try(:strftime, ": %B %Y")}" %>
+<div id="page-header">
+<h1>Verify Runs<%= @query.try(:start_date).try(:strftime, ": %B %Y") %></h1>
+</div>
+
+<% if @query %> 
+  <%= form_for @query, :url=>url_for(:action=>:show_runs_for_verification), :html=>{:method=>:get} do |f| %>
+    <fieldset class="select-month">
+      <p>
+        <%= f.date_select  :start_date, :order => [:month,:day,:year] %>
+        through 
+        <%= f.date_select  :before_end_date, :order => [:month,:day,:year] %>
+        <%= f.submit "Update" %>
+      </p>
+    </fieldset>
+  <% end %>
+<% end %>
+
+<%= form_tag :action => "update_runs_for_verification" do |f| %>
+  <table>
+    <tr>
+      <th>Date</th>
+      <th></th>
+      <th>Vehicle</th>
+      <th>Driver</th>
+      <th>Actual Start Time</th>
+      <th>Actual End Time</th>
+      <th>Odometer Start</th>
+      <th>Odometer End</th>
+      <th>Unpaid Break Time</th>
+      <th>Driver Paid?</th>
+    </tr>
+    
+    <% @runs.group_by {|run| run.date.beginning_of_week}.each do |day, runs| %>
+      <tr>
+        <th colspan="11">
+          Week of <%= day.strftime("%B %d, %Y") %>
+        </th>
+      <tr>
+      <% runs.each do |run| %>
+        <% if run.errors.any? %>
+          <tr>
+            <td colspan="11">
+              <%= render "shared/error_messages", :target => run %>
+            </td>
+          <tr>
+        <% end %>
+        <%= fields_for "runs[]", run do |run_fields| %>
+          <tr>
+            <td>
+              <%= run_fields.object.date %>
+            </td>
+            <td>
+              <%= link_to pluralize(run.trips.count, "trip"), [:edit, run], :class => :edit %>
+            </td>
+            <td>
+              <%= run_fields.collection_select :vehicle_id, @vehicles, :id, :name %>
+            </td>
+            <td>
+              <%= run_fields.collection_select :driver_id, @drivers, :id, :name %>
+            </td>
+            <td>
+              <%= run_fields.text_field :actual_start_time, :size => 8, 
+                  :value => run.actual_start_time.try(:to_s, :time_only), "data-behavior" => "time-picker" %>
+            </td>
+            <td>
+              <%= run_fields.text_field :actual_end_time, :size => 8, 
+                  :value => run.actual_end_time.try(:to_s, :time_only), "data-behavior" => "time-picker" %>
+            </td>
+            <td>
+              <%= run_fields.text_field :start_odometer, :size => 8 %>
+            </td>
+            <td>
+              <%= run_fields.text_field :end_odometer, :size => 8 %>
+            </td>
+            <td>
+              <%= run_fields.text_field :unpaid_driver_break_time, :size => 8 %>
+            </td>
+            <td>
+              <%= run_fields.select :paid, [["Yes", "true"], ["No", "false"]], {:selected => run.paid.to_s} %>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+    <% end %>
+  </table>
+  <div class="actions">
+    <%= submit_tag "Update Runs" %>
+  </div>
+<% end %>

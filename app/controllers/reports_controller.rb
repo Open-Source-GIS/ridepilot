@@ -3,6 +3,7 @@ class Query
   include ActiveModel::Conversion
 
   attr_accessor :start_date
+  attr_accessor :before_end_date
   attr_accessor :end_date
   attr_accessor :vehicle_id
   attr_accessor :driver_id
@@ -14,13 +15,26 @@ class Query
   def initialize(params = {})
     now = Date.today
     @start_date = params[:start_date] || Date.new(now.year, now.month, 1).prev_month
-    @end_date = params[:end_date] || start_date.next_month
+    if params[:before_end_date]
+      @before_end_date = params[:before_end_date].to_date
+      @end_date = params[:before_end_date].to_date + 1
+    elsif params[:end_date]
+      @before_end_date = params[:end_date].to_date - 1
+      @end_date = params[:end_date].to_date
+    else
+      @before_end_date = start_date.next_month - 1
+      @end_date = start_date.next_month
+    end
     if params.present?
       if params["start_date(1i)"]
         @start_date = convert_date(params, :start_date)
       end
-      if params["end_date(1i)"]
+      if params["before_end_date(1i)"]
+        @before_end_date = convert_date(params, :before_end_date)
+        @end_date = @before_end_date + 1
+      elsif params["end_date(1i)"]
         @end_date = convert_date(params, :end_date)
+        @before_end_date = @end_date - 1
       end
       if params["vehicle_id"]
         @vehicle_id = params["vehicle_id"]
@@ -45,6 +59,7 @@ class ReportsController < ApplicationController
 
   def index
     @driver_query = Query.new :start_date => Date.today, :end_date => Date.today
+    @trips_query = Query.new 
     cab = Driver.new(:name=>"Cab")
     cab.id = -1
     all = Driver.new(:name=>"All")
@@ -138,23 +153,41 @@ class ReportsController < ApplicationController
     @undup_riders = (customers_this_period - prior_customers_in_fiscal_year).size
   end
 
-  def verification_trips
+  def show_trips_for_verification
     query_params = params[:query] || {}
     @query = Query.new(query_params)
-    @start_date = @query.start_date
-    @end_date = @query.end_date
     @trip_results = TRIP_RESULT_CODES.map { |k,v| [v,k] }
     
-    @trips = Trip.for_provider(current_provider_id).for_date_range(@start_date,@end_date) unless @trips.present?
+    @trips = Trip.for_provider(current_provider_id).for_date_range(@query.start_date,@query.end_date) unless @trips.present?
   end
 
-  def update_verification_trips
+  def update_trips_for_verification
     @trips = Trip.update(params[:trips].keys, params[:trips].values).reject {|t| t.errors.empty?}
     if @trips.empty?
-      redirect_to({:action => :verification_trips}, :notice => "Trips updated successfully" )
+      redirect_to({:action => :show_trips_for_verification}, :notice => "Trips updated successfully" )
     else
       @trip_results = TRIP_RESULT_CODES.map { |k,v| [v,k] }
-      render :action => :verification_trips
+      render :action => :show_trips_for_verification
+    end
+  end
+
+  def show_runs_for_verification
+    query_params = params[:query] || {}
+    @query = Query.new(query_params)
+
+    @drivers      = Driver.where(:provider_id=>current_provider_id)
+    @vehicles     = Vehicle.active.where(:provider_id=>current_provider_id)
+    @runs = Run.for_provider(current_provider_id).for_date_range(@query.start_date,@query.end_date) unless @runs.present?
+  end
+
+  def update_runs_for_verification
+    @runs = Run.update(params[:runs].keys, params[:runs].values).reject {|t| t.errors.empty?}
+    if @runs.empty?
+      redirect_to({:action => :show_runs_for_verification}, :notice => "Runs updated successfully" )
+    else
+      @drivers      = Driver.where(:provider_id=>current_provider_id)
+      @vehicles     = Vehicle.active.where(:provider_id=>current_provider_id)
+      render :action => :show_runs_for_verification
     end
   end
 

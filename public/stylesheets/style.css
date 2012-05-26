@@ -434,6 +434,21 @@ div#error_explanation h2 {
     font-size: 16px;
     margin: 0;
 }
+div.error_explanation {
+    color: #e5004d;
+    background-color: #ffffc6;
+    border-top: 1px solid #bbb;
+    border-right: 1px solid #bbb;
+    border-left: 1px solid #bbb;
+    padding: 15px;
+}
+div.error_explanation h2 {
+    font-size: 16px;
+    margin: 0;
+}
+table div.error_explanation {
+    border-bottom: 1px solid #bbb;
+}
 
 /* forms */
 form input[type="text"],

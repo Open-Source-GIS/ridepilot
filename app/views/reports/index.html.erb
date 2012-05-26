@@ -61,3 +61,27 @@
     <%= f.submit "Show" %>
   </fieldset>
 <% end %>
+
+<hr />
+
+<h2 class="section-header">Verifications</h2>
+
+<%= form_for @trips_query, :url=>url_for(:action=>:show_trips_for_verification), :html=>{:method=>:get} do |f| %>
+  <fieldset class="select-month">
+    <h3>Verify trips</h3>
+    <%= f.date_select  :start_date, :order => [:month,:day,:year] %>
+    through 
+    <%= f.date_select  :before_end_date, :order => [:month,:day,:year] %>
+    <%= f.submit "Update" %>
+  </fieldset>
+<% end %>
+
+<%= form_for @trips_query, :url=>url_for(:action=>:show_runs_for_verification), :html=>{:method=>:get} do |f| %>
+  <fieldset class="select-month">
+    <h3>Verify runs</h3>
+    <%= f.date_select  :start_date, :order => [:month,:day,:year] %>
+    through 
+    <%= f.date_select  :before_end_date, :order => [:month,:day,:year] %>
+    <%= f.submit "Update" %>
+  </fieldset>
+<% end %>

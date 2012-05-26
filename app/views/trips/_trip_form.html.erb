@@ -22,7 +22,11 @@
   </td>
   <% if show_edit_run_link %>
     <td>
-      <%= link_to("Edit Run", [:edit,trip.run], :class => "edit") if trip.run.present? %>
+      <% if trip.run.present? %>
+        <%= link_to("Edit Run", [:edit,trip.run], :class => "edit") %>
+      <% elsif trip.cab %>
+        Cab Trip
+      <% end %>
     </td>
   <% end %>
 </tr>
