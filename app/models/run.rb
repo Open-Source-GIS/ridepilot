@@ -7,7 +7,7 @@ class Run < ActiveRecord::Base
 
   has_many :trips, :order=>"pickup_time", :dependent => :nullify
 
-  before_validation :set_complete, :fix_dates
+  before_validation :fix_dates, :set_complete 
 
   stampable :creator_attribute => :created_by_id, :updater_attribute => :updated_by_id
   
@@ -57,7 +57,7 @@ class Run < ActiveRecord::Base
   private
 
   def set_complete
-    self.complete = ((!actual_start_time.nil?) && (!actual_end_time.nil?) && actual_end_time < DateTime.now && vehicle_id && driver_id && (trips.none? &:pending))
+    self.complete = ((!actual_start_time.nil?) && (!actual_end_time.nil?) && actual_end_time < DateTime.now && vehicle_id && driver_id && start_odometer && end_odometer && (trips.none? &:pending))
     true
   end
 
