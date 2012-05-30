@@ -27,10 +27,10 @@ ActiveRecord::Schema.define(:version => 20120425220752) do
     t.integer  "created_by_id"
     t.integer  "updated_by_id"
     t.integer  "lock_version",                        :default => 0
+    t.point    "the_geom",             :limit => nil,                    :srid => 4326
     t.string   "phone_number"
     t.boolean  "inactive",                            :default => false
     t.string   "default_trip_purpose"
-    t.point    "the_geom",             :limit => nil,                    :srid => 4326
   end
 
   add_index "addresses", ["the_geom"], :name => "index_addresses_on_the_geom", :spatial => true

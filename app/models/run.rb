@@ -5,7 +5,7 @@ class Run < ActiveRecord::Base
   belongs_to :created_by, :foreign_key => :created_by_id, :class_name=>'User'
   belongs_to :updated_by, :foreign_key => :updated_by_id, :class_name=>'User'
 
-  has_many :trips, :order=>"pickup_time"
+  has_many :trips, :order=>"pickup_time", :dependent => :nullify
 
   before_validation :set_complete, :fix_dates
 

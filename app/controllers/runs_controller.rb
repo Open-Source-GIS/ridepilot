@@ -88,11 +88,10 @@ class RunsController < ApplicationController
   end
 
   def destroy
-    @run = Run.find(params[:id])
     @run.destroy
 
     respond_to do |format|
-      format.html { redirect_to(runs_url) }
+      format.html { redirect_to(runs_path, :notice => 'Run was successfully deleted.') }
       format.xml  { head :ok }
     end
   end

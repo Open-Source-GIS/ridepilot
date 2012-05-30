@@ -1260,6 +1260,10 @@ body.runs .wc-nav {
   margin-bottom : 20px;
 }
 
+body.runs #run_delete {
+  float: right;
+}
+
 /*
  *
  * Trips

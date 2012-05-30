@@ -67,4 +67,6 @@
       <%= f.select :paid, [["Yes", "true"], ["No", "false"]], {:selected => @run.paid.to_s } %>
     </li>
   </ol>
+
+  <%= link_to('Delete Run (does not delete trips)', @run, :confirm => 'Are you sure?', :method => :delete, :id => 'run_delete', :class=>'delete') if !@run.new_record? && can?(:destroy, @run) %>
 </fieldset>
