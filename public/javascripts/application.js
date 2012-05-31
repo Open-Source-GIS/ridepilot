@@ -163,39 +163,35 @@ $(function() {
     window.location = $(this).attr("data-path") + "?customer_name=" + $("#customer_name").val();
   });
     
-  var calendar_range;
-
-  function push_index_state() {
-     if (supports_history_api()) history.pushState({index: calendar_range}, "List Runs", "/runs?" + $.param(calendar_range));
+  function push_index_state(range) {
+     if (supports_history_api()) history.pushState({index: range}, "List Runs", "/runs?" + $.param(range));
   }
 
-  function load_index_runs(range) {
+  function load_index_runs(range, push_state) {
+    var new_start = new Date(parseInt(range['start']) * 1000);
+    var new_end   = new Date(parseInt(range['end']) * 1000);
+     
     $.get(window.location.href, range, function(data) {
       $("#runs tr").not(".head").remove();
       $("#runs").append(data.rows.join(""));
-      week_nav.attr("data-start-time", range['start'].getTime());
-      $("#start_date").html((range['start'].getMonth()+1) + "-" + range['start'].getDate() + "-" + range['start'].getFullYear());
-      $("#end_date").html((range['end'].getMonth()+1) + "-" + range['end'].getDate() + "-" + range['end'].getFullYear());  
-      push_index_state();
+      $(".wc-nav").attr("data-start-time", new_start.getTime());
+      $("#start_date").html((new_start.getMonth()+1) + "-" + new_start.getDate() + "-" + new_start.getFullYear());
+      $("#end_date").html((new_end.getMonth()+1) + "-" + new_end.getDate() + "-" + new_end.getFullYear());  
+      if (push_state) push_index_state(range);
     }, "json");
   }
-
-
 
   window.onpopstate = function(event) {
     if (event.state) {
       if (event.state['index']) {
-        new_start = new Date(parseInt(event.state['index']['start'] * 1000))
-        new_end   = new Date(parseInt(event.state['index']['end'] * 1000))
-        var week_nav  = $(".wc-nav");
-        $.get(window.location.href, event.state['index'], function(data) {
-          $("#runs tr").not(".head").remove();
-          $("#runs").append(data.rows.join(""));
-          week_nav.attr("data-start-time", new_start.getTime());
-          $("#start_date").html((new_start.getMonth()+1) + "-" + new_start.getDate() + "-" + new_start.getFullYear());
-          $("#end_date").html((new_end.getMonth()+1) + "-" + new_end.getDate() + "-" + new_end.getFullYear());  
-        }, "json");
-      }
+        load_index_runs(event.state['index'], false);
+      } 
+    } else {
+      new_start = parseInt($(".wc-nav").attr("data-current-week-start"))/1000
+      new_end = new Date(new_start * 1000);
+      new_end.setDate(new_end.getDate() + 6);
+      range = {start: new_start, end: new_end.getTime()/1000};
+      load_index_runs(range, false);
     }
   };
  
@@ -222,16 +218,8 @@ $(function() {
         new_end.setDate(new_end.getDate() + 13);
       }
     }
-    calendar_range = {start: new_start.getTime()/1000, end: new_end.getTime()/1000};
-
-    $.get(window.location.href, calendar_range, function(data) {
-      $("#runs tr").not(".head").remove();
-      $("#runs").append(data.rows.join(""));
-      week_nav.attr("data-start-time", new_start.getTime());
-      $("#start_date").html((new_start.getMonth()+1) + "-" + new_start.getDate() + "-" + new_start.getFullYear());
-      $("#end_date").html((new_end.getMonth()+1) + "-" + new_end.getDate() + "-" + new_end.getFullYear());  
-      push_index_state();
-    }, "json");
+    range = {start: new_start.getTime()/1000, end: new_end.getTime()/1000};
+    load_index_runs(range,true);
     
   });
   
