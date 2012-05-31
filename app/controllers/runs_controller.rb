@@ -75,7 +75,7 @@ class RunsController < ApplicationController
 
     respond_to do |format|
       if @run.update_attributes(run_params)
-        format.html { redirect_to(runs_path, :notice => 'Run was successfully updated.') }
+        format.html { redirect_to(runs_path(date_range(@run)), :notice => 'Run was successfully updated.') }
         format.xml  { head :ok }
       else
         @drivers = Driver.where(:provider_id=>@run.provider_id)
@@ -91,7 +91,7 @@ class RunsController < ApplicationController
     @run.destroy
 
     respond_to do |format|
-      format.html { redirect_to(runs_path, :notice => 'Run was successfully deleted.') }
+      format.html { redirect_to(runs_path(date_range(@run)), :notice => 'Run was successfully deleted.') }
       format.xml  { head :ok }
     end
   end
@@ -117,5 +117,12 @@ class RunsController < ApplicationController
     @runs = @runs.
       where("date >= '#{@week_start.to_s(:db)}'").
       where("date < '#{@week_end.to_s(:db)}'")
+  end
+
+  def date_range(run)
+    if run.date
+      week_start = run.date.beginning_of_week
+      {:start => week_start.to_time.to_i, :end => (week_start + 6.days).to_time.to_i } 
+    end    
   end
 end
