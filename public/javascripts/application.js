@@ -163,6 +163,42 @@ $(function() {
     window.location = $(this).attr("data-path") + "?customer_name=" + $("#customer_name").val();
   });
     
+  var calendar_range;
+
+  function push_index_state() {
+     if (supports_history_api()) history.pushState({index: calendar_range}, "List Runs", "/runs?" + $.param(calendar_range));
+  }
+
+  function load_index_runs(range) {
+    $.get(window.location.href, range, function(data) {
+      $("#runs tr").not(".head").remove();
+      $("#runs").append(data.rows.join(""));
+      week_nav.attr("data-start-time", range['start'].getTime());
+      $("#start_date").html((range['start'].getMonth()+1) + "-" + range['start'].getDate() + "-" + range['start'].getFullYear());
+      $("#end_date").html((range['end'].getMonth()+1) + "-" + range['end'].getDate() + "-" + range['end'].getFullYear());  
+      push_index_state();
+    }, "json");
+  }
+
+
+
+  window.onpopstate = function(event) {
+    if (event.state) {
+      if (event.state['index']) {
+        new_start = new Date(parseInt(event.state['index']['start'] * 1000))
+        new_end   = new Date(parseInt(event.state['index']['end'] * 1000))
+        var week_nav  = $(".wc-nav");
+        $.get(window.location.href, event.state['index'], function(data) {
+          $("#runs tr").not(".head").remove();
+          $("#runs").append(data.rows.join(""));
+          week_nav.attr("data-start-time", new_start.getTime());
+          $("#start_date").html((new_start.getMonth()+1) + "-" + new_start.getDate() + "-" + new_start.getFullYear());
+          $("#end_date").html((new_end.getMonth()+1) + "-" + new_end.getDate() + "-" + new_end.getFullYear());  
+        }, "json");
+      }
+    }
+  };
+ 
   $("body.runs .wc-nav button").click(function(e){
     var current_start, new_start, new_end;
     var target    = $(this);
@@ -186,16 +222,15 @@ $(function() {
         new_end.setDate(new_end.getDate() + 13);
       }
     }
+    calendar_range = {start: new_start.getTime()/1000, end: new_end.getTime()/1000};
 
-    $.get(window.location.href, {
-      start : new_start.getTime(),
-      end : new_end.getTime()
-    }, function(data) {
+    $.get(window.location.href, calendar_range, function(data) {
       $("#runs tr").not(".head").remove();
       $("#runs").append(data.rows.join(""));
       week_nav.attr("data-start-time", new_start.getTime());
       $("#start_date").html((new_start.getMonth()+1) + "-" + new_start.getDate() + "-" + new_start.getFullYear());
       $("#end_date").html((new_end.getMonth()+1) + "-" + new_end.getDate() + "-" + new_end.getFullYear());  
+      push_index_state();
     }, "json");
     
   });

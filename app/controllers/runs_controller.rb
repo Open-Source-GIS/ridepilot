@@ -106,8 +106,8 @@ class RunsController < ApplicationController
   
   def filter_runs
     if params[:end].present? && params[:start].present?
-      @week_start = Time.at params[:start].to_i/1000
-      @week_end   = Time.at params[:end].to_i/1000
+      @week_start = Time.at params[:start].to_i
+      @week_end   = Time.at params[:end].to_i
     else
       time     = Time.now
       @week_start = time.beginning_of_week
