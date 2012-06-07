@@ -14,14 +14,15 @@ class ApplicationController < ActionController::Base
     end
 
     ride_connection = Provider.find_by_name("Ride Connection")
-    @provider_map = {}
+    @provider_map = []
     for role in current_user.roles
       if role.provider == ride_connection 
         @provider_map = Provider.all.collect {|provider| [ provider.name, provider.id ] }
         break
       end
-      @provider_map[role.provider_id] = role.provider.name
+      @provider_map << [role.provider.name, role.provider_id]
     end
+    @provider_map.sort!{|a, b| a[0] <=> b[0] }
   end
 
   def test_exception_notification

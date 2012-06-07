@@ -84,7 +84,7 @@ class UsersController < Devise::SessionsController
 
   def change_provider
     provider = Provider.find(params[:provider_id])
-    if can? :view, provider
+    if can? :read, provider
       current_user.current_provider_id = provider.id
       current_user.save!
     end
