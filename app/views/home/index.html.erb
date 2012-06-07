@@ -3,13 +3,11 @@
 <li><%= link_to "Providers", providers_path %></li>
 <% end %>
 
-<li><%= link_to "Customers", customers_path %></li>
+<% if show_scheduling? %><li><%= link_to "Customers", customers_path %></li><% end %>
 <% if show_scheduling? %><li><%= link_to "Trips", trips_path %></li><% end %>
 <% if show_scheduling? %><li><%= link_to "Runs", runs_path %></li><% end %>
-<li><%= link_to "Repeating trips", repeating_trips_path %></li>
+<% if show_scheduling? %><li><%= link_to "Repeating trips", repeating_trips_path %></li><% end %>
 <% if show_scheduling? %><li><%= link_to "Reports", reports_path %></li><% end %>
-<li><%= link_to "Vehicles, drivers and users", provider_path(current_user.current_provider) %></li>
-<% if can? :edit, FundingSource %>
-<li><%= link_to "Funding sources", funding_sources_path %></li>
-<% end %>
+<% if show_scheduling? %><li><%= link_to "Vehicles, drivers and users", provider_path(current_user.current_provider) %></li><% end %>
+<% if show_dispatch? %><li><%= link_to "Dispatch", dispatch_path %></li><% end %>
 </ul>
