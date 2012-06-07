@@ -67,18 +67,22 @@ class Run < ActiveRecord::Base
       unless scheduled_start_time.nil?
         s = scheduled_start_time 
         self.scheduled_start_time = Time.zone.local(d.year, d.month, d.day, s.hour, s.min, 0) 
+        scheduled_start_time_will_change!
       end
       unless scheduled_end_time.nil?
         s = scheduled_end_time
         self.scheduled_end_time = Time.zone.local(d.year, d.month, d.day, s.hour, s.min, 0) 
+        scheduled_end_time_will_change!
       end
       unless actual_start_time.nil?
         a = actual_start_time
         self.actual_start_time = Time.zone.local(d.year, d.month, d.day, a.hour, a.min, 0) 
+        actual_start_time_will_change!
       end
       unless actual_end_time.nil?
         a = actual_end_time
         self.actual_end_time = Time.zone.local(d.year, d.month, d.day, a.hour, a.min, 0)
+        actual_end_time_will_change!
       end
     end
     true

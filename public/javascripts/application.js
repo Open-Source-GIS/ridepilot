@@ -164,7 +164,7 @@ $(function() {
   });
     
   function push_index_state(range) {
-     if (supports_history_api()) history.pushState({index: range}, "List Runs", "/runs?" + $.param(range));
+     if (supports_history_api()) history.pushState({index: range}, "List Runs", window.location.pathname + "?" + $.param(range));
   }
 
   function load_index_runs(range, push_state) {
