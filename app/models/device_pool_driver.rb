@@ -40,6 +40,7 @@ class DevicePoolDriver < ActiveRecord::Base
       :lat            => lat, 
       :lng            => lng, 
       :status         => status,
+      :active         => active?,
       :posted_at      => posted_at.try(:strftime, "%m/%d/%Y %I:%M %p")
     }
   end

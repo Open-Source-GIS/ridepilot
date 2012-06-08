@@ -13,13 +13,14 @@ class DevicePool < ActiveRecord::Base
       :data     => "#{name} <span class='color' style='background-color: ##{color}'> </span>",
       :metadata => { :id => id },
       :attr     => { :rel => "device_pool", "data-color" => color },
-      :children => device_pool_drivers.map( &:as_tree_json )
+      :children => device_pool_drivers.sort{|a,b| a.name <=> b.name}.map( &:as_tree_json )
     }
   end
   
   class Tree < Hash
     
     def initialize(pools)
+      pools.sort!{|a,b| a.provider.name <=> b.provider.name}
       for pool in pools do
         self[pool.provider.name] = ( self[pool.provider.name] || [] ) << pool
       end
@@ -30,7 +31,7 @@ class DevicePool < ActiveRecord::Base
         {
           :data     => provider_name,
           :attr     => { :rel => "provider" },
-          :children => self[provider_name].map( &:as_json )
+          :children => self[provider_name].sort{|a,b| a.name <=> b.name}.map( &:as_json )
         }
       end
     end

@@ -54,6 +54,12 @@ function Dispatcher (tree_id, map_id) {
           window.setTimeout(function(){
             self._tree_elem.jstree("open_all", -1);
             self._tree_elem.jstree("check_all");
+            $('#' + tree_id + ' li[rel="device"]').each(function() {
+              if ($(this).find(".inactive").length) self._tree_elem.jstree("uncheck_node", this);
+            });            
+            $('#' + tree_id + ' li[rel="device_pool"], #' + tree_id + ' li[rel="provider"]').each(function() {
+              if (!$(this).find(".jstree-checked").length) self._tree_elem.jstree("close_node",this,true);
+            });
           }, 1);
         }        
       } }
@@ -85,6 +91,7 @@ function Dispatcher (tree_id, map_id) {
           if (marker) {
             marker.setPosition( new google.maps.LatLng( this.metadata.lat, this.metadata.lng ) );
             marker.html = self._marker_html(this.metadata);
+            marker.setMap((this.metadata.active ? self.map : null));
           } else self.createMarker(device_pool, this);
         });
       });
@@ -95,7 +102,7 @@ function Dispatcher (tree_id, map_id) {
     var marker = new StyledMarker({
       styleIcon : new StyledIcon( StyledIconTypes.MARKER, { color : device_pool.attr["data-color"] } ),
       position  : new google.maps.LatLng( device.metadata.lat, device.metadata.lng ),
-      map       : self.map
+      map       : (device.metadata.active ? self.map : null)
     });
     
     marker.html = self._marker_html(device.metadata);
