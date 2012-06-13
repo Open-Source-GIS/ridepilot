@@ -95,6 +95,10 @@
               <%= f.label :repetition_driver_id, "Driver:" %>
               <%= f.collection_select :repetition_driver_id, @drivers, :id, :name, :include_blank => true %>
             </li>
+            <li class="selfclear">
+              <%= f.label :repetition_customer_informed, "Mark as Called Back:" %>
+              <%= f.check_box :repetition_customer_informed %>
+            </li>
 
           </ul>
         </li>
@@ -199,8 +203,8 @@
         <%= f.label :customer_informed, "Called Back:" %>
         <%= f.check_box :customer_informed %>
         <% if @trip.customer_informed %>
-          on <%= @trip.called_back_at %>
-          by <%= @trip.called_back_by.email if @trip.called_back_by.present? %>
+          <%= "on #{@trip.called_back_at}" if @trip.called_back_at.present? %>
+          <%= "by #{@trip.called_back_by.email}" if @trip.called_back_by.present? %>
         <% end %>
       </li>
     </ol>

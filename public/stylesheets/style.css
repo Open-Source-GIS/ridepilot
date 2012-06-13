@@ -1306,6 +1306,9 @@ body.trips div.repeats {
   border-radius: 5px;
 }
 
+body.trips div.repeats>li {
+  margin-bottom: 0;
+}
 /*
  *
  * Dispatch

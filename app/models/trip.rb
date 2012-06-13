@@ -112,7 +112,7 @@ class Trip < ActiveRecord::Base
   end
 
   def repetition_driver_id=(value)
-    @repetition_driver_id = value.to_i
+    @repetition_driver_id = (value.blank? ? nil : value.to_i)
   end
 
   def repetition_driver_id
@@ -124,7 +124,7 @@ class Trip < ActiveRecord::Base
   end
 
   def repetition_vehicle_id=(value)
-    @repetition_vehicle_id = value.to_i
+    @repetition_vehicle_id = (value.blank? ? nil : value.to_i)
   end
 
   def repetition_vehicle_id
@@ -132,6 +132,18 @@ class Trip < ActiveRecord::Base
       @repetition_vehicle_id = repeating_trip.try :vehicle_id
     else
       @repetition_vehicle_id
+    end
+  end
+
+  def repetition_customer_informed=(value)
+    @repetition_customer_informed = (value == "1" || value == true)
+  end
+
+  def repetition_customer_informed
+    if @repetition_customer_informed.nil?
+      @repetition_customer_informed = repeating_trip.try :customer_informed
+    else
+      @repetition_customer_informed
     end
   end
 
@@ -152,13 +164,13 @@ class Trip < ActiveRecord::Base
   end
 
   def is_repeating_trip?
-    ((repetition_interval || 0) > 0 and (
-      repeats_mondays or 
-      repeats_tuesdays or 
-      repeats_wednesdays or 
-      repeats_thursdays or 
-      repeats_fridays or 
-      repeats_saturdays or 
+    ((repetition_interval || 0) > 0 && (
+      repeats_mondays     || 
+      repeats_tuesdays    || 
+      repeats_wednesdays  || 
+      repeats_thursdays   || 
+      repeats_fridays     || 
+      repeats_saturdays   || 
       repeats_sundays
       ))
   end
@@ -218,6 +230,7 @@ class Trip < ActiveRecord::Base
     RepeatingTrip.trip_attributes.each {|attr| attrs[attr] = self.send(attr) }
     attrs['driver_id'] = repetition_driver_id
     attrs['vehicle_id'] = repetition_vehicle_id
+    attrs['customer_informed'] = repetition_customer_informed
     attrs['schedule_attributes'] = {
       :repeat        => 1,
       :interval_unit => "week", 
@@ -247,7 +260,8 @@ class Trip < ActiveRecord::Base
   end
 
   def driver_is_valid_for_vehicle
-    # This will error if a run was found or extended for this vehicle and time, but the driver for the run is not the driver selected for the trip
+    # This will error if a run was found or extended for this vehicle and time, 
+    # but the driver for the run is not the driver selected for the trip
     if self.run.try(:driver_id).present? && self.driver_id.present? && self.run.driver_id.to_i != self.driver_id.to_i
       errors[:driver_id] << "is not the driver for the selected vehicle during this vehicle's run."
     end
