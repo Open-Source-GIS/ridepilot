@@ -226,22 +226,31 @@ body.age-and-ethnicity table th.data {
 }
 
 body.service-summary table td.greyed-out {
-  background-color: #C0C0C0 !important;
+  background-color: #E0E0E0 !important;
 }
 
 table td.numeric {
   text-align: right;
 }
 
-body.service-summary table td.total {
+body.service-summary table td.total,
+body.age-and-ethnicity table td.total {
   font-weight: bold;
 }
 
-body.service-summary dl { 
+body.service-summary table td.total-label {
+  padding-left: 3em;
+}
+
+body.service-summary dl,
+body.age-and-ethnicity dl,
+body.vehicles-monthly dl { 
   font-weight: bold; 
 } 
 
-body.service-summary dt { 
+body.service-summary dt,
+body.age-and-ethnicity dt,
+body.vehicles-monthly dt { 
   float: left; 
   clear: left; 
   width: 2.5in; 
@@ -256,7 +265,7 @@ body.service-summary dd {
 
 dt.hand-completed, 
 dd.hand-completed { 
-  margin-top: 0.4in
+  margin-top: 0.25in
 }
 
 dd.hand-completed { 

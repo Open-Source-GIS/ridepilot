@@ -1,0 +1,21 @@
+<dl id="report-footer">
+  <dt>Provider/Agency:</dt>
+  <dd><%= @provider.name %></dd>
+
+  <dt>Report month:</dt>
+  <dd><%= @start_date.strftime("%B %Y") %></dd>
+
+  <dt class="hand-completed">Person preparing report (please print):</dt>
+  <dd class="hand-completed"></dd>
+
+  <dt class="hand-completed">Title:</dt>
+  <dd class="hand-completed"></dd>
+
+  <dt class="hand-completed">Signature of person preparing report:</dt>
+  <dd class="hand-completed"></dt>
+
+  <dt class="hand-completed">Phone number:</dt>
+  <dd class="hand-completed"></dt>
+</dl>
+
+<%= link_to 'Back to Reports', reports_path, :class=>'action-bttn' %>

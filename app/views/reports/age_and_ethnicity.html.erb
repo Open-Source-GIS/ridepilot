@@ -12,29 +12,13 @@
   </fieldset>
 <% end %>
 
-<%= image_tag("rc-grayscale-logo.jpg", :size => "100x65", :id => "logo") %>
+<%= render :partial => 'header' %>
 
-<div id="address">
-  Ride Connection
-  <br />
-  847 NE 19th Ave #200
-  <br />
-  Portland, OR 97232
-  <br />
-  503.528.1720
-</div>
-
-<div id="instructions">
-  <strong>Please submit report by the 5th of each month to:</strong>
-  <br />
-  Kirsten Huckfeldt, Fiscal Specialist
-  <br />
-  Phone: 503.528.1742
-  <br />
-  Fax: 503.528.1755
-  <br />
-  Email: Khuckfeldt@rideconnection.org
-</div>
+<table>
+  <tr>
+    <th class="table-header">Unduplicated Age & Ethnicity Report</th>
+  </tr>
+</table>
 
 <table>
   <tr>
@@ -62,9 +46,9 @@
   </tr>
 
   <tr>
-    <td>Total Unduplicated Individuals</td>
-    <td class="numeric"><%= @this_month_unknown_age + @this_month_sixty_plus + @this_month_less_than_sixty %></td>
-    <td class="numeric"><%= @this_year_unknown_age + @this_year_sixty_plus + @this_year_less_than_sixty  %></td>
+    <td class="total">Total Unduplicated Individuals</td>
+    <td class="numeric total"><%= @this_month_unknown_age + @this_month_sixty_plus + @this_month_less_than_sixty %></td>
+    <td class="numeric total"><%= @this_year_unknown_age + @this_year_sixty_plus + @this_year_less_than_sixty  %></td>
   </tr>
 </table>
 
@@ -76,27 +60,18 @@
   </tr>
 
   <% for ethnicity in @counts_by_ethnicity.keys.sort %>
-  <% row = @counts_by_ethnicity[ethnicity] %>
-  <tr>
-    <td><%= ethnicity %></td>
-    <td class="numeric"><%= row['month'] %></td>
-    <td class="numeric"><%= row['year'] %></td>
-  </tr>
+    <% row = @counts_by_ethnicity[ethnicity] %>
+    <tr>
+      <td><%= ethnicity %></td>
+      <td class="numeric"><%= row['month'] %></td>
+      <td class="numeric"><%= row['year'] %></td>
+    </tr>
   <% end %>
+  <tr>
+    <td class="total">Total Unduplicated Individuals</td>
+    <td class="numeric total"><%= @counts_by_ethnicity.values.map{|x| x['month']}.sum %></td>
+    <td class="numeric total"><%= @counts_by_ethnicity.values.map{|x| x['year']}.sum %></td>
+  </tr>
 </table>
 
-<dl id="report-footer">
-  <dt>Provider/Agency:</dt>
-  <dd><%= @provider.name %></dd>
-
-  <dt>Report month:</dt>
-  <dd><%= @start_date.strftime("%B %Y") %></dd>
-
-  <dt class="hand-completed">Person preparing report (please print):</dt>
-  <dd class="hand-completed"></dd>
-
-  <dt class="hand-completed">Signature of person preparing report:</dt>
-  <dd class="hand-completed"></dt>
-</dl>
-
-<%= link_to 'Back to Reports', reports_path, :class=>'action-bttn' %>
+<%= render :partial => 'footer' %>

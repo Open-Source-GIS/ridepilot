@@ -251,7 +251,7 @@ class ReportsController < ApplicationController
         @this_month_unknown_age += 1
         @this_year_unknown_age += 1
       elsif age > 60
-          @this_month_sixty_plus += 1
+        @this_month_sixty_plus += 1
         @this_year_sixty_plus += 1
       else
         @this_month_less_than_sixty += 1
@@ -263,6 +263,7 @@ class ReportsController < ApplicationController
         @counts_by_ethnicity[ethnicity] = {'month' => 0, 'year' => 0}
       end
       @counts_by_ethnicity[ethnicity]['month'] += 1
+      @counts_by_ethnicity[ethnicity]['year'] += 1
     end
 
     #now the customers who appear earlier in the year 

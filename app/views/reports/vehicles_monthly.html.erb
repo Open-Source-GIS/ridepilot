@@ -1,3 +1,5 @@
+<%= content_for :title, "Vehicle Operations: #{@provider.name}, #{@start_date.strftime("%B %Y")}" %>
+
 <div id="page-header">
   <h1>Vehicle Operations Report</h1>
 </div>
@@ -11,29 +13,7 @@
   </fieldset>
 <% end %>
 
-<%= image_tag("rc-grayscale-logo.jpg", :size => "100x65", :id => "logo") %>
-
-<div id="address">
-  Ride Connection
-  <br />
-  847 NE 19th Ave #200
-  <br />
-  Portland, OR 97232
-  <br />
-  503.528.1720
-</div>
-
-<div id="instructions">
-  <strong>Please submit report by the 5th of each month to:</strong>
-  <br />
-  Kirsten Huckfeldt, Fiscal Specialist
-  <br />
-  Phone: 503.528.1742
-  <br />
-  Fax: 503.528.1755
-  <br />
-  Email: Khuckfeldt@rideconnection.org
-</div>
+<%= render :partial => 'header' %>
 
 <div class="report selfclear">
   <table>
@@ -100,19 +80,4 @@
   </table>
 </div>
 
-
-<dl id="report-footer">
-  <dt>Provider/Agency:</dt>
-  <dd><%= @provider.name %></dd>
-
-  <dt>Report month:</dt>
-  <dd><%= @start_date.strftime("%B %Y") %></dd>
-
-  <dt class="hand-completed">Person preparing report (please print):</dt>
-  <dd class="hand-completed"></dd>
-
-  <dt class="hand-completed">Signature of person preparing report:</dt>
-  <dd class="hand-completed"></dt>
-</dl>
-
-<%= link_to 'Back to Reports', reports_path, :class=>'action-bttn' %>
+<%= render :partial => 'footer' %>
