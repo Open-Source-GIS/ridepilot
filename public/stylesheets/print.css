@@ -258,7 +258,9 @@ body.vehicles-monthly dt {
   white-space: nowrap;
 } 
   
-body.service-summary dd { 
+body.service-summary dd,
+body.age-and-ethnicity dd,
+body.vehicles-monthly dd { 
   padding: 5pt;
   margin-left: 2.5in;
 } 
