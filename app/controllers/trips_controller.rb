@@ -11,7 +11,7 @@ class TripsController < ApplicationController
         @start = params[:start].to_i
         # let js handle grabbing the trips
         @trips = [] 
-        @vehicles = Vehicle.accessible_by(current_ability).where(:provider_id => current_provider_id)
+        @vehicles = add_cab(Vehicle.accessible_by(current_ability).where(:provider_id => current_provider_id))
       end
       format.xml  { render :xml => @trips }
       format.json { render :json => trips_json }
@@ -209,23 +209,21 @@ class TripsController < ApplicationController
 
   def prep_view
     authorize! :read, @trip
-    @customer        = @trip.customer
-    @mobilities      = Mobility.order(:name).all
-    @funding_sources = FundingSource.all
-    @vehicles        = Vehicle.active.for_provider(@trip.provider_id) 
-    @trip_results    = TRIP_RESULT_CODES.map { |k,v| [v,k] }
-    @trip_purposes   = TRIP_PURPOSES
-    @drivers         = Driver.active.for_provider @trip.provider_id
-    @trips           = [] if @trips.nil?
+    @customer           = @trip.customer
+    @mobilities         = Mobility.order(:name).all
+    @funding_sources    = FundingSource.all
+    @trip_results       = TRIP_RESULT_CODES.map { |k,v| [v,k] }
+    @trip_purposes      = TRIP_PURPOSES
+    @drivers            = Driver.active.for_provider @trip.provider_id
+    @trips              = [] if @trips.nil?
+    @vehicles           = add_cab(Vehicle.active.for_provider(@trip.provider_id))
+    @repeating_vehicles = @vehicles 
 
     @trip.run_id = -1 if @trip.cab
 
     cab_run = Run.new :cab => true
     cab_run.id = -1
     @runs = Run.for_provider(@trip.provider_id).incomplete_on(@trip.pickup_time.try(:to_date)) << cab_run
-    cab_vehicle = Vehicle.new :name => "Cab"
-    cab_vehicle.id = -1
-    @repeating_vehicles = [cab_vehicle] + @vehicles 
   end
   
   def handle_trip_params(trip_params)
@@ -258,7 +256,17 @@ class TripsController < ApplicationController
       where("pickup_time <= '#{t_end.strftime "%Y-%m-%d %H:%M:%S"}'").order(:pickup_time)
       
     if params[:vehicle_id].present?  
-      @trips = @trips.select {|t| t.vehicle_id == params[:vehicle_id].to_i } 
+      if params[:vehicle_id].to_i == -1
+        @trips = @trips.select {|t| t.cab } 
+      else
+        @trips = @trips.select {|t| t.vehicle_id == params[:vehicle_id].to_i } 
+      end
     end
+  end
+
+  def add_cab(vehicles)
+    cab_vehicle = Vehicle.new :name => "Cab"
+    cab_vehicle.id = -1
+    [cab_vehicle] + vehicles 
   end
 end
