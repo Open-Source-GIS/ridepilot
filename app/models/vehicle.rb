@@ -12,6 +12,7 @@ class Vehicle < ActiveRecord::Base
   default_scope :order => 'active, name'
   scope :active, :conditions => { :active => true }
   scope :for_provider, lambda { |provider_id| where(:provider_id => provider_id) }
+  scope :reportable, where(:reportable => true)
 
   def self.unassigned(provider)
     for_provider(provider).reject { |vehicle| vehicle.device_pool.present? }

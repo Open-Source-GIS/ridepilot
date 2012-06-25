@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120613052228) do
+ActiveRecord::Schema.define(:version => 20120625174437) do
 
   create_table "addresses", :force => true do |t|
     t.string   "name"
@@ -297,6 +297,7 @@ ActiveRecord::Schema.define(:version => 20120613052228) do
     t.integer  "updated_by_id"
     t.integer  "lock_version",      :default => 0
     t.integer  "default_driver_id"
+    t.boolean  "reportable"
   end
 
 end

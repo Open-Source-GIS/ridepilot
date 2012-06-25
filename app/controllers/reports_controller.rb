@@ -73,7 +73,7 @@ class ReportsController < ApplicationController
     @query = Query.new(query_params)
     @start_date = @query.start_date
     @end_date = @query.end_date
-    @vehicles = Vehicle.active.for_provider(current_provider).accessible_by(current_ability)
+    @vehicles = Vehicle.reportable.active.for_provider(current_provider).accessible_by(current_ability)
     @provider = current_provider
 
     @total_hours = {}
