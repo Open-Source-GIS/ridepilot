@@ -10,6 +10,7 @@
         <%= f.date_select  :start_date, :order => [:month,:day,:year] %>
         through 
         <%= f.date_select  :before_end_date, :order => [:month,:day,:year] %>
+        <%= f.select       :trip_display, TRIP_VERIFICATION_DISPLAY_OPTIONS %>
         <%= f.submit "Update" %>
       </p>
     </fieldset>

@@ -7,6 +7,7 @@ class Query
   attr_accessor :end_date
   attr_accessor :vehicle_id
   attr_accessor :driver_id
+  attr_accessor :trip_display
 
   def convert_date(obj, base)
     return Date.new(obj["#{base}(1i)"].to_i,obj["#{base}(2i)"].to_i,(obj["#{base}(3i)"] || 1).to_i)
@@ -37,10 +38,13 @@ class Query
         @before_end_date = @end_date - 1
       end
       if params["vehicle_id"]
-        @vehicle_id = params["vehicle_id"]
+        @vehicle_id = params["vehicle_id"].to_i
       end
       if params["driver_id"]
-        @driver_id = params["driver_id"]
+        @driver_id = params["driver_id"].to_i
+      end
+      if params["trip_display"]
+        @trip_display = params["trip_display"]
       end
     end
   end
@@ -64,8 +68,9 @@ class ReportsController < ApplicationController
     cab.id = -1
     all = Driver.new(:name=>"All")
     all.id = -2
-    @drivers =  [all] + Driver.for_provider(current_provider).accessible_by(current_ability)
-    @drivers_with_cab =  [all, cab] + Driver.for_provider(current_provider).accessible_by(current_ability)
+    drivers = Driver.active.for_provider(current_provider).default_order.accessible_by(current_ability)
+    @drivers =  [all] + drivers
+    @drivers_with_cab =  [all, cab] + drivers
   end
 
   def vehicles_monthly
@@ -158,7 +163,11 @@ class ReportsController < ApplicationController
     @query = Query.new(query_params)
     @trip_results = TRIP_RESULT_CODES.map { |k,v| [v,k] }
     
-    @trips = Trip.for_provider(current_provider_id).for_date_range(@query.start_date,@query.end_date) unless @trips.present?
+    unless @trips.present?
+      @trips = Trip.for_provider(current_provider_id).for_date_range(@query.start_date,@query.end_date) 
+      @trips = @trips.for_cab     if @query.trip_display == "Cab Trips"
+      @trips = @trips.not_for_cab if @query.trip_display == "Not Cab Trips"
+    end
   end
 
   def update_trips_for_verification
@@ -175,8 +184,8 @@ class ReportsController < ApplicationController
     query_params = params[:query] || {}
     @query = Query.new(query_params)
 
-    @drivers      = Driver.where(:provider_id=>current_provider_id)
-    @vehicles     = Vehicle.active.where(:provider_id=>current_provider_id)
+    @drivers  = Driver.active.where(:provider_id=>current_provider_id).default_order
+    @vehicles = Vehicle.active.where(:provider_id=>current_provider_id)
     @runs = Run.for_provider(current_provider_id).for_date_range(@query.start_date,@query.end_date) unless @runs.present?
   end
 
@@ -185,8 +194,8 @@ class ReportsController < ApplicationController
     if @runs.empty?
       redirect_to({:action => :show_runs_for_verification}, :notice => "Runs updated successfully" )
     else
-      @drivers      = Driver.where(:provider_id=>current_provider_id)
-      @vehicles     = Vehicle.active.where(:provider_id=>current_provider_id)
+      @drivers  = Driver.active.where(:provider_id=>current_provider_id).default_order
+      @vehicles = Vehicle.active.where(:provider_id=>current_provider_id)
       render :action => :show_runs_for_verification
     end
   end
@@ -296,9 +305,9 @@ class ReportsController < ApplicationController
     cab = Driver.new(:name=>'Cab') #dummy driver for cab trips
 
     trips = Trip.scheduled.for_provider(current_provider_id).for_date(@date).includes(:pickup_address,:dropoff_address,:customer,:mobility,{:run => :driver}).order(:pickup_time)
-    if @query.driver_id == '-2' # All
+    if @query.driver_id == -2 # All
       # No additional filtering
-    elsif @query.driver_id == '-1' # Cab
+    elsif @query.driver_id == -1 # Cab
       trips = trips.for_cab
     else
       authorize! :read, Driver.find(@query.driver_id)
@@ -347,7 +356,7 @@ class ReportsController < ApplicationController
     trips = Trip.scheduled.for_provider(current_provider_id).for_date(@date).includes(:pickup_address,:dropoff_address,:customer,:mobility,{:run => :driver}).order(:pickup_time)
     @cab_trips = Trip.for_cab.scheduled.for_provider(current_provider_id).for_date(@date).includes(:pickup_address,:dropoff_address,:customer,:mobility,{:run => :driver}).order(:pickup_time)
 
-    if @query.driver_id == '-2' # All
+    if @query.driver_id == -2 # All
       trips = trips.not_for_cab
     else
       authorize! :read, Driver.find(@query.driver_id)
