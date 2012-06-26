@@ -103,8 +103,14 @@ class TripsController < ApplicationController
   end
 
   def new
-    @trip = Trip.new(:provider_id=>current_provider_id, :customer_id=>params[:customer_id])
-    @trip.mobility_id = Customer.find(params[:customer_id]).mobility_id if params[:customer_id]
+    if params[:customer_id]
+      @trip = Trip.new(:provider_id=>current_provider_id, :customer_id=>params[:customer_id])
+      @trip.mobility_id = Customer.find(params[:customer_id]).mobility_id 
+    else
+      @trip = Trip.new(:provider_id=>current_provider_id)
+      @trip.customer = Customer.new
+    end
+
     prep_view
     @trips = []
     

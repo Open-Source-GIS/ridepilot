@@ -42,10 +42,15 @@
         <%= autocomplete_field_tag "pickup_search_address", @trip.pickup_address.try(:text), autocomplete_addresses_path, :size => 30, :id_element => "#trip_pickup_address_id", :class => "full", "data-original-value" => @trip.pickup_address.try(:text), "data-original-id" => @trip.pickup_address.try(:id) %>
         <%= f.hidden_field :pickup_address_id %>
       </li>
-      
       <li class="selfclear">
-        <label for="phone">Customer Phone:</label>
-        <input type="text" size="30" name="phone" id="phone" value="<%= @customer.try(:phone_number_1) %>" readonly="readonly" class="full"/>
+        <%= f.fields_for :customer do |c| %>
+          <%= c.label :phone_number_1, "Customer Phone:" %>
+          <%= c.text_field :phone_number_1, :class => :full %>
+        <% end %>
+        <% if @trip.customer.id.blank? %>
+          <input id="trip_customer_attributes_id" type="hidden" name="trip[customer_attributes][id]">
+        <% else %>
+        <% end %>
       </li>
 
       <li class="selfclear">
