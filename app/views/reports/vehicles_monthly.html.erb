@@ -53,9 +53,9 @@
         <td class="numeric"><%= @total_hours[vehicle] %></td>
         <td class="numeric">
           <% if @total_hours[vehicle] == 0 %>
-           0
+           0.0
           <% else %>
-           <%= @total_rides[vehicle] / @total_hours[vehicle]  %>
+           <%= "%.1f" % (@total_rides[vehicle].to_f / @total_hours[vehicle].to_f)  %>
           <% end %>
         </td>
         <td class="numeric"><%= @beginning_odometer[vehicle] == -1 ? 'N/A' : @beginning_odometer[vehicle] %></td>
