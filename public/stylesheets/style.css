@@ -659,6 +659,10 @@ table tr.day th {
     background: #86B4EA;
     color: #000;
 }
+table td.nowrap {
+  white-space: nowrap;
+}
+
 
 /*
  *

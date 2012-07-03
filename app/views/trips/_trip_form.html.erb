@@ -6,22 +6,34 @@
     <%= trip.customer.name %>
   </td>
   <td>
+    <%= trip.trip_purpose %>
+  </td>
+  <td>
     <%= trip_fields.check_box :round_trip %>
   </td>
-  <td>
-    <%= trip_fields.text_field :guest_count, :size => 1 %>
-  </td>
-  <td>
-    <%= trip_fields.text_field :attendant_count, :size => 1 %>
-  </td>
+  <% if trip_fields.object.customer.group %>
+    <td>
+      Group size:
+    </td>
+    <td>
+      <%= trip_fields.text_field :group_size, :size => 1 %>
+    </td>
+  <% else %>
+    <td>
+      <%= trip_fields.text_field :guest_count, :size => 1 %>
+    </td>
+    <td>
+      <%= trip_fields.text_field :attendant_count, :size => 1 %>
+    </td>
+  <% end %>
   <td>
     <%= trip_fields.select :trip_result, @trip_results, :include_blank => true %>
   </td>
-  <td>
+  <td class="nowrap">
     <%= link_to "Edit Trip", [:edit,trip], :class => "edit" %>
   </td>
   <% if show_edit_run_link %>
-    <td>
+    <td class="nowrap">
       <% if trip.run.present? %>
         <%= link_to("Edit Run", [:edit,trip.run], :class => "edit") %>
       <% elsif trip.cab %>
