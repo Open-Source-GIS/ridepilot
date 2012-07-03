@@ -112,32 +112,30 @@ class ReportsController < ApplicationController
     end
 
     #computes number of trips in and out of district by purpose
-    x = Trip.select("trip_purpose, in_district, round_trip, COUNT(*) + SUM(guest_count) + SUM(attendant_count) + SUM(group_size) as ct").group("trip_purpose, in_district, round_trip")
-    counts_by_purpose = x.for_provider(current_provider_id).for_date_range(@start_date, @end_date).completed
+    counts_by_purpose = Trip.for_provider(current_provider_id).for_date_range(@start_date, @end_date)
+        .includes(:customer).completed
     
     by_purpose = {}
-    for purpose in TRIP_PURPOSES
+    TRIP_PURPOSES.each do |purpose| 
       by_purpose[purpose] = {'purpose' => purpose, 'in_district' => 0, 'out_of_district' => 0}
     end
     @total = {'in_district' => 0, 'out_of_district' => 0}
 
-    for row in counts_by_purpose
+    counts_by_purpose.each do |row|
       purpose = row.trip_purpose
-      next unless by_purpose.member?( purpose )
+      next unless by_purpose.member?(purpose)
 
-      multiplier = row.round_trip ? 2 : 1
-           
       if row.in_district 
-        by_purpose[purpose]['in_district'] += row["ct"].to_i * multiplier
-        @total['in_district'] += row["ct"].to_i * multiplier
+        by_purpose[purpose]['in_district'] += row.trip_count
+        @total['in_district'] += row.trip_count
       else
-        by_purpose[purpose]['out_of_district'] += row["ct"].to_i * multiplier        
-        @total['out_of_district'] += row["ct"].to_i * multiplier
+        by_purpose[purpose]['out_of_district'] += row.trip_count
+        @total['out_of_district'] += row.trip_count
       end
     end
         
     @trips_by_purpose = []
-    for purpose in TRIP_PURPOSES
+    TRIP_PURPOSES.each do |purpose| 
       @trips_by_purpose << by_purpose[purpose]
     end
     

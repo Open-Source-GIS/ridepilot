@@ -111,6 +111,15 @@ class Trip < ActiveRecord::Base
     end
   end
 
+  def trip_count
+    if customer.group
+      count = group_size
+    else 
+      count = guest_count + attendant_count + 1
+    end
+    round_trip ? count * 2 : count
+  end
+
   def repetition_driver_id=(value)
     @repetition_driver_id = (value.blank? ? nil : value.to_i)
   end
