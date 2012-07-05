@@ -52,6 +52,8 @@ class Trip < ActiveRecord::Base
   scope :repeating_based_on, lambda{|repeating_trip| where(:repeating_trip_id => repeating_trip.id)}
   scope :called_back, where('called_back_at IS NOT NULL')
   scope :not_called_back, where('called_back_at IS NULL')
+  scope :individual, joins(:customer).where(:customers => {:group => false})
+  scope :group, joins(:customer).where(:customers => {:group => true})
 
   DAYS_OF_WEEK = %w{monday tuesday wednesday thursday friday saturday sunday}
   

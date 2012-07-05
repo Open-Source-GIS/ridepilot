@@ -91,7 +91,7 @@ class ReportsController < ApplicationController
       month_trips = Trip.for_vehicle(vehicle.id).for_date_range(@start_date, @end_date).completed
 
       @total_hours[vehicle] = month_runs.sum("actual_end_time - actual_start_time").to_i 
-      @total_rides[vehicle] = month_trips.sum("(CASE WHEN round_trip THEN 2 ELSE 1 END) * (1 + guest_count + attendant_count + group_size)").to_i
+      @total_rides[vehicle] = month_trips.reduce(0){|total,trip| total + trip.trip_count}
 
       @beginning_odometer[vehicle] = month_runs.minimum(:start_odometer) || -1
       @ending_odometer[vehicle] = month_runs.maximum(:end_odometer) || -1
@@ -150,7 +150,7 @@ class ReportsController < ApplicationController
     @volunteer_driver_hours = hms_to_hours(runs.for_volunteer_driver.sum("actual_end_time - actual_start_time") || "0:00:00")
     @paid_driver_hours = hms_to_hours(runs.for_paid_driver.sum("actual_end_time - actual_start_time")  || "0:00:00")
 
-    trip_customers = Trip.select("DISTINCT customer_id").for_provider(current_provider_id).completed
+    trip_customers = Trip.individual.select("DISTINCT customer_id").for_provider(current_provider_id).completed
     prior_customers_in_fiscal_year = trip_customers.for_date_range(fiscal_year_start_date(@start_date), @start_date).map {|x| x.customer_id}
     customers_this_period = trip_customers.for_date_range(@start_date, @end_date).map {|x| x.customer_id}
     @undup_riders = (customers_this_period - prior_customers_in_fiscal_year).size
@@ -233,7 +233,7 @@ class ReportsController < ApplicationController
     #so, for each trip this month, find the customer, then find out whether 
     # there was a previous trip for this customer this fy
 
-    trip_customers = Trip.select("DISTINCT customer_id").for_provider(current_provider_id).completed
+    trip_customers = Trip.individual.select("DISTINCT customer_id").for_provider(current_provider_id).completed
     prior_customers_in_fiscal_year = trip_customers.for_date_range(fiscal_year_start_date(@start_date), @start_date).map {|x| x.customer_id}
     customers_this_period = trip_customers.for_date_range(@start_date, @end_date).map {|x| x.customer_id}
     

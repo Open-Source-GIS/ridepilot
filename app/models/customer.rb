@@ -16,6 +16,8 @@ class Customer < ActiveRecord::Base
   
   scope :by_letter, lambda { |letter| where("lower(last_name) LIKE ?", "#{letter.downcase}%") }
   scope :for_provider, lambda { |provider_id| where( :provider_id => provider_id ) }
+  scope :individual, where(:group => false)
+  scope :group, where(:grop => true)
 
   stampable :creator_attribute => :created_by_id, :updater_attribute => :updated_by_id
 
